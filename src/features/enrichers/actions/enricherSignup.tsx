@@ -1,5 +1,5 @@
 "use server"
-import { createEnricher, CreateEnrichers } from "@/features/enricher";
+import { createEnricher, CreateEnrichers } from "@/features/enrichers";
 import { StatusCode } from "@/lib/types/enums";
 import { InitialState } from "@/lib/types/types";
 

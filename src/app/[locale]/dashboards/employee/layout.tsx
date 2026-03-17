@@ -5,7 +5,7 @@ import nextAuthOptions from '@/server/auth'
 import { getServerSession } from 'next-auth'
 import React, { ReactNode } from 'react'
 
-const EnricherLayout = async ({ children }: { children: ReactNode }) => {
+const EmployeeLayout = async ({ children }: { children: ReactNode }) => {
     const session = await getServerSession(nextAuthOptions)
     if (!session?.user || session.user.role !== UserRole.EMPLOYEE) return
     return (
@@ -26,4 +26,4 @@ const EnricherLayout = async ({ children }: { children: ReactNode }) => {
     )
 }
 
-export default EnricherLayout
+export default EmployeeLayout

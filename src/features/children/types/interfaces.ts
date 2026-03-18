@@ -10,7 +10,7 @@ export interface Child {
 
     grade: string;
 
-    birthDate: Date;
+    birthDate: string;
 
     gender: Gender;
 
@@ -20,9 +20,9 @@ export interface Child {
 
     profile: ChildProfile;
 
-    created_at: Date;
+    created_at: string;
 
-    updated_at: Date;
+    updated_at: string;
 }
 
 
@@ -31,11 +31,11 @@ export interface ChildReport {
     id: string;
 
     // assignment: TestAssignment;
-    assignment: any;
+    assignment: unknown;
 
     score_json: string;
 
-    created_at: Date;
+    created_at: string;
 }
 export interface ChildProfile {
     id: string;

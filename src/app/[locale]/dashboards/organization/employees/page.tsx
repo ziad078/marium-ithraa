@@ -12,7 +12,7 @@ export default async function OrgEmployeesPage() {
     const cards = [
       {
         title: count,
-        description: "Employees Count",
+        description: "Dashboard.cards.employeesCount",
         footer: {
           exist: false
         },
@@ -26,7 +26,7 @@ export default async function OrgEmployeesPage() {
   return (
 
   <>
-      <SiteHeader title="Dashboard" />
+      <SiteHeader titleKey="Dashboard.titles.dashboard" />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">

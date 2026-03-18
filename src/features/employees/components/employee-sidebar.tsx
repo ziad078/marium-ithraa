@@ -31,12 +31,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useSession } from "next-auth/react"
+import { useTranslations } from "next-intl"
 import { Pages, Routes } from "@/lib/types/enums"
 
-const ENRICHERURL = `/${Routes.DASHBOARDS}/${Pages.ENRICHER}`
+const EMPLOYEEURL = `/${Routes.DASHBOARDS}/${Pages.EMPLOYEE}`
 
 const EmployeeSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>)  => {
     const {data: session} =  useSession()
+    const t = useTranslations()
   const data = {
     user: {
       name: session?.user.name||"",
@@ -45,74 +47,74 @@ const EmployeeSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>)  =>
     },
     navMain: [
       {
-        title: "Dashboard",
-        url: ENRICHERURL,
+        title: t("Dashboard.Nav.dashboard"),
+        url: EMPLOYEEURL,
         icon: IconDashboard,
       },
-    //   {
-    //     title: "Employees",
-    //     url: `${ORGANIZATIONURL}/${Pages.EMPLOYEES}`,
-    //     icon: IconUsers,
-    //   },
       {
-        title: "Analytics",
+        title: t("Dashboard.Nav.children"),
+        url: `${EMPLOYEEURL}/${Pages.CHILDREN}`,
+        icon: IconUsers,
+      },
+      {
+        title: t("Dashboard.Nav.analytics"),
         url: "#",
         icon: IconChartBar,
       },
       {
-        title: "Projects",
+        title: t("Dashboard.Nav.projects"),
         url: "#",
         icon: IconFolder,
       },
       {
-        title: "Team",
+        title: t("Dashboard.Nav.team"),
         url: "#",
         icon: IconUsers,
       },
     ],
     navClouds: [
       {
-        title: "Capture",
+        title: t("Dashboard.Nav.capture"),
         icon: IconCamera,
         isActive: true,
         url: "#",
         items: [
           {
-            title: "Active Proposals",
+            title: t("Dashboard.Nav.activeProposals"),
             url: "#",
           },
           {
-            title: "Archived",
+            title: t("Dashboard.Nav.archived"),
             url: "#",
           },
         ],
       },
       {
-        title: "Proposal",
+        title: t("Dashboard.Nav.proposal"),
         icon: IconFileDescription,
         url: "#",
         items: [
           {
-            title: "Active Proposals",
+            title: t("Dashboard.Nav.activeProposals"),
             url: "#",
           },
           {
-            title: "Archived",
+            title: t("Dashboard.Nav.archived"),
             url: "#",
           },
         ],
       },
       {
-        title: "Prompts",
+        title: t("Dashboard.Nav.prompts"),
         icon: IconFileAi,
         url: "#",
         items: [
           {
-            title: "Active Proposals",
+            title: t("Dashboard.Nav.activeProposals"),
             url: "#",
           },
           {
-            title: "Archived",
+            title: t("Dashboard.Nav.archived"),
             url: "#",
           },
         ],
@@ -120,34 +122,34 @@ const EmployeeSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>)  =>
     ],
     navSecondary: [
       {
-        title: "Settings",
+        title: t("Dashboard.Nav.settings"),
         url: "#",
         icon: IconSettings,
       },
       {
-        title: "Get Help",
+        title: t("Dashboard.Nav.getHelp"),
         url: "#",
         icon: IconHelp,
       },
       {
-        title: "Search",
+        title: t("Dashboard.Nav.search"),
         url: "#",
         icon: IconSearch,
       },
     ],
     documents: [
       {
-        name: "Data Library",
+        name: t("Dashboard.Nav.dataLibrary"),
         url: "#",
         icon: IconDatabase,
       },
       {
-        name: "Reports",
+        name: t("Dashboard.Nav.reports"),
         url: "#",
         icon: IconReport,
       },
       {
-        name: "Word Assistant",
+        name: t("Dashboard.Nav.wordAssistant"),
         url: "#",
         icon: IconFileWord,
       },

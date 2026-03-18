@@ -24,7 +24,8 @@ export enum Pages {
   ORGANIZATION = "organization",
   EMPLOYEES = "employees",
   EMPLOYEE = "employee",
-  ENRICHER = "enricher"
+  ENRICHER = "enricher",
+  CHILDREN = "children"
 }
 
 export enum AccountType {
@@ -149,11 +150,13 @@ export enum Gender {
 
 
 export enum Endpoint {
+  ALL = "all",
   AUTH = "auth",
   ENRICHERSSIGNUP = "enrichers-signup",
   EMPLOYEES = "employees",
   EMPLOYEESBYORGNIZATION = `${EMPLOYEES}/organization`,
   USERS = "users",
   ORGANIZATIONS = "organizations",
-  OWNER = "owner"
+  OWNER = "owner",
+  CHILDREN = "children"
 }

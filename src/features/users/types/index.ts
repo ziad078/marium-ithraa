@@ -19,7 +19,7 @@ export interface User {
 
     organization: Organization;
 
-    children: any[];
+    children: unknown[];
 
     created_at: Date;
 

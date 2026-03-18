@@ -51,6 +51,105 @@
       "Copyright": "إثراء © {year} جميع الحقوق محفوظة."
     }
   },
+  "Dashboard": {
+    "titles": {
+      "dashboard": "لوحة التحكم",
+      "children": "الأطفال"
+    },
+    "Nav": {
+      "dashboard": "لوحة التحكم",
+      "employees": "الموظفون",
+      "children": "الأطفال",
+      "analytics": "التحليلات",
+      "projects": "المشاريع",
+      "team": "الفريق",
+      "capture": "التقاط",
+      "proposal": "المقترحات",
+      "prompts": "المحفزات",
+      "activeProposals": "مقترحات نشطة",
+      "archived": "الأرشيف",
+      "settings": "الإعدادات",
+      "getHelp": "مساعدة",
+      "search": "بحث",
+      "dataLibrary": "مكتبة البيانات",
+      "reports": "التقارير",
+      "wordAssistant": "مساعد الكلمات"
+    },
+    "cards": {
+      "employeesCount": "عدد الموظفين",
+      "childrenCount": "عدد الأطفال",
+      "trendingUp": "في تحسّن هذا الشهر",
+      "last6Months": "آخر 6 أشهر"
+    },
+    "tables": {
+      "childrenTitle": "جدول الأطفال"
+    },
+    "common": {
+      "cancel": "إلغاء",
+      "add": "إضافة",
+      "adding": "جاري الإضافة...",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "delete": "حذف",
+      "deleting": "جاري الحذف...",
+      "unauthorized": "غير مصرح"
+    },
+    "Children": {
+      "actions": {
+        "add": "إضافة طفل"
+      },
+      "toast": {
+        "created": "تم إضافة الطفل بنجاح",
+        "updated": "تم تحديث بيانات الطفل بنجاح",
+        "deleted": "تم حذف الطفل بنجاح"
+      },
+      "dialog": {
+        "addTitle": "إضافة طفل",
+        "addDescription": "أدخل بيانات الطفل ثم احفظ.",
+        "editTitle": "تعديل طفل",
+        "editDescription": "حدّث بيانات الطفل ثم احفظ.",
+        "deleteTitle": "حذف طفل",
+        "deleteDescription": "هل أنت متأكد من حذف الطفل؟ لا يمكن التراجع عن هذه العملية."
+      },
+      "fields": {
+        "name": "الاسم",
+        "grade": "الصف",
+        "birthDate": "تاريخ الميلاد",
+        "gender": "الجنس",
+        "genderPlaceholder": "اختر الجنس"
+      },
+      "gender": {
+        "male": "ذكر",
+        "female": "أنثى"
+      },
+      "table": {
+        "name": "الاسم",
+        "grade": "الصف",
+        "birthDate": "تاريخ الميلاد",
+        "gender": "الجنس"
+      }
+    },
+    "Employees": {
+      "titles": {
+        "details": "تفاصيل الموظف"
+      },
+      "fields": {
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الجوال",
+        "role": "الدور",
+        "job": "الوظيفة"
+      },
+      "errors": {
+        "loadFailed": "تعذر تحميل بيانات الموظف"
+      },
+      "table": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الجوال",
+        "jobTitle": "المسمى الوظيفي"
+      }
+    }
+  },
   "HomePage": {
     "MetaData": {
       "title": "اهلا اثراء"

@@ -51,6 +51,105 @@
       "Copyright": "Ithraa © {year}. All rights reserved."
     }
   },
+  "Dashboard": {
+    "titles": {
+      "dashboard": "Dashboard",
+      "children": "Children"
+    },
+    "Nav": {
+      "dashboard": "Dashboard",
+      "employees": "Employees",
+      "children": "Children",
+      "analytics": "Analytics",
+      "projects": "Projects",
+      "team": "Team",
+      "capture": "Capture",
+      "proposal": "Proposal",
+      "prompts": "Prompts",
+      "activeProposals": "Active Proposals",
+      "archived": "Archived",
+      "settings": "Settings",
+      "getHelp": "Get Help",
+      "search": "Search",
+      "dataLibrary": "Data Library",
+      "reports": "Reports",
+      "wordAssistant": "Word Assistant"
+    },
+    "cards": {
+      "employeesCount": "Employees Count",
+      "childrenCount": "Children Count",
+      "trendingUp": "Trending up this month",
+      "last6Months": "Visitors for the last 6 months"
+    },
+    "tables": {
+      "childrenTitle": "Children Table"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "add": "Add",
+      "adding": "Adding...",
+      "saveChanges": "Save changes",
+      "saving": "Saving...",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "unauthorized": "Unauthorized"
+    },
+    "Children": {
+      "actions": {
+        "add": "Add Child"
+      },
+      "toast": {
+        "created": "Child created successfully",
+        "updated": "Child updated successfully",
+        "deleted": "Child deleted successfully"
+      },
+      "dialog": {
+        "addTitle": "Add Child",
+        "addDescription": "Fill child info then save.",
+        "editTitle": "Edit Child",
+        "editDescription": "Update child information and save.",
+        "deleteTitle": "Delete Child",
+        "deleteDescription": "Are you sure you want to delete this child? This action cannot be undone."
+      },
+      "fields": {
+        "name": "Name",
+        "grade": "Grade",
+        "birthDate": "Birth date",
+        "gender": "Gender",
+        "genderPlaceholder": "Select gender"
+      },
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "table": {
+        "name": "Name",
+        "grade": "Grade",
+        "birthDate": "Birth date",
+        "gender": "Gender"
+      }
+    },
+    "Employees": {
+      "titles": {
+        "details": "Employee Details"
+      },
+      "fields": {
+        "email": "Email",
+        "phone": "Phone",
+        "role": "الدور",
+        "job": "الوظيفة"
+      },
+      "errors": {
+        "loadFailed": "Failed to load employee"
+      },
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "jobTitle": "Job title"
+      }
+    }
+  },
   "HomePage": {
     "MetaData": {
       "title": "Hello World"

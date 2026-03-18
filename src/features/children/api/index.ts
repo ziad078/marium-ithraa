@@ -1,16 +1,32 @@
-import { apiFetch } from "@/lib/api-clent";
-import { Child } from "../types/interfaces";
-import { Methods } from "@/lib/types/enums";
+import { apiFetch } from "@/lib/api-clent"
+import { Child } from "../types/interfaces"
+import { Endpoint, Methods } from "@/lib/types/enums"
 
-export const getChildren = async (): Promise<Child[]> => {
-  const response = await apiFetch("/children");
-  if (!response.ok) throw new Error("Failed to fetch children");
-  return response.json();
-};
+export const getChildren = async (userId: string) => {
+  const response = await apiFetch(`/${Endpoint.CHILDREN}?userId=${userId}`)
+  const children = (await response.json())
+  if (!response.ok) throw new Error("Failed to fetch children")
+  console.log(children)
+  return children
+}
 
 export const createChild = async (data: Partial<Child>) => {
-  return apiFetch("/children", {
+  console.log(data)
+  return apiFetch(`/${Endpoint.CHILDREN}`, {
     method: Methods.POST,
     body: JSON.stringify(data),
-  });
-};
+  })
+}
+
+export const updateChild = async (childId: string, data: Partial<Child>) => {
+  return apiFetch(`/${Endpoint.CHILDREN}/${childId}`, {
+    method: Methods.PATCH,
+    body: JSON.stringify(data),
+  })
+}
+
+export const deleteChild = async (childId: string) => {
+  return apiFetch(`/${Endpoint.CHILDREN}/${childId}`, {
+    method: Methods.DELETE,
+  })
+}

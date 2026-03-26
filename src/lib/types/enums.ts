@@ -17,10 +17,12 @@ export enum Routes {
 }
 
 export enum Pages {
+  NEW = "new",
+  TESTS = "tests",
   LOGIN = "login",
   ENRECHERSIGNUP = "enrichersignup",
   BENEFICIARYSIGNUP = "Beneficiarysignup",
-  AdMIN = "admin",
+  ADMIN = "admin",
   ORGANIZATION = "organization",
   EMPLOYEES = "employees",
   EMPLOYEE = "employee",
@@ -124,9 +126,12 @@ export enum UserRole {
 }
 
 export enum FormTypes {
+  ANS = "answer",
+  QUESTIONS = "QUESTIONS",
   SIGNIN = "SIGNIN",
   EMPLOYEE = "EMPLOYEE",
-  ENRICHER = "ENRICHER"
+  ENRICHER = "ENRICHER",
+  TEST = "TESTS"
 }
 
 
@@ -150,6 +155,8 @@ export enum Gender {
 
 
 export enum Endpoint {
+  ROLES = "roles",
+  TESTS = "tests",
   ALL = "all",
   AUTH = "auth",
   ENRICHERSSIGNUP = "enrichers-signup",

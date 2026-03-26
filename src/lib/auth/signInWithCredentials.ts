@@ -28,7 +28,7 @@ export async function signInWithPhoneAndRedirect({
   const role = session?.user?.role;
 
   const dashboardMap: Record<string, string> = {
-    [UserRole.ADMIN]: `/${Routes.DASHBOARDS}/${Pages.AdMIN}`,
+    [UserRole.ADMIN]: `/${Routes.DASHBOARDS}/${Pages.ADMIN}`,
     [UserRole.ORGANIZATIONOWNER]: `/${Routes.DASHBOARDS}/${Pages.ORGANIZATION}`,
     [UserRole.EMPLOYEE]: `/${Routes.DASHBOARDS}/${Pages.EMPLOYEE}`,
     [UserRole.ENRICHER]: `/${Routes.DASHBOARDS}/${Pages.ENRICHER}`,

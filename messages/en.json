@@ -73,7 +73,9 @@
       "search": "Search",
       "dataLibrary": "Data Library",
       "reports": "Reports",
-      "wordAssistant": "Word Assistant"
+      "wordAssistant": "Word Assistant",
+      "tests": "tests lib"
+
     },
     "cards": {
       "employeesCount": "Employees Count",
@@ -371,6 +373,20 @@
       "a11y": {
         "showPassword": "Show password",
         "hidePassword": "Hide password"
+      }
+    }
+  },
+  "Features": {
+    "Tests": {
+      "Title": "Test Title",
+      "QuestionNo": "Questions number",
+      "AssignmentNo": "Assignments number",
+      "TableTitle": "Tests table",
+      "Toast": {
+        "Created": "Test created suceessfuly"
+      },
+      "Actions": {
+        "Add": "create"
       }
     }
   }

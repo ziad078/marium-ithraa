@@ -40,3 +40,28 @@ export const columns: ColumnDef<Child>[] = [
   },
 ]
 
+export const adminColumns: ColumnDef<Child>[] = [
+  {
+    accessorKey: "name",
+    header: () => <TH k="Dashboard.Children.table.name" />,
+  },
+  {
+    accessorKey: "grade",
+    header: () => <TH k="Dashboard.Children.table.grade" />,
+  },
+  {
+    accessorKey: "gender",
+    header: () => <TH k="Dashboard.Children.table.gender" />,
+  },
+  {
+    accessorKey: "birthDate",
+    header: () => <TH k="Dashboard.Children.table.birthDate" />,
+    cell: ({ row }) => {
+      const value = row.original.birthDate
+      // Handles ISO strings; falls back to raw value.
+      const date = value ? new Date(value) : null
+      return <span>{date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString() : value}</span>
+    },
+  },
+
+]

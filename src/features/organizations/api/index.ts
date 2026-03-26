@@ -14,3 +14,7 @@ export async function getUserOrganization(userId:string) {
     return apiFetch(`/${Endpoint.ORGANIZATIONS}/${Endpoint.OWNER}/${userId}`)
     
 }
+
+export async function getAllOrganizations() {
+    return apiFetch(`/${Endpoint.ORGANIZATIONS}`)
+}

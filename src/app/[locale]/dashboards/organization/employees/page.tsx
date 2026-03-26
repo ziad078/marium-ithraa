@@ -3,8 +3,6 @@ import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { SiteHeader } from "@/components/site-header"
 import { DataTable } from "@/components/ui/data-table"
 import { columns, EmployeesCards, getEmployeesByOrganization } from "@/features/employees"
-import data from "../data.json"
-import { Button } from "@/components/ui/button"
 export default async function OrgEmployeesPage() {
     const res = await getEmployeesByOrganization("e5de0d32-285b-4d30-8497-f80a20ea52d4")
     const {count, employees} = await res.json()

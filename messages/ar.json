@@ -73,7 +73,8 @@
       "search": "بحث",
       "dataLibrary": "مكتبة البيانات",
       "reports": "التقارير",
-      "wordAssistant": "مساعد الكلمات"
+      "wordAssistant": "مساعد الكلمات",
+      "tests": "مكتبة الاختبارات"
     },
     "cards": {
       "employeesCount": "عدد الموظفين",
@@ -371,6 +372,20 @@
       "a11y": {
         "showPassword": "إظهار كلمة المرور",
         "hidePassword": "إخفاء كلمة المرور"
+      }
+    }
+  },
+  "Features": {
+    "Tests": {
+      "Title": "عنوان الاختبار",
+      "QuestionNo": "عدد الاسئلة",
+      "AssignmentNo": "عدد التسليمات",
+      "TableTitle": "جدول الاختبارات",
+      "Toast": {
+        "Created": "تم انشاء الاختبار بنجاح"
+      },
+      "Actions": {
+        "Add": "create"
       }
     }
   }

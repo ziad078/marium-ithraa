@@ -1,0 +1,41 @@
+import { notFound } from "next/navigation"
+
+import { ClassFormScreen } from "@/components/pages/dashboards/organization/ClassFormScreen"
+import { type ClassItem } from "@/features/classes"
+import { getClassById } from "@/features/classes"
+import { getGradesByOrg } from "@/features/grades"
+import { getTeachersByOrg } from "@/features/teachers/api"
+import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+
+type Props = {
+  params: Promise<{ locale: string; classId: string }>
+}
+
+export default async function EditClassPage({ params }: Props) {
+  const { locale, classId } = await params
+  const org = await getCurrentOrganization()
+  const orgId = org.user.organization.id
+
+  let classItem: ClassItem
+  let gradesRes
+  let teachersRes
+  try {
+    ;[classItem, gradesRes, teachersRes] = await Promise.all([
+      getClassById(classId).then((r) => r.class),
+      getGradesByOrg(orgId),
+      getTeachersByOrg(orgId),
+    ])
+  } catch {
+    notFound()
+  }
+
+  return (
+    <ClassFormScreen
+      locale={locale}
+      organizationId={orgId}
+      grades={gradesRes.grades}
+      teachers={teachersRes.teachers}
+      classItem={classItem}
+    />
+  )
+}

@@ -1,0 +1,43 @@
+import { api } from "@/lib/api/api"
+import { Endpoint, Methods } from "@/lib/types/enums"
+import {
+  type ClassItem,
+  type CreateClassPayload,
+  type UpdateClassPayload,
+} from "../types"
+
+export const getClassesByOrg = async (orgId: string) => {
+  return api.server<{ classes: ClassItem[] }>(
+    `/${Endpoint.CLASSES}/organization/${orgId}`,
+  )
+}
+
+export const getClassesByGrade = async (gradeId: string) => {
+  return api.server<{ classes: ClassItem[] }>(
+    `/${Endpoint.CLASSES}/grade/${gradeId}`,
+  )
+}
+
+export const getClassById = async (classId: string) => {
+  return api.server<{ class: ClassItem }>(`/${Endpoint.CLASSES}/${classId}`)
+}
+
+export const createClass = async (data: CreateClassPayload) => {
+  return api.server(`/${Endpoint.CLASSES}`, {
+    method: Methods.POST,
+    body: JSON.stringify(data),
+  })
+}
+
+export const updateClass = async (classId: string, data: UpdateClassPayload) => {
+  return api.server(`/${Endpoint.CLASSES}/${classId}`, {
+    method: Methods.PATCH,
+    body: JSON.stringify(data),
+  })
+}
+
+export const deleteClass = async (classId: string) => {
+  return api.server(`/${Endpoint.CLASSES}/${classId}`, {
+    method: Methods.DELETE,
+  })
+}

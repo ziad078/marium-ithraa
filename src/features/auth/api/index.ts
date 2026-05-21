@@ -1,0 +1,43 @@
+import { api } from "@/lib/api/api"
+import { Endpoint, Methods } from "@/lib/types/enums"
+
+import type { VerifyEmailResponse } from "../types"
+
+export type { VerifyEmailResponse }
+
+export const verifyEmailClient = async (token: string) => {
+  const query = new URLSearchParams({ token }).toString()
+
+  return api.client<VerifyEmailResponse>(
+    `/${Endpoint.AUTH}/verify-email?${query}`,
+    {
+      method: Methods.GET,
+    },
+  )
+}
+
+export const verifyEmailServer = async (token: string) => {
+  const query = new URLSearchParams({ token }).toString()
+
+  return api.server<VerifyEmailResponse>(
+    `/${Endpoint.AUTH}/verify-email?${query}`,
+    {
+      method: Methods.GET,
+    },
+  )
+}
+
+/** @alias verifyEmailServer — used by server pages */
+export const verifyEmail = verifyEmailServer
+
+export const logoutClient = async () => {
+  return api.client<void>(`/${Endpoint.AUTH}/logout`, {
+    method: Methods.DELETE,
+  })
+}
+
+export const logoutAllClient = async () => {
+  return api.client<void>(`/${Endpoint.AUTH}/logout-all`, {
+    method: Methods.DELETE,
+  })
+}

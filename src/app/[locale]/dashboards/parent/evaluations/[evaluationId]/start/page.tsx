@@ -1,0 +1,76 @@
+"use client"
+
+import { useMemo, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
+import { toast } from "sonner"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { useStartAttempt } from "@/features/evaluations/hooks"
+import { startAttemptSchema } from "@/features/evaluations/types"
+
+export default function StartEvaluationPage() {
+  const params = useParams<{ evaluationId: string }>()
+  const router = useRouter()
+  const evaluationId = params.evaluationId
+  const start = useStartAttempt(evaluationId)
+
+  const [childId, setChildId] = useState("")
+  const [expiresInSeconds, setExpiresInSeconds] = useState<string>("")
+
+  const payload = useMemo(() => {
+    const maybe = {
+      childId,
+      expiresInSeconds: expiresInSeconds ? Number(expiresInSeconds) : undefined,
+    }
+    const parsed = startAttemptSchema.safeParse(maybe)
+    return parsed.success ? parsed.data : null
+  }, [childId, expiresInSeconds])
+
+  return (
+    <Card className="max-w-xl">
+      <CardHeader>
+        <CardTitle className="text-base">Start evaluation</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-1">
+          <label className="text-sm">Child ID</label>
+          <Input value={childId} onChange={(e) => setChildId(e.target.value)} placeholder="uuid" />
+        </div>
+        <div className="space-y-1">
+          <label className="text-sm">Expires in seconds (optional)</label>
+          <Input
+            value={expiresInSeconds}
+            onChange={(e) => setExpiresInSeconds(e.target.value)}
+            placeholder="e.g. 900"
+            inputMode="numeric"
+          />
+        </div>
+
+        <Button
+          onClick={async () => {
+            if (!payload) {
+              toast.error("Please provide a valid childId.")
+              return
+            }
+            try {
+              const attempt = await start.mutateAsync(payload)
+              router.push(`/dashboards/parent/attempts/${attempt.id}`)
+            } catch (e: unknown) {
+              toast.error(e instanceof Error ? e.message : "Failed to start evaluation.")
+            }
+          }}
+          disabled={start.isPending}
+        >
+          {start.isPending ? "Starting..." : "Start"}
+        </Button>
+
+        <p className="text-xs text-muted-foreground">
+          If you see “Maximum attempts reached” or “Retake not allowed”, the backend rules were triggered.
+        </p>
+      </CardContent>
+    </Card>
+  )
+}
+

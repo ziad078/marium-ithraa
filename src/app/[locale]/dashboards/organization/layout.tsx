@@ -1,0 +1,51 @@
+import Footer from '@/components/layouts/footer'
+import OrganizationHeader from '@/components/layouts/organizationHeader/OrganizationHeader'
+import { routing } from '@/i18n/routing'
+import { getCurrentOrganization } from '@/lib/helpers/getCurrentOrganization'
+import { hasLocale } from 'next-intl'
+import { setRequestLocale } from 'next-intl/server'
+import { notFound, redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+
+import nextAuthOptions from '@/server/auth'
+import { Pages, Routes } from '@/lib/types/enums'
+import React from 'react'
+
+const OrgnizationLayout = async ({
+    children,
+    params
+  }: Readonly<{
+    children: React.ReactNode;
+    params: Promise<{ locale: string }>;
+  }>) => {
+    const { locale } = await params;
+    const session = await getServerSession(nextAuthOptions)
+
+    if (!session?.user) {
+      redirect(`/${locale}/${Routes.AUTH}/${Pages.LOGIN}`)
+    }
+
+    const organization = await getCurrentOrganization()
+    if (!organization) {
+      redirect(`/${locale}/${Routes.UNAUTHARIZED}`)
+    }
+    if (!hasLocale(routing.locales, locale)) {
+      notFound();
+    }
+  
+    setRequestLocale(locale);
+  
+    return (
+
+        <>
+            <OrganizationHeader locale={locale} />
+            <div className="pt-28">
+              {children}
+            </div>
+            <Footer locale={locale} />
+
+        </>
+    )
+}
+
+export default OrgnizationLayout

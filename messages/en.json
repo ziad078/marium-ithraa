@@ -1,0 +1,568 @@
+{
+  "Metadata": {
+    "title": "Welcome to my site",
+    "description": "Best app ever"
+  },
+  "Header": {
+    "Menu": {
+      "Home": "Home",
+      "About": "About Us",
+      "Services": "Our Services",
+      "Blog": "Ithraa Blog",
+      "Contact": "Contact Us"
+    },
+    "search": "Search",
+    "login": "Login"
+  },
+  "Footer": {
+    "Brand": {
+      "Alt": "Ithraa"
+    },
+    "Paths": {
+      "Title": "Paths",
+      "WaliAlAmr": "Wali Al-Amr",
+      "Landmarks": "Landmarks",
+      "Partners": "Partners",
+      "Foundation": "Foundation",
+      "FollowFoundation": "Follow the Foundation"
+    },
+    "About": {
+      "Title": "About Ithraa",
+      "Home": "Home",
+      "WhoWeAre": "Who we are",
+      "Services": "Our services",
+      "Blog": "Ithraa blog",
+      "Contact": "Contact us"
+    },
+    "Social": {
+      "YouTube": "YouTube",
+      "X": "X",
+      "Instagram": "Instagram",
+      "Facebook": "Facebook"
+    },
+    "Contact": {
+      "Email": "info@ithra.com",
+      "Phone": "+654832177422",
+      "PhoneTel": "+654832177422"
+    },
+    "Legal": {
+      "Privacy": "Privacy policy",
+      "Terms": "Terms & Conditions",
+      "Copyright": "Ithraa © {year}. All rights reserved."
+    }
+  },
+  "Dashboard": {
+    "titles": {
+      "dashboard": "Dashboard",
+      "children": "Children"
+    },
+    "Nav": {
+      "dashboard": "Dashboard",
+      "employees": "Employees",
+      "children": "Children",
+      "analytics": "Analytics",
+      "projects": "Projects",
+      "team": "Team",
+      "capture": "Capture",
+      "proposal": "Proposal",
+      "prompts": "Prompts",
+      "activeProposals": "Active Proposals",
+      "archived": "Archived",
+      "settings": "Settings",
+      "getHelp": "Get Help",
+      "search": "Search",
+      "dataLibrary": "Data Library",
+      "reports": "Reports",
+      "wordAssistant": "Word Assistant",
+      "tests": "tests lib",
+      "evaluations": "Evaluations",
+      "attempts": "Attempts"
+    },
+    "cards": {
+      "employeesCount": "Employees Count",
+      "childrenCount": "Children Count",
+      "trendingUp": "Trending up this month",
+      "last6Months": "Visitors for the last 6 months"
+    },
+    "tables": {
+      "childrenTitle": "Children Table"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "add": "Add",
+      "adding": "Adding...",
+      "saveChanges": "Save changes",
+      "saving": "Saving...",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "unauthorized": "Unauthorized"
+    },
+    "Children": {
+      "actions": {
+        "add": "Add Child"
+      },
+      "toast": {
+        "created": "Child created successfully",
+        "updated": "Child updated successfully",
+        "deleted": "Child deleted successfully"
+      },
+      "dialog": {
+        "addTitle": "Add Child",
+        "addDescription": "Fill child info then save.",
+        "editTitle": "Edit Child",
+        "editDescription": "Update child information and save.",
+        "deleteTitle": "Delete Child",
+        "deleteDescription": "Are you sure you want to delete this child? This action cannot be undone."
+      },
+      "fields": {
+        "name": "Name",
+        "grade": "Grade",
+        "birthDate": "Birth date",
+        "gender": "Gender",
+        "genderPlaceholder": "Select gender"
+      },
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "table": {
+        "name": "Name",
+        "grade": "Grade",
+        "birthDate": "Birth date",
+        "gender": "Gender"
+      }
+    },
+    "Employees": {
+      "titles": {
+        "details": "Employee Details"
+      },
+      "fields": {
+        "email": "Email",
+        "phone": "Phone",
+        "role": "الدور",
+        "job": "الوظيفة"
+      },
+      "errors": {
+        "loadFailed": "Failed to load employee"
+      },
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "jobTitle": "Job title"
+      }
+    }
+  },
+  "HomePage": {
+    "MetaData": {
+      "title": "Hello World"
+    },
+    "Hero": {
+      "brandAlt": "Ithraa",
+      "title": "Discover your child’s intelligence and guide it right",
+      "subtitle": "A comprehensive learning platform connecting family, schools, and institutions to assess children’s skills, analyze strengths, and provide personalized learning paths in a safe, organized environment.",
+      "cardsTitle": "Choose your account type to get started",
+      "heroImageAlt": "Ithraa hero illustration",
+      "cards": {
+        "Enricher": {
+          "label": "Enricher",
+          "description": "Create engaging content and contribute to learning journeys."
+        },
+        "Beneficiary": {
+          "label": "Organization",
+          "description": "Manage groups and programs and measure impact with clear reports."
+        }
+      }
+    },
+    "Features": {
+      "title": "Why Ithraa?",
+      "items": {
+        "tests": {
+          "title": "Accredited assessments",
+          "description": "A curated set of accurate, easy assessments to evaluate each child’s abilities."
+        },
+        "reports": {
+          "title": "Clear reports",
+          "description": "Rich results and actionable insights that give you a complete picture."
+        },
+        "dashboards": {
+          "title": "Multiple dashboards",
+          "description": "Role-based dashboards that make management and follow-up simple."
+        }
+      }
+    },
+    "HowItWorks": {
+      "title": "How does Ithraa work?",
+      "subtitle": "A simple journey that helps you discover and nurture a child’s strengths.",
+      "steps": {
+        "evaluate": {
+          "title": "Run intelligence assessments",
+          "description": "A set of structured tests to identify strengths and core skills."
+        },
+        "map": {
+          "title": "Get a full intelligence map",
+          "description": "Understand the child’s abilities clearly and build the right learning plan."
+        },
+        "recommend": {
+          "title": "Smart activities & paths",
+          "description": "Recommendations that match the child’s level and support steady growth."
+        },
+        "track": {
+          "title": "Track progress and development",
+          "description": "Follow improvement over time and adjust the path as needed."
+        }
+      }
+    },
+    "Testimonials": {
+      "title": "What our customers say",
+      "avatarAlt": "Customer avatar",
+      "items": {
+        "t1": {
+          "name": "Sarah Abdulaziz",
+          "role": "Parent",
+          "quote": "A smooth experience and very clear results. It helped me understand my child better."
+        },
+        "t2": {
+          "name": "Yasser Mostafa",
+          "role": "Teacher",
+          "quote": "The reports are practical and the learning paths are thoughtfully designed."
+        },
+        "t3": {
+          "name": "Noura AlHarbi",
+          "role": "Organization",
+          "quote": "Great dashboards and follow-up tools. Implementation was straightforward."
+        },
+        "t4": {
+          "name": "Ahmed Ali",
+          "role": "Parent",
+          "quote": "The platform is organized and the recommendations are genuinely helpful."
+        },
+        "t5": {
+          "name": "Reem Hassan",
+          "role": "Teacher",
+          "quote": "Beautiful UI and a clear process—from assessment to progress tracking."
+        }
+      }
+    },
+    "title": "hi here",
+    "subtitle": "Learn something"
+  },
+  "Signup": {
+    "Beneficiary": {
+      "Validation": {
+        "name": {
+          "min": "Name must be at least 2 characters.",
+          "max": "Name must be at most 50 characters."
+        },
+        "email": {
+          "invalid": "Please enter a valid email address."
+        },
+        "password": {
+          "min": "Password must be at least 8 characters.",
+          "pattern": "Password must contain uppercase, lowercase, number and special character."
+        },
+        "phone": {
+          "min": "Please enter a valid phone number."
+        },
+        "organization_name": {
+          "min": "Organization name must be at least 2 characters."
+        },
+        "organization_type": {
+          "required": "Please select an organization type."
+        }
+      },
+      "Wizard": {
+        "next": "Next",
+        "back": "Back",
+        "submit": "Complete signup"
+      },
+      "TypeStep": {
+        "title": "Choose beneficiary account type",
+        "subtitle": "Select the account type you want to register to benefit from Ithraa.",
+        "options": {
+          "organization": {
+            "title": "Organization",
+            "description": "Register an educational organization to manage beneficiaries and programs."
+          },
+          "parent": {
+            "title": "Parent / Guardian",
+            "description": "Register as a parent to follow your child’s progress and results."
+          },
+          "teacher": {
+            "title": "Teacher",
+            "description": "Register as a teacher to manage your students and track outcomes."
+          }
+        }
+      },
+      "Organization": {
+        "title": "Organization details",
+        "subtitle": "Enter the account and organization details as they will appear in Ithraa.",
+        "fields": {
+          "name": {
+            "label": "Full name",
+            "placeholder": "Enter your full name"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "example@domain.com"
+          },
+          "phone": {
+            "label": "Mobile number",
+            "placeholder": "05xxxxxxxx"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter a strong password"
+          },
+          "organization_name": {
+            "label": "Organization name",
+            "placeholder": "Enter the educational organization name"
+          },
+          "organization_type": {
+            "label": "Organization type",
+            "placeholder": "Select organization type",
+            "options": {
+              "center": "Educational center",
+              "nursery": "Nursery",
+              "training": "Training center",
+              "school": "School"
+            }
+          }
+        }
+      },
+      "Validation": {
+        "name": {
+          "min": "Name must be at least 2 characters.",
+          "max": "Name must be at most 50 characters."
+        },
+        "email": {
+          "invalid": "Please enter a valid email address."
+        },
+        "password": {
+          "min": "Password must be at least 8 characters.",
+          "pattern": "Password must contain uppercase, lowercase, number and special character."
+        },
+        "phone": {
+          "min": "Please enter a valid phone number."
+        },
+        "organization_name": {
+          "min": "Organization name must be at least 2 characters."
+        },
+        "organization_type": {
+          "required": "Please select an organization type."
+        }
+      }
+    }
+  },
+  "Auth": {
+    "profile": "Profile",
+    "logout": "Log out",
+    "signup": "Sign up",
+    "redirecting": "Redirecting...",
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "Login": {
+      "title": "Login",
+      "submit": "Login",
+      "submitting": "Signing in...",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot your password?",
+      "noAccount": "Don’t have an account?",
+      "createAccount": "Create account",
+      "side": {
+        "title": "Sign in to access your dashboard and manage your account easily.",
+        "subtitle": "Use your phone number and password."
+      },
+      "errors": {
+        "invalidCredentials": "Phone number or password is incorrect.",
+        "unexpected": "Something went wrong. Please try again."
+      },
+      "a11y": {
+        "showPassword": "Show password",
+        "hidePassword": "Hide password"
+      }
+    }
+  },
+  "Features": {
+    "Tests": {
+      "Title": "Test Title",
+      "QuestionNo": "Questions number",
+      "AssignmentNo": "Assignments number",
+      "TableTitle": "Tests table",
+      "Toast": {
+        "Created": "Test created suceessfuly"
+      },
+      "Actions": {
+        "Add": "create"
+      }
+    },
+    "Evaluations": {
+      "listTitle": "Evaluations",
+      "detailsTitle": "Evaluation details",
+      "create": "Create evaluation",
+      "title": "Title",
+      "type": "Evaluation type",
+      "ageRange": "Age range",
+      "evaluatorTypes": "Evaluator types",
+      "dimensions": "Dimensions",
+      "questions": "Questions",
+      "answers": "Answers",
+      "scoreValue": "Score value",
+      "viewDetails": "View details",
+      "searchPlaceholder": "Search by title",
+      "filterByType": "Filter by type",
+      "allTypes": "All types",
+      "empty": "No data",
+      "error": "An error occurred",
+      "loading": "Loading…",
+      "retry": "Retry",
+      "adminScoreWarning": "Scoring values are visible only to admins and hidden from parent/student forms.",
+      "scoreRange": "Score range",
+      "institutionId": "Institution ID",
+      "ageFrom": "Age from",
+      "ageTo": "Age to",
+      "dimensionName": "Dimension name",
+      "dimensionCode": "Dimension code",
+      "interpretationRules": "Interpretation rules (JSON)",
+      "questionContent": "Question content",
+      "answerText": "Answer text",
+      "createSuccess": "Evaluation created successfully",
+      "saving": "Saving…",
+      "savedSuccess": "Saved successfully",
+      "attemptsTitle": "Attempts",
+      "child": "Child",
+      "parent": "Parent",
+      "evaluation": "Evaluation",
+      "attemptNumber": "Attempt #",
+      "status": "Status",
+      "score": "Score",
+      "submittedAt": "Submitted at",
+      "allStatuses": "All statuses",
+      "inProgress": "In progress",
+      "submitted": "Submitted",
+      "approved": "Approved",
+      "evaluationIdFilter": "Evaluation ID",
+      "childIdFilter": "Child ID",
+      "approveAttempt": "Approve result",
+      "approveConfirm": "Approve this attempt result?",
+      "approveSuccess": "Attempt approved",
+      "cancel": "Cancel",
+      "childEvaluations": "Child evaluations",
+      "availableEvaluations": "Available evaluations",
+      "previousAttempts": "Previous attempts",
+      "startEvaluation": "Start evaluation",
+      "continueAttempt": "Continue evaluation",
+      "waitingApproval": "Waiting for approval",
+      "viewResult": "View result",
+      "privateSlots": "Private evaluation slots",
+      "openMainSlot": "Open main slot",
+      "requestRetake": "Request retake",
+      "requestExtra": "Request extra attempt",
+      "saveProgress": "Save progress",
+      "submitEvaluation": "Submit evaluation",
+      "result": "Result",
+      "attemptSummary": "Attempt summary",
+      "attemptNotFound": "Attempt not found",
+      "progress": "{answered} / {total} answered",
+      "answerAllRequired": "Please answer all questions before submitting",
+      "timeExpired": "Time expired",
+      "timeExpiredHint": "Your attempt is being submitted automatically and will become read-only.",
+      "noQuestions": "No questions",
+      "formFallbackNotice": "Questions loaded from the safe evaluation form (scores hidden).",
+      "missingAnswerIds": "{count} answer option(s) are missing IDs and cannot be submitted.",
+      "privateSlotHint": "Open a slot first, then start an evaluation below.",
+      "slotOpened": "Slot opened successfully",
+      "slotOpenedPickEvaluation": "Slot is ready. Choose an evaluation and tap Start."
+    },
+    "ParentDashboard": {
+      "subtitle": "Start evaluations and track your children's results in one place",
+      "children": "Children",
+      "childrenDesc": "View and manage your registered children",
+      "evaluations": "Evaluations",
+      "evaluationsDesc": "Start and track child evaluations",
+      "notificationsDesc": "Stay updated with alerts"
+    },
+    "Notifications": {
+      "title": "Notifications",
+      "subtitle": "Stay up to date with alerts and updates",
+      "empty": "No notifications",
+      "unread": "Unread",
+      "read": "Read",
+      "markRead": "Mark as read",
+      "markAllRead": "Mark all as read",
+      "viewAll": "View all",
+      "dispatchTitle": "Dispatch notification",
+      "dispatchSubtitle": "Send a notification to a specific user",
+      "dispatchFormTitle": "Dispatch form",
+      "deliveryLabel": "Delivery",
+      "deliveryInapp": "In-app",
+      "deliveryEmail": "Email",
+      "deliveryBoth": "Both",
+      "deliveryVerifyEmail": "Verify email",
+      "userId": "User ID",
+      "email": "Email",
+      "notificationTitle": "Title",
+      "notificationMessage": "Message",
+      "notificationType": "Notification type",
+      "metadata": "Metadata",
+      "dispatchSuccess": "Notification queued for delivery",
+      "loadError": "Failed to load notifications",
+      "retry": "Retry",
+      "typeEvaluations": "Evaluations",
+      "typeReminders": "Reminders",
+      "typePayment": "Payment",
+      "typeGeneral": "General",
+      "typeFilterAll": "All",
+      "filterAll": "All",
+      "filterUnread": "Unread",
+      "open": "Open",
+      "prev": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {total}",
+      "dispatchSubmit": "Send",
+      "sending": "Sending...",
+      "cancel": "Cancel",
+      "requiredFields": "Please fill in required fields",
+      "metadataInvalidJson": "Invalid JSON in metadata",
+      "metadataInvalidObject": "Metadata must be a JSON object",
+      "attemptResult": "Result"
+    },
+    "OwnerEvaluations": {
+      "results": "Results",
+      "subtitle": "Track your institution's children evaluation results",
+      "reportsTab": "Reports",
+      "resultsTab": "Results",
+      "statusTab": "Evaluation status",
+      "class": "Class",
+      "evaluation": "Evaluation",
+      "selectClass": "Select class",
+      "selectEvaluation": "Select evaluation",
+      "selectClassAndEvaluation": "Select a class and evaluation to view data",
+      "highestScore": "Highest score",
+      "averageScore": "Class average",
+      "lowestScore": "Lowest score",
+      "topDimensions": "Top 3 dimensions",
+      "childrenResults": "Children results",
+      "childrenCount": "Children count",
+      "approved": "Approved",
+      "waitingApproval": "Waiting for approval",
+      "inProgress": "In progress",
+      "notStarted": "Not started yet",
+      "sendReminder": "Send reminder",
+      "reminderSuccess": "Reminder sent successfully",
+      "empty": "No data",
+      "error": "An error occurred",
+      "retry": "Retry",
+      "classStats": "Class statistics",
+      "score": "Score",
+      "result": "Result",
+      "downloadPdf": "Download PDF",
+      "downloadExcel": "Download Excel",
+      "noTopDimensions": "No dimensions available for this evaluation",
+      "attemptResult": "Evaluation result",
+      "attemptForbidden": "You cannot view this result. It may not be approved yet or you do not have access.",
+      "attemptNotApproved": "This evaluation has been submitted but not approved yet. Results will appear after approval.",
+      "attemptNoResultYet": "No result is available for this evaluation yet.",
+      "backToResults": "Back to results"
+    }
+  }
+}

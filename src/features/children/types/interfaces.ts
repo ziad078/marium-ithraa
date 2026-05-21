@@ -1,0 +1,86 @@
+import { Gender } from "@/lib/types/enums"
+
+export interface ParentInfo {
+  id?: string
+  name?: string
+  email?: string
+  phone?: string
+}
+
+export interface ChildClassRef {
+  id: string
+  name: string
+  gradeId?: string
+  grade?: { id: string; name: string }
+}
+
+export interface Child {
+  id: string
+  name: string
+  birthDate?: string
+  gender?: Gender | string
+  organizationId?: string
+  classId?: string
+  gradeId?: string
+  parentId?: string
+  userId?: string
+  attemptsUsed?: number
+  retakeUsed?: boolean
+  createdAt?: string
+  updatedAt?: string
+  /** Legacy / display fields from API or mappers */
+  grade?: string | { id: string; name: string }
+  class?: ChildClassRef
+  className?: string
+  gradeName?: string
+  parent?: ParentInfo
+  evaluationStatus?: string
+  imgSrc?: string
+  evaluationStatusClassName?: string
+}
+
+export interface CreateChildWithParentPayload {
+  parent: {
+    name: string
+    email: string
+    phone: string
+    password: string
+  },
+  child: {
+    name: string
+  birthDate: string
+  gender: string
+  classId: string
+  organizationId: string
+  }
+
+
+}
+
+export interface CreatePrivateChildPayload {
+  name: string
+  birthDate: string
+  gender: string
+}
+
+export interface UpdateChildPayload {
+  name?: string
+  birthDate?: string
+  gender?: string
+  classId?: string
+}
+
+export interface ChildReport {
+  id: string
+  assignment: unknown
+  score_json: string
+  created_at: string
+}
+
+export interface ChildProfile {
+  id: string
+  child: Child
+  diagnoses: string
+  notes: string
+  status: string
+}

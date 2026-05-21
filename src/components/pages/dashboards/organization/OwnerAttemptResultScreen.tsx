@@ -1,0 +1,152 @@
+"use client"
+
+import { useParams } from "next/navigation"
+import { useTranslations } from "next-intl"
+
+import AttemptSummary from "@/components/evaluation/AttemptSummary"
+import { AttemptResultView } from "@/components/evaluation/results/AttemptResultView"
+import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useAttempt } from "@/features/evaluations/hooks"
+import { Link } from "@/i18n/navigation"
+import { ApiError } from "@/lib/errors/ApiError"
+
+type Props = { locale: string }
+
+function isForbiddenError(error: unknown): boolean {
+  return (
+    error instanceof ApiError &&
+    (error.status === 403 || error.status === 401)
+  )
+}
+
+export function OwnerAttemptResultScreen({ locale }: Props) {
+  const params = useParams<{ attemptId: string }>()
+  const attemptId = params.attemptId ?? ""
+  const t = useTranslations("Features.OwnerEvaluations")
+  const tEval = useTranslations("Features.Evaluations")
+  const isAr = locale === "ar"
+
+  const { data: attempt, isLoading, isError, error, refetch } =
+    useAttempt(attemptId)
+
+  const breadcrumbs = [
+    {
+      href: "/dashboards/organization",
+      label: isAr ? "الرئيسية" : "Home",
+    },
+    {
+      href: "/dashboards/organization/results",
+      label: t("results"),
+    },
+    { label: t("attemptResult") },
+  ]
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+        <div className="app-container space-y-4">
+          <Skeleton className="h-10 w-64" />
+          <Skeleton className="h-32 w-full rounded-2xl" />
+          <Skeleton className="h-48 w-full rounded-2xl" />
+        </div>
+      </main>
+    )
+  }
+
+  if (isError) {
+    const forbidden = isForbiddenError(error)
+    return (
+      <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+        <div className="app-container space-y-6">
+          <ManagementPageHeader breadcrumbs={breadcrumbs} title={t("attemptResult")} />
+          <Card className="rounded-2xl border bg-white">
+            <CardContent className="py-10 text-center space-y-4">
+              <p className="text-sm text-muted-foreground">
+                {forbidden ? t("attemptForbidden") : t("error")}
+              </p>
+              {!forbidden && (
+                <Button variant="outline" size="sm" onClick={() => void refetch()}>
+                  {t("retry")}
+                </Button>
+              )}
+              <div>
+                <Button variant="link" asChild>
+                  <Link href="/dashboards/organization/results">{t("backToResults")}</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    )
+  }
+
+  if (!attempt) {
+    return (
+      <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+        <div className="app-container space-y-6">
+          <ManagementPageHeader breadcrumbs={breadcrumbs} title={t("attemptResult")} />
+          <Card className="rounded-2xl border bg-white">
+            <CardContent className="py-10 text-center text-sm text-muted-foreground">
+              {tEval("attemptNotFound")}
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    )
+  }
+
+  const status = attempt.status?.toLowerCase() ?? ""
+  const evaluationType = attempt.evaluation?.type ?? "multiple_intelligences"
+
+  return (
+    <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+      <div className="app-container space-y-6">
+        <ManagementPageHeader
+          breadcrumbs={breadcrumbs}
+          title={attempt.evaluation?.title ?? t("attemptResult")}
+          subtitle={attempt.child?.name}
+        />
+
+        <AttemptSummary attempt={attempt} locale={locale} />
+
+        {status === "approved" ? (
+          <Card className="rounded-2xl border bg-white shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-base">{tEval("result")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AttemptResultView
+                type={evaluationType}
+                result={attempt.result}
+                locale={locale}
+                title={attempt.evaluation?.title}
+              />
+            </CardContent>
+          </Card>
+        ) : status === "submitted" ? (
+          <Card className="rounded-2xl border bg-white shadow-sm">
+            <CardContent className="py-10 text-center text-sm text-muted-foreground">
+              {t("attemptNotApproved")}
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="rounded-2xl border bg-white shadow-sm">
+            <CardContent className="py-10 text-center text-sm text-muted-foreground">
+              {t("attemptNoResultYet")}
+            </CardContent>
+          </Card>
+        )}
+
+        <div className="flex justify-end">
+          <Button variant="outline" asChild className="rounded-xl">
+            <Link href="/dashboards/organization/results">{t("backToResults")}</Link>
+          </Button>
+        </div>
+      </div>
+    </main>
+  )
+}

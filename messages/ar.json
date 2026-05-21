@@ -1,0 +1,568 @@
+{
+  "Metadata": {
+    "title": "اثراء",
+    "description": "موقع اثراء"
+  },
+  "Header": {
+    "Menu": {
+      "Home": "الرئيسية",
+      "About": "من نحن",
+      "Services": "خدماتنا",
+      "Blog": "مدونة إثراء",
+      "Contact": "تواصل معنا"
+    },
+    "search": "بحث",
+    "login": "تسجيل الدخول"
+  },
+  "Footer": {
+    "Brand": {
+      "Alt": "إثراء"
+    },
+    "Paths": {
+      "Title": "المسارات",
+      "WaliAlAmr": "ولي الأمر",
+      "Landmarks": "المعالم",
+      "Partners": "الشركاء",
+      "Foundation": "المؤسسة",
+      "FollowFoundation": "تابع للمؤسسة"
+    },
+    "About": {
+      "Title": "عن إثراء",
+      "Home": "الرئيسية",
+      "WhoWeAre": "من نحن",
+      "Services": "خدماتنا",
+      "Blog": "مدونة إثراء",
+      "Contact": "تواصل معنا"
+    },
+    "Social": {
+      "YouTube": "يوتيوب",
+      "X": "إكس",
+      "Instagram": "إنستغرام",
+      "Facebook": "فيسبوك"
+    },
+    "Contact": {
+      "Email": "info@ithra.com",
+      "Phone": "+654832177422",
+      "PhoneTel": "+654832177422"
+    },
+    "Legal": {
+      "Privacy": "سياسة الخصوصية",
+      "Terms": "الشروط والأحكام",
+      "Copyright": "إثراء © {year} جميع الحقوق محفوظة."
+    }
+  },
+  "Dashboard": {
+    "titles": {
+      "dashboard": "لوحة التحكم",
+      "children": "الأطفال"
+    },
+    "Nav": {
+      "dashboard": "لوحة التحكم",
+      "employees": "الموظفون",
+      "children": "الأطفال",
+      "analytics": "التحليلات",
+      "projects": "المشاريع",
+      "team": "الفريق",
+      "capture": "التقاط",
+      "proposal": "المقترحات",
+      "prompts": "المحفزات",
+      "activeProposals": "مقترحات نشطة",
+      "archived": "الأرشيف",
+      "settings": "الإعدادات",
+      "getHelp": "مساعدة",
+      "search": "بحث",
+      "dataLibrary": "مكتبة البيانات",
+      "reports": "التقارير",
+      "wordAssistant": "مساعد الكلمات",
+      "tests": "مكتبة الاختبارات",
+      "evaluations": "التقييمات",
+      "attempts": "المحاولات"
+    },
+    "cards": {
+      "employeesCount": "عدد الموظفين",
+      "childrenCount": "عدد الأطفال",
+      "trendingUp": "في تحسّن هذا الشهر",
+      "last6Months": "آخر 6 أشهر"
+    },
+    "tables": {
+      "childrenTitle": "جدول الأطفال"
+    },
+    "common": {
+      "cancel": "إلغاء",
+      "add": "إضافة",
+      "adding": "جاري الإضافة...",
+      "saveChanges": "حفظ التغييرات",
+      "saving": "جاري الحفظ...",
+      "delete": "حذف",
+      "deleting": "جاري الحذف...",
+      "unauthorized": "غير مصرح"
+    },
+    "Children": {
+      "actions": {
+        "add": "إضافة طفل"
+      },
+      "toast": {
+        "created": "تم إضافة الطفل بنجاح",
+        "updated": "تم تحديث بيانات الطفل بنجاح",
+        "deleted": "تم حذف الطفل بنجاح"
+      },
+      "dialog": {
+        "addTitle": "إضافة طفل",
+        "addDescription": "أدخل بيانات الطفل ثم احفظ.",
+        "editTitle": "تعديل طفل",
+        "editDescription": "حدّث بيانات الطفل ثم احفظ.",
+        "deleteTitle": "حذف طفل",
+        "deleteDescription": "هل أنت متأكد من حذف الطفل؟ لا يمكن التراجع عن هذه العملية."
+      },
+      "fields": {
+        "name": "الاسم",
+        "grade": "الصف",
+        "birthDate": "تاريخ الميلاد",
+        "gender": "الجنس",
+        "genderPlaceholder": "اختر الجنس"
+      },
+      "gender": {
+        "male": "ذكر",
+        "female": "أنثى"
+      },
+      "table": {
+        "name": "الاسم",
+        "grade": "الصف",
+        "birthDate": "تاريخ الميلاد",
+        "gender": "الجنس"
+      }
+    },
+    "Employees": {
+      "titles": {
+        "details": "تفاصيل الموظف"
+      },
+      "fields": {
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الجوال",
+        "role": "الدور",
+        "job": "الوظيفة"
+      },
+      "errors": {
+        "loadFailed": "تعذر تحميل بيانات الموظف"
+      },
+      "table": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الجوال",
+        "jobTitle": "المسمى الوظيفي"
+      }
+    }
+  },
+  "HomePage": {
+    "MetaData": {
+      "title": "اهلا اثراء"
+    },
+    "title": "اهلا اثراء",
+    "Hero": {
+      "brandAlt": "إثراء",
+      "title": "اكتشف ذكاء طفلك ووجّهه صح",
+      "subtitle": "منصة تعليمية شاملة تربط بين الأسرة والمدرسة والمؤسسات لتقييم ذكاءات الأطفال، وتحليل نقاط قوتهم، وتقديم مسارات تعلم مخصصة تضمن لهم النمو والتطور في بيئة آمنة ومنظمة.",
+      "cardsTitle": "اختر نوع حسابك للبدء",
+      "heroImageAlt": "صورة توضيحية للواجهة الرئيسية",
+      "cards": {
+        "Enricher": {
+          "label": "مثري",
+          "description": "أنشئ محتوى تفاعليًا وساهم في رحلات تعلم مميزة."
+        },
+        "Beneficiary": {
+          "label": "مستفيد",
+          "description": "أدر مجموعات وبرامج وقيّم الأثر بتقارير واضحة."
+        }
+
+      }
+    },
+    "Features": {
+      "title": "لماذا منصة إثراء؟",
+      "items": {
+        "tests": {
+          "title": "اختبارات معتمدة",
+          "description": "مجموعة اختبارات دقيقة وسهلة تساعدك على تقييم قدرات كل فرد."
+        },
+        "reports": {
+          "title": "تقارير واضحة",
+          "description": "نتائج ثرية ونصائح عملية تمنحك رؤية شاملة."
+        },
+        "dashboards": {
+          "title": "لوحات تحكم متعددة",
+          "description": "لكل دور لوحة مناسبة تسهّل الإدارة والمتابعة دون تعقيد."
+        }
+      }
+    },
+    "HowItWorks": {
+      "title": "كيف تعمل منصة \"إثراء\"؟",
+      "subtitle": "رحلة بسيطة تساعدك تكتشف ذكاءات الطفل وتتابعها بشكل علمي وعملي:",
+      "steps": {
+        "evaluate": {
+          "title": "إجراء تقييم الذكاءات",
+          "description": "مجموعة من الأسئلة المصممة لتحديد نوع الذكاءات والمهارات الأساسية."
+        },
+        "map": {
+          "title": "الحصول على خريطة ذكاء متكاملة",
+          "description": "تعرف الذكاءات الأقوى ونقاط التطوير بشكل واضح وبطريقة سهلة."
+        },
+        "recommend": {
+          "title": "ترشيحات ذكية للأنشطة والمسارات",
+          "description": "توصيات عملية تناسب مستوى الطفل وتساعده في تنمية مهاراته."
+        },
+        "track": {
+          "title": "متابعة التقدم والتطور",
+          "description": "راقب التحسن مع الوقت وحدث المسار بناءً على النتائج."
+        }
+      }
+    },
+    "Testimonials": {
+      "title": "آراء عملائنا",
+      "avatarAlt": "صورة العميل",
+      "items": {
+        "t1": {
+          "name": "سارة عبدالعزيز",
+          "role": "ولي أمر",
+          "quote": "تجربة ممتازة ونتائج واضحة جدًا. ساعدتني أفهم طفلي بشكل أفضل."
+        },
+        "t2": {
+          "name": "ياسر مصطفى",
+          "role": "معلّم",
+          "quote": "التقارير عملية والمسارات التعليمية مصممة بعناية."
+        },
+        "t3": {
+          "name": "نورة الحربي",
+          "role": "مؤسسة",
+          "quote": "لوحات التحكم والمتابعة ممتازة. التطبيق كان سلس وواضح."
+        },
+        "t4": {
+          "name": "أحمد علي",
+          "role": "ولي أمر",
+          "quote": "منصة مرتبة والتوصيات فعلاً مفيدة في المتابعة اليومية."
+        },
+        "t5": {
+          "name": "ريم حسن",
+          "role": "معلّم",
+          "quote": "واجهة جميلة وخطوات واضحة من التقييم إلى متابعة التقدم."
+        }
+      }
+    }
+  },
+  "Signup": {
+    "Beneficiary": {
+      "Validation": {
+        "name": {
+          "min": "يجب أن لا يقل الاسم عن حرفين.",
+          "max": "يجب أن لا يزيد الاسم عن 50 حرفًا."
+        },
+        "email": {
+          "invalid": "يرجى إدخال بريد إلكتروني صحيح."
+        },
+        "password": {
+          "min": "يجب أن تكون كلمة المرور 8 أحرف على الأقل.",
+          "pattern": "يجب أن تحتوي كلمة المرور على حرف كبير وصغير ورقم ورمز خاص."
+        },
+        "phone": {
+          "min": "يرجى إدخال رقم جوال صحيح."
+        },
+        "organization_name": {
+          "min": "يجب أن لا يقل اسم المؤسسة عن حرفين."
+        },
+        "organization_type": {
+          "required": "يرجى اختيار نوع المؤسسة."
+        }
+      },
+      "Wizard": {
+        "next": "التالي",
+        "back": "رجوع",
+        "submit": "إنهاء التسجيل"
+      },
+      "TypeStep": {
+        "title": "اختر نوع حساب المستفيد",
+        "subtitle": "حدد نوع الحساب الذي تريد التسجيل به للاستفادة من منصة \"إثراء\".",
+        "options": {
+          "organization": {
+            "title": "مؤسسة",
+            "description": "تسجيل مؤسسة تعليمية لإدارة المستفيدين والبرامج."
+          },
+          "parent": {
+            "title": "ولي أمر",
+            "description": "تسجيل ولي أمر لمتابعة تقدم طفله ونتائج التقييم."
+          },
+          "teacher": {
+            "title": "معلم",
+            "description": "تسجيل معلم لإدارة طلابه ومتابعة نتائجهم."
+          }
+        }
+      },
+      "Organization": {
+        "title": "بيانات المؤسسة",
+        "subtitle": "أدخل بيانات الحساب والمؤسسة كما ستظهر في منصة \"إثراء\".",
+        "fields": {
+          "name": {
+            "label": "الاسم الكامل",
+            "placeholder": "اكتب اسمك الكامل"
+          },
+          "email": {
+            "label": "البريد الإلكتروني",
+            "placeholder": "example@domain.com"
+          },
+          "phone": {
+            "label": "رقم الجوال",
+            "placeholder": "05xxxxxxxx"
+          },
+          "password": {
+            "label": "كلمة المرور",
+            "placeholder": "أدخل كلمة مرور قوية"
+          },
+          "organization_name": {
+            "label": "اسم المؤسسة",
+            "placeholder": "اكتب اسم المؤسسة التعليمية"
+          },
+          "organization_type": {
+            "label": "نوع المؤسسة",
+            "placeholder": "اختر نوع المؤسسة",
+            "options": {
+              "center": "مركز تعليمي",
+              "nursery": "حضانة",
+              "training": "مركز تدريب",
+              "school": "مدرسة"
+            }
+          }
+        },
+        "Validation": {
+          "name": {
+            "min": "يجب أن لا يقل الاسم عن حرفين.",
+            "max": "يجب أن لا يزيد الاسم عن 50 حرفًا."
+          },
+          "email": {
+            "invalid": "يرجى إدخال بريد إلكتروني صحيح."
+          },
+          "password": {
+            "min": "يجب أن تكون كلمة المرور 8 أحرف على الأقل.",
+            "pattern": "يجب أن تحتوي كلمة المرور على حرف كبير وصغير ورقم ورمز خاص."
+          },
+          "phone": {
+            "min": "يرجى إدخال رقم جوال صحيح."
+          },
+          "organization_name": {
+            "min": "يجب أن لا يقل اسم المؤسسة عن حرفين."
+          },
+          "organization_type": {
+            "required": "يرجى اختيار نوع المؤسسة."
+          }
+        }
+      }
+    }
+  },
+  "Auth": {
+    "profile": "الملف الشخصي",
+    "logout": "تسجيل الخروج",
+    "signup": "إنشاء حساب",
+    "redirecting": "جاري التحويل...",
+    "sessionExpired": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+    "Login": {
+      "title": "تسجيل الدخول",
+      "submit": "تسجيل الدخول",
+      "submitting": "جاري تسجيل الدخول...",
+      "rememberMe": "تذكرني تلقائيًا",
+      "forgotPassword": "هل نسيت كلمة السر؟",
+      "noAccount": "ليس لديك حساب؟",
+      "createAccount": "إنشاء حساب",
+      "side": {
+        "title": "سجّل الدخول للوصول إلى لوحتك وإدارة حسابك بسهولة.",
+        "subtitle": "استخدم رقم الهاتف وكلمة المرور."
+      },
+      "errors": {
+        "invalidCredentials": "رقم الهاتف أو كلمة المرور غير صحيحة.",
+        "unexpected": "حدث خطأ غير متوقع. حاول مرة أخرى."
+      },
+      "a11y": {
+        "showPassword": "إظهار كلمة المرور",
+        "hidePassword": "إخفاء كلمة المرور"
+      }
+    }
+  },
+  "Features": {
+    "Tests": {
+      "Title": "عنوان الاختبار",
+      "QuestionNo": "عدد الاسئلة",
+      "AssignmentNo": "عدد التسليمات",
+      "TableTitle": "جدول الاختبارات",
+      "Toast": {
+        "Created": "تم انشاء الاختبار بنجاح"
+      },
+      "Actions": {
+        "Add": "create"
+      }
+    },
+    "Evaluations": {
+      "listTitle": "التقييمات",
+      "detailsTitle": "تفاصيل التقييم",
+      "create": "إنشاء تقييم",
+      "title": "العنوان",
+      "type": "نوع التقييم",
+      "ageRange": "المرحلة العمرية",
+      "evaluatorTypes": "أنواع المقيّم",
+      "dimensions": "المحاور",
+      "questions": "الأسئلة",
+      "answers": "الإجابات",
+      "scoreValue": "قيمة الدرجة",
+      "viewDetails": "عرض التفاصيل",
+      "searchPlaceholder": "بحث بالعنوان",
+      "filterByType": "تصفية حسب النوع",
+      "allTypes": "كل الأنواع",
+      "empty": "لا توجد بيانات",
+      "error": "حدث خطأ",
+      "loading": "جاري التحميل…",
+      "retry": "إعادة المحاولة",
+      "adminScoreWarning": "قيم الدرجات ظاهرة للمسؤول فقط ومخفية عن نماذج ولي الأمر والطالب.",
+      "scoreRange": "نطاق الدرجة",
+      "institutionId": "معرف المؤسسة",
+      "ageFrom": "العمر من",
+      "ageTo": "العمر إلى",
+      "dimensionName": "اسم المحور",
+      "dimensionCode": "رمز المحور",
+      "interpretationRules": "قواعد التفسير (JSON)",
+      "questionContent": "نص السؤال",
+      "answerText": "نص الإجابة",
+      "createSuccess": "تم إنشاء التقييم بنجاح",
+      "saving": "جاري الحفظ…",
+      "savedSuccess": "تم الحفظ بنجاح",
+      "attemptsTitle": "المحاولات",
+      "child": "الطفل",
+      "parent": "ولي الأمر",
+      "evaluation": "التقييم",
+      "attemptNumber": "رقم المحاولة",
+      "status": "الحالة",
+      "score": "الدرجة",
+      "submittedAt": "تاريخ الإرسال",
+      "allStatuses": "كل الحالات",
+      "inProgress": "قيد التنفيذ",
+      "submitted": "تم الإرسال",
+      "approved": "معتمد",
+      "evaluationIdFilter": "معرف التقييم",
+      "childIdFilter": "معرف الطفل",
+      "approveAttempt": "اعتماد النتيجة",
+      "approveConfirm": "اعتماد نتيجة هذه المحاولة؟",
+      "approveSuccess": "تم اعتماد المحاولة",
+      "cancel": "إلغاء",
+      "childEvaluations": "تقييمات الطفل",
+      "availableEvaluations": "التقييمات المتاحة",
+      "previousAttempts": "المحاولات السابقة",
+      "startEvaluation": "بدء التقييم",
+      "continueAttempt": "متابعة التقييم",
+      "waitingApproval": "في انتظار الاعتماد",
+      "viewResult": "عرض النتيجة",
+      "privateSlots": "فتحات التقييم الخاص",
+      "openMainSlot": "فتح المحاولة الرئيسية",
+      "requestRetake": "طلب إعادة التقييم",
+      "requestExtra": "طلب محاولة إضافية",
+      "saveProgress": "حفظ التقدم",
+      "submitEvaluation": "إرسال التقييم",
+      "result": "النتيجة",
+      "attemptSummary": "ملخص المحاولة",
+      "attemptNotFound": "المحاولة غير موجودة",
+      "progress": "{answered} / {total} تمت الإجابة",
+      "answerAllRequired": "يرجى الإجابة على جميع الأسئلة قبل الإرسال",
+      "timeExpired": "انتهى الوقت",
+      "timeExpiredHint": "جاري إرسال المحاولة تلقائياً وستصبح للقراءة فقط.",
+      "noQuestions": "لا توجد أسئلة",
+      "formFallbackNotice": "تم تحميل الأسئلة من نموذج التقييم الآمن (الدرجات مخفية).",
+      "missingAnswerIds": "{count} خيار/خيارات إجابة بدون معرف ولا يمكن إرسالها.",
+      "privateSlotHint": "افتح فتحة أولاً، ثم ابدأ التقييم من القائمة أدناه.",
+      "slotOpened": "تم فتح الفتحة بنجاح",
+      "slotOpenedPickEvaluation": "الفتحة جاهزة. اختر تقييماً واضغط بدء التقييم."
+    },
+    "ParentDashboard": {
+      "subtitle": "ابدأ التقييمات وتابع نتائج أطفالك من مكان واحد",
+      "children": "الأطفال",
+      "childrenDesc": "عرض وإدارة أطفالك المسجّلين",
+      "evaluations": "التقييمات",
+      "evaluationsDesc": "بدء ومتابعة تقييمات الأطفال",
+      "notificationsDesc": "متابعة التنبيهات والتحديثات"
+    },
+    "Notifications": {
+      "title": "الإشعارات",
+      "subtitle": "تابع آخر التنبيهات والتحديثات",
+      "empty": "لا توجد إشعارات",
+      "unread": "غير مقروء",
+      "read": "مقروء",
+      "markRead": "تعليم كمقروء",
+      "markAllRead": "تعليم الكل كمقروء",
+      "viewAll": "عرض الكل",
+      "dispatchTitle": "إرسال إشعار",
+      "dispatchSubtitle": "إرسال إشعار لمستخدم محدد",
+      "dispatchFormTitle": "نموذج الإرسال",
+      "deliveryLabel": "نوع الإرسال",
+      "deliveryInapp": "داخل التطبيق",
+      "deliveryEmail": "بريد إلكتروني",
+      "deliveryBoth": "كلاهما",
+      "deliveryVerifyEmail": "تفعيل البريد الإلكتروني",
+      "userId": "معرف المستخدم",
+      "email": "البريد الإلكتروني",
+      "notificationTitle": "العنوان",
+      "notificationMessage": "الرسالة",
+      "notificationType": "نوع الإشعار",
+      "metadata": "البيانات الإضافية",
+      "dispatchSuccess": "تم إرسال الإشعار إلى قائمة الانتظار",
+      "loadError": "حدث خطأ أثناء تحميل الإشعارات",
+      "retry": "إعادة المحاولة",
+      "typeEvaluations": "تقييمات",
+      "typeReminders": "تذكيرات",
+      "typePayment": "دفع",
+      "typeGeneral": "عام",
+      "typeFilterAll": "الكل",
+      "filterAll": "الكل",
+      "filterUnread": "غير المقروءة",
+      "open": "فتح",
+      "prev": "السابق",
+      "next": "التالي",
+      "pageOf": "صفحة {page} من {total}",
+      "dispatchSubmit": "إرسال",
+      "sending": "جاري الإرسال...",
+      "cancel": "إلغاء",
+      "requiredFields": "يرجى تعبئة الحقول المطلوبة",
+      "metadataInvalidJson": "صيغة JSON غير صالحة في البيانات الإضافية",
+      "metadataInvalidObject": "يجب أن تكون البيانات الإضافية كائن JSON",
+      "attemptResult": "نتيجة"
+    },
+    "OwnerEvaluations": {
+      "results": "النتائج",
+      "subtitle": "تابع نتائج تقييمات أطفال مؤسستك",
+      "reportsTab": "التقارير",
+      "resultsTab": "النتائج",
+      "statusTab": "حالة التقييم",
+      "class": "الفصل",
+      "evaluation": "التقييم",
+      "selectClass": "اختر الفصل",
+      "selectEvaluation": "اختر التقييم",
+      "selectClassAndEvaluation": "اختر الفصل والتقييم لعرض البيانات",
+      "highestScore": "أعلى نتيجة",
+      "averageScore": "متوسط الفصل",
+      "lowestScore": "أقل نتيجة",
+      "topDimensions": "أعلى 3 محاور",
+      "childrenResults": "نتائج الأطفال",
+      "childrenCount": "عدد الأطفال",
+      "approved": "تم الاعتماد",
+      "waitingApproval": "في انتظار الاعتماد",
+      "inProgress": "قيد التنفيذ",
+      "notStarted": "لم يبدأ بعد",
+      "sendReminder": "إرسال تذكير",
+      "reminderSuccess": "تم إرسال التذكير بنجاح",
+      "empty": "لا توجد بيانات",
+      "error": "حدث خطأ",
+      "retry": "إعادة المحاولة",
+      "classStats": "إحصائيات الفصل",
+      "score": "الدرجة",
+      "result": "النتيجة",
+      "downloadPdf": "تحميل PDF",
+      "downloadExcel": "تنزيل Excel",
+      "noTopDimensions": "لا توجد محاور متاحة لهذا التقييم",
+      "attemptResult": "نتيجة التقييم",
+      "attemptForbidden": "لا يمكنك عرض هذه النتيجة. قد لا تكون معتمدة بعد أو ليس لديك صلاحية الوصول.",
+      "attemptNotApproved": "التقييم مُرسل ولم يُعتمد بعد. ستظهر النتيجة بعد الاعتماد.",
+      "attemptNoResultYet": "لا توجد نتيجة متاحة لهذا التقييم حالياً.",
+      "backToResults": "العودة إلى النتائج"
+    }
+  }
+}

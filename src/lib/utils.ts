@@ -29,6 +29,9 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
         Authorization: `Bearer ${token.refreshToken}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        token: token.refreshToken,
+      }),
       cache: "no-store",
     })
 
@@ -39,6 +42,7 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
       expires_in?: number
     }
 
+    
     if (!response.ok || !refreshedTokens.accessToken) {
       throw refreshedTokens
     }

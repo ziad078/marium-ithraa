@@ -56,23 +56,30 @@ declare module "next-auth/jwt" {
 const nextAuthOptions: AuthOptions = {
     callbacks: {
         async session({ session, token }) {
+            if (token.error === "RefreshAccessTokenError") {
+              session.error = "RefreshAccessTokenError"
+              return session
+            }
+          
+            if (!token?.id) {
+              return session
+            }
+          
             session.user = {
-                ...session.user,
-                id: token.id,
-                roles: token.roles,
-                accessToken: token.accessToken,
-                phone: token.phone,
-                email: token.email,
-                name: token.name ?? token.phone,
-                refreshToken: token.refreshToken,
-                isEmailVerified: token.isEmailVerified,
-                isPhoneVerified: token.isPhoneVerified,
-            };
-
-            session.error = token.error;
-
-            return session;
-        },
+              ...session.user,
+              id: token.id,
+              roles: token.roles,
+              accessToken: token.accessToken,
+              phone: token.phone,
+              email: token.email,
+              name: token.name ?? token.phone,
+              refreshToken: token.refreshToken,
+              isEmailVerified: token.isEmailVerified,
+              isPhoneVerified: token.isPhoneVerified,
+            }
+          
+            return session
+          },
         async jwt({ token, user }) {
             // أول login
             if (user) {

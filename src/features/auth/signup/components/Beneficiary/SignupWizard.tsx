@@ -72,7 +72,7 @@ export function SignupWizard() {
       setIsSubmitting(true)
 
       const apiBase =
-        process.env.BACKEND_URL ?? "http://localhost:5000/api"
+        process.env.BACKEND_URL ?? ""
 
       const response = await fetch(`${apiBase}/auth/beneficiaries-signup`, {
         method: "POST",

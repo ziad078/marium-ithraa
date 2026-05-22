@@ -72,9 +72,9 @@ export function SignupWizard() {
       setIsSubmitting(true)
 
       const apiBase =
-        process.env.BACKEND_URL ?? ""
+        process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:5000"
 
-      const response = await fetch(`${apiBase}/auth/beneficiaries-signup`, {
+      const response = await fetch(`${apiBase}/api/auth/beneficiaries-signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

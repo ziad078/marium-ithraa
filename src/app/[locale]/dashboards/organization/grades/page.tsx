@@ -9,6 +9,8 @@ type Props = {
 export default async function GradesPage({ params }: Props) {
   const { locale } = await params
   const org = await getCurrentOrganization()
+  console.log(org)
   const { grades } = await getGradesByOrg(org.user.organization.id)
+  console.log(grades)
   return <GradesScreen locale={locale} grades={grades} />
 }

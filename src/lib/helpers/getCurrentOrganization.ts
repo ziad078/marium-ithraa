@@ -3,10 +3,8 @@ import nextAuthOptions from "@/server/auth"
 import { getServerSession } from "next-auth"
 
 export const getCurrentOrganization = async () => {
-  console.log("i'am the error")
     const session = await getServerSession(nextAuthOptions)
-  console.log("i'am the error33")
-    console.log(session)
-    console.log(getUserOrganization(session?.user?.id||""))
+    console.log("session .user>>>",session?.user)
+    console.log("get org=>>>",await getUserOrganization(session?.user?.id||""))
     return getUserOrganization(session?.user?.id||"")
   }

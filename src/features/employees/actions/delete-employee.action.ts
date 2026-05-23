@@ -1,14 +1,16 @@
 "use server"
 
+import {
+  deleteFailure,
+  deleteSuccess,
+  type DeleteActionResult,
+} from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { idSchema } from "@/features/forms/schemas/common.schema"
 
 import { deleteEmployee } from "../api"
 
-export type DeleteEmployeeState = {
-  ok: boolean
-  error?: string
-}
+export type DeleteEmployeeState = DeleteActionResult
 
 export async function deleteEmployeeAction(
   _prevState: DeleteEmployeeState,
@@ -16,17 +18,13 @@ export async function deleteEmployeeAction(
 ): Promise<DeleteEmployeeState> {
   const parsed = parseFormData(formData, idSchema)
   if (!parsed.success) {
-    return { ok: false, error: parsed.state.message ?? "معرّف الموظف غير صالح" }
+    return deleteFailure("Actions.common.invalidId")
   }
 
   try {
     await deleteEmployee(parsed.data.id)
-    return { ok: true }
+    return deleteSuccess()
   } catch {
-    return {
-      ok: false,
-      error: "حدث خطأ غير متوقع أثناء حذف الموظف",
-    }
+    return deleteFailure("Actions.employees.deleteFailed")
   }
 }
-

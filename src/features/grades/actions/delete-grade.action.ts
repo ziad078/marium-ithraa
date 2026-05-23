@@ -2,15 +2,17 @@
 
 import { revalidatePath } from "next/cache"
 
+import {
+  deleteFailure,
+  deleteSuccess,
+  type DeleteActionResult,
+} from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { idSchema } from "@/features/forms/schemas/common.schema"
 
 import { deleteGrade } from "../api"
 
-export type DeleteGradeState = {
-  ok: boolean
-  error?: string
-}
+export type DeleteGradeState = DeleteActionResult
 
 export async function deleteGradeAction(
   _prevState: DeleteGradeState,
@@ -18,14 +20,14 @@ export async function deleteGradeAction(
 ): Promise<DeleteGradeState> {
   const parsed = parseFormData(formData, idSchema)
   if (!parsed.success) {
-    return { ok: false, error: parsed.state.message ?? "معرّف المرحلة غير صالح" }
+    return deleteFailure("Actions.common.invalidId")
   }
 
   try {
     await deleteGrade(parsed.data.id)
     revalidatePath("/dashboards/organization/grades")
-    return { ok: true }
+    return deleteSuccess()
   } catch {
-    return { ok: false, error: "حدث خطأ غير متوقع أثناء حذف المرحلة" }
+    return deleteFailure("Actions.grades.deleteFailed")
   }
 }

@@ -24,6 +24,7 @@ export default async function GradeDetailPage({ params }: Props) {
       getAllChildrenByOrg(orgId),
     ])
     grade = gradeRes.grade
+    console.log(gradeRes)
     children = childrenRes.children
   } catch {
     notFound()

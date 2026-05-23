@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { updateGradeSchema } from "@/features/forms/schemas/grade.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -22,7 +23,7 @@ export async function updateGradeAction(
     await updateGrade(id, { name })
     revalidatePath("/dashboards/organization/grades")
     revalidatePath(`/dashboards/organization/grades/${id}`)
-    return { status: StatusCode.OK, message: "تم تحديث المرحلة بنجاح" }
+    return actionSuccess("Actions.grades.updated", StatusCode.OK)
   } catch (error) {
     return actionErrorState(error, formData)
   }

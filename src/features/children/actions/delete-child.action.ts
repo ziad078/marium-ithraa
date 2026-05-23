@@ -2,15 +2,17 @@
 
 import { revalidatePath } from "next/cache"
 
-import { actionErrorState } from "@/features/forms/action-errors"
+import {
+  deleteFailure,
+  deleteSuccess,
+  type DeleteActionResult,
+} from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { idSchema } from "@/features/forms/schemas/common.schema"
+
 import { deleteChild } from "../api"
 
-export type DeleteChildState = {
-  ok: boolean
-  error?: string
-}
+export type DeleteChildState = DeleteActionResult
 
 export async function deleteChildAction(
   _prevState: DeleteChildState,
@@ -18,14 +20,14 @@ export async function deleteChildAction(
 ): Promise<DeleteChildState> {
   const parsed = parseFormData(formData, idSchema)
   if (!parsed.success) {
-    return { ok: false, error: parsed.state.message ?? "Invalid child id" }
+    return deleteFailure("Actions.common.invalidId")
   }
 
   try {
     await deleteChild(parsed.data.id)
     revalidatePath("/dashboards/organization/children")
-    return { ok: true }
+    return deleteSuccess()
   } catch {
-    return { ok: false, error: "حدث خطأ غير متوقع أثناء حذف الطفل" }
+    return deleteFailure("Actions.children.deleteFailed")
   }
 }

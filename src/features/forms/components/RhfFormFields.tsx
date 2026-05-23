@@ -1,10 +1,11 @@
 "use client"
 
-import { Controller, useFormContext } from "react-hook-form"
+import { useState } from "react"
+import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { useFormContext } from "react-hook-form"
 import PhoneInput from "react-phone-number-input"
 
 import Checkbox from "@/components/shared/forms/CheckboxField"
-import PasswordField from "@/components/shared/forms/PasswordField"
 import Select from "@/components/shared/forms/Select"
 import TextArea from "@/components/shared/forms/TextArea"
 import {
@@ -78,13 +79,15 @@ function renderControl(
   }
 
   if (type === InputTypes.PASSWORD) {
-    const { name: _fieldName, ...passwordProps } = field
     return (
-      <PasswordField
-        {...passwordProps}
-        error={{}}
-        name={rhfField.name}
-        defaultValue={String(rhfField.value ?? "")}
+      <PasswordInput
+        placeholder={field.placeholder}
+        disabled={field.disabled}
+        autoFocus={field.autoFocus}
+        value={String(rhfField.value ?? "")}
+        onChange={rhfField.onChange}
+        onBlur={rhfField.onBlur}
+        ref={rhfField.ref}
       />
     )
   }
@@ -127,5 +130,54 @@ function renderControl(
       onBlur={rhfField.onBlur}
       ref={rhfField.ref}
     />
+  )
+}
+
+function PasswordInput({
+  value,
+  onChange,
+  onBlur,
+  placeholder,
+  disabled,
+  autoFocus,
+  ref,
+}: {
+  value: string
+  onChange: (value: string) => void
+  onBlur: () => void
+  placeholder?: string
+  disabled?: boolean
+  autoFocus?: boolean
+  ref: React.Ref<HTMLInputElement>
+}) {
+  const [showPassword, setShowPassword] = useState(false)
+
+  return (
+    <div className="relative flex items-center">
+      <Input
+        ref={ref}
+        type={showPassword ? "text" : "password"}
+        placeholder={placeholder}
+        disabled={disabled}
+        autoFocus={autoFocus}
+        autoComplete="current-password"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
+      />
+      <button
+        type="button"
+        onClick={() => setShowPassword((prev) => !prev)}
+        onMouseDown={(event) => event.preventDefault()}
+        className="absolute inset-e-3"
+        aria-label={showPassword ? "Hide password" : "Show password"}
+      >
+        {showPassword ? (
+          <EyeOffIcon className="h-4 w-4" />
+        ) : (
+          <EyeIcon className="h-4 w-4" />
+        )}
+      </button>
+    </div>
   )
 }

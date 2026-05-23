@@ -10,6 +10,6 @@ export default async function TeachersPage({ params }: Props) {
   const { locale } = await params
   const org = await getCurrentOrganization()
   const teachers = await getTeachersByOrg(org.user.organization.id)
-  return <TeachersScreen locale={locale} teachers={teachers.teachers} />
+  return <TeachersScreen teachers={teachers.teachers} />
 }
 

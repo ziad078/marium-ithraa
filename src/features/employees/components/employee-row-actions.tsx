@@ -3,7 +3,8 @@
 import { useActionState, useEffect, useState } from "react"
 import { useTranslations } from "next-intl"
 import { Loader2, Pencil, Trash2 } from "lucide-react"
-import { toast } from "sonner"
+import { isActionSuccess } from "@/features/forms/action-results"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { ServerActionForm } from "@/features/forms"
-import { FormTypes, StatusCode } from "@/lib/types/enums"
+import { FormTypes } from "@/lib/types/enums"
 import type { InitialState } from "@/lib/types/types"
 
 import { updateEmployeeAction } from "../actions/update-employee.action"
@@ -33,31 +34,32 @@ type Props = {
 export function EmployeeRowActions({ employee }: Props) {
   const t = useTranslations("Forms.Employee")
   const tCommon = useTranslations("Dashboard.common")
+  const { notifyAction, notifyDelete } = useActionFeedback()
   const [updateOpen, setUpdateOpen] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
 
   const [deleteState, deleteAction, isDeleting] = useActionState<
     DeleteEmployeeState,
     FormData
-  >(deleteEmployeeAction, { ok: false })
+  >(deleteEmployeeAction, { success: false })
 
   useEffect(() => {
     if (!deleteOpen) return
-    if (deleteState.ok) {
-      toast.success(t("toast.deleted"))
+    if (deleteState.success) {
+      notifyDelete(deleteState, "Actions.employees.deleted")
       setDeleteOpen(false)
-    } else if (deleteState.error) {
-      toast.error(deleteState.error)
+    } else if (deleteState.message) {
+      notifyDelete(deleteState)
     }
-  }, [deleteState, deleteOpen, t])
+  }, [deleteState, deleteOpen, notifyDelete])
 
   const handleUpdateStatus = (state: InitialState) => {
-    if (state.status === StatusCode.OK) {
-      toast.success(state.message ?? t("toast.updated"))
+    if (isActionSuccess(state)) {
+      notifyAction(state)
       setUpdateOpen(false)
       return
     }
-    if (state.status && state.message) toast.error(state.message)
+    if (state.message) notifyAction(state)
   }
 
   return (

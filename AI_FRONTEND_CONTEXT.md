@@ -238,7 +238,7 @@ Anti-patterns and coupling:
 - Some shared components contain domain assumptions. Example: `src/components/ui/data-table.tsx` imports `AddEmployeeDialog` and is therefore not a true UI primitive.
 - `EntityCard` is reusable but heavily geared toward edit/delete card CRUD flows.
 - Many components hardcode color values such as `bg-[#f3eefb]`, fuchsia/indigo gradients, and rounded `2xl/3xl`, bypassing semantic tokens.
-- Some Arabic strings in source appear as mojibake. This is visible in files like `useFormFields.ts`, `OrganizationHeader.tsx`, and several screens/actions. Prefer `messages/ar.json` translations for new copy.
+- Some Arabic strings in source appear as mojibake. Prefer `messages/ar.json` / `messages/en.json` (especially `Actions.*` and `Dashboard.*`) over inline copy.
 
 ## 5. State Management
 
@@ -323,42 +323,30 @@ API abstraction quality:
 
 ## 7. Forms & Validation
 
-There are two form architectures.
+Unified forms architecture (`src/features/forms/`):
 
-Legacy/dynamic field forms:
+- **Schemas** (`schemas/*.schema.ts`): Zod validation per entity (login, employee, teacher, grade, class, child, test).
+- **Config registry** (`config/*.config.ts` + `config/index.ts`): field metadata with `labelKey` / `placeholderKey` resolved via `useFormConfig(FormTypes.*)` and `messages/*/Forms`.
+- **RHF renderer** (`components/RhfFormFields.tsx`): maps registry fields to shadcn inputs; phone uses `react-phone-number-input`; password is RHF-controlled.
+- **Server action wrapper** (`components/ServerActionForm.tsx` + `hooks/useServerActionForm.ts`): `zodResolver` + `useActionState`; submits `FormData` to server actions.
+- **Parsing** (`parse-form-data.ts`): `parseFormData(formData, schema)` with `safeParse`.
+- **Action results** (`action-results.ts`): standardized `{ success, message, fieldErrors?, status?, formData? }` where `message` is an i18n key under `Actions.*`.
+- **Toasts** (`src/lib/toast/app-toast.ts`, `src/hooks/useActionFeedback.ts`): Sonner only; `showSuccessToast(t, messageKey)`.
 
-- `src/hooks/useFormFields.ts` returns arrays of `IFormField` for login, employees, enrichers, teachers, tests, questions, answers.
-- `src/components/shared/forms/formFields.tsx` maps field descriptors to `TextField`, `PhonenumberField`, `PasswordField`, `CheckboxField`, `Select`, `TextArea`.
-- Login uses a `ref<HTMLFormElement>`, manual `FormData`, and local submit state in `LoginForm`.
-- Employee/child dialogs use `useActionState` with server actions.
+Other RHF + Zod forms (unchanged pattern):
 
-React Hook Form + Zod forms:
-
-- `src/features/auth/signup/components/Beneficiary/SignupWizard.tsx`
-- `src/features/auth/signup/schemas/signup.schema.ts`
-- `src/features/auth/signup/schemas/enricher-signup.schema.ts`
-- `src/components/pages/dashboards/admin/AdminCreateEvaluationScreen.tsx`
-- `src/features/evaluations/types/index.ts` contains `createEvaluationSchema`, `startAttemptSchema`, `submitAttemptSchema`, etc.
-- `src/components/ui/form.tsx` is the shadcn React Hook Form adapter.
+- Beneficiary signup wizard, admin evaluation creation, evaluation attempts, test creation wizard (`TestCreationForm`).
 
 Server action forms:
 
-- CRUD server actions accept `FormData`, convert entries into payloads, call feature APIs, and return `InitialState`.
-- Many actions call `revalidatePath`.
-- Example: `createChildAction` transforms organization child form data into `{ child, parent }` when `organizationId` is present; otherwise it forwards raw entries for admin.
-
-Validation consistency:
-
-- Strongest validation is in evaluation creation and beneficiary signup through Zod.
-- Many management CRUD forms rely on backend validation and return `ApiError.validationErrors`.
-- Login has no schema-level validation.
-- Some schemas require fields even when account type changes. In `createBeneficiaryOrganizationSchema`, `organizationName` and `organizationType` are required for all account types even though wizard supports teacher/parent/organization. Verify intended behavior before extending.
+- CRUD actions use `parseFormData` + `actionSuccess` / `actionErrorState`.
+- Delete actions return `DeleteActionResult` (`{ success, message? }`).
+- Client screens call `useActionFeedback().notifyAction` / `notifyDelete` with `useTranslations("Actions")`.
 
 UX:
 
-- Loading buttons generally use `Loader2` or pending state.
-- Errors are shown via inline boxes, `react-toastify`, or `sonner`; both toast libraries are used in the same app.
-- Field abstractions are useful but not fully localized and not integrated with React Hook Form.
+- Loading buttons use `Loader2` or `isPending` from `useServerActionForm`.
+- Notifications use Sonner via `app-toast` helpers (no `react-toastify`).
 
 ## 8. Async & Data Fetching
 
@@ -641,10 +629,10 @@ Routing rules:
 
 Forms rules:
 
-- Prefer React Hook Form + Zod for new complex forms.
-- For server action forms, validate `FormData` with Zod before calling APIs.
-- Use `src/components/ui/form.tsx` for RHF forms.
-- Avoid expanding `useFormFields.ts` unless maintaining legacy dialogs; it hardcodes copy and is not locale-aware.
+- Use `ServerActionForm` / `useServerActionForm` + registry config for new server-action CRUD forms.
+- Validate all `FormData` server actions with Zod via `parseFormData`.
+- Return i18n keys from server actions (`actionSuccess("Actions.entity.created")`); translate on the client with `useActionFeedback` or `showSuccessToast`.
+- Use `src/components/ui/form.tsx` + `RhfFormFields` for field rendering.
 
 Styling rules:
 

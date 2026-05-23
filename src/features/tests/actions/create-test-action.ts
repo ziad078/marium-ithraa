@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { createTestSchema } from "@/features/forms/schemas/test.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -26,7 +27,7 @@ export async function createTestAction(
     })
 
     revalidatePath("/dashboards/admin/tests")
-    return { status: StatusCode.CREATED, message: "تم إضافة الاختبار بنجاح" }
+    return actionSuccess("Actions.tests.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData)
   }

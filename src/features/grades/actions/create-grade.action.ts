@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { createGradeSchema } from "@/features/forms/schemas/grade.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -20,10 +21,10 @@ export async function createGradeAction(
   try {
     await createGrade(parsed.data)
     revalidatePath("/dashboards/organization/grades")
-    return { status: StatusCode.CREATED, message: "تم إضافة المرحلة بنجاح" }
+    return actionSuccess("Actions.grades.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData, {
-      conflict: "المرحلة موجودة فعلاً",
+      conflict: "Actions.common.conflict",
     })
   }
 }

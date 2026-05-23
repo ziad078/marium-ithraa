@@ -95,9 +95,83 @@
       "saving": "جاري الحفظ...",
       "delete": "حذف",
       "deleting": "جاري الحذف...",
-      "unauthorized": "غير مصرح"
+      "unauthorized": "غير مصرح",
+      "home": "الرئيسية",
+      "edit": "تعديل",
+      "noData": "لا توجد بيانات",
+      "confirmDelete": "هل أنت متأكد؟"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "صفحة",
+      "items": "عنصر"
+    },
+    "Grades": {
+      "title": "المراحل الدراسية",
+      "subtitle": "إدارة المراحل الدراسية والفصول",
+      "add": "إضافة مرحلة",
+      "searchPlaceholder": "بحث باسم المرحلة...",
+      "editTitle": "تعديل مرحلة",
+      "deleteTitle": "حذف مرحلة",
+      "fields": {
+        "name": "الاسم",
+        "classesCount": "عدد الفصول",
+        "childrenCount": "عدد الأطفال"
+      }
+    },
+    "Classes": {
+      "title": "الفصول",
+      "subtitle": "إدارة الفصول وتوزيع الطلاب والمعلمين",
+      "add": "إضافة فصل",
+      "searchPlaceholder": "بحث باسم الفصل...",
+      "editTitle": "تعديل فصل",
+      "deleteTitle": "حذف فصل",
+      "gradeFilter": "المرحلة",
+      "allGrades": "كل المراحل",
+      "fields": {
+        "name": "اسم الفصل",
+        "grade": "المرحلة",
+        "teacher": "المعلم",
+        "students": "الطلاب",
+        "unassigned": "—"
+      }
+    },
+    "Teachers": {
+      "title": "المعلمين",
+      "subtitle": "إدارة معلمي المؤسسة وتعيينهم على الفصول",
+      "add": "إضافة معلم",
+      "empty": "لا يوجد معلمين بعد",
+      "fields": {
+        "name": "الإسم",
+        "jobTitle": "المسمى الوظيفي",
+        "class": "الفصل",
+        "noClasses": "لا توجد فصول مسندة للمعلم.",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف"
+      }
     },
     "Children": {
+      "title": "الأطفال",
+      "subtitle": "إدارة أطفال المؤسسة وتعيينهم على الفصول",
+      "searchPlaceholder": "بحث باسم الطفل أو ولي الأمر...",
+      "gradeFilter": "المرحلة",
+      "allGrades": "كل المراحل",
+      "classFilter": "الفصل",
+      "allClasses": "كل الفصول",
+      "goToEdit": "انتقل لصفحة التعديل",
+      "fields": {
+        "name": "الاسم",
+        "birthDate": "تاريخ الميلاد",
+        "gender": "النوع",
+        "grade": "المرحلة",
+        "class": "الفصل",
+        "parent": "ولي الأمر",
+        "email": "البريد",
+        "phone": "الهاتف",
+        "evaluation": "حالة التقييم",
+        "attempts": "المحاولات"
+      },
       "actions": {
         "add": "إضافة طفل"
       },
@@ -112,7 +186,8 @@
         "editTitle": "تعديل طفل",
         "editDescription": "حدّث بيانات الطفل ثم احفظ.",
         "deleteTitle": "حذف طفل",
-        "deleteDescription": "هل أنت متأكد من حذف الطفل؟ لا يمكن التراجع عن هذه العملية."
+        "deleteDescription": "هل أنت متأكد من حذف الطفل؟ لا يمكن التراجع عن هذه العملية.",
+        "deleteConfirmShort": "هل أنت متأكد؟ لا يمكن التراجع."
       },
       "fields": {
         "name": "الاسم",
@@ -381,6 +456,49 @@
         "showPassword": "إظهار كلمة المرور",
         "hidePassword": "إخفاء كلمة المرور"
       }
+    }
+  },
+  "Actions": {
+    "common": {
+      "validationFailed": "يرجى التحقق من حقول النموذج.",
+      "serverError": "حدث خطأ ما، تواصل مع الدعم.",
+      "conflict": "هذا السجل موجود بالفعل.",
+      "deleted": "تم الحذف بنجاح",
+      "invalidId": "معرّف غير صالح."
+    },
+    "children": {
+      "created": "تم إضافة الطفل بنجاح",
+      "updated": "تم تحديث بيانات الطفل بنجاح",
+      "deleted": "تم حذف الطفل بنجاح",
+      "deleteFailed": "حدث خطأ أثناء حذف الطفل",
+      "conflict": "الطفل أو ولي الأمر موجود فعلاً",
+      "limitReached": "تم الوصول إلى الحد الأقصى (طفلان)"
+    },
+    "employees": {
+      "created": "تم إضافة الموظف بنجاح",
+      "updated": "تم تحديث الموظف بنجاح",
+      "deleted": "تم حذف الموظف بنجاح",
+      "deleteFailed": "حدث خطأ غير متوقع أثناء حذف الموظف"
+    },
+    "teachers": {
+      "created": "تم إضافة المعلم بنجاح",
+      "deleted": "تم حذف المعلم بنجاح",
+      "deleteFailed": "حدث خطأ غير متوقع أثناء حذف المعلم"
+    },
+    "grades": {
+      "created": "تم إضافة المرحلة بنجاح",
+      "updated": "تم تحديث المرحلة بنجاح",
+      "deleted": "تم حذف المرحلة بنجاح",
+      "deleteFailed": "حدث خطأ غير متوقع أثناء حذف المرحلة"
+    },
+    "classes": {
+      "created": "تم إضافة الفصل بنجاح",
+      "updated": "تم تحديث الفصل بنجاح",
+      "deleted": "تم حذف الفصل بنجاح",
+      "deleteFailed": "حدث خطأ غير متوقع أثناء حذف الفصل"
+    },
+    "tests": {
+      "created": "تم إضافة الاختبار بنجاح"
     }
   },
   "Features": {

@@ -95,9 +95,83 @@
       "saving": "Saving...",
       "delete": "Delete",
       "deleting": "Deleting...",
-      "unauthorized": "Unauthorized"
+      "unauthorized": "Unauthorized",
+      "home": "Home",
+      "edit": "Edit",
+      "noData": "No data",
+      "confirmDelete": "Are you sure?"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page",
+      "items": "items"
+    },
+    "Grades": {
+      "title": "Grades",
+      "subtitle": "Manage grades and their classes",
+      "add": "Add grade",
+      "searchPlaceholder": "Search by grade name...",
+      "editTitle": "Edit grade",
+      "deleteTitle": "Delete grade",
+      "fields": {
+        "name": "Name",
+        "classesCount": "Classes",
+        "childrenCount": "Children"
+      }
+    },
+    "Classes": {
+      "title": "Classes",
+      "subtitle": "Manage classes and assignments",
+      "add": "Add class",
+      "searchPlaceholder": "Search by class name...",
+      "editTitle": "Edit class",
+      "deleteTitle": "Delete class",
+      "gradeFilter": "Grade",
+      "allGrades": "All grades",
+      "fields": {
+        "name": "Class",
+        "grade": "Grade",
+        "teacher": "Teacher",
+        "students": "Students",
+        "unassigned": "—"
+      }
+    },
+    "Teachers": {
+      "title": "Teachers",
+      "subtitle": "Manage teachers and assign them to classes",
+      "add": "Add teacher",
+      "empty": "No teachers yet",
+      "fields": {
+        "name": "Name",
+        "jobTitle": "Job title",
+        "class": "Class",
+        "noClasses": "No classes assigned to this teacher.",
+        "email": "Email",
+        "phone": "Phone"
+      }
     },
     "Children": {
+      "title": "Children",
+      "subtitle": "Manage organization children and class assignments",
+      "searchPlaceholder": "Search by child or parent name...",
+      "gradeFilter": "Grade",
+      "allGrades": "All grades",
+      "classFilter": "Class",
+      "allClasses": "All classes",
+      "goToEdit": "Go to edit page",
+      "fields": {
+        "name": "Name",
+        "birthDate": "Birth date",
+        "gender": "Gender",
+        "grade": "Grade",
+        "class": "Class",
+        "parent": "Parent",
+        "email": "Email",
+        "phone": "Phone",
+        "evaluation": "Evaluation status",
+        "attempts": "Attempts"
+      },
       "actions": {
         "add": "Add Child"
       },
@@ -112,7 +186,8 @@
         "editTitle": "Edit Child",
         "editDescription": "Update child information and save.",
         "deleteTitle": "Delete Child",
-        "deleteDescription": "Are you sure you want to delete this child? This action cannot be undone."
+        "deleteDescription": "Are you sure you want to delete this child? This action cannot be undone.",
+        "deleteConfirmShort": "Are you sure? This cannot be undone."
       },
       "fields": {
         "name": "Name",
@@ -381,6 +456,49 @@
         "showPassword": "Show password",
         "hidePassword": "Hide password"
       }
+    }
+  },
+  "Actions": {
+    "common": {
+      "validationFailed": "Please check the form fields.",
+      "serverError": "Something went wrong. Please contact support.",
+      "conflict": "This record already exists.",
+      "deleted": "Deleted successfully",
+      "invalidId": "Invalid identifier."
+    },
+    "children": {
+      "created": "Child added successfully",
+      "updated": "Child updated successfully",
+      "deleted": "Child deleted successfully",
+      "deleteFailed": "Failed to delete child",
+      "conflict": "Child or parent already exists",
+      "limitReached": "Maximum of 2 children reached"
+    },
+    "employees": {
+      "created": "Employee added successfully",
+      "updated": "Employee updated successfully",
+      "deleted": "Employee deleted successfully",
+      "deleteFailed": "Failed to delete employee"
+    },
+    "teachers": {
+      "created": "Teacher added successfully",
+      "deleted": "Teacher deleted successfully",
+      "deleteFailed": "Failed to delete teacher"
+    },
+    "grades": {
+      "created": "Grade added successfully",
+      "updated": "Grade updated successfully",
+      "deleted": "Grade deleted successfully",
+      "deleteFailed": "Failed to delete grade"
+    },
+    "classes": {
+      "created": "Class added successfully",
+      "updated": "Class updated successfully",
+      "deleted": "Class deleted successfully",
+      "deleteFailed": "Failed to delete class"
+    },
+    "tests": {
+      "created": "Test created successfully"
     }
   },
   "Features": {

@@ -2,9 +2,10 @@
 
 import { useActionState, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
+import { useLocale, useTranslations } from "next-intl"
 import { Layers3, Loader2, Plus, School, Users } from "lucide-react"
-import { toast } from "sonner"
 
+import { DataTablePagination } from "@/components/shared/data-table/DataTablePagination"
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EntityCard } from "@/components/shared/management/EntityCard"
 import { EmptyState } from "@/components/shared/management/EmptyState"
@@ -19,27 +20,35 @@ import {
 import { Button } from "@/components/ui/button"
 import { type ClassItem, deleteClassAction, type DeleteClassState } from "@/features/classes"
 import { type Grade } from "@/features/grades"
+import { useClientPagination } from "@/hooks/useClientPagination"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
 
 type Props = {
-  locale: string
   classes: ClassItem[]
   grades: Grade[]
 }
 
-export function ClassesScreenClient({ locale, classes, grades }: Props) {
-  const isAr = locale === "ar"
+export function ClassesScreenClient({ classes, grades }: Props) {
+  const locale = useLocale()
+  const t = useTranslations("Dashboard.Classes")
+  const tCommon = useTranslations("Dashboard.common")
+  const tPagination = useTranslations("Dashboard.pagination")
+  const { notifyDelete } = useActionFeedback()
   const [search, setSearch] = useState("")
   const [gradeFilter, setGradeFilter] = useState("")
 
   const [deleteState, deleteAction, isDeleting] = useActionState<
     DeleteClassState,
     FormData
-  >(deleteClassAction, { ok: false })
+  >(deleteClassAction, { success: false })
 
   useEffect(() => {
-    if (deleteState.ok) toast.success(isAr ? "تم الحذف بنجاح" : "Deleted successfully")
-    else if (deleteState.error) toast.error(deleteState.error)
-  }, [deleteState, isAr])
+    if (deleteState.success) {
+      notifyDelete(deleteState, "Actions.classes.deleted")
+    } else if (deleteState.message) {
+      notifyDelete(deleteState)
+    }
+  }, [deleteState, notifyDelete])
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -50,20 +59,19 @@ export function ClassesScreenClient({ locale, classes, grades }: Props) {
     })
   }, [classes, search, gradeFilter])
 
-  const title = isAr ? "الفصول" : "Classes"
-  const addLabel = isAr ? "إضافة فصل" : "Add class"
+  const { pageItems, pagination, setPage, resetPage } = useClientPagination(filtered, 12)
 
   return (
-    <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
+    <main className="app-container py-8 space-y-8" dir={locale === "ar" ? "rtl" : "ltr"}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "الرئيسية" : "Home" },
-          { label: title },
+          { href: "/dashboards/organization", label: tCommon("home") },
+          { label: t("title") },
         ]}
-        title={title}
-        subtitle={isAr ? "إدارة الفصول وتوزيع الطلاب والمعلمين" : "Manage classes and assignments"}
+        title={t("title")}
+        subtitle={t("subtitle")}
         action={{
-          label: addLabel,
+          label: t("add"),
           href: "/dashboards/organization/classes/new",
           icon: <Plus />,
         }}
@@ -72,107 +80,124 @@ export function ClassesScreenClient({ locale, classes, grades }: Props) {
       <ListFilters
         locale={locale}
         search={search}
-        onSearchChange={setSearch}
-        searchPlaceholder={isAr ? "بحث باسم الفصل..." : "Search by class name..."}
+        onSearchChange={(value) => {
+          setSearch(value)
+          resetPage()
+        }}
+        searchPlaceholder={t("searchPlaceholder")}
         gradeFilter={{
           value: gradeFilter,
-          onChange: setGradeFilter,
+          onChange: (value) => {
+            setGradeFilter(value)
+            resetPage()
+          },
           options: grades.map((g) => ({ value: g.id, label: g.name })),
-          label: isAr ? "المرحلة" : "Grade",
-          allLabel: isAr ? "كل المراحل" : "All grades",
+          label: t("gradeFilter"),
+          allLabel: t("allGrades"),
         }}
       />
 
       {filtered.length === 0 ? (
         <EmptyState
-          title={isAr ? "لا توجد بيانات" : "No data"}
-          actionLabel={classes.length === 0 ? addLabel : undefined}
+          title={tCommon("noData")}
+          actionLabel={classes.length === 0 ? t("add") : undefined}
           actionHref={
             classes.length === 0 ? "/dashboards/organization/classes/new" : undefined
           }
         />
       ) : (
-        <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((c) => (
-            <EntityCard
-              key={c.id}
-              editLabel={isAr ? "تعديل" : "Edit"}
-              deleteLabel={isAr ? "حذف" : "Delete"}
-              fields={[
-                {
-                  label: isAr ? "اسم الفصل" : "Class",
-                  value: (
-                    <Link
-                      href={`/dashboards/organization/classes/${c.id}`}
-                      className="text-primary hover:underline font-medium"
-                    >
-                      {c.name}
-                    </Link>
-                  ),
-                  icon: <Layers3 />,
-                },
-                {
-                  label: isAr ? "المرحلة" : "Grade",
-                  value: c.gradeName ?? "—",
-                  icon: <School />,
-                },
-                {
-                  label: isAr ? "المعلم" : "Teacher",
-                  value: c.teacherName ?? (isAr ? "—" : "—"),
-                },
-                {
-                  label: isAr ? "الطلاب" : "Students",
-                  value: String(c.childrenCount ?? 0),
-                  icon: <Users />,
-                },
-              ]}
-              renderEditDialog={({ open, onClose }) => (
-                <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-                  <DialogContent className="sm:max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{isAr ? "تعديل فصل" : "Edit class"}</DialogTitle>
-                    </DialogHeader>
-                    <Button asChild className="w-full rounded-xl">
+        <>
+          <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {pageItems.map((c) => (
+              <EntityCard
+                key={c.id}
+                editLabel={tCommon("edit")}
+                deleteLabel={tCommon("delete")}
+                fields={[
+                  {
+                    label: t("fields.name"),
+                    value: (
                       <Link
-                        href={`/dashboards/organization/classes/${c.id}/edit`}
-                        onClick={onClose}
+                        href={`/dashboards/organization/classes/${c.id}`}
+                        className="text-primary hover:underline font-medium"
                       >
-                        {isAr ? "تعديل" : "Edit"}
+                        {c.name}
                       </Link>
-                    </Button>
-                  </DialogContent>
-                </Dialog>
-              )}
-              renderDeleteDialog={({ open, onClose }) => (
-                <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-                  <DialogContent className="sm:max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{isAr ? "حذف فصل" : "Delete class"}</DialogTitle>
-                      <DialogDescription>
-                        {isAr ? "هل أنت متأكد؟" : "Are you sure?"}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form action={deleteAction}>
-                      <input type="hidden" name="id" value={c.id} />
-                      <Button
-                        type="submit"
-                        variant="destructive"
-                        className="w-full rounded-xl"
-                        disabled={isDeleting}
-                      >
-                        {isDeleting ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          isAr ? "حذف" : "Delete"
-                        )}
+                    ),
+                    icon: <Layers3 />,
+                  },
+                  {
+                    label: t("fields.grade"),
+                    value: c.gradeName ?? t("fields.unassigned"),
+                    icon: <School />,
+                  },
+                  {
+                    label: t("fields.teacher"),
+                    value: c.teacherName ?? t("fields.unassigned"),
+                  },
+                  {
+                    label: t("fields.students"),
+                    value: String(c.childrenCount ?? 0),
+                    icon: <Users />,
+                  },
+                ]}
+                renderEditDialog={({ open, onClose }) => (
+                  <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+                    <DialogContent className="sm:max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle>{t("editTitle")}</DialogTitle>
+                      </DialogHeader>
+                      <Button asChild className="w-full rounded-xl">
+                        <Link
+                          href={`/dashboards/organization/classes/${c.id}/edit`}
+                          onClick={onClose}
+                        >
+                          {tCommon("edit")}
+                        </Link>
                       </Button>
-                    </form>
-                  </DialogContent>
-                </Dialog>
-              )}
+                    </DialogContent>
+                  </Dialog>
+                )}
+                renderDeleteDialog={({ open, onClose }) => (
+                  <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+                    <DialogContent className="sm:max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle>{t("deleteTitle")}</DialogTitle>
+                        <DialogDescription>{tCommon("confirmDelete")}</DialogDescription>
+                      </DialogHeader>
+                      <form action={deleteAction}>
+                        <input type="hidden" name="id" value={c.id} />
+                        <Button
+                          type="submit"
+                          variant="destructive"
+                          className="w-full rounded-xl"
+                          disabled={isDeleting}
+                        >
+                          {isDeleting ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            tCommon("delete")
+                          )}
+                        </Button>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              />
+            ))}
+          </section>
+          {pagination.totalPages > 1 && (
+            <DataTablePagination
+              meta={pagination}
+              onPageChange={setPage}
+              labels={{
+                previous: tPagination("previous"),
+                next: tPagination("next"),
+                page: tPagination("page"),
+              }}
             />
-          ))}
-        </section>
+          )}
+        </>
       )}
     </main>
   )

@@ -1,5 +1,8 @@
 "use client"
+
 import Link from "next/link"
+import { useLocale, useTranslations } from "next-intl"
+import { useActionState, useEffect } from "react"
 import {
   Dialog,
   DialogContent,
@@ -7,67 +10,62 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
-
 import { Mail, School, UserRound, UserPlus, Phone, Loader2 } from "lucide-react"
 
+import { DataTablePagination } from "@/components/shared/data-table/DataTablePagination"
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EntityCard } from "@/components/shared/management/EntityCard"
 import { EmptyState } from "@/components/shared/management/EmptyState"
 import { Teacher } from "@/features/teachers"
 import { Button } from "@/components/ui/button"
-import { deleteTeacherAction, DeleteTeacherdState } from "@/features/teachers/actions/delete-teacher-action"
-import { useActionState, useEffect } from "react"
-import { toast } from "sonner"
+import {
+  deleteTeacherAction,
+  type DeleteTeacherState,
+} from "@/features/teachers/actions/delete-teacher-action"
+import { useClientPagination } from "@/hooks/useClientPagination"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
 
-
-
-export function TeachersScreen({
-  locale,
-  teachers,
-}: {
-  locale: string
-  teachers: Teacher[]
-}) {
+export function TeachersScreen({ teachers }: { teachers: Teacher[] }) {
+  const locale = useLocale()
   const isAr = locale === "ar"
-
-  const title = isAr ? "المعلمين" : "Teachers"
-  const subtitle = isAr ? "إدارة معلمي المؤسسة وتعيينهم على الفصول" : "Manage teachers and assign them to classes"
-
-  const addLabel = isAr ? "إضافة معلم" : "Add teacher"
-  const editLabel = isAr ? "تعديل" : "Edit"
-  const deleteLabel = isAr ? "حذف" : "Delete"
+  const t = useTranslations("Dashboard.Teachers")
+  const tCommon = useTranslations("Dashboard.common")
+  const tPagination = useTranslations("Dashboard.pagination")
+  const { notifyDelete } = useActionFeedback()
 
   const [deleteState, deleteAction, isDeleting] = useActionState<
-    DeleteTeacherdState,
+    DeleteTeacherState,
     FormData
-  >(deleteTeacherAction, { ok: false })
+  >(deleteTeacherAction, { success: false })
 
   useEffect(() => {
-    if (deleteState.ok) {
-      toast.success("تم خذف المعلم بنجاح")
-      return
+    if (deleteState.success) {
+      notifyDelete(deleteState, "Actions.teachers.deleted")
+    } else if (deleteState.message) {
+      notifyDelete(deleteState)
     }
-    if (deleteState.error) toast.error(deleteState.error)
-  }, [deleteState])
+  }, [deleteState, notifyDelete])
+
+  const { pageItems, pagination, setPage } = useClientPagination(teachers, 12)
 
   return (
     <main className="app-container py-8 space-y-10" dir={isAr ? "rtl" : "ltr"}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "الرئيسية" : "Home" },
-          { label: title },
+          { href: "/dashboards/organization", label: tCommon("home") },
+          { label: t("title") },
         ]}
-        title={title}
-        subtitle={subtitle}
+        title={t("title")}
+        subtitle={t("subtitle")}
         action={{
-          label: addLabel,
+          label: t("add"),
           href: "/dashboards/organization/teachers/new",
           icon: <UserPlus />,
         }}
       />
 
       {teachers.length === 0 ? (
-        <EmptyState title={isAr ? "لا يوجد معلمين بعد" : "No teachers yet"} actionLabel={addLabel} actionHref="/dashboards/organization/teachers/new" illustration={(
+        <EmptyState title={t("empty")} actionLabel={t("add")} actionHref="/dashboards/organization/teachers/new" illustration={(
         <svg width="284" height="284" viewBox="0 0 284 284" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M141.307 275.031C213.937 275.031 272.816 242.015 272.816 201.288C272.816 160.56 213.937 127.544 141.307 127.544C68.6764 127.544 9.79785 160.56 9.79785 201.288C9.79785 242.015 68.6764 275.031 141.307 275.031Z" fill="url(#paint0_linear_1678_16396)" />
           <path d="M234.3 253.436C241.245 249.615 247.726 245.005 253.612 239.696L76.112 137.229C66.4577 140.26 57.1333 144.256 48.28 149.157C20.4139 164.794 7.6737 185.736 10.0934 206.184L128.743 274.685C166.452 276.718 205.417 269.63 234.3 253.436Z" fill="url(#paint1_linear_1678_16396)" />
@@ -340,32 +338,33 @@ export function TeachersScreen({
         </svg>
         )} />
       ) : (
+        <>
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {teachers.map((t) => {
+          {pageItems.map((teacher) => {
 
             return (
               <EntityCard
-                key={t.userId}
-                editLabel={editLabel}
-                deleteLabel={deleteLabel}
+                key={teacher.userId}
+                editLabel={tCommon("edit")}
+                deleteLabel={tCommon("delete")}
                 fields={[
-                  { label: isAr ? "الإسم" : "Name", value: t.name, icon: <UserRound /> },
-                  { label: isAr ? "المسمي الوظيفي" : "jop title", value: t.jobTitle, icon: <UserRound /> },
-                  { label: isAr ? "الفصل" : "Class", value: t.classes.length ? t.classes.map((c) => (<p key={c}>{c}</p>)) : (isAr ? "لا توجد فصول مسندة للمعلم." : "there's no classes for this teacher."), icon: <School /> },
+                  { label: t("fields.name"), value: teacher.name, icon: <UserRound /> },
+                  { label: t("fields.jobTitle"), value: teacher.jobTitle, icon: <UserRound /> },
+                  { label: t("fields.class"), value: teacher.classes.length ? teacher.classes.map((c) => (<p key={c}>{c}</p>)) : t("fields.noClasses"), icon: <School /> },
                   {
-                    label: isAr ? "البريد الإلكتروني" : "Email",
+                    label: t("fields.email"),
                     value: (
-                      <Link href={`mailto:${t.email}`} className={`${t.isEmailVerified ? "text-primary" : "text-red-800"} hover:underline`}>
-                        {t.email}
+                      <Link href={`mailto:${teacher.email}`} className={`${teacher.isEmailVerified ? "text-primary" : "text-red-800"} hover:underline`}>
+                        {teacher.email}
                       </Link>
                     ),
                     icon: <Mail />,
                   },
                   {
-                    label: isAr ? "رقم الهاتف" : "Phone",
+                    label: t("fields.phone"),
                     value: (
-                      <Link href={`tel:${t.phone}`} className={`${t.isPhoneVerified ? "text-primary" : "text-red-800"} hover:underline`}>
-                        {t.phone}
+                      <Link href={`tel:${teacher.phone}`} className={`${teacher.isPhoneVerified ? "text-primary" : "text-red-800"} hover:underline`}>
+                        {teacher.phone}
                       </Link>
                     ),
                     icon: <Phone />,
@@ -375,14 +374,17 @@ export function TeachersScreen({
                   <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
                     <DialogContent className="sm:max-w-sm">
                       <DialogHeader>
-                        <DialogTitle>تعديل المعلم</DialogTitle>
-                        <DialogDescription>عدّل بيانات المعلم</DialogDescription>
+                        <DialogTitle>{tCommon("edit")}</DialogTitle>
+                        <DialogDescription>{t("subtitle")}</DialogDescription>
                       </DialogHeader>
-                      <form>
-                        <input type="hidden" name="id" value={t.userId} />
-                        {/* fields هنا */}
-                        <Button type="submit">حفظ</Button>
-                      </form>
+                      <Button asChild className="w-full rounded-xl">
+                        <Link
+                          href={`/dashboards/organization/teachers/${teacher.userId}/edit`}
+                          onClick={onClose}
+                        >
+                          {tCommon("edit")}
+                        </Link>
+                      </Button>
                     </DialogContent>
                   </Dialog>
                 )}
@@ -391,19 +393,19 @@ export function TeachersScreen({
                   <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
                     <DialogContent className="sm:max-w-sm">
                       <DialogHeader>
-                        <DialogTitle>حذف المعلم</DialogTitle>
-                        <DialogDescription>هل أنت متأكد؟</DialogDescription>
+                        <DialogTitle>{tCommon("delete")}</DialogTitle>
+                        <DialogDescription>{tCommon("confirmDelete")}</DialogDescription>
                       </DialogHeader>
                       <form action={deleteAction}>
-                        <input type="hidden" name="id" value={t.userId} />
+                        <input type="hidden" name="id" value={teacher.userId} />
                         <Button type="submit" variant="destructive" disabled={isDeleting}>
                           {isDeleting ? (
                             <>
                               <Loader2 className="h-4 w-4 animate-spin" />
-                              {"جاري الخذف..."}
+                              {tCommon("deleting")}
                             </>
                           ) : (
-                            ("حذف")
+                            tCommon("delete")
                           )}
                         </Button>
                       </form>
@@ -414,6 +416,18 @@ export function TeachersScreen({
             )
           })}
         </section>
+        {pagination.totalPages > 1 && (
+          <DataTablePagination
+            meta={pagination}
+            onPageChange={setPage}
+            labels={{
+              previous: tPagination("previous"),
+              next: tPagination("next"),
+              page: tPagination("page"),
+            }}
+          />
+        )}
+        </>
       )}
     </main>
   )

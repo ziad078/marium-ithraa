@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
+import { useLocale, useTranslations } from "next-intl"
 import {
   Baby,
   Calendar,
@@ -12,8 +13,8 @@ import {
   Phone,
   UserRoundPlus,
 } from "lucide-react"
-import { toast } from "sonner"
 
+import { DataTablePagination } from "@/components/shared/data-table/DataTablePagination"
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EntityCard } from "@/components/shared/management/EntityCard"
 import { EmptyState } from "@/components/shared/management/EmptyState"
@@ -40,17 +41,23 @@ import {
   getChildEvaluationLabel,
   getChildGradeName,
 } from "@/features/children/utils/display"
+import { useClientPagination } from "@/hooks/useClientPagination"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
 import { Gender } from "@/lib/types/enums"
 
 type Props = {
-  locale: string
   childrens: Child[]
   grades: Grade[]
   classes: ClassItem[]
 }
 
-export function ChildrenScreen({ locale, childrens, grades, classes }: Props) {
+export function ChildrenScreen({ childrens, grades, classes }: Props) {
+  const locale = useLocale()
   const isAr = locale === "ar"
+  const t = useTranslations("Dashboard.Children")
+  const tCommon = useTranslations("Dashboard.common")
+  const tPagination = useTranslations("Dashboard.pagination")
+  const { notifyDelete } = useActionFeedback()
   const [search, setSearch] = useState("")
   const [gradeFilter, setGradeFilter] = useState("")
   const [classFilter, setClassFilter] = useState("")
@@ -58,15 +65,15 @@ export function ChildrenScreen({ locale, childrens, grades, classes }: Props) {
   const [deleteState, deleteAction, isDeleting] = useActionState<
     DeleteChildState,
     FormData
-  >(deleteChildAction, { ok: false })
+  >(deleteChildAction, { success: false })
 
   useEffect(() => {
-    if (deleteState.ok) {
-      toast.success(isAr ? "تم حذف الطفل بنجاح" : "Child deleted successfully")
-    } else if (deleteState.error) {
-      toast.error(deleteState.error)
+    if (deleteState.success) {
+      notifyDelete(deleteState, "Actions.children.deleted")
+    } else if (deleteState.message) {
+      notifyDelete(deleteState)
     }
-  }, [deleteState, isAr])
+  }, [deleteState, notifyDelete])
 
   const classOptionsForGrade = useMemo(() => {
     if (!gradeFilter) return classes
@@ -93,26 +100,19 @@ export function ChildrenScreen({ locale, childrens, grades, classes }: Props) {
     })
   }, [childrens, search, gradeFilter, classFilter, grades])
 
-  const title = isAr ? "الأطفال" : "Children"
-  const addLabel = isAr ? "إضافة طفل" : "Add child"
-  const editLabel = isAr ? "تعديل" : "Edit"
-  const deleteLabel = isAr ? "حذف" : "Delete"
+  const { pageItems, pagination, setPage, resetPage } = useClientPagination(filtered, 12)
 
   return (
     <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "الرئيسية" : "Home" },
-          { label: title },
+          { href: "/dashboards/organization", label: tCommon("home") },
+          { label: t("title") },
         ]}
-        title={title}
-        subtitle={
-          isAr
-            ? "إدارة أطفال المؤسسة وتعيينهم على الفصول"
-            : "Manage organization children and class assignments"
-        }
+        title={t("title")}
+        subtitle={t("subtitle")}
         action={{
-          label: addLabel,
+          label: t("actions.add"),
           href: "/dashboards/organization/children/new",
           icon: <UserRoundPlus />,
         }}
@@ -121,38 +121,41 @@ export function ChildrenScreen({ locale, childrens, grades, classes }: Props) {
       <ListFilters
         locale={locale}
         search={search}
-        onSearchChange={setSearch}
-        searchPlaceholder={
-          isAr
-            ? "بحث باسم الطفل أو ولي الأمر..."
-            : "Search by child or parent..."
-        }
+        onSearchChange={(value) => {
+          setSearch(value)
+          resetPage()
+        }}
+        searchPlaceholder={t("searchPlaceholder")}
         gradeFilter={{
           value: gradeFilter,
           onChange: (v) => {
             setGradeFilter(v)
             setClassFilter("")
+            resetPage()
           },
           options: grades.map((g) => ({ value: g.id, label: g.name })),
-          label: isAr ? "المرحلة" : "Grade",
-          allLabel: isAr ? "كل المراحل" : "All grades",
+          label: t("gradeFilter"),
+          allLabel: t("allGrades"),
         }}
         classFilter={{
           value: classFilter,
-          onChange: setClassFilter,
+          onChange: (value) => {
+            setClassFilter(value)
+            resetPage()
+          },
           options: classOptionsForGrade.map((c) => ({
             value: c.id,
             label: c.name,
           })),
-          label: isAr ? "الفصل" : "Class",
-          allLabel: isAr ? "كل الفصول" : "All classes",
+          label: t("classFilter"),
+          allLabel: t("allClasses"),
         }}
       />
 
       {filtered.length === 0 ? (
         <EmptyState
-          title={isAr ? "لا توجد بيانات" : "No data"}
-          actionLabel={childrens.length === 0 ? addLabel : undefined}
+          title={tCommon("noData")}
+          actionLabel={childrens.length === 0 ? t("actions.add") : undefined}
           actionHref={
             childrens.length === 0
               ? "/dashboards/organization/children/new"
@@ -160,148 +163,151 @@ export function ChildrenScreen({ locale, childrens, grades, classes }: Props) {
           }
         />
       ) : (
-        <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((child) => {
-            const evalInfo = getChildEvaluationLabel(child, isAr)
-            const genderLabel =
-              child.gender === Gender.MALE
-                ? isAr
-                  ? "ذكر"
-                  : "Male"
-                : child.gender === Gender.FEMALE
-                  ? isAr
-                    ? "أنثى"
-                    : "Female"
-                  : (child.gender ?? "—")
+        <>
+          <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {pageItems.map((child) => {
+              const evalInfo = getChildEvaluationLabel(child, isAr)
+              const genderLabel =
+                child.gender === Gender.MALE
+                  ? t("gender.male")
+                  : child.gender === Gender.FEMALE
+                    ? t("gender.female")
+                    : (child.gender ?? "—")
 
-            return (
-              <EntityCard
-                key={child.id}
-                editLabel={editLabel}
-                deleteLabel={deleteLabel}
-                fields={[
-                  {
-                    label: isAr ? "الاسم" : "Name",
-                    value: child.name,
-                    icon: <Baby />,
-                  },
-                  {
-                    label: isAr ? "تاريخ الميلاد" : "Birth date",
-                    value: formatChildBirthDate(child.birthDate, locale),
-                    icon: <Calendar />,
-                  },
-                  {
-                    label: isAr ? "النوع" : "Gender",
-                    value: genderLabel,
-                  },
-                  {
-                    label: isAr ? "المرحلة" : "Grade",
-                    value: getChildGradeName(child),
-                    icon: <GraduationCap />,
-                  },
-                  {
-                    label: isAr ? "الفصل" : "Class",
-                    value: getChildClassName(child),
-                    icon: <Layers3 />,
-                  },
-                  ...(child.parent?.name
-                    ? [
-                        {
-                          label: isAr ? "ولي الأمر" : "Parent",
-                          value: child.parent.name,
-                        },
-                      ]
-                    : []),
-                  ...(child.parent?.email
-                    ? [
-                        {
-                          label: isAr ? "البريد" : "Email",
-                          value: child.parent.email,
-                          icon: <Mail />,
-                        },
-                      ]
-                    : []),
-                  ...(child.parent?.phone
-                    ? [
-                        {
-                          label: isAr ? "الهاتف" : "Phone",
-                          value: child.parent.phone,
-                          icon: <Phone />,
-                        },
-                      ]
-                    : []),
-                  {
-                    label: isAr ? "حالة التقييم" : "Evaluation",
-                    value: evalInfo.label,
-                    valueClassName: evalInfo.className,
-                  },
-                  ...(child.attemptsUsed != null
-                    ? [
-                        {
-                          label: isAr ? "المحاولات" : "Attempts",
-                          value: String(child.attemptsUsed),
-                        },
-                      ]
-                    : []),
-                ]}
-                renderEditDialog={({ open, onClose }) => (
-                  <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-                    <DialogContent className="sm:max-w-sm">
-                      <DialogHeader>
-                        <DialogTitle>{editLabel}</DialogTitle>
-                        <DialogDescription>
-                          {isAr ? "انتقل لصفحة التعديل" : "Go to edit page"}
-                        </DialogDescription>
-                      </DialogHeader>
-                      <Button asChild className="w-full rounded-xl">
-                        <Link
-                          href={`/dashboards/organization/children/${child.id}`}
-                          onClick={onClose}
-                        >
-                          {editLabel}
-                        </Link>
-                      </Button>
-                    </DialogContent>
-                  </Dialog>
-                )}
-                renderDeleteDialog={({ open, onClose }) => (
-                  <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-                    <DialogContent className="sm:max-w-sm">
-                      <DialogHeader>
-                        <DialogTitle>
-                          {isAr ? "حذف طفل" : "Delete child"}
-                        </DialogTitle>
-                        <DialogDescription>
-                          {isAr
-                            ? "هل أنت متأكد؟ لا يمكن التراجع."
-                            : "Are you sure? This cannot be undone."}
-                        </DialogDescription>
-                      </DialogHeader>
-                      <form action={deleteAction}>
-                        <input type="hidden" name="id" value={child.id} />
-                        <Button
-                          type="submit"
-                          variant="destructive"
-                          className="w-full rounded-xl"
-                          disabled={isDeleting}
-                        >
-                          {isDeleting ? (
-                            <>
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                              {isAr ? "جاري الحذف..." : "Deleting..."}
-                            </>
-                          ) : (
-                            deleteLabel
-                          )}
+              return (
+                <EntityCard
+                  key={child.id}
+                  editLabel={tCommon("edit")}
+                  deleteLabel={tCommon("delete")}
+                  fields={[
+                    {
+                      label: t("fields.name"),
+                      value: child.name,
+                      icon: <Baby />,
+                    },
+                    {
+                      label: t("fields.birthDate"),
+                      value: formatChildBirthDate(child.birthDate, locale),
+                      icon: <Calendar />,
+                    },
+                    {
+                      label: t("fields.gender"),
+                      value: genderLabel,
+                    },
+                    {
+                      label: t("fields.grade"),
+                      value: getChildGradeName(child),
+                      icon: <GraduationCap />,
+                    },
+                    {
+                      label: t("fields.class"),
+                      value: getChildClassName(child),
+                      icon: <Layers3 />,
+                    },
+                    ...(child.parent?.name
+                      ? [
+                          {
+                            label: t("fields.parent"),
+                            value: child.parent.name,
+                          },
+                        ]
+                      : []),
+                    ...(child.parent?.email
+                      ? [
+                          {
+                            label: t("fields.email"),
+                            value: child.parent.email,
+                            icon: <Mail />,
+                          },
+                        ]
+                      : []),
+                    ...(child.parent?.phone
+                      ? [
+                          {
+                            label: t("fields.phone"),
+                            value: child.parent.phone,
+                            icon: <Phone />,
+                          },
+                        ]
+                      : []),
+                    {
+                      label: t("fields.evaluation"),
+                      value: evalInfo.label,
+                      valueClassName: evalInfo.className,
+                    },
+                    ...(child.attemptsUsed != null
+                      ? [
+                          {
+                            label: t("fields.attempts"),
+                            value: String(child.attemptsUsed),
+                          },
+                        ]
+                      : []),
+                  ]}
+                  renderEditDialog={({ open, onClose }) => (
+                    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+                      <DialogContent className="sm:max-w-sm">
+                        <DialogHeader>
+                          <DialogTitle>{tCommon("edit")}</DialogTitle>
+                          <DialogDescription>{t("goToEdit")}</DialogDescription>
+                        </DialogHeader>
+                        <Button asChild className="w-full rounded-xl">
+                          <Link
+                            href={`/dashboards/organization/children/${child.id}`}
+                            onClick={onClose}
+                          >
+                            {tCommon("edit")}
+                          </Link>
                         </Button>
-                      </form>
-                    </DialogContent>
-                  </Dialog>
-                )}
-              />
-            )
-          })}
-        </section>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                  renderDeleteDialog={({ open, onClose }) => (
+                    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+                      <DialogContent className="sm:max-w-sm">
+                        <DialogHeader>
+                          <DialogTitle>{t("dialog.deleteTitle")}</DialogTitle>
+                          <DialogDescription>
+                            {t("dialog.deleteConfirmShort")}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <form action={deleteAction}>
+                          <input type="hidden" name="id" value={child.id} />
+                          <Button
+                            type="submit"
+                            variant="destructive"
+                            className="w-full rounded-xl"
+                            disabled={isDeleting}
+                          >
+                            {isDeleting ? (
+                              <>
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                {tCommon("deleting")}
+                              </>
+                            ) : (
+                              tCommon("delete")
+                            )}
+                          </Button>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                />
+              )
+            })}
+          </section>
+          {pagination.totalPages > 1 && (
+            <DataTablePagination
+              meta={pagination}
+              onPageChange={setPage}
+              labels={{
+                previous: tPagination("previous"),
+                next: tPagination("next"),
+                page: tPagination("page"),
+              }}
+            />
+          )}
+        </>
       )}
     </main>
   )

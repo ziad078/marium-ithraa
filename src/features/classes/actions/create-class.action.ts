@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { createClassSchema } from "@/features/forms/schemas/class.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -24,10 +25,10 @@ export async function createClassAction(
       ...(teacherId ? { teacherId } : {}),
     })
     revalidatePath("/dashboards/organization/classes")
-    return { status: StatusCode.CREATED, message: "تم إضافة الفصل بنجاح" }
+    return actionSuccess("Actions.classes.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData, {
-      conflict: "الفصل موجود فعلاً",
+      conflict: "Actions.common.conflict",
     })
   }
 }

@@ -15,5 +15,5 @@ export default async function GradesPage({ params }: Props) {
   }
   const { grades } = await getGradesByOrg(org.user.organization.id)
   console.log(grades)
-  return <GradesScreen locale={locale} grades={grades} />
+  return <GradesScreen grades={grades} />
 }

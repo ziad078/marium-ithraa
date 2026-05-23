@@ -2,31 +2,37 @@ import { ApiError } from "@/lib/errors/ApiError"
 import { StatusCode } from "@/lib/types/enums"
 import type { InitialState } from "@/lib/types/types"
 
+import { actionFailure, actionValidationFailure } from "./action-results"
+
 export function actionErrorState(
   error: unknown,
   formData: FormData | null,
-  messages?: { conflict?: string; server?: string },
+  messages?: {
+    conflict?: string
+    server?: string
+    badRequest?: string
+  },
 ): InitialState {
   if (error instanceof ApiError) {
     if (error.status === StatusCode.BADREQUEST) {
-      return {
-        formData,
-        error: error.validationErrors,
-        status: StatusCode.BADREQUEST,
-      }
+      return actionValidationFailure(
+        error.validationErrors ?? {},
+        formData ?? new FormData(),
+        messages?.badRequest ?? "Actions.common.validationFailed",
+      )
     }
     if (error.status === StatusCode.CONFLICT) {
-      return {
+      return actionFailure(
+        messages?.conflict ?? "Actions.common.conflict",
+        StatusCode.CONFLICT,
         formData,
-        status: StatusCode.CONFLICT,
-        message: messages?.conflict,
-      }
+      )
     }
   }
 
-  return {
+  return actionFailure(
+    messages?.server ?? "Actions.common.serverError",
+    StatusCode.INTERNALSERVERERROR,
     formData,
-    status: StatusCode.INTERNALSERVERERROR,
-    message: messages?.server ?? "حدث خطأ ما، تواصل مع الدعم",
-  }
+  )
 }

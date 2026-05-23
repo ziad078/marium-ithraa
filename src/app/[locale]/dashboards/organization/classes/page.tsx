@@ -8,7 +8,7 @@ type Props = {
 }
 
 export default async function ClassesPage({ params }: Props) {
-  const { locale } = await params
+  await params
   const org = await getCurrentOrganization()
   const orgId = org.user.organization.id
 
@@ -19,7 +19,6 @@ export default async function ClassesPage({ params }: Props) {
 
   return (
     <ClassesScreenClient
-      locale={locale}
       classes={classesRes.classes}
       grades={gradesRes.grades}
     />

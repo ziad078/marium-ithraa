@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { createAdminChildSchema, createOrgChildSchema } from "@/features/forms/schemas/child.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -48,10 +49,10 @@ export async function createChildAction(
         },
       })
       revalidatePath("/dashboards/organization/children")
-      return { status: StatusCode.CREATED, message: "تم إضافة الطفل بنجاح" }
+      return actionSuccess("Actions.children.created", StatusCode.CREATED)
     } catch (error) {
       return actionErrorState(error, formData, {
-        conflict: "الطفل أو ولي الأمر موجود فعلاً",
+        conflict: "Actions.children.conflict",
       })
     }
   }
@@ -62,10 +63,10 @@ export async function createChildAction(
   try {
     await createChild(adminParsed.data)
     revalidatePath("/dashboards/admin/children")
-    return { status: StatusCode.CREATED, message: "تم إضافة الطفل بنجاح" }
+    return actionSuccess("Actions.children.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData, {
-      conflict: "الطفل أو ولي الأمر موجود فعلاً",
+      conflict: "Actions.children.conflict",
     })
   }
 }

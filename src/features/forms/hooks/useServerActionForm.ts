@@ -52,14 +52,18 @@ export function useServerActionForm<T extends FieldValues>({
       }
     }
 
-    if (state.error) {
+    if (state.fieldErrors) {
+      for (const [key, message] of Object.entries(state.fieldErrors)) {
+        if (message) form.setError(key as never, { message })
+      }
+    } else if (state.error) {
       for (const [key, messages] of Object.entries(state.error)) {
         if (messages?.[0]) {
           form.setError(key as never, { message: messages[0] })
         }
       }
     }
-  }, [state.formData, state.error, defaultValues, form])
+  }, [state.formData, state.fieldErrors, state.error, defaultValues, form])
 
   useEffect(() => {
     if (state?.status) onStatusChange?.(state)

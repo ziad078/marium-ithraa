@@ -35,7 +35,6 @@ const LoginForm = () => {
   })
 
   const onSubmit = async (values: LoginFormValues) => {
-    console.log("login btn clicked", values)
     setError(null)
     setIsSubmitting(true)
 

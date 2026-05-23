@@ -14,7 +14,9 @@ export type ValidationErrors = {
 };
 
 export type InitialState = {
+  success?: boolean;
   message?: string;
+  fieldErrors?: Record<string, string>;
   error?: ValidationErrors;
   status?: StatusCode | null;
   formData?: FormData | null;

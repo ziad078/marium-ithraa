@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form"
-import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -20,7 +19,8 @@ import {
   testWizardSchema,
   type TestWizardFormValues,
 } from "@/features/forms/schemas/test.schema"
-import { StatusCode } from "@/lib/types/enums"
+import { isActionSuccess } from "@/features/forms/action-results"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { createTestAction } from "../actions/create-test-action"
 
@@ -31,6 +31,7 @@ type Props = {
 
 export function TestCreationForm({ onSuccess, className }: Props) {
   const t = useTranslations("Forms.Test")
+  const tActions = useTranslations("Actions")
   const tWizard = useTranslations("Forms.Test.wizard")
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -59,15 +60,15 @@ export function TestCreationForm({ onSuccess, className }: Props) {
         fd,
       )
 
-      if (result.status === StatusCode.CREATED) {
-        toast.success(result.message ?? t("toast.created"))
+      if (isActionSuccess(result)) {
+        showSuccessToast(tActions, result.message ?? "Actions.tests.created")
         form.reset(testWizardDefaultValues)
         setStep(1)
         onSuccess?.()
         return
       }
 
-      if (result.message) toast.error(result.message)
+      if (result.message) showErrorToast(tActions, result.message)
     } finally {
       setIsSubmitting(false)
     }

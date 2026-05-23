@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useActionState, useEffect, useState } from "react"
 import { Baby, Loader2, Plus } from "lucide-react"
-import { toast } from "sonner"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EmptyState } from "@/components/shared/management/EmptyState"
@@ -33,17 +33,21 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
   const isAr = locale === "ar"
   const [deleteTarget, setDeleteTarget] = useState<Child | null>(null)
 
+  const { notifyDelete } = useActionFeedback()
+
   const [deleteState, deleteAction, isDeleting] = useActionState<
     DeleteChildState,
     FormData
-  >(deleteChildAction, { ok: false })
+  >(deleteChildAction, { success: false })
 
   useEffect(() => {
-    if (deleteState.ok) {
-      toast.success(isAr ? "تم الحذف بنجاح" : "Deleted")
+    if (deleteState.success) {
+      notifyDelete(deleteState, "Actions.children.deleted")
       queueMicrotask(() => setDeleteTarget(null))
-    } else if (deleteState.error) toast.error(deleteState.error)
-  }, [deleteState, isAr])
+    } else if (deleteState.message) {
+      notifyDelete(deleteState)
+    }
+  }, [deleteState, notifyDelete])
 
   return (
     <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>

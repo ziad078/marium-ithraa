@@ -3,7 +3,8 @@
 import { useActionState, useEffect, useMemo, useState } from "react"
 import { useTranslations } from "next-intl"
 import { Loader2, Pencil, Trash2 } from "lucide-react"
-import { toast } from "sonner"
+import { isActionSuccess } from "@/features/forms/action-results"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -34,7 +35,7 @@ import { useServerActionForm } from "@/features/forms/hooks/useServerActionForm"
 import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
 import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
 import { updateChildSchema } from "@/features/forms/schemas/child.schema"
-import { FormTypes, Gender, StatusCode } from "@/lib/types/enums"
+import { FormTypes, Gender } from "@/lib/types/enums"
 
 import { type Child } from "../types/interfaces"
 import { updateChildAction } from "../actions/update-child.action"
@@ -47,6 +48,7 @@ type Props = {
 export function ChildRowActions({ child }: Props) {
   const t = useTranslations("Dashboard.Children")
   const tCommon = useTranslations("Dashboard.common")
+  const { notifyAction, notifyDelete } = useActionFeedback()
   const { fields } = useFormConfig(FormTypes.CHILD_UPDATE)
   const [updateOpen, setUpdateOpen] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
@@ -67,25 +69,29 @@ export function ChildRowActions({ child }: Props) {
     },
     action: updateChildAction,
     onStatusChange: (state) => {
-      if (state.status === StatusCode.OK) {
-        toast.success(state.message ?? t("toast.updated"))
+      if (isActionSuccess(state)) {
+        notifyAction(state)
         setUpdateOpen(false)
-      } else if (state.status && state.message) toast.error(state.message)
+      } else if (state.message) {
+        notifyAction(state)
+      }
     },
   })
 
   const [deleteState, deleteAction, isDeleting] = useActionState<
     DeleteChildState,
     FormData
-  >(deleteChildAction, { ok: false })
+  >(deleteChildAction, { success: false })
 
   useEffect(() => {
     if (!deleteOpen) return
-    if (deleteState.ok) {
-      toast.success(t("toast.deleted"))
+    if (deleteState.success) {
+      notifyDelete(deleteState, "Actions.children.deleted")
       setDeleteOpen(false)
-    } else if (deleteState.error) toast.error(deleteState.error)
-  }, [deleteState, deleteOpen, t])
+    } else if (deleteState.message) {
+      notifyDelete(deleteState)
+    }
+  }, [deleteState, deleteOpen, notifyDelete])
 
   return (
     <div className="flex items-center justify-center gap-2">

@@ -1,7 +1,8 @@
 import { z } from "zod"
 
-import { StatusCode } from "@/lib/types/enums"
 import type { InitialState, ValidationErrors } from "@/lib/types/types"
+
+import { actionValidationFailure } from "./action-results"
 
 export function formDataToRecord(formData: FormData): Record<string, string> {
   const record: Record<string, string> = {}
@@ -36,13 +37,13 @@ export function parseFormData<TSchema extends z.ZodType>(
     return { success: true, data: result.data }
   }
 
+  const validationErrors = zodErrorsToValidationErrors(result.error)
   return {
     success: false,
-    state: {
+    state: actionValidationFailure(
+      validationErrors,
       formData,
-      error: zodErrorsToValidationErrors(result.error),
-      status: StatusCode.BADREQUEST,
-      message: options?.message,
-    },
+      options?.message ?? "Actions.common.validationFailed",
+    ),
   }
 }

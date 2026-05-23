@@ -9,7 +9,7 @@ type Props = {
 }
 
 export default async function ChildrenPage({ params }: Props) {
-  const { locale } = await params
+  await params
   const org = await getCurrentOrganization()
   const orgId = org.user.organization.id
 
@@ -19,11 +19,8 @@ export default async function ChildrenPage({ params }: Props) {
     getClassesByOrg(orgId),
   ])
 
-  console.log(childrenRes, gradesRes, classesRes)
-
   return (
     <ChildrenScreen
-      locale={locale}
       childrens={childrenRes.children}
       grades={gradesRes.grades}
       classes={classesRes.classes}

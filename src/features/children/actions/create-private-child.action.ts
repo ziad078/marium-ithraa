@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionFailure, actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { createPrivateChildSchema } from "@/features/forms/schemas/child.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -21,18 +22,14 @@ export async function createPrivateChildAction(
 
   const currentCount = parsed.data.currentCount ?? 0
   if (currentCount >= PRIVATE_CHILD_LIMIT) {
-    return {
-      formData,
-      status: StatusCode.BADREQUEST,
-      message: "تم الوصول إلى الحد الأقصى (طفلان)",
-    }
+    return actionFailure("Actions.children.limitReached", StatusCode.BADREQUEST, formData)
   }
 
   try {
     const { name, birthDate, gender } = parsed.data
     await createPrivateChild({ name, birthDate, gender })
     revalidatePath("/dashboards/parent/children")
-    return { status: StatusCode.CREATED, message: "تم إضافة الطفل بنجاح" }
+    return actionSuccess("Actions.children.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData)
   }

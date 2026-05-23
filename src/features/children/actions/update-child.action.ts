@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { updateChildSchema } from "@/features/forms/schemas/child.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -21,8 +22,7 @@ export async function updateChildAction(
     const { id, ...payload } = parsed.data
     await updateChild(id, payload)
     revalidatePath("/dashboards/organization/children")
-    revalidatePath(`/dashboards/organization/children/${id}`)
-    return { status: StatusCode.OK, message: "تم تحديث بيانات الطفل بنجاح" }
+    return actionSuccess("Actions.children.updated", StatusCode.OK)
   } catch (error) {
     return actionErrorState(error, formData)
   }

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { createEmployeeSchema } from "@/features/forms/schemas/employee.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -20,10 +21,10 @@ export async function createEmployeeAction(
   try {
     await addEmployee(parsed.data)
     revalidatePath("/dashboards/organization/employees")
-    return { status: StatusCode.CREATED, message: "تم إضافة الموظف بنجاح" }
+    return actionSuccess("Actions.employees.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData, {
-      conflict: "الموظف موجود فعلاً",
+      conflict: "Actions.common.conflict",
     })
   }
 }

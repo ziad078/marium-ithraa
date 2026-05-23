@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
+import { actionSuccess } from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { createTeacherSchema } from "@/features/forms/schemas/teacher.schema"
 import { StatusCode } from "@/lib/types/enums"
@@ -20,10 +21,10 @@ export async function createTeacherAction(
   try {
     await createTeacher(parsed.data)
     revalidatePath("/dashboards/organization/teachers")
-    return { status: StatusCode.CREATED, message: "تم إضافة المعلم بنجاح" }
+    return actionSuccess("Actions.teachers.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData, {
-      conflict: "المعلم موجود فعلاً",
+      conflict: "Actions.common.conflict",
     })
   }
 }

@@ -1,29 +1,33 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
+
+import {
+  deleteFailure,
+  deleteSuccess,
+  type DeleteActionResult,
+} from "@/features/forms/action-results"
 import { parseFormData } from "@/features/forms/parse-form-data"
 import { idSchema } from "@/features/forms/schemas/common.schema"
 
 import { deleteTeacher } from "../api"
 
-export type DeleteTeacherdState = {
-  ok: boolean
-  error?: string
-}
+export type DeleteTeacherState = DeleteActionResult
 
 export async function deleteTeacherAction(
-  _prevState: DeleteTeacherdState,
+  _prevState: DeleteTeacherState,
   formData: FormData,
-): Promise<DeleteTeacherdState> {
+): Promise<DeleteTeacherState> {
   const parsed = parseFormData(formData, idSchema)
   if (!parsed.success) {
-    return { ok: false, error: parsed.state.message ?? "معرّف المعلم غير صالح" }
+    return deleteFailure("Actions.common.invalidId")
   }
 
   try {
     await deleteTeacher(parsed.data.id)
-    return { ok: true }
+    revalidatePath("/dashboards/organization/teachers")
+    return deleteSuccess()
   } catch {
-    return { ok: false, error: "حدث خطأ غير متوقع أثناء حذف المعلم" }
+    return deleteFailure("Actions.teachers.deleteFailed")
   }
 }
-

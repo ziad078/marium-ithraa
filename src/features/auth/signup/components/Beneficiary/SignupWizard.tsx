@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/i18n/navigation"
 
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
@@ -17,7 +17,9 @@ import {
   type BeneficiaryOrganizationFormValues,
   createBeneficiaryOrganizationSchema,
 } from "../../schemas/signup.schema"
+import { beneficiariesSignupClient } from "@/features/auth/api"
 import { useAuth } from "@/features/auth/hooks/useAuth"
+import { ApiError } from "@/lib/errors/ApiError"
 import { signInWithPhoneAndRedirect } from "@/lib/auth/signInWithCredentials"
 import { useLocale } from "next-intl"
 
@@ -71,29 +73,15 @@ export function SignupWizard() {
     try {
       setIsSubmitting(true)
 
-      const apiBase =
-        process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:5000"
-
-      const response = await fetch(`${apiBase}/api/auth/beneficiaries-signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: values.name,
-          email: values.email,
-          password: values.password,
-          phone: values.phone,
-          accountType: values.accountType,
-          organizationName: values.organizationName,
-          organizationType: values.organizationType,
-        }),
+      await beneficiariesSignupClient({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        phone: values.phone,
+        accountType: values.accountType,
+        organizationName: values.organizationName,
+        organizationType: values.organizationType,
       })
-
-      if (!response.ok) {
-        console.error("Signup failed", await response.text())
-        return
-      }
 
       await signInWithPhoneAndRedirect({
         phone: values.phone,
@@ -102,6 +90,10 @@ export function SignupWizard() {
         login,
         locale,
       })
+    } catch (error) {
+      if (error instanceof ApiError) {
+        console.error("Signup failed", error.message)
+      }
     } finally {
       setIsSubmitting(false)
     }

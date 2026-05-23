@@ -8,7 +8,8 @@ import { notFound, redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
 import nextAuthOptions from '@/server/auth'
-import { Pages, Routes } from '@/lib/types/enums'
+import RequireRoles from '@/features/auth/components/RequireRoles'
+import { Pages, Routes, UserRole } from '@/lib/types/enums'
 import React from 'react'
 
 const OrgnizationLayout = async ({
@@ -36,15 +37,13 @@ const OrgnizationLayout = async ({
     setRequestLocale(locale);
   
     return (
-
-        <>
+        <RequireRoles allowed={[UserRole.ORGANIZATIONOWNER, UserRole.ADMIN]} redirectTo={`/${locale}/${Routes.UNAUTHARIZED}`}>
             <OrganizationHeader locale={locale} />
             <div className="pt-28">
               {children}
             </div>
             <Footer locale={locale} />
-
-        </>
+        </RequireRoles>
     )
 }
 

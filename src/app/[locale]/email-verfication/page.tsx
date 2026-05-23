@@ -9,7 +9,7 @@ import { sendVerficationEmail } from "@/features/mailer"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 export default function EmailVerificationPage() {
     const { data: session, status } = useSession()

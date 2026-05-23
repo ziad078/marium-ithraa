@@ -3,7 +3,7 @@ import { Endpoint } from "@/lib/types/enums"
 import { IUserResponseDto, User } from "../types"
 
 export const getUsersInRoles = () => {
-    return api.client<{employees: User[], organizationOwners: User[], enrichers: User[]}>(`/${Endpoint.USERS}/${Endpoint.ROLES}`)
+    return api.client<{teachers: User[], organizationOwners: User[], parents: User[]}>(`/${Endpoint.USERS}/${Endpoint.ROLES}`)
 }
 
 export const getAllUsers = () => {

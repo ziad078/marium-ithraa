@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "@/i18n/navigation"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

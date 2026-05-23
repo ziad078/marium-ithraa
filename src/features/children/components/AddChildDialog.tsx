@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useEffect, useState } from "react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 import { IconPlus } from "@tabler/icons-react"
 import { useTranslations } from "next-intl"

@@ -1,102 +1,79 @@
 "use client"
-import FormFields from "@/components/shared/forms/formFields"
-import { Button } from "@/components/ui/button"
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { FieldGroup } from "@/components/ui/field"
-import useFormFields from "@/hooks/useFormFields"
-import { FormTypes, StatusCode } from "@/lib/types/enums"
+
 import { IconPlus } from "@tabler/icons-react"
 import { Loader2 } from "lucide-react"
-import { useActionState, useEffect, useState } from "react"
+import { useTranslations } from "next-intl"
+import { useState } from "react"
+import { toast } from "sonner"
+
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { ServerActionForm } from "@/features/forms"
+import { FormTypes, StatusCode } from "@/lib/types/enums"
+import type { InitialState } from "@/lib/types/types"
+
 import { createEmployeeAction } from "../actions/create-employee.action"
-import { type InitialState } from "@/lib/types/types"
-import { toast } from "react-toastify"
 
-export function AddEmployeeDialog({organizationId}:{organizationId: string}) {
-    const { getFormFields } = useFormFields({ slug: FormTypes.EMPLOYEE })
-    const [isOpenState, setIsOpenState] = useState(false)
-    const [state, formAction, isPending] = useActionState<InitialState, FormData>(
-        createEmployeeAction,
-        {
-            message: "",
-            error: {},
-            status: null,
-            formData: null,
-        },
-    )
-    useEffect(() => {
-        if (!state?.status) return;
+export function AddEmployeeDialog({ organizationId }: { organizationId: string }) {
+  const t = useTranslations("Forms.Employee")
+  const tCommon = useTranslations("Dashboard.common")
+  const [isOpen, setIsOpen] = useState(false)
 
-        if (state.status === StatusCode.CREATED) {
-            toast.success(state?.message);
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setIsOpenState(false)
-        } else if (state.status && state.message) {
-            toast.error(state.message);
-        }
+  const handleStatus = (state: InitialState) => {
+    if (state.status === StatusCode.CREATED) {
+      toast.success(state.message ?? t("toast.created"))
+      setIsOpen(false)
+      return
+    }
+    if (state.status && state.message) {
+      toast.error(state.message)
+    }
+  }
 
-    }, [state.message, state.status]);
-    return (
-        <Dialog open={isOpenState} onOpenChange={setIsOpenState}>
-            <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                    <IconPlus />
-                    <span className="hidden lg:inline">Add Employee</span>
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-sm max-h-150 overflow-y-auto">
-                <form className="flex flex-col gap-4" action={formAction}>
-                    <DialogHeader>
-                        <DialogTitle>Add Employee</DialogTitle>
-                        <DialogDescription>
-                            Make changes to your profile here. Click save when you&apos;re
-                            done.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <FieldGroup>
-                        <input
-                            type="hidden"
-                            name="organization_id"
-                            value={organizationId}
-                        />
-                        {getFormFields().map((field) => {
-                            const fieldValue = state.formData?.get(field.name) as string
-                            return (
-                                <FormFields key={field.name} {...field} defaultValue={fieldValue} error={state?.error || {}} />
-                            )
-                        })}
-                    </FieldGroup>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
-                        <Button
-                            type="submit"
-                            className="rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
-                            disabled={isPending}
-                        >
-                            {isPending ? (
-                                <>
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    adding
-                                </>
-                            ) : (
-                                "Add"
-                            )}
-                        </Button>
-
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
-    )
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          <IconPlus />
+          <span className="hidden lg:inline">{t("dialogTitle")}</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-sm max-h-150 overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{t("dialogTitle")}</DialogTitle>
+          <DialogDescription>{t("dialogDescription")}</DialogDescription>
+        </DialogHeader>
+        <ServerActionForm
+          formType={FormTypes.EMPLOYEE}
+          action={createEmployeeAction}
+          hiddenFields={{ organization_id: organizationId }}
+          onStatusChange={handleStatus}
+        >
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline" type="button">
+                {tCommon("cancel")}
+              </Button>
+            </DialogClose>
+            <Button
+              type="submit"
+              className="rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+            >
+              <Loader2 className="mr-2 h-4 w-4 animate-spin hidden [[disabled]_&]:inline" />
+              {tCommon("add")}
+            </Button>
+          </DialogFooter>
+        </ServerActionForm>
+      </DialogContent>
+    </Dialog>
+  )
 }

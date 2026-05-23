@@ -372,6 +372,7 @@
         "title": "Sign in to access your dashboard and manage your account easily.",
         "subtitle": "Use your phone number and password."
       },
+      "success": "Signed in successfully",
       "errors": {
         "invalidCredentials": "Phone number or password is incorrect.",
         "unexpected": "Something went wrong. Please try again."
@@ -481,6 +482,24 @@
       "evaluationsDesc": "Start and track child evaluations",
       "notificationsDesc": "Stay updated with alerts"
     },
+    "TeacherDashboard": {
+      "brand": "Teacher",
+      "defaultName": "Teacher",
+      "subtitle": "Manage your classes and stay updated with notifications",
+      "classes": "Classes",
+      "classesDescription": "View classes assigned to you",
+      "classesPlaceholder": "Your assigned classes will appear here.",
+      "notificationsDescription": "View alerts and updates",
+      "statsTitle": "Overview",
+      "quickActionsTitle": "Quick actions",
+      "recentActivityTitle": "Recent activity",
+      "noActivity": "No recent activity",
+      "profileNotFound": "We could not load your teacher profile. Contact your organization admin.",
+      "classesWelcome": "Classes assigned to {name}",
+      "noClasses": "No classes assigned yet",
+      "grade": "Grade",
+      "childrenCount": "Students"
+    },
     "Notifications": {
       "title": "Notifications",
       "subtitle": "Stay up to date with alerts and updates",
@@ -563,6 +582,38 @@
       "attemptNotApproved": "This evaluation has been submitted but not approved yet. Results will appear after approval.",
       "attemptNoResultYet": "No result is available for this evaluation yet.",
       "backToResults": "Back to results"
+    }
+  },
+  "Forms": {
+    "Login": {
+      "phone": {
+        "label": "Phone number",
+        "placeholder": "Enter your phone number"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password"
+      }
+    },
+    "Employee": {
+      "dialogTitle": "Add employee",
+      "dialogDescription": "Add a new employee to your organization.",
+      "name": { "label": "Full name", "placeholder": "Enter employee name" },
+      "phone": { "label": "Phone", "placeholder": "Enter phone number" },
+      "email": { "label": "Email", "placeholder": "Enter email address" },
+      "password": { "label": "Password", "placeholder": "Enter password" },
+      "jobTitle": { "label": "Job title", "placeholder": "Enter job title" },
+      "toast": { "created": "Employee added successfully" }
+    },
+    "Teacher": {
+      "pageTitle": "Add teacher",
+      "pageSubtitle": "Enter teacher details to add them to the organization.",
+      "name": { "label": "Full name", "placeholder": "Enter teacher name" },
+      "phone": { "label": "Phone", "placeholder": "Enter phone number" },
+      "email": { "label": "Email", "placeholder": "Enter email address" },
+      "password": { "label": "Password", "placeholder": "Enter password" },
+      "jobTitle": { "label": "Job title", "placeholder": "Enter job title" },
+      "toast": { "created": "Teacher added successfully" }
     }
   }
 }

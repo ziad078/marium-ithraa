@@ -12,8 +12,7 @@ import { Pages, Routes } from "@/lib/types/enums"
 const dashboardMap: Record<string, string> = {
   ADMIN: `/${Routes.DASHBOARDS}/${Pages.ADMIN}`,
   ORGANIZATIONOWNER: `/${Routes.DASHBOARDS}/${Pages.ORGANIZATION}`,
-  EMPLOYEE: `/${Routes.DASHBOARDS}/${Pages.EMPLOYEE}`,
-  ENRICHER: `/${Routes.DASHBOARDS}/${Pages.ENRICHER}`,
+  TEACHER: `/${Routes.DASHBOARDS}/${Pages.TEACHER}`,
   PARENT: `/${Routes.DASHBOARDS}/${Pages.PARENT}`,
 }
 

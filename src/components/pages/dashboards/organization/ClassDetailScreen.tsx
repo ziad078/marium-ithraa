@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useActionState, useEffect, useState } from "react"
 import { Baby, Loader2, Plus } from "lucide-react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EmptyState } from "@/components/shared/management/EmptyState"

@@ -19,7 +19,7 @@ import { updateEmployeeAction } from "../actions/update-employee.action"
 import { deleteEmployeeAction, type DeleteEmployeeState } from "../actions/delete-employee.action"
 import useFormFields from "@/hooks/useFormFields"
 import { FormTypes, StatusCode } from "@/lib/types/enums"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 import { InitialState } from "@/lib/types/types"
 
 type Props = {

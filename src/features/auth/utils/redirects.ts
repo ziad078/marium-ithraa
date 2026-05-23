@@ -6,8 +6,7 @@ import { roleNames } from "./rbac"
 const DASHBOARD_BY_ROLE: Partial<Record<UserRole, string>> = {
   [UserRole.ADMIN]: `/${Routes.DASHBOARDS}/${Pages.ADMIN}`,
   [UserRole.ORGANIZATIONOWNER]: `/${Routes.DASHBOARDS}/${Pages.ORGANIZATION}`,
-  [UserRole.EMPLOYEE]: `/${Routes.DASHBOARDS}/${Pages.EMPLOYEE}`,
-  [UserRole.ENRICHER]: `/${Routes.DASHBOARDS}/${Pages.ENRICHER}`,
+  [UserRole.TEACHER]: `/${Routes.DASHBOARDS}/${Pages.TEACHER}`,
   [UserRole.PARENT]: `/${Routes.DASHBOARDS}/${Pages.PARENT}`,
 }
 

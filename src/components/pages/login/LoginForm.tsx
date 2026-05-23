@@ -1,15 +1,21 @@
 "use client"
 
-import FormFields from "@/components/shared/forms/formFields"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2 } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+
 import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
 import { useAuth } from "@/features/auth/hooks/useAuth"
-import useFormFields from "@/hooks/useFormFields"
+import { loginFormConfig } from "@/features/forms/config/login.config"
+import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
+import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
+import { loginSchema, type LoginFormValues } from "@/features/forms/schemas/login.schema"
 import { useRouter } from "@/i18n/navigation"
 import { signInWithPhoneAndRedirect } from "@/lib/auth/signInWithCredentials"
 import { FormTypes } from "@/lib/types/enums"
-import { Loader2 } from "lucide-react"
-import { useLocale, useTranslations } from "next-intl"
-import React, { SyntheticEvent, useRef, useState } from "react"
 import { toast } from "sonner"
 
 const LoginForm = () => {
@@ -17,27 +23,25 @@ const LoginForm = () => {
   const locale = useLocale()
   const router = useRouter()
   const { login } = useAuth()
-  const { getFormFields } = useFormFields({ slug: FormTypes.SIGNIN })
+  const { fields } = useFormConfig(FormTypes.SIGNIN)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [rememberMe, setRememberMe] = useState(false)
-  const form = useRef<HTMLFormElement>(null)
 
-  const onSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!form.current) return
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: loginFormConfig.defaultValues,
+    mode: "onTouched",
+  })
+
+  const onSubmit = async (values: LoginFormValues) => {
     setError(null)
     setIsSubmitting(true)
-    const formData = new FormData(form.current)
-    const data: Record<string, string> = {}
-    formData.forEach((value, key) => {
-      data[key] = value.toString()
-    })
 
     try {
       const res = await signInWithPhoneAndRedirect({
-        phone: data.phone.trim(),
-        password: data.password,
+        phone: values.phone.trim(),
+        password: values.password,
         push: router.push,
         login,
         locale,
@@ -48,7 +52,7 @@ const LoginForm = () => {
         return
       }
 
-      toast.success(locale === "ar" ? "تم تسجيل الدخول بنجاح" : "Signed in successfully")
+      toast.success(t("success"))
     } catch {
       setError(t("errors.unexpected"))
     } finally {
@@ -57,66 +61,66 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} ref={form} className="space-y-6">
-      <div className="space-y-4">
-        {getFormFields().map((f) => (
-          <FormFields key={f.name} {...f} error={{}} />
-        ))}
-      </div>
-
-      <div className="flex items-center justify-between gap-3">
-        <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-          <input
-            type="checkbox"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-            className="h-4 w-4 rounded border-input"
-          />
-          {t("rememberMe")}
-        </label>
-        <Button
-          type="button"
-          variant="link"
-          className="h-auto p-0 text-sm"
-          onClick={() => router.push(`/auth/forgot-password`)}
-        >
-          {t("forgotPassword")}
-        </Button>
-      </div>
-
-      {error && (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-          {error}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-4">
+          <RhfFormFields fields={fields} />
         </div>
-      )}
 
-      <Button
-        type="submit"
-        className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            {t("submitting")}
-          </>
-        ) : (
-          t("submit")
+        <div className="flex items-center justify-between gap-3">
+          <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+              className="h-4 w-4 rounded border-input"
+            />
+            {t("rememberMe")}
+          </label>
+          <Button
+            type="button"
+            variant="link"
+            className="h-auto p-0 text-sm"
+            onClick={() => router.push(`/auth/forgot-password`)}
+          >
+            {t("forgotPassword")}
+          </Button>
+        </div>
+
+        {error && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+            {error}
+          </div>
         )}
-      </Button>
 
-      <div className="text-center text-sm text-muted-foreground">
-        {t("noAccount")}{" "}
         <Button
-          type="button"
-          variant="link"
-          className="h-auto p-0"
-          onClick={() => router.push(`/auth/Beneficiarysignup`)}
+          type="submit"
+          className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+          disabled={isSubmitting}
         >
-          {t("createAccount")}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {t("submitting")}
+            </>
+          ) : (
+            t("submit")
+          )}
         </Button>
-      </div>
-    </form>
+
+        <div className="text-center text-sm text-muted-foreground">
+          {t("noAccount")}{" "}
+          <Button
+            type="button"
+            variant="link"
+            className="h-auto p-0"
+            onClick={() => router.push(`/auth/Beneficiarysignup`)}
+          >
+            {t("createAccount")}
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }
 

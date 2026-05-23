@@ -1,6 +1,7 @@
 import { api } from "@/lib/api/api"
 import { Endpoint, Methods } from "@/lib/types/enums"
 
+import type { BeneficiaryOrganizationFormValues } from "../signup/schemas/signup.schema"
 import type { VerifyEmailResponse } from "../types"
 
 export type { VerifyEmailResponse }
@@ -29,6 +30,15 @@ export const verifyEmailServer = async (token: string) => {
 
 /** @alias verifyEmailServer — used by server pages */
 export const verifyEmail = verifyEmailServer
+
+export const beneficiariesSignupClient = async (
+  body: BeneficiaryOrganizationFormValues,
+) => {
+  return api.client<void>(`/${Endpoint.AUTH}/${Endpoint.BENEFICIARIESSIGNUP}`, {
+    method: Methods.POST,
+    body: JSON.stringify(body),
+  })
+}
 
 export const logoutClient = async () => {
   return api.client<void>(`/${Endpoint.AUTH}/logout`, {

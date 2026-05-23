@@ -18,6 +18,12 @@ export const getClassesByGrade = async (gradeId: string) => {
   )
 }
 
+export const getClassesByTeacher = async (teacherId: string) => {
+  return api.server<{ classes: ClassItem[] }>(
+    `/${Endpoint.CLASSES}/teacher/${teacherId}`,
+  )
+}
+
 export const getClassById = async (classId: string) => {
   return api.server<{ class: ClassItem }>(`/${Endpoint.CLASSES}/${classId}`)
 }

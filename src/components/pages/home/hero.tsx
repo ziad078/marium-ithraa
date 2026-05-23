@@ -17,11 +17,6 @@ const Hero = () => {
 
   const cards = [
     {
-      key: "Enricher",
-      href: `${baseAuth}/${Pages.ENRECHERSIGNUP}`,
-      tone: "bg-chart-1/15 hover:bg-chart-1/20",
-    },
-    {
       key: "Beneficiary",
       href: `${baseAuth}/${Pages.BENEFICIARYSIGNUP}`,
       tone: "bg-chart-2/15 hover:bg-chart-2/20",

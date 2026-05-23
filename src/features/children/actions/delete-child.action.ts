@@ -1,29 +1,27 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+
+import { actionErrorState } from "@/features/forms/action-errors"
+import { parseFormData } from "@/features/forms/parse-form-data"
+import { idSchema } from "@/features/forms/schemas/common.schema"
+import { StatusCode } from "@/lib/types/enums"
+import { type InitialState } from "@/lib/types/types"
+
 import { deleteChild } from "../api"
 
-export type DeleteChildState = {
-  ok: boolean
-  error?: string
-}
-
 export async function deleteChildAction(
-  _prevState: DeleteChildState,
+  _prevState: InitialState,
   formData: FormData,
-): Promise<DeleteChildState> {
+): Promise<InitialState> {
+  const parsed = parseFormData(formData, idSchema)
+  if (!parsed.success) return parsed.state
+
   try {
-    const id = formData.get("id")
-    if (!id || typeof id !== "string") {
-      return { ok: false, error: "معرّف الطفل غير صالح" }
-    }
-
-    await deleteChild(id)
+    await deleteChild(parsed.data.id)
     revalidatePath("/dashboards/organization/children")
-
-    return { ok: true }
-  } catch {
-    return { ok: false, error: "حدث خطأ غير متوقع أثناء حذف الطفل" }
+    return { status: StatusCode.OK, message: "تم حذف الطفل بنجاح" }
+  } catch (error) {
+    return actionErrorState(error, formData)
   }
 }
-

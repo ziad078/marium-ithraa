@@ -17,7 +17,7 @@ import { Teacher } from "@/features/teachers"
 import { Button } from "@/components/ui/button"
 import { deleteTeacherAction, DeleteTeacherdState } from "@/features/teachers/actions/delete-teacher-action"
 import { useActionState, useEffect } from "react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 
 

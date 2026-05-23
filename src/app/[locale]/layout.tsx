@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Cairo } from "next/font/google";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/providers/QueryClientProvider";
 
 export const cairo = Cairo({
@@ -55,18 +55,7 @@ export default async function RootLayout({
 
         <NextIntlClientProvider>
           <Providers>
-            <ToastContainer
-              position="top-center"
-              autoClose={2500}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick={false}
-              rtl={dir === "rtl"}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover={true}
-              theme="light"
-            />
+            <Toaster position="top-center" dir={dir} richColors closeButton />
             {children}
           </Providers>
         </NextIntlClientProvider>

@@ -1,5 +1,8 @@
 "use server"
 
+import { parseFormData } from "@/features/forms/parse-form-data"
+import { idSchema } from "@/features/forms/schemas/common.schema"
+
 import { deleteEmployee } from "../api"
 
 export type DeleteEmployeeState = {
@@ -11,15 +14,13 @@ export async function deleteEmployeeAction(
   _prevState: DeleteEmployeeState,
   formData: FormData,
 ): Promise<DeleteEmployeeState> {
+  const parsed = parseFormData(formData, idSchema)
+  if (!parsed.success) {
+    return { ok: false, error: parsed.state.message ?? "معرّف الموظف غير صالح" }
+  }
+
   try {
-    const id = formData.get("id")
-    if (!id || typeof id !== "string") {
-      return { ok: false, error: "معرّف الموظف غير صالح" }
-    }
-
-    await deleteEmployee(id)
-
-
+    await deleteEmployee(parsed.data.id)
     return { ok: true }
   } catch {
     return {

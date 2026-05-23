@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useEffect, useState } from "react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 import { IconPlus } from "@tabler/icons-react"
 import { useTranslations } from "next-intl"
 

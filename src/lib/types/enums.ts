@@ -24,20 +24,17 @@ export enum Pages {
   NEW = "new",
   TESTS = "tests",
   LOGIN = "login",
-  ENRECHERSIGNUP = "enrichersignup",
   BENEFICIARYSIGNUP = "Beneficiarysignup",
   ADMIN = "admin",
   ORGANIZATION = "organization",
   EMPLOYEES = "employees",
-  EMPLOYEE = "employee",
-  ENRICHER = "enricher",
+  TEACHER = "teacher",
   CHILDREN = "children",
   PARENT = "parent",
 }
 
 export enum AccountType {
   ORGANIZATION = "organization",
-  ENRCHER = "enricher"
 }
 
 export enum InputTypes {
@@ -124,8 +121,6 @@ export enum Environments {
 export enum UserRole {
   ADMIN = 'ADMIN',
   ORGANIZATIONOWNER = 'ORGANIZATIONOWNER',
-  EMPLOYEE = 'EMPLOYEE',
-  ENRICHER = 'ENRICHER',
   TEACHER = 'TEACHER',
   PARENT = 'PARENT',
 }
@@ -136,7 +131,6 @@ export enum FormTypes {
   QUESTIONS = "QUESTIONS",
   SIGNIN = "SIGNIN",
   EMPLOYEE = "EMPLOYEE",
-  ENRICHER = "ENRICHER",
   TEST = "TESTS"
 }
 
@@ -182,7 +176,7 @@ export enum Endpoint {
   TESTS = "tests",
   ALL = "all",
   AUTH = "auth",
-  ENRICHERSSIGNUP = "enrichers-signup",
+  BENEFICIARIESSIGNUP = "beneficiaries-signup",
   EMPLOYEES = "employees",
   EMPLOYEESBYORGNIZATION = `${EMPLOYEES}/organization`,
   USERS = "users",

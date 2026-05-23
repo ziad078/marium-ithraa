@@ -49,14 +49,13 @@ function roleHome(locale: string, roles?: Role[] | UserRole[] | string[]) {
   const map: Partial<Record<UserRole, Pages>> = {
     [UserRole.ADMIN]: Pages.ADMIN,
     [UserRole.ORGANIZATIONOWNER]: Pages.ORGANIZATION,
-    [UserRole.EMPLOYEE]: Pages.EMPLOYEE,
-    [UserRole.ENRICHER]: Pages.ENRICHER,
+    [UserRole.TEACHER]: Pages.TEACHER,
     [UserRole.PARENT]: Pages.PARENT,
   }
 
   const primaryRole = normalized[0]
 
-  return `${base}/${map[primaryRole!] ?? Pages.EMPLOYEE}`
+  return `${base}/${map[primaryRole!] ?? Pages.PARENT}`
 }
 
 const AUTH_REQUIRED_ROUTES = [`/${Routes.CHOSEROLE}`]
@@ -65,8 +64,7 @@ const PROTECTED_ROUTES = [`/${Routes.DASHBOARDS}`]
 
 const ACCESS_MAP: Record<string, UserRole[]> = {
   [Pages.ORGANIZATION]: [UserRole.ORGANIZATIONOWNER, UserRole.ADMIN],
-  [Pages.EMPLOYEE]: [UserRole.EMPLOYEE, UserRole.ADMIN],
-  [Pages.ENRICHER]: [UserRole.ENRICHER, UserRole.ADMIN],
+  [Pages.TEACHER]: [UserRole.TEACHER, UserRole.ADMIN],
   [Pages.ADMIN]: [UserRole.ADMIN],
   [Pages.PARENT]: [UserRole.PARENT, UserRole.ADMIN],
 }

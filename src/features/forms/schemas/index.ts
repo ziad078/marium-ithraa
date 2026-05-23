@@ -1,0 +1,7 @@
+export * from "./common.schema"
+export * from "./login.schema"
+export * from "./employee.schema"
+export * from "./teacher.schema"
+export * from "./grade.schema"
+export * from "./class.schema"
+export * from "./child.schema"

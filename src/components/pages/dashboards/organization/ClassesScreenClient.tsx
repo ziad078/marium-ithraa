@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { Layers3, Loader2, Plus, School, Users } from "lucide-react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EntityCard } from "@/components/shared/management/EntityCard"

@@ -30,12 +30,12 @@ const chartConfig = {
         label: "organization owners",
         color: "var(--chart-1)",
     },
-    employees: {
-        label: "employees",
+    teachers: {
+        label: "teachers",
         color: "var(--chart-2)",
     },
-    enrichers: {
-        label: "enrichers",
+    parents: {
+        label: "parents",
         color: "var(--chart-3)",
     },
 
@@ -43,15 +43,15 @@ const chartConfig = {
 
 
 
-const UsersRolesPieChart = ({enrihcersNO, employeesNo, organizationOnwersNo}: {
-    enrihcersNO: number
-    employeesNo: number
+const UsersRolesPieChart = ({teachersNo, parentsNo, organizationOnwersNo}: {
+    teachersNo: number
+    parentsNo: number
     organizationOnwersNo: number
 }) => {
     const chartData = [
         { role: "organizationOwners", users: organizationOnwersNo, fill: "var(--chart-1)" },
-        { role: "employees", users: employeesNo, fill: "var(--chart-2)" },
-        { role: "enrichers", users: enrihcersNO, fill: "var(--chart-3)" },
+        { role: "teachers", users: teachersNo, fill: "var(--chart-2)" },
+        { role: "parents", users: parentsNo, fill: "var(--chart-3)" },
       ]
     return (
         <Card className="flex flex-col">

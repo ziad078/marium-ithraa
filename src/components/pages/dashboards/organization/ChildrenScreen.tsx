@@ -12,7 +12,7 @@ import {
   Phone,
   UserRoundPlus,
 } from "lucide-react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EntityCard } from "@/components/shared/management/EntityCard"

@@ -1,37 +1,29 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { ApiError } from "@/lib/errors/ApiError"
+
+import { actionErrorState } from "@/features/forms/action-errors"
+import { parseFormData } from "@/features/forms/parse-form-data"
+import { updateGradeSchema } from "@/features/forms/schemas/grade.schema"
 import { StatusCode } from "@/lib/types/enums"
 import { type InitialState } from "@/lib/types/types"
+
 import { updateGrade } from "../api"
 
 export async function updateGradeAction(
   _prevState: InitialState,
   formData: FormData,
 ): Promise<InitialState> {
+  const parsed = parseFormData(formData, updateGradeSchema)
+  if (!parsed.success) return parsed.state
+
   try {
-    const id = formData.get("id")
-    if (!id || typeof id !== "string") {
-      return { status: StatusCode.BADREQUEST, message: "معرّف المرحلة غير صالح", formData }
-    }
-    const name = formData.get("name")
-    await updateGrade(id, { name: String(name ?? "") })
+    const { id, name } = parsed.data
+    await updateGrade(id, { name })
     revalidatePath("/dashboards/organization/grades")
     revalidatePath(`/dashboards/organization/grades/${id}`)
     return { status: StatusCode.OK, message: "تم تحديث المرحلة بنجاح" }
   } catch (error) {
-    if (error instanceof ApiError && error.status === StatusCode.BADREQUEST) {
-      return {
-        formData,
-        error: error.validationErrors,
-        status: StatusCode.BADREQUEST,
-      }
-    }
-    return {
-      formData,
-      status: StatusCode.INTERNALSERVERERROR,
-      message: "حدث خطأ ما، تواصل مع الدعم",
-    }
+    return actionErrorState(error, formData)
   }
 }

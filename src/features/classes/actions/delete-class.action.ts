@@ -1,26 +1,27 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+
+import { actionErrorState } from "@/features/forms/action-errors"
+import { parseFormData } from "@/features/forms/parse-form-data"
+import { idSchema } from "@/features/forms/schemas/common.schema"
+import { StatusCode } from "@/lib/types/enums"
+import { type InitialState } from "@/lib/types/types"
+
 import { deleteClass } from "../api"
 
-export type DeleteClassState = {
-  ok: boolean
-  error?: string
-}
-
 export async function deleteClassAction(
-  _prevState: DeleteClassState,
+  _prevState: InitialState,
   formData: FormData,
-): Promise<DeleteClassState> {
+): Promise<InitialState> {
+  const parsed = parseFormData(formData, idSchema)
+  if (!parsed.success) return parsed.state
+
   try {
-    const id = formData.get("id")
-    if (!id || typeof id !== "string") {
-      return { ok: false, error: "معرّف الفصل غير صالح" }
-    }
-    await deleteClass(id)
+    await deleteClass(parsed.data.id)
     revalidatePath("/dashboards/organization/classes")
-    return { ok: true }
-  } catch {
-    return { ok: false, error: "حدث خطأ غير متوقع أثناء حذف الفصل" }
+    return { status: StatusCode.OK, message: "تم حذف الفصل بنجاح" }
+  } catch (error) {
+    return actionErrorState(error, formData)
   }
 }

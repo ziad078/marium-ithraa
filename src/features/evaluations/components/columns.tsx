@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -18,22 +18,17 @@ function TH({ messageKey }: { messageKey: string }) {
 }
 
 function TypeBadge({ type }: { type: Evaluation["type"] }) {
-  const locale = useLocale()
-  const isAr = locale === "ar"
+  const t = useTranslations("Features.Evaluations")
   return (
     <Badge variant="secondary" className="font-normal">
-      {getEvaluationTypeLabel(type, isAr)}
+      {getEvaluationTypeLabel(type, t)}
     </Badge>
   )
 }
 
 function AgeRangeCell({ evaluation }: { evaluation: Evaluation }) {
-  const locale = useLocale()
-  return formatAgeRange(
-    evaluation.ageFrom,
-    evaluation.ageTo,
-    locale === "ar",
-  )
+  const t = useTranslations("Features.Evaluations")
+  return formatAgeRange(evaluation.ageFrom, evaluation.ageTo, t)
 }
 
 function ViewDetailsLink({ id }: { id: string }) {

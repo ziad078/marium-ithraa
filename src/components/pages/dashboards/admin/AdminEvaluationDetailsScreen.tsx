@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,15 +10,15 @@ import {
   formatAgeRange,
   getEvaluationTypeLabel,
 } from "@/features/evaluations/utils/labels"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 
 type Props = {
   evaluation: Evaluation
-  locale: string
 }
 
-export function AdminEvaluationDetailsScreen({ evaluation, locale }: Props) {
+export function AdminEvaluationDetailsScreen({ evaluation }: Props) {
+  const locale = useLocale()
   const t = useTranslations("Features.Evaluations")
-  const isAr = locale === "ar"
 
   const groupedQuestions = useMemo(() => {
     const map = new Map<string, typeof evaluation.questions>()
@@ -35,7 +35,7 @@ export function AdminEvaluationDetailsScreen({ evaluation, locale }: Props) {
   }, [evaluation])
 
   return (
-    <div className="space-y-6 px-4 lg:px-6" dir={isAr ? "rtl" : "ltr"}>
+    <div className="space-y-6 px-4 lg:px-6" dir={getTextDirection(locale)}>
       <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
         {t("adminScoreWarning")}
       </p>
@@ -52,12 +52,12 @@ export function AdminEvaluationDetailsScreen({ evaluation, locale }: Props) {
           <p>
             <span className="text-muted-foreground">{t("type")}: </span>
             <Badge variant="secondary">
-              {getEvaluationTypeLabel(evaluation.type, isAr)}
+              {getEvaluationTypeLabel(evaluation.type, t)}
             </Badge>
           </p>
           <p>
             <span className="text-muted-foreground">{t("ageRange")}: </span>
-            {formatAgeRange(evaluation.ageFrom, evaluation.ageTo, isAr)}
+            {formatAgeRange(evaluation.ageFrom, evaluation.ageTo, t)}
           </p>
           <p>
             <span className="text-muted-foreground">{t("evaluatorTypes")}: </span>

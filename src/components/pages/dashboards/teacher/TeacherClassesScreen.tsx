@@ -1,25 +1,25 @@
 "use client"
 
+import { useLocale, useTranslations } from "next-intl"
 import { School, Users } from "lucide-react"
-import { useTranslations } from "next-intl"
 
 import { EmptyState } from "@/components/shared/management/EmptyState"
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { ClassItem } from "@/features/classes/types"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 
 type Props = {
-  locale: string
   classes: ClassItem[]
   teacherName: string
 }
 
-export function TeacherClassesScreen({ locale, classes, teacherName }: Props) {
+export function TeacherClassesScreen({ classes, teacherName }: Props) {
+  const locale = useLocale()
   const t = useTranslations("Features.TeacherDashboard")
-  const isAr = locale === "ar"
 
   return (
-    <main className="app-container space-y-8 py-8" dir={isAr ? "rtl" : "ltr"}>
+    <main className="app-container space-y-8 py-8" dir={getTextDirection(locale)}>
       <ManagementPageHeader
         title={t("classes")}
         subtitle={t("classesWelcome", { name: teacherName })}

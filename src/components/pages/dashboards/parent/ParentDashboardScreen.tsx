@@ -13,6 +13,7 @@ import {
   useNotificationsList,
   useUnreadCount,
 } from "@/features/notifications/hooks"
+import { getDateLocale } from "@/lib/i18n/locale-utils"
 import { Pages, Routes } from "@/lib/types/enums"
 import { useSession } from "next-auth/react"
 
@@ -22,13 +23,12 @@ export function ParentDashboardScreen() {
   const locale = useLocale()
   const tParent = useTranslations("Features.ParentDashboard")
   const tNotif = useTranslations("Features.Notifications")
-  const isAr = locale === "ar"
   const { data: session } = useSession()
 
   const unread = useUnreadCount(30_000)
   const { data: notificationsData } = useNotificationsList({ page: 1, limit: 5 })
 
-  const displayName = session?.user?.name ?? (isAr ? "ولي الأمر" : "Parent")
+  const displayName = session?.user?.name ?? tParent("defaultName")
   const unreadCount = unread.data?.count ?? 0
 
   const stats = useMemo(
@@ -76,31 +76,31 @@ export function ParentDashboardScreen() {
     return items.slice(0, 4).map((n) => ({
       id: n.id,
       title: n.title,
-      timeAgo: new Date(n.createdAt).toLocaleString(isAr ? "ar-SA" : undefined, {
+      timeAgo: new Date(n.createdAt).toLocaleString(getDateLocale(locale), {
         dateStyle: "short",
         timeStyle: "short",
       }),
       icon: <Bell />,
     }))
-  }, [notificationsData, isAr, tNotif])
+  }, [notificationsData, locale, tNotif])
 
   return (
     <DashboardHomeLayout locale={locale}>
       <WelcomeHero
-        title={isAr ? `مرحباً ${displayName}` : `Welcome, ${displayName}`}
+        title={tParent("welcome", { name: displayName })}
         subtitle={tParent("subtitle")}
       />
 
       <section className="space-y-4">
         <h2 className="text-start text-xl font-bold text-foreground">
-          {isAr ? "نظرة عامة" : "Overview"}
+          {tParent("overview")}
         </h2>
         <StatsGrid items={stats} />
       </section>
 
       <section className="space-y-4">
         <h2 className="text-start text-xl font-bold text-foreground">
-          {isAr ? "اختصارات سريعة" : "Quick actions"}
+          {tParent("quickActions")}
         </h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           <QuickActionCard
@@ -108,14 +108,14 @@ export function ParentDashboardScreen() {
             description={tParent("childrenDesc")}
             href={`${PARENT_URL}/children`}
             icon={<Baby />}
-            actionLabel={isAr ? "عرض الأطفال" : "View children"}
+            actionLabel={tParent("viewChildren")}
           />
           <QuickActionCard
             title={tParent("evaluations")}
             description={tParent("evaluationsDesc")}
             href={`${PARENT_URL}/evaluations`}
             icon={<Brain />}
-            actionLabel={isAr ? "التقييمات" : "Evaluations"}
+            actionLabel={tParent("evaluations")}
           />
           <QuickActionCard
             title={tNotif("title")}
@@ -127,10 +127,7 @@ export function ParentDashboardScreen() {
         </div>
       </section>
 
-      <ActivityFeed
-        title={isAr ? "آخر التنبيهات" : "Recent notifications"}
-        items={activities}
-      />
+      <ActivityFeed title={tParent("recentNotifications")} items={activities} />
     </DashboardHomeLayout>
   )
 }

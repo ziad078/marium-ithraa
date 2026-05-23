@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ProgressBar } from "@/components/shared/ProgressBar"
 
@@ -7,11 +9,10 @@ type DimScore = { code?: string; name?: string; score?: number; max?: number }
 
 export function MultipleIntelligencesResult({
   result,
-  isAr,
 }: {
   result: Record<string, unknown>
-  isAr: boolean
 }) {
+  const t = useTranslations("Features.EvaluationResults.multipleIntelligences")
   const dimensions = (result.dimensions as DimScore[]) ?? []
   const top3 = (result.top3 as DimScore[]) ?? dimensions.slice(0, 3)
 
@@ -19,9 +20,7 @@ export function MultipleIntelligencesResult({
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
-            {isAr ? "أعلى ثلاث ذكاءات" : "Top 3 intelligences"}
-          </CardTitle>
+          <CardTitle className="text-base">{t("top3")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           {top3.map((d, i) => (
@@ -33,9 +32,7 @@ export function MultipleIntelligencesResult({
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
-            {isAr ? "درجات المحاور" : "Dimension scores"}
-          </CardTitle>
+          <CardTitle className="text-base">{t("dimensions")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {dimensions.map((d) => {

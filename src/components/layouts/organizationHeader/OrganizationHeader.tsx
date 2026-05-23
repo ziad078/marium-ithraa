@@ -16,17 +16,17 @@ type OrganizationHeaderProps = {
 }
 
 const navLinks = [
-  { labelAr: "الرئيسية", labelEn: "Home", href: "/dashboards/organization" },
-  { labelAr: "المراحل", labelEn: "Grades", href: "/dashboards/organization/grades" },
-  { labelAr: "الفصول", labelEn: "Classes", href: "/dashboards/organization/classes" },
-  { labelAr: "الأطفال", labelEn: "Children", href: "/dashboards/organization/children" },
-  { labelAr: "المعلمين", labelEn: "Teachers", href: "/dashboards/organization/teachers" },
-  { labelAr: "النتائج", labelEn: "Results", href: "/dashboards/organization/results" },
-]
+  { labelKey: "home", href: "/dashboards/organization" },
+  { labelKey: "grades", href: "/dashboards/organization/grades" },
+  { labelKey: "classes", href: "/dashboards/organization/classes" },
+  { labelKey: "children", href: "/dashboards/organization/children" },
+  { labelKey: "teachers", href: "/dashboards/organization/teachers" },
+  { labelKey: "results", href: "/dashboards/organization/results" },
+] as const
 
 const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
   const pathname = usePathname()
-  const isAr = locale === "ar"
+  const t = useTranslations("Layout.OrganizationNav")
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const isActive = (href: string) => {
@@ -70,7 +70,7 @@ const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
                     : "text-foreground/70 hover:text-foreground hover:bg-primary/10",
                 )}
               >
-                {isAr ? item.labelAr : item.labelEn}
+                {t(item.labelKey)}
               </Link>
             ))}
           </nav>
@@ -91,7 +91,7 @@ const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
               size="icon-sm"
               className="lg:hidden rounded-full"
               onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
+              aria-label={t("menu")}
             >
               <Menu />
             </Button>
@@ -103,19 +103,19 @@ const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
             <button
               className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
               onClick={() => setMobileOpen(false)}
-              aria-label="Close menu overlay"
+              aria-label={t("menu")}
             />
             <div className="fixed top-0 inset-x-0 z-50 p-4">
               <div className="mx-auto max-w-lg rounded-3xl border bg-background shadow-lg">
                 <div className="flex items-center justify-between p-4 border-b">
-                  <span className="font-semibold">{isAr ? "القائمة" : "Menu"}</span>
+                  <span className="font-semibold">{t("menu")}</span>
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon-sm"
                     className="rounded-full"
                     onClick={() => setMobileOpen(false)}
-                    aria-label="Close menu"
+                    aria-label={t("menu")}
                   >
                     <X />
                   </Button>
@@ -134,7 +134,7 @@ const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
                           : "text-foreground/80 hover:bg-primary/10 hover:text-foreground",
                       )}
                     >
-                      {isAr ? item.labelAr : item.labelEn}
+                      {t(item.labelKey)}
                     </Link>
                   ))}
 

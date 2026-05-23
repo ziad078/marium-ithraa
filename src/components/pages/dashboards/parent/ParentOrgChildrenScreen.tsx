@@ -1,5 +1,6 @@
 "use client"
 
+import { useLocale, useTranslations } from "next-intl"
 import { Baby, Calendar } from "lucide-react"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
@@ -11,42 +12,38 @@ import {
   formatChildBirthDate,
   getChildEvaluationLabel,
 } from "@/features/children/utils/display"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 import { Link } from "@/i18n/navigation"
 
 type Props = {
-  locale: string
   orgChildren: Child[]
 }
 
-export function ParentOrgChildrenScreen({ locale, orgChildren }: Props) {
-  const isAr = locale === "ar"
-
-  const title = isAr ? "اطفال المؤسسة" : "Organization children"
+export function ParentOrgChildrenScreen({ orgChildren }: Props) {
+  const locale = useLocale()
+  const t = useTranslations("Dashboard.Parent.orgChildren")
+  const tParent = useTranslations("Dashboard.Parent")
+  const tChildren = useTranslations("Dashboard.Children")
+  const tCommon = useTranslations("Dashboard.common")
+  const tDashboard = useTranslations("Dashboard.common")
 
   return (
-    <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
+    <main className="app-container py-8 space-y-8" dir={getTextDirection(locale)}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/parent", label: isAr ? "الرئيسية" : "Home" },
-          { label: title },
+          { href: "/dashboards/parent", label: tDashboard("home") },
+          { label: t("title") },
         ]}
-        title={title}
-        subtitle={
-          isAr
-            ? `يمكنك اضافة الاطفال التابعين لمؤسستك من هنا`
-            : `You can evaluate your organization children here`
-        }
+        title={t("title")}
+        subtitle={t("subtitle")}
       />
 
-
       {orgChildren.length === 0 ? (
-        <EmptyState
-          title={isAr ? "لا يوجد أطفال بعد" : "No children yet"}
-        />
+        <EmptyState title={t("empty")} />
       ) : (
         <section className="grid gap-4 md:grid-cols-2">
           {orgChildren.map((child) => {
-            const evalInfo = getChildEvaluationLabel(child, isAr)
+            const evalInfo = getChildEvaluationLabel(child, tChildren)
             return (
               <Card key={child.id} className="rounded-2xl">
                 <CardContent className="p-5 space-y-2">
@@ -59,17 +56,11 @@ export function ParentOrgChildrenScreen({ locale, orgChildren }: Props) {
                     {formatChildBirthDate(child.birthDate, locale)}
                   </p>
                   <p className="text-sm">
-                    {isAr ? "المحاولات" : "Attempts"}: {child.attemptsUsed ?? 0}
+                    {tParent("attempts")}: {child.attemptsUsed ?? 0}
                   </p>
                   <p className="text-sm">
-                    {isAr ? "إعادة التقييم" : "Retake"}:{" "}
-                    {child.retakeUsed
-                      ? isAr
-                        ? "نعم"
-                        : "Yes"
-                      : isAr
-                        ? "لا"
-                        : "No"}
+                    {tParent("retake")}:{" "}
+                    {child.retakeUsed ? tCommon("yes") : tCommon("no")}
                   </p>
                   <p className={`text-sm font-medium ${evalInfo.className}`}>
                     {evalInfo.label}
@@ -78,7 +69,7 @@ export function ParentOrgChildrenScreen({ locale, orgChildren }: Props) {
                     <Link
                       href={`/dashboards/parent/children/${child.id}/evaluations`}
                     >
-                      {isAr ? "التقييمات" : "Evaluations"}
+                      {tParent("evaluationsLink")}
                     </Link>
                   </Button>
                 </CardContent>

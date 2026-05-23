@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import { useLocale, useTranslations } from "next-intl"
 import { useActionState, useEffect, useState } from "react"
 import { Baby, Loader2, Plus } from "lucide-react"
-import { useActionFeedback } from "@/hooks/useActionFeedback"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EmptyState } from "@/components/shared/management/EmptyState"
@@ -22,17 +22,21 @@ import {
   formatChildBirthDate,
   getChildEvaluationLabel,
 } from "@/features/children/utils/display"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 
 type Props = {
-  locale: string
   classItem: ClassItem
   classChildren: Child[]
 }
 
-export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
-  const isAr = locale === "ar"
+export function ClassDetailScreen({ classItem, classChildren }: Props) {
+  const locale = useLocale()
+  const t = useTranslations("Dashboard.ClassDetail")
+  const tChildren = useTranslations("Dashboard.Children")
+  const tCommon = useTranslations("Dashboard.common")
+  const tNav = useTranslations("Layout.OrganizationNav")
   const [deleteTarget, setDeleteTarget] = useState<Child | null>(null)
-
   const { notifyDelete } = useActionFeedback()
 
   const [deleteState, deleteAction, isDeleting] = useActionState<
@@ -50,21 +54,17 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
   }, [deleteState, notifyDelete])
 
   return (
-    <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
+    <main className="app-container py-8 space-y-8" dir={getTextDirection(locale)}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "الرئيسية" : "Home" },
-          { href: "/dashboards/organization/classes", label: isAr ? "الفصول" : "Classes" },
+          { href: "/dashboards/organization", label: tCommon("home") },
+          { href: "/dashboards/organization/classes", label: tNav("classes") },
           { label: classItem.name },
         ]}
         title={classItem.name}
-        subtitle={
-          isAr
-            ? `المرحلة: ${classItem.gradeName ?? "—"}`
-            : `Grade: ${classItem.gradeName ?? "—"}`
-        }
+        subtitle={t("gradeSubtitle", { grade: classItem.gradeName ?? "—" })}
         action={{
-          label: isAr ? "إضافة طفل" : "Add child",
+          label: t("addChild"),
           href: `/dashboards/organization/children/new?classId=${classItem.id}&gradeId=${classItem.gradeId}`,
           icon: <Plus />,
         }}
@@ -72,14 +72,14 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
 
       {classChildren.length === 0 ? (
         <EmptyState
-          title={isAr ? "لا يوجد أطفال في هذا الفصل" : "No children in this class"}
-          actionLabel={isAr ? "إضافة طفل" : "Add child"}
+          title={t("empty")}
+          actionLabel={t("addChild")}
           actionHref={`/dashboards/organization/children/new?classId=${classItem.id}&gradeId=${classItem.gradeId}`}
         />
       ) : (
         <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {classChildren.map((child) => {
-            const evalInfo = getChildEvaluationLabel(child, isAr)
+            const evalInfo = getChildEvaluationLabel(child, tChildren)
             return (
               <Card key={child.id} className="rounded-2xl">
                 <CardContent className="p-5 space-y-3">
@@ -88,8 +88,7 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
                     {child.name}
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {isAr ? "تاريخ الميلاد" : "Birth"}:{" "}
-                    {formatChildBirthDate(child.birthDate, locale)}
+                    {t("birth")}: {formatChildBirthDate(child.birthDate, locale)}
                   </p>
                   <p className={`text-sm font-medium ${evalInfo.className}`}>
                     {evalInfo.label}
@@ -97,7 +96,7 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
                   <div className="flex gap-2 pt-2">
                     <Button variant="outline" size="sm" className="rounded-xl flex-1" asChild>
                       <Link href={`/dashboards/organization/children/${child.id}`}>
-                        {isAr ? "تعديل" : "Edit"}
+                        {tCommon("edit")}
                       </Link>
                     </Button>
                     <Button
@@ -107,7 +106,7 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
                       type="button"
                       onClick={() => setDeleteTarget(child)}
                     >
-                      {isAr ? "حذف" : "Delete"}
+                      {tCommon("delete")}
                     </Button>
                   </div>
                 </CardContent>
@@ -123,10 +122,8 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{isAr ? "حذف طفل" : "Delete child"}</DialogTitle>
-            <DialogDescription>
-              {isAr ? "هل أنت متأكد؟" : "Are you sure?"}
-            </DialogDescription>
+            <DialogTitle>{t("deleteTitle")}</DialogTitle>
+            <DialogDescription>{tCommon("confirmDelete")}</DialogDescription>
           </DialogHeader>
           {deleteTarget && (
             <form action={deleteAction}>
@@ -140,7 +137,7 @@ export function ClassDetailScreen({ locale, classItem, classChildren }: Props) {
                 {isDeleting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  isAr ? "حذف" : "Delete"
+                  tCommon("delete")
                 )}
               </Button>
             </form>

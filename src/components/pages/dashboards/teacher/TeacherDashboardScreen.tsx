@@ -26,7 +26,6 @@ export function TeacherDashboardScreen({ classCount = 0, teacherName }: Props) {
   const tTeacher = useTranslations("Features.TeacherDashboard")
   const tNav = useTranslations("Dashboard.Nav")
   const tNotif = useTranslations("Features.Notifications")
-  const isAr = locale === "ar"
   const { data: session } = useSession()
 
   const displayName = teacherName ?? session?.user?.name ?? tTeacher("defaultName")
@@ -64,7 +63,7 @@ export function TeacherDashboardScreen({ classCount = 0, teacherName }: Props) {
   return (
     <DashboardHomeLayout locale={locale}>
       <WelcomeHero
-        title={isAr ? `مرحباً ${displayName}` : `Welcome, ${displayName}`}
+        title={tTeacher("welcome", { name: displayName })}
         subtitle={tTeacher("subtitle")}
       />
 
@@ -85,14 +84,14 @@ export function TeacherDashboardScreen({ classCount = 0, teacherName }: Props) {
             description={tTeacher("classesDescription")}
             href={`${TEACHER_URL}/classes`}
             icon={<School />}
-            actionLabel={isAr ? "فتح" : "Open"}
+            actionLabel={tTeacher("open")}
           />
           <QuickActionCard
             title={tNotif("title")}
             description={tTeacher("notificationsDescription")}
             href={`/${Routes.DASHBOARDS}/notifications`}
             icon={<Bell />}
-            actionLabel={isAr ? "فتح" : "Open"}
+            actionLabel={tTeacher("open")}
           />
         </div>
       </section>

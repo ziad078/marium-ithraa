@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 import AttemptSummary from "@/components/evaluation/AttemptSummary"
 import { AttemptResultView } from "@/components/evaluation/results/AttemptResultView"
@@ -12,8 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useAttempt } from "@/features/evaluations/hooks"
 import { Link } from "@/i18n/navigation"
 import { ApiError } from "@/lib/errors/ApiError"
-
-type Props = { locale: string }
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 
 function isForbiddenError(error: unknown): boolean {
   return (
@@ -22,12 +21,13 @@ function isForbiddenError(error: unknown): boolean {
   )
 }
 
-export function OwnerAttemptResultScreen({ locale }: Props) {
+export function OwnerAttemptResultScreen() {
+  const locale = useLocale()
   const params = useParams<{ attemptId: string }>()
   const attemptId = params.attemptId ?? ""
   const t = useTranslations("Features.OwnerEvaluations")
   const tEval = useTranslations("Features.Evaluations")
-  const isAr = locale === "ar"
+  const tCommon = useTranslations("Dashboard.common")
 
   const { data: attempt, isLoading, isError, error, refetch } =
     useAttempt(attemptId)
@@ -35,7 +35,7 @@ export function OwnerAttemptResultScreen({ locale }: Props) {
   const breadcrumbs = [
     {
       href: "/dashboards/organization",
-      label: isAr ? "الرئيسية" : "Home",
+      label: tCommon("home"),
     },
     {
       href: "/dashboards/organization/results",
@@ -46,7 +46,7 @@ export function OwnerAttemptResultScreen({ locale }: Props) {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+      <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
         <div className="app-container space-y-4">
           <Skeleton className="h-10 w-64" />
           <Skeleton className="h-32 w-full rounded-2xl" />
@@ -59,7 +59,7 @@ export function OwnerAttemptResultScreen({ locale }: Props) {
   if (isError) {
     const forbidden = isForbiddenError(error)
     return (
-      <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+      <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
         <div className="app-container space-y-6">
           <ManagementPageHeader breadcrumbs={breadcrumbs} title={t("attemptResult")} />
           <Card className="rounded-2xl border bg-white">
@@ -86,7 +86,7 @@ export function OwnerAttemptResultScreen({ locale }: Props) {
 
   if (!attempt) {
     return (
-      <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+      <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
         <div className="app-container space-y-6">
           <ManagementPageHeader breadcrumbs={breadcrumbs} title={t("attemptResult")} />
           <Card className="rounded-2xl border bg-white">
@@ -103,7 +103,7 @@ export function OwnerAttemptResultScreen({ locale }: Props) {
   const evaluationType = attempt.evaluation?.type ?? "multiple_intelligences"
 
   return (
-    <main className="min-h-screen bg-[#f3eefb] py-8" dir={isAr ? "rtl" : "ltr"}>
+    <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
       <div className="app-container space-y-6">
         <ManagementPageHeader
           breadcrumbs={breadcrumbs}
@@ -111,7 +111,7 @@ export function OwnerAttemptResultScreen({ locale }: Props) {
           subtitle={attempt.child?.name}
         />
 
-        <AttemptSummary attempt={attempt} locale={locale} />
+        <AttemptSummary attempt={attempt} />
 
         {status === "approved" ? (
           <Card className="rounded-2xl border bg-white shadow-sm">
@@ -122,30 +122,23 @@ export function OwnerAttemptResultScreen({ locale }: Props) {
               <AttemptResultView
                 type={evaluationType}
                 result={attempt.result}
-                locale={locale}
                 title={attempt.evaluation?.title}
               />
             </CardContent>
           </Card>
         ) : status === "submitted" ? (
           <Card className="rounded-2xl border bg-white shadow-sm">
-            <CardContent className="py-10 text-center text-sm text-muted-foreground">
+            <CardContent className="py-8 text-center text-sm text-muted-foreground">
               {t("attemptNotApproved")}
             </CardContent>
           </Card>
         ) : (
           <Card className="rounded-2xl border bg-white shadow-sm">
-            <CardContent className="py-10 text-center text-sm text-muted-foreground">
+            <CardContent className="py-8 text-center text-sm text-muted-foreground">
               {t("attemptNoResultYet")}
             </CardContent>
           </Card>
         )}
-
-        <div className="flex justify-end">
-          <Button variant="outline" asChild className="rounded-xl">
-            <Link href="/dashboards/organization/results">{t("backToResults")}</Link>
-          </Button>
-        </div>
       </div>
     </main>
   )

@@ -53,7 +53,6 @@ export default function ParentAttemptPage() {
             <AttemptResultView
               type={attempt.evaluation?.type ?? "multiple_intelligences"}
               result={attempt.result}
-              locale={locale}
               title={attempt.evaluation?.title}
             />
           </CardContent>

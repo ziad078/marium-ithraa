@@ -9,7 +9,7 @@ type Props = {
 }
 
 export default async function AdminEvaluationDetailsPage({ params }: Props) {
-  const { locale, evaluationId } = await params
+  const { evaluationId } = await params
 
   let evaluation
   try {
@@ -24,7 +24,7 @@ export default async function AdminEvaluationDetailsPage({ params }: Props) {
     <>
       <SiteHeader titleKey="Features.Evaluations.detailsTitle" />
       <div className="flex flex-1 flex-col py-4 md:py-6">
-        <AdminEvaluationDetailsScreen evaluation={evaluation} locale={locale} />
+        <AdminEvaluationDetailsScreen evaluation={evaluation} />
       </div>
     </>
   )

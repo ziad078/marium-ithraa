@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 import type { EvaluationType } from "@/features/evaluations/types"
 import { GenericResultView } from "./GenericResultView"
 import { HollandResult } from "./HollandResult"
@@ -11,37 +13,34 @@ import { RenzulliResult } from "./RenzulliResult"
 type Props = {
   type: EvaluationType
   result: Record<string, unknown> | null | undefined
-  locale: string
   title?: string
 }
 
-export function AttemptResultView({ type, result, locale, title }: Props) {
-  const isAr = locale === "ar"
+export function AttemptResultView({ type, result, title }: Props) {
+  const t = useTranslations("Features.EvaluationResults")
 
   if (!result || Object.keys(result).length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
-        {isAr ? "لا توجد نتيجة بعد" : "No result available yet"}
-      </p>
+      <p className="text-sm text-muted-foreground">{t("noResult")}</p>
     )
   }
 
   switch (type) {
     case "multiple_intelligences":
-      return <MultipleIntelligencesResult result={result} isAr={isAr} />
+      return <MultipleIntelligencesResult result={result} />
     case "pride":
-      return <PrideResult result={result} isAr={isAr} />
+      return <PrideResult result={result} />
     case "renzulli":
-      return <RenzulliResult result={result} isAr={isAr} />
+      return <RenzulliResult result={result} />
     case "holland":
-      return <HollandResult result={result} isAr={isAr} />
+      return <HollandResult result={result} />
     case "learning_styles":
-      return <LearningStylesResult result={result} isAr={isAr} />
+      return <LearningStylesResult result={result} />
     default:
       return (
         <GenericResultView
           result={result}
-          title={title ?? (isAr ? "النتيجة" : "Result")}
+          title={title ?? t("defaultTitle")}
         />
       )
   }

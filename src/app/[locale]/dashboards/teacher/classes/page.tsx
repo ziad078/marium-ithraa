@@ -1,15 +1,12 @@
 import { getTranslations } from "next-intl/server"
 
-import { TeacherClassesScreen } from "@/components/pages/dashboards/teacher/TeacherClassesScreen"
 import { getClassesByTeacher } from "@/features/classes/api"
 import { getCurrentTeacher } from "@/lib/helpers/getCurrentTeacher"
+import { TeacherClassesScreen } from "@/components/pages/dashboards/teacher/TeacherClassesScreen"
 
-type Props = {
-  params: Promise<{ locale: string }>
-}
 
-export default async function TeacherClassesPage({ params }: Props) {
-  const { locale } = await params
+
+export default async function TeacherClassesPage() {
   const t = await getTranslations("Features.TeacherDashboard")
   const teacher = await getCurrentTeacher()
 
@@ -34,5 +31,5 @@ export default async function TeacherClassesPage({ params }: Props) {
     })) ?? []
   }
 
-  return <TeacherClassesScreen locale={locale} classes={classes} teacherName={teacher.name} />
+  return <TeacherClassesScreen classes={classes} teacherName={teacher.name} />
 }

@@ -43,6 +43,7 @@ import {
 } from "@/features/children/utils/display"
 import { useClientPagination } from "@/hooks/useClientPagination"
 import { useActionFeedback } from "@/hooks/useActionFeedback"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 import { Gender } from "@/lib/types/enums"
 
 type Props = {
@@ -53,7 +54,6 @@ type Props = {
 
 export function ChildrenScreen({ childrens, grades, classes }: Props) {
   const locale = useLocale()
-  const isAr = locale === "ar"
   const t = useTranslations("Dashboard.Children")
   const tCommon = useTranslations("Dashboard.common")
   const tPagination = useTranslations("Dashboard.pagination")
@@ -103,7 +103,7 @@ export function ChildrenScreen({ childrens, grades, classes }: Props) {
   const { pageItems, pagination, setPage, resetPage } = useClientPagination(filtered, 12)
 
   return (
-    <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
+    <main className="app-container py-8 space-y-8" dir={getTextDirection(locale)}>
       <ManagementPageHeader
         breadcrumbs={[
           { href: "/dashboards/organization", label: tCommon("home") },
@@ -166,7 +166,7 @@ export function ChildrenScreen({ childrens, grades, classes }: Props) {
         <>
           <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {pageItems.map((child) => {
-              const evalInfo = getChildEvaluationLabel(child, isAr)
+              const evalInfo = getChildEvaluationLabel(child, t)
               const genderLabel =
                 child.gender === Gender.MALE
                   ? t("gender.male")

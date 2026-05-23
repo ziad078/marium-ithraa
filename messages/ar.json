@@ -99,7 +99,44 @@
       "home": "الرئيسية",
       "edit": "تعديل",
       "noData": "لا توجد بيانات",
-      "confirmDelete": "هل أنت متأكد؟"
+      "confirmDelete": "هل أنت متأكد؟",
+      "yes": "نعم",
+      "no": "لا",
+      "open": "فتح"
+    },
+    "Parent": {
+      "privateChildren": {
+        "title": "أطفالي",
+        "subtitle": "يمكنك إضافة حتى {limit} أطفال للتقييم الخاص",
+        "limitReached": "تم الوصول إلى الحد الأقصى (طفلان)",
+        "addChild": "إضافة طفل",
+        "empty": "لا يوجد أطفال بعد"
+      },
+      "orgChildren": {
+        "title": "أطفال المؤسسة",
+        "subtitle": "يمكنك تقييم أطفال مؤسستك من هنا",
+        "empty": "لا يوجد أطفال بعد"
+      },
+      "attempts": "المحاولات",
+      "retake": "إعادة التقييم",
+      "evaluationsLink": "التقييمات",
+      "childAge": "عمر الطفل: {age} سنة"
+    },
+    "ClassDetail": {
+      "addChild": "إضافة طفل",
+      "empty": "لا يوجد أطفال في هذا الفصل",
+      "birth": "تاريخ الميلاد",
+      "deleteTitle": "حذف طفل",
+      "gradeSubtitle": "المرحلة: {grade}",
+      "classesBreadcrumb": "الفصول"
+    },
+    "GradeDetail": {
+      "addClass": "إضافة فصل",
+      "emptyClasses": "لا توجد فصول في هذه المرحلة",
+      "childrenCount": "{count} طفل",
+      "emptyChildren": "لا يوجد أطفال في هذا الفصل",
+      "subtitle": "{count} فصول",
+      "gradesBreadcrumb": "المراحل"
     },
     "pagination": {
       "previous": "السابق",
@@ -160,18 +197,6 @@
       "classFilter": "الفصل",
       "allClasses": "كل الفصول",
       "goToEdit": "انتقل لصفحة التعديل",
-      "fields": {
-        "name": "الاسم",
-        "birthDate": "تاريخ الميلاد",
-        "gender": "النوع",
-        "grade": "المرحلة",
-        "class": "الفصل",
-        "parent": "ولي الأمر",
-        "email": "البريد",
-        "phone": "الهاتف",
-        "evaluation": "حالة التقييم",
-        "attempts": "المحاولات"
-      },
       "actions": {
         "add": "إضافة طفل"
       },
@@ -190,15 +215,25 @@
         "deleteConfirmShort": "هل أنت متأكد؟ لا يمكن التراجع."
       },
       "fields": {
+        "genderPlaceholder": "اختر الجنس",
         "name": "الاسم",
-        "grade": "الصف",
         "birthDate": "تاريخ الميلاد",
-        "gender": "الجنس",
-        "genderPlaceholder": "اختر الجنس"
+        "gender": "النوع",
+        "grade": "المرحلة",
+        "class": "الفصل",
+        "parent": "ولي الأمر",
+        "email": "البريد",
+        "phone": "الهاتف",
+        "evaluation": "حالة التقييم",
+        "attempts": "المحاولات"
       },
       "gender": {
         "male": "ذكر",
         "female": "أنثى"
+      },
+      "evaluationStatus": {
+        "evaluated": "تم التقييم",
+        "notEvaluated": "لم يتم التقييم"
       },
       "table": {
         "name": "الاسم",
@@ -590,10 +625,36 @@
       "missingAnswerIds": "{count} خيار/خيارات إجابة بدون معرف ولا يمكن إرسالها.",
       "privateSlotHint": "افتح فتحة أولاً، ثم ابدأ التقييم من القائمة أدناه.",
       "slotOpened": "تم فتح الفتحة بنجاح",
-      "slotOpenedPickEvaluation": "الفتحة جاهزة. اختر تقييماً واضغط بدء التقييم."
+      "slotOpenedPickEvaluation": "الفتحة جاهزة. اختر تقييماً واضغط بدء التقييم.",
+      "childAge": "عمر الطفل: {age} سنة",
+      "types": {
+        "multiple_intelligences": "مؤشر الذكاءات الثمانية",
+        "pride": "مقياس برايد",
+        "renzulli": "مقياس رنزولي",
+        "holland": "مقياس هولاند",
+        "learning_styles": "مقياس أساليب التعلم",
+        "torrance": "مقياس تورانس"
+      },
+      "ageRange": {
+        "all": "الكل",
+        "range": "{from} - {to} سنة",
+        "from": "من {from} سنة",
+        "upTo": "حتى {to} سنة"
+      },
+      "attemptStatus": {
+        "in_progress": "قيد التنفيذ",
+        "submitted": "تم الإرسال",
+        "approved": "معتمد"
+      }
     },
     "ParentDashboard": {
       "subtitle": "ابدأ التقييمات وتابع نتائج أطفالك من مكان واحد",
+      "welcome": "مرحباً {name}",
+      "defaultName": "ولي الأمر",
+      "overview": "نظرة عامة",
+      "quickActions": "اختصارات سريعة",
+      "viewChildren": "عرض الأطفال",
+      "recentNotifications": "آخر التنبيهات",
       "children": "الأطفال",
       "childrenDesc": "عرض وإدارة أطفالك المسجّلين",
       "evaluations": "التقييمات",
@@ -616,7 +677,38 @@
       "classesWelcome": "الفصول المسندة إلى {name}",
       "noClasses": "لا توجد فصول مسندة بعد",
       "grade": "المرحلة",
-      "childrenCount": "الطلاب"
+      "childrenCount": "الطلاب",
+      "welcome": "مرحباً {name}",
+      "open": "فتح"
+    },
+    "EvaluationResults": {
+      "noResult": "لا توجد نتيجة بعد",
+      "defaultTitle": "النتيجة",
+      "multipleIntelligences": {
+        "top3": "أعلى ثلاث ذكاءات",
+        "dimensions": "درجات المحاور"
+      },
+      "pride": {
+        "total": "المجموع",
+        "level": "المستوى",
+        "breakdown": "تفصيل المحاور"
+      },
+      "renzulli": {
+        "average": "المتوسط",
+        "level": "المستوى",
+        "dimensions": "المحاور"
+      },
+      "holland": {
+        "totalLevel": "المستوى الكلي",
+        "interests": "الاهتمامات",
+        "suitable": "مناسب",
+        "notSuitable": "غير مناسب"
+      },
+      "learningStyles": {
+        "dimensions": "أبعاد الأسلوب",
+        "dominant": "القطب السائد",
+        "strength": "القوة"
+      }
     },
     "Notifications": {
       "title": "الإشعارات",
@@ -699,7 +791,21 @@
       "attemptForbidden": "لا يمكنك عرض هذه النتيجة. قد لا تكون معتمدة بعد أو ليس لديك صلاحية الوصول.",
       "attemptNotApproved": "التقييم مُرسل ولم يُعتمد بعد. ستظهر النتيجة بعد الاعتماد.",
       "attemptNoResultYet": "لا توجد نتيجة متاحة لهذا التقييم حالياً.",
-      "backToResults": "العودة إلى النتائج"
+      "backToResults": "العودة إلى النتائج",
+      "pdfExportSoon": "سيتم دعم تحميل PDF قريبًا",
+      "excelExportSoon": "سيتم دعم تصدير Excel قريبًا",
+      "childrenUnit": "طفل"
+    }
+  },
+  "Layout": {
+    "OrganizationNav": {
+      "home": "الرئيسية",
+      "grades": "المراحل",
+      "classes": "الفصول",
+      "children": "الأطفال",
+      "teachers": "المعلمين",
+      "results": "النتائج",
+      "menu": "القائمة"
     }
   },
   "Forms": {

@@ -12,7 +12,7 @@ type Props = {
 }
 
 export default async function GradeDetailPage({ params }: Props) {
-  const { locale, gradeId } = await params
+  const { gradeId } = await params
   const org = await getCurrentOrganization()
   const orgId = org.user.organization.id
 
@@ -38,10 +38,6 @@ export default async function GradeDetailPage({ params }: Props) {
   }
 
   return (
-    <GradeDetailScreen
-      locale={locale}
-      grade={grade}
-      childrenByClass={childrenByClass}
-    />
+    <GradeDetailScreen grade={grade} childrenByClass={childrenByClass} />
   )
 }

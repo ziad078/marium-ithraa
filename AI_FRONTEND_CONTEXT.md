@@ -1,105 +1,108 @@
 # AI Frontend Context
 
-This file is the AI-readable architecture map for the Ithraa frontend. It was reverse engineered from the repository rather than inferred from a product brief.
+This is the AI-readable architecture map for the Ithraa frontend. It was reverse engineered from the repository at `d:\projects\ithraa\frontend`, not inferred from product naming alone. Treat this file as the first stop for future frontend changes, but still inspect touched files before editing.
 
 ## 1. Frontend Overview
 
-The frontend is a multilingual Next.js application for an educational / child-evaluation platform. It supports public marketing pages, authentication and signup, role-based dashboards, organization management, children/classes/grades/teachers management, evaluations/tests, parent evaluation attempts, notifications, and administrative reporting.
+The frontend is a multilingual educational evaluation platform built with Next.js App Router. It serves public marketing pages, authentication and signup, role-based dashboards, organization management, parent child/evaluation flows, teacher class views, admin evaluation/test/attempt screens, and notifications.
 
 Core stack:
 
 ```txt
 Next.js 16 App Router
 React 19
-TypeScript
-next-intl
-next-auth credentials provider
+TypeScript strict mode
+next-intl locale routing
+next-auth credentials provider with JWT sessions
 TanStack React Query
 TanStack React Table
-React Hook Form + Zod in newer forms
-Tailwind CSS v4 + shadcn/ui/Radix primitives
-Sonner + react-toastify
+React Hook Form + Zod
+Tailwind CSS v4 + shadcn/ui + Radix
+Sonner toasts
+Recharts, Swiper, dnd-kit dependencies
 ```
 
-The app is locale-first. Most visible routes live under `src/app/[locale]`; `src/app/[locale]/layout.tsx` validates the locale, sets `<html lang dir>`, installs `NextIntlClientProvider`, React Query, NextAuth session provider, tooltip provider, and a `react-toastify` `ToastContainer`.
+The app is locale-first. Most application routes live under `src/app/[locale]`. Locales are defined in `src/i18n/routing.ts` as `en` and `ar`, with `ar` as the default locale. `src/app/[locale]/layout.tsx` validates the locale, sets `html lang` and `dir`, loads the Cairo font, installs `NextIntlClientProvider`, `Providers` from `src/components/providers/QueryClientProvider.tsx`, and a global shadcn/Sonner `Toaster`.
 
 Main user journeys:
 
-- Public visitor opens `/{locale}` through `src/app/[locale]/(main)/page.tsx`, sees home sections from `src/components/pages/home/*`, and can move to login or signup.
-- User logs in via `src/app/[locale]/auth/login/page.tsx` and `src/components/pages/login/LoginForm.tsx`, which delegates credentials to NextAuth through `useAuth()` and `signInWithPhoneAndRedirect`.
-- Authenticated users are redirected by `src/proxy.ts` based on email verification and roles.
-- Admin users work under `/dashboards/admin`: users, organizations, children, tests, evaluations, attempts, notification dispatch.
-- Organization owners work under `/dashboards/organization`: grades, classes, children, teachers, employees, results.
-- Parents work under `/dashboards/parent`: children, available evaluations, attempts, evaluation-taking flow.
-- Notifications are available through `/dashboards/notifications` and a bell dropdown.
+- Public visitor lands on `/{locale}` through `src/app/[locale]/(main)/page.tsx`, wrapped by `src/app/[locale]/(main)/layout.tsx` with public `Header` and `Footer`, and sees home sections from `src/components/pages/home/*`.
+- User logs in at `/{locale}/auth/login` via `src/app/[locale]/auth/login/page.tsx` and `src/components/pages/login/LoginForm.tsx`. Login delegates to NextAuth through `useAuth().login()`.
+- After login, `src/proxy.ts`, `src/features/auth/utils/redirects.ts`, and `useAuth().getRedirectAfterLogin()` route users by email verification and role.
+- Admin users work under `/dashboards/admin`: dashboard, users, organizations, children, tests, evaluations, attempts, notification dispatch.
+- Organization owners work under `/dashboards/organization`: dashboard, grades, classes, children, teachers, employees, results, attempt/result views.
+- Parents work under `/dashboards/parent`: dashboard, children, child-specific evaluations, evaluation start and attempt/result views.
+- Teachers work under `/dashboards/teacher`: dashboard and assigned classes.
+- Notifications are exposed through `/dashboards/notifications` and notification bell components.
 
 Rendering strategy:
 
-- Server components are used primarily at route boundaries to fetch initial data with authenticated server calls. Example: `src/app/[locale]/dashboards/organization/children/page.tsx` fetches organization, children, grades, and classes on the server, then renders `ChildrenScreen` as a client component.
-- Client components own filtering, dialogs, local UI state, React Query refetches, and form interactivity.
-- Server actions are used for many organization CRUD flows: `src/features/children/actions/*`, `src/features/grades/actions/*`, `src/features/classes/actions/*`, `src/features/teachers/actions/*`, `src/features/employees/actions/*`.
-- React Query is used for client-driven server state, especially evaluations and notifications.
+- Route files are mostly thin App Router adapters. Many are server components that fetch initial data with `api.server`/feature API helpers and then render page-level client screens.
+- Client components own search/filter state, dialogs, pagination, table state, React Query calls, and interactive forms.
+- Server actions handle much of the organization CRUD surface: children, grades, classes, employees, teachers, tests.
+- React Query handles client-owned server state for evaluations, attempts, notifications, users/organizations lookups, and some domain lists.
+- Some dynamic pages are fully client-rendered route pages that read route params with `next/navigation` and fetch via React Query, for example `src/app/[locale]/dashboards/parent/attempts/[attemptId]/page.tsx`.
 
 High-level flow:
 
 ```txt
-Browser
+Request
   -> src/proxy.ts
-      -> next-intl locale handling
-      -> next-auth JWT token check
-      -> email verification + role redirect/gating
+      -> next-intl middleware
+      -> NextAuth JWT read via getToken()
+      -> auth, email verification, and dashboard role redirects
   -> src/app/[locale]/layout.tsx
-      -> NextIntlClientProvider
-      -> QueryClientProvider
-      -> SessionProvider
-  -> route layout
-      -> role shell / sidebar / organization header
-  -> page server component
-      -> feature API server functions
-      -> client screen component
+      -> lang/dir + font + messages + QueryClient + SessionProvider + Toaster
+  -> role layout
+      -> RequireRoles server gate for admin/organization/parent/teacher
+      -> dashboard sidebar or organization header shell
+  -> page.tsx
+      -> server fetch or client route shell
+  -> screen/component
+      -> local UI state, server actions, React Query mutations
 ```
 
 ## 2. Project Structure
 
-Important folders:
+Top-level organization:
 
 ```txt
 src/app
-  [locale]                Locale-scoped App Router routes
-  api/auth                NextAuth and auth helper route handlers
+  [locale]                     Locale-scoped App Router pages/layouts
+  api/auth                     NextAuth, refresh proxy, verify-email route handlers
 
 src/components
-  ui                      shadcn/Radix primitives and generated UI building blocks
-  shared                  reusable app components: forms, data tables, dashboard cards, management screens
-  pages                   page-level client screens grouped by product area
-  layouts                 public and organization header/footer shells
-  evaluation              evaluation runner/builder/result UI
-  notifications           notification list/bell components
+  ui                           shadcn/Radix primitives
+  shared                       reusable app patterns: forms, tables, dashboard cards, management UI
+  pages                        page-level screens grouped by product area
+  layouts                      public and organization-specific layout pieces
+  evaluation                   evaluation runner, builder, questions, result views
+  notifications                bell, list, item, notification utilities
 
 src/features
-  auth                    NextAuth client hooks, RBAC utilities, signup flow
-  evaluations             API, hooks, types, columns, payload helpers
-  notifications           API, hooks, notification types
-  children/classes/grades organization domain CRUD
-  employees/teachers      staff CRUD and tables
-  users/organizations     admin/user and organization APIs
-  admin/parent/enrichers  role-specific shell components
+  auth                         auth API, hooks, guards, RBAC, signup flow
+  forms                        Zod schemas, form registry, RHF/server-action form framework
+  evaluations                  API, React Query hooks, types, columns, payload helpers
+  notifications                API, query hooks, types
+  children/classes/grades      organization CRUD domains
+  employees/teachers           staff CRUD and teacher dashboard domain
+  users/organizations/tests    admin and domain APIs
+  parent/admin                 role shell components
 
 src/lib
-  api                     server/client fetch wrappers
-  auth                    token expiry and sign-in redirect helpers
-  types                   shared enums and large cross-feature interfaces
-  helpers                 server helpers such as current organization
-  utils.ts                cn() and token refresh
-
-messages
-  en.json, ar.json         next-intl messages
+  api                          server/client fetch wrappers and pagination helpers
+  auth                         token expiry helpers
+  errors                       ApiError
+  helpers                      current organization/teacher helpers
+  i18n                         small locale utilities
+  toast                        Sonner toast wrappers
+  types                        enums and broad shared interfaces
 ```
 
-Feature folders usually follow this pattern:
+Feature folders commonly use this shape:
 
 ```txt
-features/<domain>/
+src/features/<domain>/
   api/index.ts
   actions/*.action.ts
   hooks/index.ts
@@ -108,487 +111,822 @@ features/<domain>/
   index.ts
 ```
 
-The structure works because API functions, server actions, and domain UI are close to their feature. Route files remain mostly thin adapters. For example, organization children route files call `getAllChildrenByOrg`, `getGradesByOrg`, `getClassesByOrg`, then hand data to `ChildrenScreen`.
+Why the structure works:
+
+- Route files stay thin when following the intended pattern. Example: `src/app/[locale]/dashboards/organization/children/page.tsx` gets the organization, fetches children/grades/classes in `Promise.all`, and passes them to `ChildrenScreen`.
+- Backend communication is mostly centralized through feature `api/index.ts` files.
+- Server actions are colocated with domain ownership, for example `src/features/classes/actions/create-class.action.ts`.
+- Generated/base UI lives under `src/components/ui`, while app-specific reusable patterns live under `src/components/shared`.
 
 Where it breaks:
 
-- `src/components/pages/*` owns many feature-specific screens, while `src/features/*/components` also owns feature UI. This creates a split ownership model. Example: `AdminEvaluationsScreen` is under `components/pages/dashboards/admin`, but evaluation columns and hooks live under `features/evaluations`.
-- There are multiple table components with overlapping names: `src/components/shared/data-table/DataTable.tsx`, `src/components/ui/data-table.tsx`, and `src/components/data-table.tsx`. The last one is a large shadcn demo-like table with DnD, tabs, charts, and hardcoded schema.
-- Shared types are duplicated or scattered across `src/lib/types/types.ts`, `src/lib/types/types/interfaces.ts`, `src/lib/types/interfaces.ts`, and feature-level `types`.
-- Naming contains typos baked into routes/enums: `unautharized`, `email-verfication`, `chose-role`, `ENRECHERSIGNUP`. Do not “clean these up” casually because route paths depend on them.
+- Page-level feature UI is split between `src/components/pages/dashboards/...` and `src/features/<domain>/components`. Example: admin evaluation screens live under `src/components/pages/dashboards/admin`, while evaluation columns/hooks/API live under `src/features/evaluations`.
+- Some shared components are not truly domain-free. `src/components/shared/management/EntityCard.tsx` is generic in props but visually/behaviorally tied to card CRUD. Older or commented Arabic/mojibake code remains in that file.
+- Navigation imports are mixed. Locale-aware `@/i18n/navigation` is common, but several localized route components still import `next/link` or `next/navigation`.
+- Broad shared types are scattered across `src/lib/types/types.ts`, `src/lib/types/types/interfaces.ts`, `src/lib/types/interfaces.ts`, and feature-level types.
+- Several route/enum names contain typos that are now route contracts: `unautharized`, `email-verfication`, `chose-role`, `Endpoint.VERIFYEMAIL = "verfy-email"`, `StatusCode.UNAUTHARIZED`.
 
-Scalability concern: the project is feature-oriented but not consistently feature-owned. Future agents should prefer adding new domain logic inside `src/features/<domain>` and only put route composition in `src/app` and screen composition in one place.
+Scalability concerns:
+
+- The project is feature-oriented but not fully feature-owned. For new work, keep backend calls/actions/types in `src/features/<domain>` and keep route files as composition only.
+- Avoid adding more broad shared types unless a type is genuinely cross-domain. Prefer feature-owned interfaces and export through `src/features/<domain>/index.ts`.
+- Avoid adding feature imports to `src/components/ui`. That folder should stay primitive-only.
 
 ## 3. Routing & Navigation
 
-Routing is Next App Router under `src/app/[locale]`.
-
-Important route groups and pages:
+Route inventory from `src/app/[locale]`:
 
 ```txt
 /{locale}
-  (main)/page.tsx                         Public home
-  auth/login/page.tsx                     Login
-  auth/Beneficiarysignup/page.tsx         Beneficiary signup
-  auth/enrichersignup/page.tsx            Enricher signup
-  chose-role/page.tsx                     Multi-role dashboard chooser
-  email-verfication/page.tsx              Authenticated email verification state
-  verify-email/page.tsx                   Token verification endpoint UI
-  dashboards/admin/*                      Admin dashboard
-  dashboards/organization/*               Organization owner dashboard
-  dashboards/parent/*                     Parent dashboard
-  dashboards/employee/*                   Employee dashboard
-  dashboards/enricher/*                   Enricher dashboard
-  dashboards/notifications/page.tsx       Shared notification center
-```
+  (main)/page.tsx
+  auth/login/page.tsx
+  auth/Beneficiarysignup/page.tsx
+  chose-role/page.tsx
+  email-verfication/page.tsx
+  verify-email/page.tsx
+  unauthorized/page.tsx
+  notifications/page.tsx
+  tests/page.tsx
+  flow-6/page.tsx
 
-`src/proxy.ts` is the central middleware-like gate. It:
+  dashboards/admin/page.tsx
+  dashboards/admin/users/page.tsx
+  dashboards/admin/organizations/page.tsx
+  dashboards/admin/children/page.tsx
+  dashboards/admin/tests/page.tsx
+  dashboards/admin/tests/new/page.tsx
+  dashboards/admin/evaluations/page.tsx
+  dashboards/admin/evaluations/create/page.tsx
+  dashboards/admin/evaluations/[evaluationId]/page.tsx
+  dashboards/admin/attempts/page.tsx
+  dashboards/admin/attempts/[attemptId]/page.tsx
+  dashboards/admin/notifications/dispatch/page.tsx
 
-- Runs `next-intl` middleware using `src/i18n/routing.ts` locales `en` and `ar`, default `ar`.
-- Extracts the locale from the pathname and strips it for route checks.
-- Reads the NextAuth JWT with `getToken`.
-- Redirects unauthenticated users away from protected routes.
-- Redirects authenticated users away from auth routes.
-- Forces unverified authenticated users on protected routes to `/{locale}/email-verfication`.
-- Routes users after auth by role using `roleHome()`.
-- Enforces dashboard section access with `ACCESS_MAP`.
+  dashboards/organization/page.tsx
+  dashboards/organization/grades/page.tsx
+  dashboards/organization/grades/new/page.tsx
+  dashboards/organization/grades/[gradeId]/page.tsx
+  dashboards/organization/grades/[gradeId]/edit/page.tsx
+  dashboards/organization/classes/page.tsx
+  dashboards/organization/classes/new/page.tsx
+  dashboards/organization/classes/[classId]/page.tsx
+  dashboards/organization/classes/[classId]/edit/page.tsx
+  dashboards/organization/children/page.tsx
+  dashboards/organization/children/new/page.tsx
+  dashboards/organization/children/[childId]/page.tsx
+  dashboards/organization/teachers/page.tsx
+  dashboards/organization/teachers/new/page.tsx
+  dashboards/organization/employees/page.tsx
+  dashboards/organization/employees/[employeeId]/page.tsx
+  dashboards/organization/results/page.tsx
+  dashboards/organization/attempts/[attemptId]/page.tsx
 
-Role routing map:
+  dashboards/parent/page.tsx
+  dashboards/parent/children/page.tsx
+  dashboards/parent/children/[childId]/evaluations/page.tsx
+  dashboards/parent/evaluations/page.tsx
+  dashboards/parent/evaluations/[evaluationId]/page.tsx
+  dashboards/parent/evaluations/[evaluationId]/start/page.tsx
+  dashboards/parent/attempts/[attemptId]/page.tsx
 
-```txt
-ADMIN              -> /{locale}/dashboards/admin
-ORGANIZATIONOWNER  -> /{locale}/dashboards/organization
-EMPLOYEE           -> /{locale}/dashboards/employee
-ENRICHER           -> /{locale}/dashboards/enricher
-PARENT             -> /{locale}/dashboards/parent
-multiple roles     -> /{locale}/chose-role
+  dashboards/teacher/page.tsx
+  dashboards/teacher/classes/page.tsx
+  dashboards/notifications/page.tsx
 ```
 
 Layout hierarchy:
 
 ```txt
 src/app/[locale]/layout.tsx
-  (main)/layout.tsx                 Public Header + Footer
-  dashboards/layout.tsx             Thin pass-through wrapper
-    admin/layout.tsx                RequireRoles ADMIN + shadcn SidebarProvider
-    parent/layout.tsx               RequireRoles PARENT + sidebar + DashboardTopBar
-    organization/layout.tsx         session + getCurrentOrganization + custom fixed header/footer
-    employee/layout.tsx             sidebar shell, currently no RequireRoles wrapper
-    enricher/layout.tsx             sidebar shell, currently no RequireRoles wrapper
+  - validates locale
+  - sets html lang/dir
+  - loads Cairo font
+  - installs NextIntlClientProvider, Providers, Toaster
+
+src/app/[locale]/(main)/layout.tsx
+  - public header/footer shell
+
+src/app/[locale]/dashboards/layout.tsx
+  - thin passthrough wrapper
+
+src/app/[locale]/dashboards/admin/layout.tsx
+  - RequireRoles ADMIN
+  - SidebarProvider + AdminSidebar + SidebarInset
+
+src/app/[locale]/dashboards/organization/layout.tsx
+  - gets server session
+  - getCurrentOrganization()
+  - RequireRoles ORGANIZATIONOWNER or ADMIN
+  - OrganizationHeader + content padding + Footer
+
+src/app/[locale]/dashboards/parent/layout.tsx
+  - RequireRoles PARENT
+  - SidebarProvider + ParentSidebar + DashboardTopBar + SidebarInset
+
+src/app/[locale]/dashboards/teacher/layout.tsx
+  - RequireRoles TEACHER or ADMIN
+  - SidebarProvider + TeacherSidebar + DashboardTopBar + SidebarInset
 ```
 
-Protected route mechanisms are layered:
+`src/proxy.ts` is the central route gate. It:
 
-- `src/proxy.ts` is the first gate and performs global redirects.
-- `src/features/auth/components/RequireRoles.tsx` is a server component used by some layouts to enforce roles.
-- `src/features/auth/components/ProtectedRoute.tsx` is a client guard, but route layouts mostly use server guards instead.
+- Runs `next-intl` middleware using `routing`.
+- Extracts and strips the locale from the pathname for route checks.
+- Reads the NextAuth token via `getToken`.
+- Redirects unauthenticated users away from protected dashboard routes and `chose-role`.
+- Redirects authenticated users away from `/auth`.
+- Forces unverified authenticated users on protected routes to `/{locale}/email-verfication`.
+- Allows `/verify-email` to pass through.
+- Enforces dashboard section access through `ACCESS_MAP`.
 
-Navigation primitives:
+Current role home map in `src/proxy.ts`:
 
-- Locale-aware navigation wrappers come from `src/i18n/navigation.ts`.
-- Many components correctly use `Link` from `@/i18n/navigation`.
-- Some code imports `next/link` or `next/navigation` directly; this can bypass locale-aware behavior if not careful.
-- Sidebars use `NavMain`, `NavDocuments`, `NavSecondary`, and `NavUser`.
-- Organization owner navigation uses `OrganizationHeader`, not the sidebar.
+```txt
+ADMIN             -> /{locale}/dashboards/admin
+ORGANIZATIONOWNER -> /{locale}/dashboards/organization
+TEACHER           -> /{locale}/dashboards/teacher
+PARENT            -> /{locale}/dashboards/parent
+multiple roles    -> /{locale}/chose-role
+fallback          -> /{locale}/dashboards/parent
+```
 
-Breadcrumbs are mostly ad hoc through `ManagementPageHeader`, not a global route-derived breadcrumb system.
+Authorization is layered:
+
+- `src/proxy.ts`: coarse edge-style gating and redirect decisions.
+- `src/features/auth/components/RequireRoles.tsx`: server component used in protected layouts.
+- `src/features/auth/components/ProtectedRoute.tsx`: client guard available but not the primary layout gate.
+- `src/features/auth/hooks/useRBAC.ts` and `useAuth().checkRole`: client UI checks only.
+
+Navigation:
+
+- Locale-aware wrappers are exported from `src/i18n/navigation.ts`.
+- Prefer `Link`, `useRouter`, `usePathname`, and `redirect` from `@/i18n/navigation`.
+- Some components still use `next/link`: `ChildrenScreen`, `ClassesScreenClient`, `ManagementPageHeader`, `EmptyState`, several form/detail screens. These can produce non-locale-aware paths if given absolute paths.
+- `src/app/[locale]/notifications/page.tsx` and `src/app/[locale]/dashboards/parent/evaluations/page.tsx` are redirect aliases using `@/i18n/navigation`.
+- Breadcrumbs are ad hoc arrays passed into `ManagementPageHeader`, not route-derived.
+
+Dynamic routing patterns:
+
+- Server dynamic pages use `params: Promise<{ ... }>` because the codebase follows the newer App Router async params style.
+- Some dynamic pages are client components and use `useParams` from `next/navigation`, for example parent/admin attempt pages.
+- `notFound()` is used in server detail pages when API fetches fail, for example `src/app/[locale]/dashboards/admin/evaluations/[evaluationId]/page.tsx`.
 
 ## 4. UI Architecture
 
-The design system is shadcn/Radix-based with Tailwind v4 tokens.
+UI layers:
 
-UI primitive layer:
+```txt
+Primitive UI
+  src/components/ui/*
+  shadcn/Radix primitives, cva variants, semantic CSS variables
 
-- `src/components/ui/button.tsx`, `card.tsx`, `dialog.tsx`, `dropdown-menu.tsx`, `sidebar.tsx`, `form.tsx`, `input.tsx`, `select.tsx`, `tabs.tsx`, `table.tsx`, etc.
-- `components.json` uses shadcn `new-york`, RSC enabled, `lucide` icon library, CSS variables, and aliases `@/components`, `@/lib`, `@/hooks`.
-- `src/lib/utils.ts` provides `cn()` using `clsx` + `tailwind-merge`.
+Shared app UI
+  src/components/shared/*
+  management headers/cards/filters, data table, dashboard cards, forms
 
-Shared app components:
+Feature UI
+  src/features/<domain>/components/*
+  columns, dialogs, sidebars, cards owned by a domain
 
-- `src/components/shared/management/ManagementPageHeader.tsx`: title/subtitle/breadcrumb/action header for organization management pages.
-- `src/components/shared/management/ListFilters.tsx`: controlled search/grade/class filters.
-- `src/components/shared/management/EntityCard.tsx`: repeated card for entity fields, with render-prop edit/delete dialogs.
-- `src/components/shared/data-table/DataTable.tsx`: minimal generic TanStack table.
-- `src/components/shared/dashboard/*`: reusable dashboard top bar, stats grid, cards, quick actions, activity feed.
-- `src/components/notifications/*`: notification item, bell, list utilities.
-- `src/components/evaluation/*`: evaluation runner, question card, answer group, result views.
+Page screens
+  src/components/pages/*
+  assembled dashboard/public screens with feature data and local state
 
-Major shells:
+Route files
+  src/app/[locale]/**
+  server/client composition and route params
+```
 
-- `AdminSidebar` in `src/features/admin/components/admin-sidebar.tsx` builds admin nav using translations and session user.
-- `ParentSidebar` in `src/features/parent/components/parent-sidebar.tsx` builds parent nav.
-- `EmployeeSidebar` and `EnricherSidebar` follow the same sidebar pattern.
-- `OrganizationHeader` in `src/components/layouts/organizationHeader/OrganizationHeader.tsx` is a fixed rounded header with manual nav links, search, auth actions, notification bell, language switcher, and mobile menu.
+Design system facts:
+
+- `components.json` configures shadcn `new-york`, RSC enabled, TSX, CSS variables, base color `stone`, `lucide` icon library, and aliases `@/components`, `@/lib`, `@/hooks`.
+- `src/components/ui/button.tsx` uses `class-variance-authority` variants: `default`, `destructive`, `outline`, `secondary`, `ghost`, `link`; sizes include `xs`, `sm`, `lg`, `icon`, `icon-xs`, `icon-sm`, `icon-lg`.
+- `src/components/ui/sidebar.tsx` is a large shadcn sidebar implementation with internal context, cookie-persisted open state, mobile sheet, RTL-aware side resolution via `document.documentElement.dir`, and `Ctrl/Cmd+B` shortcut.
+- `src/components/ui/sonner.tsx` reads theme from `next-themes`, but no root `ThemeProvider` is currently installed. Sonner still works; theme may fall back to system/default behavior.
+
+Shared management components:
+
+- `src/components/shared/management/ManagementPageHeader.tsx`: page title/subtitle, breadcrumb links, optional primary action. It currently imports `next/link`.
+- `src/components/shared/management/ListFilters.tsx`: controlled search plus optional grade/class selects. Uses shadcn `Input` and `Select`; handles `"all"` sentinel values.
+- `src/components/shared/management/EntityCard.tsx`: repeated CRUD card with field rows and render-prop edit/delete dialogs. It owns internal controlled/uncontrolled dialog open state and uses `GradientButton`. Coupling level is medium because it assumes edit/delete actions and card CRUD layout.
+- `src/components/shared/management/EmptyState.tsx`: empty state with optional action link.
+- `src/hooks/useClientPagination.ts`: local client pagination over arrays with `getPaginationMeta` and `paginateArray`.
+
+Tables:
+
+- `src/components/shared/data-table/DataTable.tsx`: production generic TanStack table wrapper with optional manual pagination metadata.
+- `src/components/shared/data-table/DataTablePagination.tsx`: simple previous/next pagination.
+- Feature columns live in files such as `src/features/evaluations/components/columns.tsx`, `attempt-columns.tsx`, `src/features/employees/components/columns.tsx`, `src/features/tests/components/columns.tsx`.
+- There are likely legacy/demo table files (`src/components/data-table.tsx` appears in earlier context and dependencies include dnd-kit). Avoid importing demo-heavy tables into production routes unless inspected.
+
+Dashboard shells:
+
+- Admin, parent, and teacher use `SidebarProvider`, role sidebar, `SidebarInset`, and sometimes `DashboardTopBar`.
+- Organization owner uses a custom fixed `OrganizationHeader` in `src/components/layouts/organizationHeader/OrganizationHeader.tsx`, content `pt-28`, and `Footer`.
+- `DashboardTopBar`, `DashboardHomeLayout`, `StatsGrid`, `StatCard`, `QuickActionCard`, `WelcomeHero`, and `ActivityFeed` under `src/components/shared/dashboard` are reusable dashboard-home building blocks.
+
+Evaluation UI:
+
+- `src/components/evaluation/EvaluationRunner.tsx`: active parent attempt runner. It renders attempt title, progress, timer, save/submit controls, question cards, and submit modal.
+- `src/features/evaluations/hooks/useEvaluationSession.ts`: the real state machine for active attempts. Do not bypass this hook for the runner.
+- `src/components/evaluation/QuestionCard.tsx`, `AnswerGroup.tsx`, `Timer.tsx`, `SubmitModal.tsx`, and `AttemptSummary.tsx` compose attempt UI.
+- Result views dispatch through `src/components/evaluation/results/AttemptResultView.tsx` to type-specific views: Holland, Learning Styles, Multiple Intelligences, Pride, Renzulli, or generic.
+
+Notifications UI:
+
+- `src/components/notifications/NotificationBell.tsx` fetches unread count/list, allows mark-all-read, and links to notifications.
+- `src/components/pages/dashboards/NotificationsScreen.tsx` owns filters/pagination and uses notification hooks.
 
 Composition pattern:
 
-```txt
-page.tsx server component
-  fetch data via feature api/server helper
-  render <FeatureScreen data locale />
+```tsx
+// Server route
+export default async function Page({ params }: Props) {
+  const { locale } = await params
+  const data = await getFeatureData()
+  return <FeatureScreen initialData={data} locale={locale} />
+}
 
-FeatureScreen client component
-  own local filters/dialog state
-  render shared components and feature columns/cards
-  call server actions or React Query hooks for mutations
+// Client screen
+"use client"
+export function FeatureScreen({ initialData }: Props) {
+  // search/filter/dialog/pagination state
+  // server action dispatch or React Query mutation
+  // shared UI components
+}
 ```
 
-Anti-patterns and coupling:
+Anti-patterns to watch:
 
-- Some shared components contain domain assumptions. Example: `src/components/ui/data-table.tsx` imports `AddEmployeeDialog` and is therefore not a true UI primitive.
-- `EntityCard` is reusable but heavily geared toward edit/delete card CRUD flows.
-- Many components hardcode color values such as `bg-[#f3eefb]`, fuchsia/indigo gradients, and rounded `2xl/3xl`, bypassing semantic tokens.
-- Some Arabic strings in source appear as mojibake. Prefer `messages/ar.json` / `messages/en.json` (especially `Actions.*` and `Dashboard.*`) over inline copy.
+- UI primitives should not import feature/domain code.
+- Hardcoded colors and gradients appear often (`bg-[#f3eefb]`, fuchsia/indigo gradients, large rounded corners). Prefer semantic tokens for new reusable components.
+- Arabic strings and comments in some source files are mojibake/corrupted. Prefer `messages/ar.json` and `messages/en.json` rather than inline copy.
 
 ## 5. State Management
 
-There is no Redux and no real Zustand store. `src/features/auth/store/auth-store.ts` is a compatibility/export module, not a Zustand store. It explicitly says session state lives in NextAuth.
+There is no Redux. There is no active Zustand store. `src/features/auth/store/auth-store.ts` exists as a compatibility/export shim; auth state belongs to NextAuth.
 
-State categories:
+State ownership:
 
-- Auth/session state: NextAuth JWT/session via `useSession`, `getServerSession`, `getToken`.
-- Server state: React Query for client-side reads/mutations, and server component fetches for SSR-style initial data.
-- Form state: mixed. Some forms use `react-hook-form` + `zod`; many legacy forms use raw `FormData`, refs, and server actions.
-- Local UI state: `useState` and `useMemo` inside screen components for search/filter/dialog/loading state.
-- Derived state: local `useMemo` filters for lists and card grids.
+```txt
+Auth/session state
+  NextAuth session/JWT
+  useSession(), getServerSession(), getToken()
+
+Server state
+  React Query in client components
+  server component fetches through feature API functions
+
+Form state
+  React Hook Form + Zod for registry/server-action forms and some custom flows
+  useActionState for server action responses
+  raw local state in complex custom forms
+
+Local UI state
+  useState/useMemo in page screens for search, filters, dialogs, pagination
+
+Derived state
+  local filtered arrays, pagination slices, status labels, display helpers
+```
 
 React Query setup:
 
-- `src/components/providers/QueryClientProvider.tsx` creates a module-level `new QueryClient()` and wraps the app.
-- There are no global query defaults configured.
-- Evaluation query keys are centralized in `src/features/evaluations/hooks/index.ts`.
-- Notification query keys are centralized in `src/features/notifications/hooks/index.ts`.
-- Other domains use simple query keys in hooks: examples include `["admin", "children"]`, `["admin", "users-in-roles"]`, `["organizations"]`.
+- `src/components/providers/QueryClientProvider.tsx` creates a module-level `const queryClient = new QueryClient()` in a client module.
+- No global `defaultOptions` are configured.
+- Query provider wraps the whole app inside `NextIntlClientProvider`.
+- React Query is used heavily in evaluations and notifications, and lightly in users/organizations/tests/children hooks.
 
-Important state ownership examples:
+Important query key systems:
 
-- `useEvaluationSession()` owns active attempt answers, dirty state, timers, autosave, beforeunload protection, and submit/save mutations.
-- `NotificationsScreen` owns pagination and filters, while server data comes from React Query.
-- Organization management screens receive initial arrays from server components and own client-side search/filter only.
+- `src/features/evaluations/hooks/index.ts`
+  - `evaluationKeys.all`
+  - `evaluationKeys.detail(id)`
+  - `evaluationKeys.form(id)`
+  - `evaluationKeys.available(childId)`
+  - `evaluationKeys.attempts(filters)`
+  - `evaluationKeys.attempt(id)`
+  - `evaluationKeys.childAttempts(childId)`
+- `src/features/evaluations/hooks/owner.ts`
+  - owner evaluation filters/reports/summary/status/reminder keys.
+- `src/features/notifications/hooks/index.ts`
+  - `notificationKeys.all`
+  - `notificationKeys.list(params)`
+  - `notificationKeys.unreadCount()`
+
+Important local state examples:
+
+- `ChildrenScreen`: `search`, `gradeFilter`, `classFilter`, `useActionState` delete state, derived `filtered`, `classOptionsForGrade`, client pagination.
+- `ClassesScreenClient`: search/grade filter, delete action state, local pagination.
+- `AdminEvaluationsScreen`: search, evaluation type filter, local page number, manual pagination over props.
+- `EvaluationRunner`: local submit confirmation dialog; delegates answers/dirty/autosave/timer to `useEvaluationSession`.
+- `useEvaluationSession`: answers map, dirty flag, current time tick, last saved JSON snapshot ref, autosave timer ref.
+- `NotificationsScreen`: page/filter UI state plus React Query data.
 
 Synchronization risks:
 
-- Server component data and React Query data coexist. A list fetched by a server component will not automatically sync with a React Query mutation unless the flow uses server actions with `revalidatePath` or performs navigation/refetch.
-- Some query invalidation is broad or inconsistent. Example: evaluations invalidate `["attempts"]` and `["child-attempts"]` while canonical key builders also include parameterized keys.
-- Local filtered arrays are derived from props and may go stale after server actions until route revalidation/navigation completes.
+- Server component props and React Query caches coexist. If a server-rendered list is mutated via React Query, the server props will not update unless navigation/revalidation happens. If a server-action CRUD flow mutates data, related React Query caches will not update automatically.
+- Server actions call `revalidatePath` with non-locale paths such as `/dashboards/organization/classes`. In a locale-scoped app, verify that the intended cached paths are actually revalidated.
+- Some mutation invalidations use broad keys such as `["attempts"]` and `["child-attempts"]`, while canonical keys include parameterized arrays. This works because partial invalidation can match prefixes, but future agents should keep keys compatible.
+- Client-side filtered arrays are derived from initial props and can be stale until a route refresh/navigation occurs.
 
 ## 6. API Layer
 
-Central API wrapper is `src/lib/api/api.ts`:
+Central wrapper:
 
 ```ts
+// src/lib/api/api.ts
 export const api = {
   client: clientApiFetch,
   server: serverApiFetch,
 }
 ```
 
-Client API:
+Next proxying:
 
-- File: `src/lib/api/client-api-client.ts`
-- Calls relative `/api${endpoint}`.
-- Next rewrites proxy `/api/:path((?!auth/).*)` to `${BACKEND_URL}/api/:path*`.
-- Retrieves token with `getSession()` from NextAuth.
-- Adds `Authorization: Bearer <accessToken>`.
-- On `401`, clears token cache, attempts to resolve a refreshed token once, then signs out to `/auth/login`.
-- Parses JSON for every successful response. Empty `204` responses can be risky because invalid JSON throws `ApiError("Invalid server response")`.
+- `next.config.ts` rewrites `/api/:path((?!auth/).*)` to `${process.env.BACKEND_URL}/api/:path*`.
+- NextAuth routes under `/api/auth/*` stay on the frontend app.
+- Client API calls use relative `/api${endpoint}` and therefore go through the rewrite, except `/api/auth/*`.
+- Server API calls use `${process.env.BACKEND_URL}/api${endpoint}` directly.
 
-Server API:
+Client API lifecycle in `src/lib/api/client-api-client.ts`:
 
-- File: `src/lib/api/server-api-clent.ts` (note typo in filename)
-- Calls `${process.env.BACKEND_URL}/api${endpoint}` directly.
-- Uses `getServerSession(nextAuthOptions)` for token.
-- Adds `Authorization`.
-- Forces `cache: "no-store"`.
-- Parses JSON and throws `ApiError`.
+```txt
+clientApiFetch(endpoint, options)
+  -> getSession()
+  -> if session has RefreshAccessTokenError, clear token cache and signOut()
+  -> add Content-Type: application/json
+  -> add Authorization: Bearer session.user.accessToken
+  -> fetch /api${endpoint}
+  -> on 401: clear token cache, call getSession() once more, retry if token changed
+  -> otherwise signOut to /auth/login and throw ApiError
+  -> parse JSON
+  -> if !res.ok, extract data.message and throw ApiError
+  -> return typed payload
+```
 
-Auth routes:
+Server API lifecycle in `src/lib/api/server-api-clent.ts`:
 
-- NextAuth route: `src/app/api/auth/[...nextauth]/route.ts`
-- Extra route handlers: `src/app/api/auth/refresh/route.ts`, `verify-email/route.ts`, `enrichers-signup/route.ts`.
+```txt
+serverApiFetch(endpoint, options)
+  -> getServerSession(nextAuthOptions)
+  -> add JSON Content-Type and Authorization if token exists
+  -> fetch BACKEND_URL/api${endpoint} with cache: "no-store"
+  -> parse JSON
+  -> if bad request, throw ApiError(message, status, validation data)
+  -> if other !ok, throw ApiError(message, status)
+  -> return typed payload
+```
 
-Feature API pattern:
+Error model:
 
-- Domains export server/client variants when needed. Example `src/features/evaluations/api/index.ts` has `getEvaluations` and `getEvaluationsClient`, `getAttemptById` and `getAttemptByIdClient`, etc.
-- Endpoints are partly centralized in `src/lib/types/enums.ts` as `Endpoint`.
-- Query strings are manually built with `URLSearchParams` in evaluations and notifications APIs.
+- `src/lib/errors/ApiError.ts` extends `Error` with `status` and optional `validationErrors`.
+- Server actions convert `ApiError` to user/action state through `src/features/forms/action-errors.ts`.
+- Runtime response schemas are generally not validated; TypeScript types are trusted.
 
-API abstraction quality:
+Feature API inventory:
 
-- Good: one wrapper for auth headers and normalized `ApiError`.
-- Good: server/client distinction is explicit.
-- Risk: direct `fetch` exists outside wrappers. Example `SignupWizard` posts to `process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api"` directly.
-- Risk: response shapes are assumed and not runtime-validated except for some form payload schemas.
-- Risk: `Content-Type: application/json` is always added, which is unsuitable if true file uploads are introduced.
+- `src/features/evaluations/api/index.ts`: admin evaluations, evaluation details/form, available evaluations for child, start attempt, attempts list/detail/child, save/submit/approve attempts, private attempt slot operations, organization owner reports/status/reminders.
+- `src/features/children/api/index.ts`: children by user/org/all, child detail, create/update/delete, parent private/org children.
+- `src/features/classes/api/index.ts`: classes by organization/grade/teacher, class detail, create/update/delete.
+- `src/features/grades/api/index.ts`: grades by organization, detail, create/update/delete.
+- `src/features/teachers/api/index.ts`: teachers by org, teacher by user id (server/client), create/delete teacher.
+- `src/features/employees/api/index.ts`: employees by org, employee detail, add/update/delete.
+- `src/features/users/api/index.ts`: users in roles client query and all users server query.
+- `src/features/organizations/api/index.ts`: create employee, get user organization, get all organizations.
+- `src/features/tests/api/index.ts`: get all tests client, create test server.
+- `src/features/notifications/api/index.ts`: list/unread/mark read/dispatch client calls and list/unread server calls.
+- `src/features/auth/api/index.ts`: verify email, beneficiary signup, logout, logout-all.
+- `src/features/mailer/api/index.ts`: send verification email.
+
+API risks:
+
+- Both client and server wrappers assume JSON responses. `204 No Content` or empty responses will throw `ApiError("Invalid server response")`. This is risky for `logoutClient`, `markAllRead`, `markOneRead`, and DELETE/PATCH endpoints if the backend returns no body.
+- `Content-Type: application/json` is added for every request, so real file upload/multipart support will require wrapper changes or opt-out behavior.
+- Direct backend fetches exist outside wrappers in auth/NextAuth and may exist in signup flows. Keep random component-level `fetch(process.env.NEXT_PUBLIC_API_URL...)` out of new code.
+- Some endpoints are hardcoded strings instead of `Endpoint` enum, for example `src/features/teachers/api/index.ts` uses `/teachers/organization/${orgId}`.
 
 ## 7. Forms & Validation
 
-Unified forms architecture (`src/features/forms/`):
+The newest reusable form system lives in `src/features/forms`.
 
-- **Schemas** (`schemas/*.schema.ts`): Zod validation per entity (login, employee, teacher, grade, class, child, test).
-- **Config registry** (`config/*.config.ts` + `config/index.ts`): field metadata with `labelKey` / `placeholderKey` resolved via `useFormConfig(FormTypes.*)` and `messages/*/Forms`.
-- **RHF renderer** (`components/RhfFormFields.tsx`): maps registry fields to shadcn inputs; phone uses `react-phone-number-input`; password is RHF-controlled.
-- **Server action wrapper** (`components/ServerActionForm.tsx` + `hooks/useServerActionForm.ts`): `zodResolver` + `useActionState`; submits `FormData` to server actions.
-- **Parsing** (`parse-form-data.ts`): `parseFormData(formData, schema)` with `safeParse`.
-- **Action results** (`action-results.ts`): standardized `{ success, message, fieldErrors?, status?, formData? }` where `message` is an i18n key under `Actions.*`.
-- **Toasts** (`src/lib/toast/app-toast.ts`, `src/hooks/useActionFeedback.ts`): Sonner only; `showSuccessToast(t, messageKey)`.
+Architecture:
 
-Other RHF + Zod forms (unchanged pattern):
+```txt
+schemas/*.schema.ts
+  Zod schemas and inferred form value types
 
-- Beneficiary signup wizard, admin evaluation creation, evaluation attempts, test creation wizard (`TestCreationForm`).
+config/*.config.ts
+  field metadata: name, type, labelKey, placeholderKey, data, defaults
 
-Server action forms:
+config/index.ts
+  formRegistry keyed by FormTypes
 
-- CRUD actions use `parseFormData` + `actionSuccess` / `actionErrorState`.
-- Delete actions return `DeleteActionResult` (`{ success, message? }`).
-- Client screens call `useActionFeedback().notifyAction` / `notifyDelete` with `useTranslations("Actions")`.
+hooks/useFormConfig.ts
+  resolves field label/placeholder with useTranslations("Forms")
 
-UX:
+components/ServerActionForm.tsx
+  chooses registry or override schema/defaults/fields
+  calls useServerActionForm
+  renders RhfFormFields and children
 
-- Loading buttons use `Loader2` or `isPending` from `useServerActionForm`.
-- Notifications use Sonner via `app-toast` helpers (no `react-toastify`).
+hooks/useServerActionForm.ts
+  react-hook-form + zodResolver
+  useActionState for server actions
+  converts values to FormData
+  restores field errors and submitted form data from action state
+
+parse-form-data.ts
+  FormData -> string record -> schema.safeParse
+
+action-results.ts / action-errors.ts
+  normalized InitialState success/failure/validation response
+```
+
+Schemas include:
+
+- `login.schema.ts`
+- `employee.schema.ts`
+- `teacher.schema.ts`
+- `grade.schema.ts`
+- `class.schema.ts`
+- `child.schema.ts`
+- `test.schema.ts`
+- `common.schema.ts`
+- `src/features/auth/signup/schemas/signup.schema.ts` for beneficiary signup.
+
+Form registry keys from `src/lib/types/enums.ts`:
+
+```txt
+SIGNIN
+EMPLOYEE
+EMPLOYEE_UPDATE
+teacher
+grade
+class
+childOrg
+childUpdate
+childPrivate
+childAdmin
+TESTS
+```
+
+Field rendering:
+
+- `RhfFormFields` renders fields using shadcn `FormField`, `FormItem`, `FormLabel`, `FormControl`, `FormMessage`.
+- `InputTypes.TEL` uses `react-phone-number-input`.
+- `InputTypes.PASSWORD` uses a local password input with show/hide state and Lucide eye icons.
+- Checkbox/select/textarea delegate to older shared field components under `src/components/shared/forms`.
+- Select and textarea integration is less pure RHF than text/password/phone; inspect before extending complex controlled fields.
+
+Server action pattern:
+
+```ts
+"use server"
+
+export async function createClassAction(
+  _prevState: InitialState,
+  formData: FormData,
+): Promise<InitialState> {
+  const parsed = parseFormData(formData, createClassSchema)
+  if (!parsed.success) return parsed.state
+
+  try {
+    await createClass(parsed.data)
+    revalidatePath("/dashboards/organization/classes")
+    return actionSuccess("Actions.classes.created", StatusCode.CREATED)
+  } catch (error) {
+    return actionErrorState(error, formData, {
+      conflict: "Actions.classes.conflict",
+    })
+  }
+}
+```
+
+Other form styles:
+
+- `LoginForm` uses `react-hook-form` + Zod directly and calls `useAuth().login()`.
+- `AdminCreateEvaluationScreen` is a custom client form with local state and React Query mutation.
+- `TestCreationForm`/`TestCreationWizzard` use custom wizard state and FormData.
+- Organization form screens such as `GradeFormScreen`, `ClassFormScreen`, and `ChildFormScreen` use `ServerActionForm` plus client-side redirect/toast behavior.
+
+Validation consistency:
+
+- New CRUD actions validate `FormData` with Zod.
+- Some older dialogs/components may still pass raw state/messages directly.
+- Server action messages are intended to be i18n keys under `Actions.*`, translated on the client by `useActionFeedback`/toast helpers. Some components still pass raw messages to `toast.success/error`.
+
+File uploads:
+
+- No production upload flow was found.
+- `InputTypes.FILE` and `InputTypes.IMAGE` exist in enums, but API wrappers force JSON and `parseFormData` only keeps string entries. Add upload support deliberately rather than assuming existing forms can handle files.
 
 ## 8. Async & Data Fetching
 
-Data fetching modes:
+Main modes:
 
-- Server component fetching for route initial data:
-  - `getCurrentOrganization()`
-  - feature `api.server` calls
-  - parallelized with `Promise.all` in some pages
-- Client React Query fetching:
-  - evaluations
-  - attempts
-  - notifications
-  - some admin/user/org lookups
-- Server actions for mutations:
-  - organization CRUD
-  - teacher/employee/child/class/grade operations
+- Server component data fetching:
+  - Uses `api.server` through feature APIs.
+  - Often parallelized with `Promise.all`.
+  - Uses `cache: "no-store"` in the server wrapper.
+- React Query:
+  - Used for client-driven reads and mutations.
+  - Query keys are strongest in evaluations and notifications.
+- Server actions:
+  - Used for CRUD submissions and deletes.
+  - Return normalized action state and call `revalidatePath`.
 
-Loading states:
-
-- Route-level server component fetches usually do not define `loading.tsx`.
-- Client screens use `Skeleton` or text fallbacks. Examples: `EvaluationRunner`, `NotificationBell`, `NotificationsScreen`.
-- Auth guards use `AuthLoadingScreen`.
-
-Mutation handling:
-
-- React Query mutations invalidate related keys.
-- Server actions revalidate route paths but do not always redirect.
-- Evaluation attempt saving/submitting uses `mutateAsync` and local toast feedback.
-
-Evaluation async flow:
+Representative server-rendered list flow:
 
 ```txt
-Parent starts attempt
+src/app/[locale]/dashboards/organization/children/page.tsx
+  -> getCurrentOrganization()
+  -> Promise.all([
+       getAllChildrenByOrg(orgId),
+       getGradesByOrg(orgId),
+       getClassesByOrg(orgId)
+     ])
+  -> <ChildrenScreen childrens grades classes />
+
+ChildrenScreen
+  -> local search/grade/class filters
+  -> useClientPagination(filtered, 12)
+  -> deleteChildAction via useActionState
+  -> toast feedback via useActionFeedback
+```
+
+Evaluation attempt flow:
+
+```txt
+Parent selects/starts evaluation
   -> useStartEvaluation(evaluationId)
-  -> POST /evaluations/:id/start
-  -> route to /dashboards/parent/attempts/:attemptId
+  -> startEvaluationClient(evaluationId, { childId })
+  -> router navigates to attempt page
+
+src/app/[locale]/dashboards/parent/attempts/[attemptId]/page.tsx
+  -> client page reads attemptId
+  -> useAttempt(attemptId)
+  -> if approved: AttemptResultView
+  -> if submitted: waiting approval
+  -> otherwise: EvaluationRunner
 
 EvaluationRunner
   -> useEvaluationSession(attemptId)
-      -> useAttempt(attemptId)
-      -> optional useEvaluationForm(evaluationId) fallback
-      -> local answers map
-      -> autosave every 1200ms after dirty changes
-      -> beforeunload warning while dirty
-      -> auto-submit when expiresAt passes
+       -> useAttempt(attemptId)
+       -> useEvaluationForm(evaluationId) fallback if attempt lacks renderable questions
+       -> answers map from attempt.answers
+       -> autosave after dirty changes
+       -> beforeunload warning while dirty
+       -> auto-submit when expiresAt passes
+       -> submit/save mutations
 ```
+
+Notification flow:
+
+```txt
+useNotifications(params, { pollMs })
+  -> useUnreadCount(refetchInterval default 30s)
+  -> useNotificationsList(params)
+  -> useMarkAllRead()
+  -> useMarkOneRead()
+
+NotificationBell/NotificationsScreen
+  -> display unread/list
+  -> invalidate notificationKeys.all after read mutations
+```
+
+Loading and error behavior:
+
+- There are few route-level `loading.tsx`/`error.tsx` files. Most loading states are inside client components.
+- Common loading primitives: `src/components/ui/skeleton.tsx`, `src/components/shared/cards/LoadingCard.tsx`, `AuthLoadingScreen`.
+- Server detail pages generally `notFound()` on failed fetch.
+- Client pages show cards/skeletons/toasts for loading/errors.
 
 Scalability:
 
-- Evaluation and notification async patterns are the most mature.
-- CRUD screens should eventually converge on either server actions plus `revalidatePath` or React Query mutations, not a mixture per feature.
-- There is no Suspense strategy beyond normal App Router server rendering.
+- Client filtering and pagination over full arrays is acceptable for small/medium lists, but children/classes/evaluations/attempts will need server pagination for large datasets.
+- React Query hooks are scalable when keys are centralized. CRUD domains should adopt centralized keys if moving away from server actions.
+- There is no Suspense data-fetching strategy beyond standard App Router server rendering.
 
 ## 9. Authentication & Authorization
 
-Authentication is NextAuth credentials-based.
+Auth stack:
 
-Files:
-
-- `src/server/auth.ts`
-- `src/app/api/auth/[...nextauth]/route.ts`
-- `src/features/auth/hooks/useAuth.ts`
-- `src/features/auth/utils/rbac.ts`
-- `src/features/auth/utils/redirects.ts`
-- `src/lib/auth/token-expiry.ts`
-- `src/lib/utils.ts` `refreshAccessToken()`
+- `next-auth` credentials provider.
+- Auth options in `src/server/auth.ts`.
+- NextAuth route handler in `src/app/api/auth/[...nextauth]/route.ts`.
+- JWT session strategy with `maxAge` 30 days and `updateAge` 1 day.
+- Access/refresh tokens stored in JWT and exposed through `session.user`.
 
 Login lifecycle:
 
 ```txt
 LoginForm
-  -> signInWithPhoneAndRedirect
-  -> useAuth().login()
-  -> next-auth credentials provider
-  -> POST BACKEND_URL/api/auth/login
-  -> JWT stores id, roles, accessToken, refreshToken, expiry, verification flags
-  -> redirect helper chooses dashboard/email-verification/chose-role
+  -> useAuth().login({ phone, password })
+  -> signIn("credentials", redirect: false)
+  -> Credentials.authorize()
+      -> POST ${BACKEND_URL}/api/auth/login
+      -> return backend user + expiresIn
+  -> jwt callback stores:
+      id, accessToken, refreshToken, accessTokenExpires,
+      roles, phone, email, name, isEmailVerified, isPhoneVerified
+  -> session callback maps token to session.user
+  -> client updates session
+  -> redirect path chosen by getPostLoginRedirect()
 ```
 
-Token lifecycle:
+Token refresh:
 
-- JWT strategy, `maxAge` 30 days.
-- `jwt` callback stores tokens on first login.
-- If access token is expired, `refreshAccessToken()` posts to `${BACKEND_URL}/api/auth/refresh` using refresh token as bearer.
-- On refresh failure, token gets `RefreshAccessTokenError`; client API and `useAuth` treat this as session expired.
+- `src/lib/auth/token-expiry.ts` resolves TTL and expiry time.
+- `src/lib/utils.ts` `refreshAccessToken(token)` POSTs to `${BACKEND_URL}/api/auth/refresh` with refresh token as bearer and JSON body.
+- `src/server/auth.ts` `jwt` callback refreshes when `accessTokenExpires <= Date.now()`.
+- If refresh fails, token/session gets `RefreshAccessTokenError`.
+- `useInitAuth`, `useAuth`, and `clientApiFetch` respond to `RefreshAccessTokenError` by clearing token cache, showing toast/signing out.
+- `src/app/api/auth/refresh/route.ts` proxies refresh calls to backend, but the main JWT refresh currently calls backend directly through `refreshAccessToken`.
 
-Authorization:
+Email verification:
 
-- Global gate in `src/proxy.ts` checks protected route sections and roles.
-- Server layout gate `RequireRoles` checks `getServerSession`.
-- Client utility `useRBAC` / `useAuth().checkRole` checks UI access.
+- `src/proxy.ts` redirects unverified authenticated users from protected routes to `/{locale}/email-verfication`.
+- `src/app/[locale]/email-verfication/page.tsx` is a client page for the pending verification state and can send verification email through mailer API.
+- `src/app/[locale]/verify-email/page.tsx` handles token verification UI, using `verifyEmail`.
+- `src/app/api/auth/verify-email/route.ts` proxies GET token verification to backend.
 
-Risks:
+Role handling:
 
-- `employee/layout.tsx` and `enricher/layout.tsx` import auth-related symbols but do not wrap with `RequireRoles`; they currently rely mostly on `src/proxy.ts`.
-- `RequireRoles` default redirects are not locale-prefixed (`/${Routes.AUTH}/login`, `/${Routes.UNAUTHARIZED}`), though some callers pass custom redirect values.
-- Frontend role checks must be treated as UX gates only. Backend must enforce permissions.
-- `.env` currently contains a checked-in `NEXTAUTH_SECRET`; secrets should not live in committed frontend code.
+- `UserRole` enum contains `ADMIN`, `ORGANIZATIONOWNER`, `TEACHER`, `PARENT`.
+- `src/features/auth/utils/rbac.ts` normalizes backend `Role[]` objects to enum names and checks `hasAnyRole`.
+- `src/features/auth/utils/redirects.ts` maps role to dashboard path, but returns non-locale-prefixed paths unless a locale is passed.
+- `src/proxy.ts` has its own role home logic. Keep proxy and redirect utilities aligned when changing roles.
+
+Security risks:
+
+- Frontend role checks are UX gates only. Backend must enforce authorization.
+- `RequireRoles` default redirects are not locale-aware. Layouts should pass locale-prefixed `redirectTo` where possible.
+- `src/proxy.ts` `ACCESS_MAP` lets `ADMIN` access organization/teacher/parent dashboard sections, but role layouts may still require exact roles. For example parent layout currently allows only `PARENT`, so proxy and layout gates are not perfectly equivalent.
+- Checked-in `.env` exists. Do not commit secrets; rotate any secrets that were committed.
 
 ## 10. Styling System
 
-Tailwind v4 is configured through CSS, not a `tailwind.config.*` file.
+Tailwind is configured through CSS, not a `tailwind.config.*` file.
 
-Main styling file:
+Primary styling file:
 
 - `src/app/[locale]/globals.css`
 
-Key pieces:
+Key characteristics:
 
-- Imports: `tailwindcss`, `tw-animate-css`, `shadcn/tailwind.css`.
-- Uses CSS variables and `@theme inline` to expose shadcn tokens.
-- Defines `:root` and `.dark` token values with `oklch`.
-- Sets `--font-sans` to `--font-cairo`, provided by `next/font/google` in root layout.
-- Global `body` uses fixed radial-gradient backgrounds.
-- `.app-container` utility sets `max-w-7xl mx-auto px-6 lg:px-8`.
-- `.between-center` utility sets flex row between/center.
+- Imports `tailwindcss`, `tw-animate-css`, and `shadcn/tailwind.css`.
+- Defines `@custom-variant dark (&:is(.dark *))`.
+- Uses `@theme inline` to map semantic tokens (`--color-background`, `--color-primary`, sidebar/chart tokens, radii, fonts).
+- `:root` and `.dark` define oklch semantic variables.
+- `body` applies `min-h-dvh`, background/foreground/font, and two fixed radial gradients.
+- `html[dir="rtl"]` sets direction.
+- Global scrollbar styling is defined.
+- `.app-container` applies `max-w-7xl mx-auto px-6 lg:px-8`.
+- `.between-center` applies `flex items-center justify-between`.
 
 Theme:
 
-- Dark tokens exist, but no visible `ThemeProvider` or theme toggle is wired in the root provider. `next-themes` is installed but not obviously used.
-- RTL is handled at document level via `<html dir>` and some components also set explicit `dir`.
+- Dark token values exist.
+- `next-themes` is installed and `src/components/ui/sonner.tsx` calls `useTheme()`.
+- No root `ThemeProvider` or visible theme toggle was found in `src/app/[locale]/layout.tsx`; dark mode appears token-ready but not product-wired.
 
-Design consistency:
+Responsive and RTL:
 
-- shadcn primitives are consistent.
-- Dashboard shells often use `bg-[#f3eefb]`.
-- Many newer management screens use rounded cards, gradients, and fuchsia/indigo accents.
-- Public/home components use richer marketing styling and image assets.
+- Root layout sets document `dir` from locale.
+- Some screens also set `dir` explicitly using `locale === "ar" ? "rtl" : "ltr"` or `getTextDirection(locale)` from `src/lib/i18n/locale-utils.ts`.
+- `Sidebar` resolves side from document direction when `side` is not provided.
+- Watch components that import `next/link` or hardcode left/right classes; use logical spacing/inset where possible for RTL.
 
 Maintainability concerns:
 
-- Hardcoded colors and gradients compete with semantic tokens.
-- Arabic text should be moved out of component source and into `messages/ar.json`.
-- Some classes use very rounded surfaces (`rounded-3xl`, `rounded-[64px]`) even for operational dashboard UI.
+- Operational dashboard screens often use decorative rounded cards and gradients. For new dashboard work, prefer denser, tokenized, task-focused UI unless matching a nearby screen.
+- Hardcoded background `bg-[#f3eefb]` is repeated in dashboard layouts.
+- Mojibake appears in source strings and comments. Move display strings to messages files and avoid copying corrupted text.
+- `DataTablePagination` contains mojibake for the separator between page and item count.
 
 ## 11. Performance Review
 
-Positive:
+Positive signals:
 
-- Route pages often fetch server data in parallel with `Promise.all`.
-- Server components reduce initial client fetching for many management pages.
-- Evaluation lists and notifications use React Query cache.
-- Next `Image` is used for logos/hero/static assets.
-- React Compiler is enabled in `next.config.ts`.
+- Server route pages often fetch independent resources with `Promise.all`.
+- Server API wrapper uses `cache: "no-store"` to avoid stale authenticated data.
+- React Query is used for frequently changing client flows such as attempts and notifications.
+- `next/image` is used for public/static assets.
+- `next.config.ts` enables `reactCompiler: true`.
+- App Router server components are used for many initial data fetches.
 
-Risks:
+Rerender/hydration risks:
 
-- Very many components are client components. This increases hydration and bundle size.
-- Large UI/demo code exists in `src/components/data-table.tsx` with DnD, charts, drawers, tabs, and zod schema. If imported into production routes, it brings a heavy bundle.
-- `QueryClient` is a module-level singleton in a client module. This is normal in browser context, but there are no default stale/cache settings.
-- Client-side filtering over full arrays is fine for current list sizes but will not scale to thousands of children/classes/attempts without server pagination.
-- Some page files include `console.log` in server components/actions, such as organization children page and CRUD actions.
-- No virtualization is used in tables/lists.
-- The root body background uses fixed radial gradients, which can be a paint cost on low-end devices.
-- Organization fixed header plus `pt-28` is manually coordinated and may cause layout issues if header size changes.
+- Many components are client components, including home sections and many page screens. This increases JS and hydration cost.
+- Dynamic attempt pages for admin/parent are client route pages that fetch after hydration rather than server rendering.
+- `suppressHydrationWarning` is set on `<body>`, which can hide legitimate hydration mismatches.
+- `Sidebar` reads `document.documentElement.dir` during render after client hydration. It is guarded by client-only component usage, but direction-dependent rendering should be tested in Arabic/English.
 
-Hydration concerns:
+Bundle risks:
 
-- Locale direction is set server-side, good.
-- `suppressHydrationWarning` is set on body, which may hide legitimate hydration issues.
-- Direct use of `next/navigation` in localized routes can produce non-locale paths after client navigation.
+- Heavy dependencies are installed: dnd-kit, Recharts, Swiper, TanStack table, multiple phone input libraries. Only import them where needed.
+- Avoid putting chart/DnD/table-builder components in broad shared shells.
+- Multiple phone input libraries are installed (`react-international-phone`, `react-phone-input-2`, `react-phone-number-input`); current RHF field uses `react-phone-number-input`.
+
+Data-size risks:
+
+- Client-side filtering/pagination over full arrays appears in organization management and admin evaluation screens.
+- No virtualization was found.
+- Admin/attempt/evaluation lists should move to server pagination before datasets become large.
+
+Paint/layout risks:
+
+- Fixed radial-gradient body background can be a paint cost on low-end devices.
+- Organization layout manually coordinates a fixed header with `pt-28`; if header height changes, content can overlap or leave excessive space.
+- Large rounded cards and shadows across dense lists can be heavier than simple tables for large datasets.
+
+Debug/code hygiene risks:
+
+- `console.log` exists in route files such as `src/app/[locale]/verify-email/page.tsx`, `src/app/[locale]/dashboards/admin/tests/page.tsx`, `src/app/[locale]/dashboards/organization/grades/page.tsx`, and `src/app/[locale]/dashboards/organization/employees/[employeeId]/page.tsx`.
+- Remove debug logging when touching those files.
 
 ## 12. Technical Debt & Risks
 
-High-risk debt:
+High risk:
 
-- Inconsistent route spelling: `unautharized`, `unauthorized`, `email-verfication`, `verify-email`, `chose-role`. The app contains aliases in some places but not all.
-- Encoding corruption/mojibake in many Arabic strings. This makes UI copy hard to maintain and can leak broken text to users.
-- Committed secrets in `.env`.
-- `next.config.ts` has `typescript.ignoreBuildErrors: true`, which can hide production-breaking type errors.
-- Mixed API access: centralized API wrappers plus direct `fetch` in signup.
-- Mixed toast systems: `sonner` and `react-toastify`.
+- **Route typo contracts:** `unautharized`, `email-verfication`, `chose-role`, and enum misspellings are used by code. Renaming them without redirects will break navigation and middleware.
+- **Auth logic duplication:** role home mapping exists in `src/proxy.ts` and `src/features/auth/utils/redirects.ts`. Layout gates add another layer. Changes must be made together.
+- **JSON-only API wrappers:** empty responses and file uploads can break. Several mutation endpoints are typed as `void` but wrappers still parse JSON.
+- **Committed environment file:** `.env` exists in the repo root. Secrets should not be committed.
+- **Mojibake in source:** corrupted Arabic strings/comments are present in components and auth code. This can leak broken UI and makes maintenance error-prone.
 
-Medium-risk debt:
+Medium risk:
 
-- Multiple table implementations with the same `DataTable` name.
-- Client/server auth gates duplicated across proxy, server components, and client components.
-- Organization owner dashboard uses a different shell architecture from other dashboards.
-- Some shared components import feature components, breaking layer boundaries.
-- Query keys are not consistently centralized for all features.
-- Many server action payloads cast raw `FormData` directly to domain types.
+- **Mixed server actions and React Query:** without clear ownership, cache invalidation and server-rendered props can drift.
+- **Locale-unsafe links:** `next/link` and `next/navigation` are used inside locale-scoped screens. Prefer `@/i18n/navigation`.
+- **Shared/type sprawl:** cross-feature type files and feature types overlap.
+- **Design token bypass:** repeated hardcoded colors/gradients make theming and consistency harder.
+- **No global query defaults:** each query must remember stale/refetch behavior.
+- **Form field abstraction gaps:** select/textarea/checkbox are not as tightly integrated with RHF as text/password/phone.
 
 Accessibility risks:
 
-- Some interactive elements use `<a href="#">` in sidebars.
-- Some icon buttons have aria labels, but this is inconsistent.
-- Custom cards/buttons with gradient styling should be checked for contrast.
-- Table empty states are English-only in shared table components.
+- Icon buttons are not uniformly labelled outside shadcn primitives.
+- Custom cards/actions need contrast checks, especially gradient buttons and muted text on colored backgrounds.
+- Some shared empty/table text is hardcoded English.
+- Some sidebar/nav/demo data may use placeholder `href="#"` or placeholder avatars if not customized.
 
 Scalability risks:
 
-- Large cross-feature shared type files make API contract changes hard to isolate.
-- List screens use client filtering on complete datasets.
-- Role navigation is duplicated in middleware, redirects util, and sidebars.
+- Client filtering over entire datasets will not scale to thousands of rows.
+- Organization header is a separate shell from sidebar dashboards, so cross-role layout improvements must be duplicated.
+- Evaluation active attempt state is complex and centralized in `useEvaluationSession`; bypassing it risks losing autosave/expiry/dirty behavior.
 
 ## 13. Recommended Refactors
 
 HIGH:
 
-- Remove committed secrets and rotate `NEXTAUTH_SECRET`.
-- Turn off `typescript.ignoreBuildErrors` after fixing type errors.
-- Normalize auth/route constants and add aliases intentionally. Do not rename live routes without redirects.
-- Move hardcoded Arabic copy into `messages/ar.json` and fix encoding.
-- Make employee/enricher layouts use `RequireRoles` like admin/parent.
-- Remove direct backend `fetch` from `SignupWizard`; route through `api.client` or a dedicated auth route handler.
+- Remove committed secrets from `.env`, rotate affected secrets, and document required environment variables.
+- Normalize auth/role redirect mapping into one shared server-safe module used by `src/proxy.ts` and `src/features/auth/utils/redirects.ts`.
+- Fix JSON-empty response handling in `clientApiFetch` and `serverApiFetch` before relying on `void` mutation endpoints.
+- Make locale-aware navigation the default in localized screens; replace `next/link`/`next/navigation` imports where feasible.
+- Move hardcoded/corrupted Arabic UI strings into `messages/ar.json` and verify encoding.
+- Audit `RequireRoles` redirect paths for locale awareness and consistency with `ACCESS_MAP`.
 
 MEDIUM:
 
-- Consolidate table components. Keep one generic production `DataTable` and move the demo/DnD table out of shared production paths.
-- Standardize mutation strategy by feature: server actions with revalidation for server-rendered CRUD, React Query mutations for client-owned flows.
-- Centralize query keys for children/classes/grades/users, not only evaluations/notifications.
-- Create a dashboard shell abstraction for sidebar-based roles.
-- Extract role-to-dashboard mapping into one shared server/client-safe module used by proxy and redirect utilities.
-- Replace raw `FormData` casts with Zod schemas for CRUD actions.
+- Standardize data mutation ownership per feature:
+  - server-rendered CRUD: server actions + route refresh/revalidation
+  - client-owned flows: React Query mutations + centralized query keys
+- Centralize query keys for children/classes/grades/employees/teachers if those lists become React Query driven.
+- Consolidate table components and document the production `DataTable` import path.
+- Add server pagination for admin attempts/evaluations/users/children and organization children/classes if datasets are expected to grow.
+- Add route-level `loading.tsx`/`error.tsx` for major dashboards.
+- Replace repeated `bg-[#f3eefb]` and gradients with semantic tokens or component variants.
+- Add multipart/upload support deliberately if file/image fields become real product requirements.
 
 LOW:
 
-- Add route-level `loading.tsx` and `error.tsx` for dashboards.
-- Add server pagination for large tables/lists.
-- Replace hardcoded colors with semantic tokens or named component variants.
-- Add a proper theme provider/toggle if dark mode is product-supported.
-- Remove unused imports and debug `console.log`.
+- Add a real `ThemeProvider` and toggle if dark mode is supported; otherwise remove misleading theme dependency surface.
+- Remove debug `console.log` calls.
+- Add basic accessibility checks for icon-only controls and custom cards.
+- Reduce duplicate phone input dependencies.
+- Document backend response shapes or introduce runtime parsing for high-risk API contracts.
 
 ## 14. AI Guidance Section
 
 Future AI agents should follow these conventions.
 
-Preferred file placement:
+Preferred placement:
 
-- New route: add a thin `page.tsx` under `src/app/[locale]/...`.
-- New feature API: add to `src/features/<feature>/api/index.ts`.
-- New client query hook: add to `src/features/<feature>/hooks/index.ts` with stable query keys.
-- New server action: add to `src/features/<feature>/actions/*.action.ts`.
-- New feature-specific UI: prefer `src/features/<feature>/components`.
-- New app-wide reusable primitive: `src/components/ui` only if it is domain-free.
+- New route: thin `page.tsx` under `src/app/[locale]/...`.
+- New route layout: only when the route subtree needs a distinct shell or guard.
+- New backend call: `src/features/<domain>/api/index.ts`.
+- New server action: `src/features/<domain>/actions/*.action.ts`.
+- New query hook: `src/features/<domain>/hooks/index.ts` with exported stable query keys.
+- New feature component: `src/features/<domain>/components` when domain-owned.
+- New page-level composition: `src/components/pages/...` if matching existing screen placement.
+- New primitive: `src/components/ui` only if domain-free and shadcn-style.
 - New shared app pattern: `src/components/shared/<area>`.
 
-Preferred rendering pattern:
+Preferred server route pattern:
 
 ```tsx
-// page.tsx
 export default async function Page({ params }: Props) {
   const { locale } = await params
   const data = await getSomething()
@@ -596,77 +934,94 @@ export default async function Page({ params }: Props) {
 }
 ```
 
+Preferred client screen pattern:
+
 ```tsx
-// SomeScreen.tsx
 "use client"
 
-export function SomeScreen({ locale, data }: Props) {
-  // own search/filter/dialog state here
-  // call server actions or feature React Query hooks here
+export function SomeScreen({ data }: Props) {
+  const [search, setSearch] = useState("")
+  const filtered = useMemo(() => filterData(data, search), [data, search])
+  return <SharedPattern data={filtered} />
 }
 ```
 
 API rules:
 
-- Use `api.server` in server components/actions.
-- Use `api.client` in client hooks/components.
-- Add both server and client variants only when both rendering modes need them.
+- Use `api.server` in server components, server actions, and server helpers.
+- Use `api.client` in React Query hooks and client components.
 - Do not call `BACKEND_URL` or `NEXT_PUBLIC_API_URL` directly from random components.
-- Watch for non-JSON or empty responses; current API wrappers expect JSON.
+- If an endpoint returns no body, update the wrapper or endpoint handling before typing it as `void`.
+- If adding file uploads, do not use current JSON wrapper unchanged.
 
 Auth rules:
 
-- Trust `src/proxy.ts` for global route gating, but add `RequireRoles` to protected layouts for defense in depth.
-- Use `useAuth()` for client auth state.
-- Use `getServerSession(nextAuthOptions)` for server auth state.
-- Never create a local user store; `auth-store.ts` is only re-export compatibility.
+- Treat `src/proxy.ts` as the coarse route gate.
+- Add `RequireRoles` to protected layouts for defense in depth.
+- Use `getServerSession(nextAuthOptions)` for server auth.
+- Use `useAuth()` for client auth and logout/login helpers.
+- Do not introduce a separate global user store.
+- When adding/changing roles, update `UserRole`, proxy `ACCESS_MAP`/role home, redirect utilities, sidebars, and relevant layouts.
 
 Routing rules:
 
-- Use `Link`, `useRouter`, and `usePathname` from `@/i18n/navigation` when possible.
-- Be careful with existing misspelled route segments. They are real route contracts.
-- If adding a new role dashboard, update `src/proxy.ts`, `src/features/auth/utils/redirects.ts`, relevant sidebars, and `UserRole`.
+- Prefer `@/i18n/navigation` exports for localized links, router, pathname, and redirects.
+- Be careful with typo route segments. They are real URLs.
+- For dynamic server pages, follow the existing `params: Promise<...>` style.
+- Use `notFound()` for missing server-fetched details when that matches nearby pages.
 
 Forms rules:
 
-- Use `ServerActionForm` / `useServerActionForm` + registry config for new server-action CRUD forms.
-- Validate all `FormData` server actions with Zod via `parseFormData`.
-- Return i18n keys from server actions (`actionSuccess("Actions.entity.created")`); translate on the client with `useActionFeedback` or `showSuccessToast`.
-- Use `src/components/ui/form.tsx` + `RhfFormFields` for field rendering.
+- For new CRUD forms, prefer `ServerActionForm` + Zod schema + form registry config.
+- Server actions should use `parseFormData`, return `actionSuccess`/`actionErrorState`, and revalidate or redirect intentionally.
+- Server action messages should be translation keys, usually under `Actions.*`.
+- Translate action results on the client with `useActionFeedback` or `src/lib/toast/app-toast.ts`.
+- Inspect `RhfFormFields` before adding advanced field types; select/textarea integration may need improvement.
+
+State rules:
+
+- Keep URL/initial data in App Router.
+- Keep authenticated identity in NextAuth.
+- Keep client server-state in React Query.
+- Keep form state in React Hook Form or local wizard state.
+- Keep transient UI state local unless multiple distant components need it.
+- Avoid new global state libraries without a clear cross-app state problem.
 
 Styling rules:
 
-- Use shadcn primitives and semantic Tailwind tokens first.
-- Use `cn()` from `src/lib/utils.ts`.
-- Prefer translations over hardcoded bilingual strings.
-- Preserve RTL behavior: root layout sets `dir`, but complex screens may still need explicit `dir`.
-- Avoid adding more hardcoded gradients/colors unless matching an existing local screen pattern.
+- Use shadcn primitives and `cn()` from `src/lib/utils.ts`.
+- Prefer semantic Tailwind tokens (`bg-background`, `text-muted-foreground`, `border-border`, `bg-primary`) over hardcoded hex values.
+- Preserve RTL: root layout sets `dir`, but complex screens may still need explicit direction or logical CSS classes.
+- Put display strings in `messages/en.json` and `messages/ar.json`, not inline bilingual text.
+- For operational dashboard screens, favor dense, predictable, task-focused UI over marketing-style decoration.
 
 Dangerous areas:
 
-- Auth redirect logic is duplicated. Change proxy and redirect utilities together.
-- Evaluation attempt flow is stateful: `useEvaluationSession()` handles autosave, expiry, dirty state, and submission. Do not bypass it for the active runner.
-- Notification query invalidation is broad and polling-based. Keep keys compatible with `notificationKeys`.
-- Organization owner pages depend on `getCurrentOrganization()` and custom header/footer shell.
-- Table imports are easy to confuse because multiple `DataTable` files exist.
+- `src/proxy.ts` and `src/features/auth/utils/redirects.ts`: duplicated auth redirect logic.
+- `src/features/evaluations/hooks/useEvaluationSession.ts`: active attempt state, autosave, expiry, dirty warning, submit. Do not bypass casually.
+- `src/lib/api/client-api-client.ts` and `src/lib/api/server-api-clent.ts`: JSON assumptions affect all API calls.
+- `src/components/ui/sidebar.tsx`: complex layout/context/RTL behavior; test both desktop and mobile if editing.
+- Organization dashboard shell: fixed header plus `pt-28` content padding.
+- Route typo enums in `src/lib/types/enums.ts`.
 
 Anti-patterns to avoid:
 
-- Do not put feature imports inside `src/components/ui`.
+- Do not import feature/domain modules inside `src/components/ui`.
 - Do not add direct backend fetches in page/client components.
-- Do not add new hardcoded Arabic source strings.
-- Do not rely only on client-side `ProtectedRoute` for sensitive screens.
-- Do not rename misspelled routes/enums without migration.
-- Do not introduce a second global state library unless there is a clear app-wide state need.
+- Do not add hardcoded Arabic strings into TSX.
+- Do not rely only on client-side guards for protected screens.
+- Do not rename typo routes/enums without redirects and a migration plan.
+- Do not add more duplicate table/form abstractions unless consolidating.
 
 Useful mental model:
 
 ```txt
-App Router owns URL and initial render.
-Proxy owns coarse auth/locale redirects.
-NextAuth owns identity and tokens.
-Feature API modules own backend communication.
+App Router owns URL, layouts, and initial server render.
+proxy.ts owns coarse locale/auth/role redirects.
+NextAuth owns identity and token lifecycle.
+Feature API modules own backend endpoint calls.
 React Query owns client server-state.
-Server actions own many CRUD submissions.
-Shared components own visual patterns, not domain rules.
+Server actions own many CRUD mutations.
+Shared components own visual patterns.
+Feature components own domain behavior.
 ```

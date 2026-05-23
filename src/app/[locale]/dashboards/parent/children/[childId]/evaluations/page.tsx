@@ -5,11 +5,11 @@ type Props = {
 }
 
 export default async function ParentChildEvaluationsPage({ params }: Props) {
-  const { locale, childId } = await params
+  const { childId } = await params
 
   return (
     <div className="app-container py-6">
-      <ParentChildEvaluationsScreen childId={childId} locale={locale} />
+      <ParentChildEvaluationsScreen childId={childId} />
     </div>
   )
 }

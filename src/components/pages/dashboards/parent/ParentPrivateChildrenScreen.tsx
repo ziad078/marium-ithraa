@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Baby, Calendar, Loader2, Plus } from "lucide-react"
-import { toast } from "sonner"
+import { useLocale, useTranslations } from "next-intl"
+import { Baby, Calendar, Plus } from "lucide-react"
 
 import { ParentPrivateChildDialog } from "./ParentPrivateChildDialog"
 
@@ -17,40 +17,39 @@ import {
   formatChildBirthDate,
   getChildEvaluationLabel,
 } from "@/features/children/utils/display"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 import { Link } from "@/i18n/navigation"
 
 const PRIVATE_CHILD_LIMIT = 2
 
 type Props = {
-  locale: string
   privateChildren: Child[]
 }
 
-export function ParentPrivateChildrenScreen({ locale, privateChildren }: Props) {
-  const isAr = locale === "ar"
+export function ParentPrivateChildrenScreen({ privateChildren }: Props) {
+  const locale = useLocale()
+  const t = useTranslations("Dashboard.Parent.privateChildren")
+  const tParent = useTranslations("Dashboard.Parent")
+  const tChildren = useTranslations("Dashboard.Children")
+  const tCommon = useTranslations("Dashboard.common")
+  const tDashboard = useTranslations("Dashboard.common")
   const [open, setOpen] = useState(false)
   const atLimit = privateChildren.length >= PRIVATE_CHILD_LIMIT
 
-  const title = isAr ? "أطفالي" : "My children"
-
   return (
-    <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
+    <main className="app-container py-8 space-y-8" dir={getTextDirection(locale)}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/parent", label: isAr ? "الرئيسية" : "Home" },
-          { label: title },
+          { href: "/dashboards/parent", label: tDashboard("home") },
+          { label: t("title") },
         ]}
-        title={title}
-        subtitle={
-          isAr
-            ? `يمكنك إضافة حتى ${PRIVATE_CHILD_LIMIT} أطفال للتقييم الخاص`
-            : `You can add up to ${PRIVATE_CHILD_LIMIT} children for private evaluation`
-        }
+        title={t("title")}
+        subtitle={t("subtitle", { limit: PRIVATE_CHILD_LIMIT })}
       />
 
       {atLimit && (
         <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          {isAr ? "تم الوصول إلى الحد الأقصى (طفلان)" : "Child limit reached (2 children)"}
+          {t("limitReached")}
         </p>
       )}
 
@@ -63,29 +62,27 @@ export function ParentPrivateChildrenScreen({ locale, privateChildren }: Props) 
               disabled={atLimit}
             >
               <Plus className="size-4" />
-              {isAr ? "إضافة طفل" : "Add child"}
+              {t("addChild")}
             </GradientButton>
           </DialogTrigger>
           <ParentPrivateChildDialog
             open={open}
             onOpenChange={setOpen}
             currentCount={privateChildren.length}
-            onSuccess={() =>
-              toast.success(isAr ? "تم الحفظ بنجاح" : "Saved successfully")
-            }
+            onSuccess={() => {}}
           />
         </Dialog>
       </div>
 
       {privateChildren.length === 0 ? (
         <EmptyState
-          title={isAr ? "لا يوجد أطفال بعد" : "No children yet"}
-          actionLabel={!atLimit ? (isAr ? "إضافة طفل" : "Add child") : undefined}
+          title={t("empty")}
+          actionLabel={!atLimit ? t("addChild") : undefined}
         />
       ) : (
         <section className="grid gap-4 md:grid-cols-2">
           {privateChildren.map((child) => {
-            const evalInfo = getChildEvaluationLabel(child, isAr)
+            const evalInfo = getChildEvaluationLabel(child, tChildren)
             return (
               <Card key={child.id} className="rounded-2xl">
                 <CardContent className="p-5 space-y-2">
@@ -98,17 +95,11 @@ export function ParentPrivateChildrenScreen({ locale, privateChildren }: Props) 
                     {formatChildBirthDate(child.birthDate, locale)}
                   </p>
                   <p className="text-sm">
-                    {isAr ? "المحاولات" : "Attempts"}: {child.attemptsUsed ?? 0}
+                    {tParent("attempts")}: {child.attemptsUsed ?? 0}
                   </p>
                   <p className="text-sm">
-                    {isAr ? "إعادة التقييم" : "Retake"}:{" "}
-                    {child.retakeUsed
-                      ? isAr
-                        ? "نعم"
-                        : "Yes"
-                      : isAr
-                        ? "لا"
-                        : "No"}
+                    {tParent("retake")}:{" "}
+                    {child.retakeUsed ? tCommon("yes") : tCommon("no")}
                   </p>
                   <p className={`text-sm font-medium ${evalInfo.className}`}>
                     {evalInfo.label}
@@ -117,7 +108,7 @@ export function ParentPrivateChildrenScreen({ locale, privateChildren }: Props) 
                     <Link
                       href={`/dashboards/parent/children/${child.id}/evaluations`}
                     >
-                      {isAr ? "التقييمات" : "Evaluations"}
+                      {tParent("evaluationsLink")}
                     </Link>
                   </Button>
                 </CardContent>

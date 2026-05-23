@@ -1,16 +1,17 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import type { EvaluationAttempt } from "@/features/evaluations/types"
 import { getAttemptStatusLabel } from "@/features/evaluations/utils/labels"
+import { getDateLocale } from "@/lib/i18n/locale-utils"
 
-function statusBadge(status: string, isAr: boolean) {
+function statusBadge(status: string, t: ReturnType<typeof useTranslations>) {
   const s = status.toLowerCase()
-  const label = getAttemptStatusLabel(status, isAr)
+  const label = getAttemptStatusLabel(status, t)
   const variant: "default" | "secondary" | "outline" =
     s === "approved"
       ? "default"
@@ -22,14 +23,13 @@ function statusBadge(status: string, isAr: boolean) {
 
 export default function AttemptSummary({
   attempt,
-  locale,
 }: {
   attempt: EvaluationAttempt
   locale?: string
 }) {
+  const locale = useLocale()
   const t = useTranslations("Features.Evaluations")
-  const isAr = locale === "ar"
-  const b = statusBadge(attempt.status ?? "unknown", isAr)
+  const b = statusBadge(attempt.status ?? "unknown", t)
 
   return (
     <Card>
@@ -54,9 +54,7 @@ export default function AttemptSummary({
           <span className="text-muted-foreground">{t("submittedAt")}</span>
           <span className="font-medium">
             {attempt.submittedAt
-              ? new Date(attempt.submittedAt).toLocaleString(
-                  isAr ? "ar-SA" : undefined,
-                )
+              ? new Date(attempt.submittedAt).toLocaleString(getDateLocale(locale))
               : "—"}
           </span>
         </div>

@@ -77,7 +77,6 @@ export default function AdminAttemptDetailPage() {
           <AttemptResultView
             type={attempt.evaluation?.type ?? "multiple_intelligences"}
             result={attempt.result}
-            locale={locale}
           />
         </CardContent>
       </Card>

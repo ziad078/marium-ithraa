@@ -35,6 +35,7 @@ import {
 import type { EvaluationType } from "@/features/evaluations/types"
 import { getEvaluationTypeLabel } from "@/features/evaluations/utils/labels"
 import { Link } from "@/i18n/navigation"
+import { getDateLocale, getTextDirection } from "@/lib/i18n/locale-utils"
 import { cn } from "@/lib/utils"
 
 type Props = { locale: string }
@@ -99,7 +100,6 @@ function QueryError({
 }
 
 function FiltersBar({
-  locale,
   classId,
   evaluationId,
   onClassChange,
@@ -108,7 +108,6 @@ function FiltersBar({
   evaluations,
   disabled,
 }: {
-  locale: string
   classId: string
   evaluationId: string
   onClassChange: (v: string) => void
@@ -122,7 +121,7 @@ function FiltersBar({
   disabled?: boolean
 }) {
   const t = useTranslations("Features.OwnerEvaluations")
-  const isAr = locale === "ar"
+  const tEval = useTranslations("Features.Evaluations")
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
@@ -159,9 +158,7 @@ function FiltersBar({
             {evaluations.map((ev) => (
               <SelectItem key={ev.id} value={ev.id}>
                 {ev.title}
-                {isAr
-                  ? ` (${getEvaluationTypeLabel(ev.type as EvaluationType, true)})`
-                  : ` (${getEvaluationTypeLabel(ev.type as EvaluationType, false)})`}
+                {` (${getEvaluationTypeLabel(ev.type as EvaluationType, tEval)})`}
               </SelectItem>
             ))}
           </SelectContent>
@@ -179,21 +176,16 @@ function ReportsTab({
   evaluationId: string
 }) {
   const t = useTranslations("Features.OwnerEvaluations")
-  const isAr = locale === "ar"
   const reportsQuery = useOwnerEvaluationReports(
     evaluationId || undefined,
   )
 
   const showPdfExportSoon = () => {
-    toast.info(
-      isAr ? "سيتم دعم تحميل PDF قريبًا" : "PDF download will be supported soon",
-    )
+    toast.info(t("pdfExportSoon"))
   }
 
   const showExcelExportSoon = () => {
-    toast.info(
-      isAr ? "سيتم دعم تصدير Excel قريبًا" : "Excel export will be supported soon",
-    )
+    toast.info(t("excelExportSoon"))
   }
 
   if (reportsQuery.isLoading) {
@@ -249,14 +241,16 @@ function ReportCard({
   locale: string
 }) {
   const t = useTranslations("Features.OwnerEvaluations")
-  const isAr = locale === "ar"
   const dateLabel = report.reportDate
-    ? new Date(report.reportDate).toLocaleDateString(isAr ? "ar-SA" : undefined)
+    ? new Date(report.reportDate).toLocaleDateString(getDateLocale(locale))
     : "—"
 
   return (
     <Card className="rounded-2xl border bg-white shadow-sm">
-      <CardContent className="space-y-3 p-4 text-right" dir={isAr ? "rtl" : "ltr"}>
+      <CardContent
+        className="space-y-3 p-4 text-right"
+        dir={getTextDirection(locale)}
+      >
         <p className="font-bold text-primary">{report.title}</p>
         <p className="text-sm text-muted-foreground">
           {t("class")}: {report.className}
@@ -266,8 +260,7 @@ function ReportCard({
         </p>
         <p className="flex items-center justify-end gap-1 text-sm text-primary/80">
           <span>
-            {report.evaluatedCount} / {report.childrenCount}{" "}
-            {isAr ? "طفل" : "children"}
+            {report.evaluatedCount} / {report.childrenCount} {t("childrenUnit")}
           </span>
           <FileText className="size-4 text-muted-foreground" />
         </p>
@@ -661,7 +654,7 @@ function StatusChildCard({
 
 export function OwnerEvaluationResultsScreen({ locale }: Props) {
   const t = useTranslations("Features.OwnerEvaluations")
-  const isAr = locale === "ar"
+  const tCommon = useTranslations("Dashboard.common")
 
   const filtersQuery = useOwnerEvaluationFilters()
   const [classId, setClassId] = useState<string | null>(null)
@@ -678,14 +671,14 @@ export function OwnerEvaluationResultsScreen({ locale }: Props) {
   return (
     <main
       className="min-h-screen bg-[#f3eefb] py-8 space-y-8"
-      dir={isAr ? "rtl" : "ltr"}
+      dir={getTextDirection(locale)}
     >
       <div className="app-container space-y-6">
         <ManagementPageHeader
           breadcrumbs={[
             {
               href: "/dashboards/organization",
-              label: isAr ? "الرئيسية" : "Home",
+              label: tCommon("home"),
             },
             { label: t("results") },
           ]}
@@ -706,7 +699,6 @@ export function OwnerEvaluationResultsScreen({ locale }: Props) {
           />
         ) : (
           <FiltersBar
-            locale={locale}
             classId={effectiveClassId}
             evaluationId={effectiveEvaluationId}
             onClassChange={setClassId}

@@ -32,7 +32,9 @@ import { useFormConfig } from "@/features/forms"
 import { useServerActionForm } from "@/features/forms/hooks/useServerActionForm"
 import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
 import { createPrivateChildSchema } from "@/features/forms/schemas/child.schema"
-import { FormTypes, Gender, StatusCode } from "@/lib/types/enums"
+import { isActionSuccess } from "@/features/forms/action-results"
+import { useActionFeedback } from "@/hooks/useActionFeedback"
+import { FormTypes, Gender } from "@/lib/types/enums"
 
 type Props = {
   open: boolean
@@ -50,6 +52,7 @@ export function ParentPrivateChildDialog({
   const t = useTranslations("Forms.Child")
   const tCommon = useTranslations("Dashboard.common")
   const { fields } = useFormConfig(FormTypes.CHILD_PRIVATE)
+  const { notifyAction } = useActionFeedback()
 
   const { form, submit, isPending } = useServerActionForm({
     schema: createPrivateChildSchema,
@@ -61,10 +64,13 @@ export function ParentPrivateChildDialog({
     },
     action: createPrivateChildAction,
     onStatusChange: (state) => {
-      if (state.status === StatusCode.CREATED) {
+      if (isActionSuccess(state)) {
+        notifyAction(state)
         onSuccess()
         onOpenChange(false)
         form.reset()
+      } else if (state.message) {
+        notifyAction(state)
       }
     },
   })

@@ -14,7 +14,10 @@ export function getChildClassName(child: Child): string {
   return "—"
 }
 
-export function getChildEvaluationLabel(child: Child, isAr: boolean): {
+export function getChildEvaluationLabel(
+  child: Child,
+  t: (key: string) => string,
+): {
   label: string
   className: string
 } {
@@ -29,11 +32,11 @@ export function getChildEvaluationLabel(child: Child, isAr: boolean): {
     child.retakeUsed === true
   return evaluated
     ? {
-        label: isAr ? "تم التقييم" : "Evaluated",
+        label: t("evaluationStatus.evaluated"),
         className: "text-emerald-600",
       }
     : {
-        label: isAr ? "لم يتم التقييم" : "Not evaluated",
+        label: t("evaluationStatus.notEvaluated"),
         className: "text-amber-600",
       }
 }

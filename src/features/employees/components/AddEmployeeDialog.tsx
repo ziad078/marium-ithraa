@@ -68,7 +68,7 @@ export function AddEmployeeDialog({ organizationId }: { organizationId: string }
               type="submit"
               className="rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
             >
-              <Loader2 className="mr-2 h-4 w-4 animate-spin hidden [[disabled]_&]:inline" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin hidden in-[[disabled]]:inline" />
               {tCommon("add")}
             </Button>
           </DialogFooter>

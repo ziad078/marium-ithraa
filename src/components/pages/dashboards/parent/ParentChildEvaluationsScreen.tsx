@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
-import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Badge } from "@/components/ui/badge"
@@ -23,16 +23,17 @@ import {
   getAttemptStatusLabel,
   getEvaluationTypeLabel,
 } from "@/features/evaluations/utils/labels"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 import { Link } from "@/i18n/navigation"
 
 type Props = {
   childId: string
-  locale: string
 }
 
-export function ParentChildEvaluationsScreen({ childId, locale }: Props) {
+export function ParentChildEvaluationsScreen({ childId }: Props) {
+  const locale = useLocale()
   const t = useTranslations("Features.Evaluations")
-  const isAr = locale === "ar"
+  const tParent = useTranslations("Dashboard.Parent")
 
   const available = useAvailableEvaluations(childId)
   const attempts = useChildAttempts(childId)
@@ -47,7 +48,6 @@ export function ParentChildEvaluationsScreen({ childId, locale }: Props) {
   const childAttempts = attempts.data?.attempts ?? []
 
 
-  console.log(available, attempts, retake, mainSlot, extra, slotReady, age, evaluations, childAttempts)
   const openSlot = async (mutation: { mutateAsync: () => Promise<unknown> }) => {
     try {
       await mutation.mutateAsync()
@@ -76,12 +76,12 @@ export function ParentChildEvaluationsScreen({ childId, locale }: Props) {
   }
 
   return (
-    <div className="space-y-6 px-4 lg:px-6" dir={isAr ? "rtl" : "ltr"}>
+    <div className="space-y-6 px-4 lg:px-6" dir={getTextDirection(locale)}>
       <div>
         <h2 className="text-xl font-semibold">{t("childEvaluations")}</h2>
         {age != null && (
           <p className="text-sm text-muted-foreground">
-            {isAr ? `عمر الطفل: ${age} سنة` : `Child age: ${age} years`}
+            {tParent("childAge", { age })}
           </p>
         )}
       </div>
@@ -139,7 +139,6 @@ export function ParentChildEvaluationsScreen({ childId, locale }: Props) {
               evaluation={ev}
               childId={childId}
               childAttempts={childAttempts}
-              isAr={isAr}
               t={t}
             />
           ))
@@ -152,7 +151,7 @@ export function ParentChildEvaluationsScreen({ childId, locale }: Props) {
           <p className="text-sm text-muted-foreground">{t("empty")}</p>
         ) : (
           childAttempts.map((att) => (
-            <AttemptRow key={att.id} attempt={att} isAr={isAr} t={t} />
+            <AttemptRow key={att.id} attempt={att} t={t} />
           ))
         )}
       </section>
@@ -164,13 +163,11 @@ function AvailableEvaluationCard({
   evaluation,
   childId,
   childAttempts,
-  isAr,
   t,
 }: {
   evaluation: Evaluation
   childId: string
   childAttempts: EvaluationAttempt[]
-  isAr: boolean
   t: ReturnType<typeof useTranslations>
 }) {
   const router = useRouter()
@@ -188,10 +185,10 @@ function AvailableEvaluationCard({
           <p className="font-medium">{evaluation.title}</p>
           <div className="flex flex-wrap gap-2 mt-1">
             <Badge variant="secondary">
-              {getEvaluationTypeLabel(evaluation.type, isAr)}
+              {getEvaluationTypeLabel(evaluation.type, t)}
             </Badge>
             <span className="text-xs text-muted-foreground">
-              {formatAgeRange(evaluation.ageFrom, evaluation.ageTo, isAr)}
+              {formatAgeRange(evaluation.ageFrom, evaluation.ageTo, t)}
             </span>
           </div>
         </div>
@@ -227,11 +224,9 @@ function AvailableEvaluationCard({
 
 function AttemptRow({
   attempt,
-  isAr,
   t,
 }: {
   attempt: EvaluationAttempt
-  isAr: boolean
   t: ReturnType<typeof useTranslations>
 }) {
   const status = attempt.status
@@ -244,7 +239,7 @@ function AttemptRow({
             {attempt.evaluation?.title ?? attempt.evaluationId}
           </p>
           <p className="text-sm text-muted-foreground">
-            #{attempt.attemptNumber} — {getAttemptStatusLabel(status, isAr)}
+            #{attempt.attemptNumber} — {getAttemptStatusLabel(status, t)}
           </p>
         </div>
         {status === "in_progress" && (

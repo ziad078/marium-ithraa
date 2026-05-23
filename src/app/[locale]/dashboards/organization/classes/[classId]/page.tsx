@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default async function ClassDetailPage({ params }: Props) {
-  const { locale, classId } = await params
+  const { classId } = await params
 
   let classItem: ClassItem
   let children: Child[]
@@ -29,6 +29,6 @@ export default async function ClassDetailPage({ params }: Props) {
   }
 
   return (
-    <ClassDetailScreen locale={locale} classItem={classItem} classChildren={children} />
+    <ClassDetailScreen classItem={classItem} classChildren={children} />
   )
 }

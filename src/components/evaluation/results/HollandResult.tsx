@@ -1,15 +1,12 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-export function HollandResult({
-  result,
-  isAr,
-}: {
-  result: Record<string, unknown>
-  isAr: boolean
-}) {
+export function HollandResult({ result }: { result: Record<string, unknown> }) {
+  const t = useTranslations("Features.EvaluationResults.holland")
   const hollandCode = result.hollandCode as string | undefined
   const totalLevel = result.totalLevel as string | undefined
   const dimensions =
@@ -28,9 +25,7 @@ export function HollandResult({
             {hollandCode ?? "—"}
           </p>
           <p>
-            <span className="text-muted-foreground">
-              {isAr ? "المستوى الكلي" : "Total level"}:{" "}
-            </span>
+            <span className="text-muted-foreground">{t("totalLevel")}: </span>
             {totalLevel ?? "—"}
           </p>
         </CardContent>
@@ -38,9 +33,7 @@ export function HollandResult({
       {dimensions.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">
-              {isAr ? "الاهتمامات" : "Interests"}
-            </CardTitle>
+            <CardTitle className="text-base">{t("interests")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
             {dimensions.map((d) => (
@@ -50,7 +43,7 @@ export function HollandResult({
               >
                 {d.name ?? d.code}
                 {d.suitable != null &&
-                  ` — ${d.suitable ? (isAr ? "مناسب" : "Suitable") : isAr ? "غير مناسب" : "Not suitable"}`}
+                  ` — ${d.suitable ? t("suitable") : t("notSuitable")}`}
               </Badge>
             ))}
           </CardContent>

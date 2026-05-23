@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useLocale, useTranslations } from "next-intl"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 import { useActionState, useEffect } from "react"
 import {
   Dialog,
@@ -27,7 +28,6 @@ import { useActionFeedback } from "@/hooks/useActionFeedback"
 
 export function TeachersScreen({ teachers }: { teachers: Teacher[] }) {
   const locale = useLocale()
-  const isAr = locale === "ar"
   const t = useTranslations("Dashboard.Teachers")
   const tCommon = useTranslations("Dashboard.common")
   const tPagination = useTranslations("Dashboard.pagination")
@@ -49,7 +49,7 @@ export function TeachersScreen({ teachers }: { teachers: Teacher[] }) {
   const { pageItems, pagination, setPage } = useClientPagination(teachers, 12)
 
   return (
-    <main className="app-container py-8 space-y-10" dir={isAr ? "rtl" : "ltr"}>
+    <main className="app-container py-8 space-y-10" dir={getTextDirection(locale)}>
       <ManagementPageHeader
         breadcrumbs={[
           { href: "/dashboards/organization", label: tCommon("home") },

@@ -77,7 +77,7 @@ export function ClassFormScreen({
   const { form, submit, isPending } = useServerActionForm({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     schema: schema as any,
-    defaultValues: defaultValues as any,
+    defaultValues: defaultValues as { name: string, gradeId: string, teacherId: string },
     action,
     onStatusChange: (state) => {
       if (!state?.status) return

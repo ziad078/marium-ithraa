@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -18,9 +18,8 @@ function TH({ messageKey }: { messageKey: string }) {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const locale = useLocale()
-  const isAr = locale === "ar"
-  const label = getAttemptStatusLabel(status, isAr)
+  const t = useTranslations("Features.Evaluations")
+  const label = getAttemptStatusLabel(status, t)
   const variant =
     status === "approved"
       ? "default"

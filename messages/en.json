@@ -99,7 +99,44 @@
       "home": "Home",
       "edit": "Edit",
       "noData": "No data",
-      "confirmDelete": "Are you sure?"
+      "confirmDelete": "Are you sure?",
+      "yes": "Yes",
+      "no": "No",
+      "open": "Open"
+    },
+    "Parent": {
+      "privateChildren": {
+        "title": "My children",
+        "subtitle": "You can add up to {limit} children for private evaluation",
+        "limitReached": "Child limit reached (2 children)",
+        "addChild": "Add child",
+        "empty": "No children yet"
+      },
+      "orgChildren": {
+        "title": "Organization children",
+        "subtitle": "Evaluate your organization's children here",
+        "empty": "No children yet"
+      },
+      "attempts": "Attempts",
+      "retake": "Retake",
+      "evaluationsLink": "Evaluations",
+      "childAge": "Child age: {age} years"
+    },
+    "ClassDetail": {
+      "addChild": "Add child",
+      "empty": "No children in this class",
+      "birth": "Birth",
+      "deleteTitle": "Delete child",
+      "gradeSubtitle": "Grade: {grade}",
+      "classesBreadcrumb": "Classes"
+    },
+    "GradeDetail": {
+      "addClass": "Add class",
+      "emptyClasses": "No classes in this grade",
+      "childrenCount": "{count} children",
+      "emptyChildren": "No children in this class",
+      "subtitle": "{count} classes",
+      "gradesBreadcrumb": "Grades"
     },
     "pagination": {
       "previous": "Previous",
@@ -160,18 +197,6 @@
       "classFilter": "Class",
       "allClasses": "All classes",
       "goToEdit": "Go to edit page",
-      "fields": {
-        "name": "Name",
-        "birthDate": "Birth date",
-        "gender": "Gender",
-        "grade": "Grade",
-        "class": "Class",
-        "parent": "Parent",
-        "email": "Email",
-        "phone": "Phone",
-        "evaluation": "Evaluation status",
-        "attempts": "Attempts"
-      },
       "actions": {
         "add": "Add Child"
       },
@@ -190,15 +215,25 @@
         "deleteConfirmShort": "Are you sure? This cannot be undone."
       },
       "fields": {
+        "genderPlaceholder": "Select gender",
         "name": "Name",
-        "grade": "Grade",
         "birthDate": "Birth date",
         "gender": "Gender",
-        "genderPlaceholder": "Select gender"
+        "grade": "Grade",
+        "class": "Class",
+        "parent": "Parent",
+        "email": "Email",
+        "phone": "Phone",
+        "evaluation": "Evaluation status",
+        "attempts": "Attempts"
       },
       "gender": {
         "male": "Male",
         "female": "Female"
+      },
+      "evaluationStatus": {
+        "evaluated": "Evaluated",
+        "notEvaluated": "Not evaluated"
       },
       "table": {
         "name": "Name",
@@ -404,28 +439,6 @@
             }
           }
         }
-      },
-      "Validation": {
-        "name": {
-          "min": "Name must be at least 2 characters.",
-          "max": "Name must be at most 50 characters."
-        },
-        "email": {
-          "invalid": "Please enter a valid email address."
-        },
-        "password": {
-          "min": "Password must be at least 8 characters.",
-          "pattern": "Password must contain uppercase, lowercase, number and special character."
-        },
-        "phone": {
-          "min": "Please enter a valid phone number."
-        },
-        "organization_name": {
-          "min": "Organization name must be at least 2 characters."
-        },
-        "organization_type": {
-          "required": "Please select an organization type."
-        }
       }
     }
   },
@@ -459,7 +472,7 @@
     }
   },
   "Actions": {
-    "common": {
+    "": {
       "validationFailed": "Please check the form fields.",
       "serverError": "Something went wrong. Please contact support.",
       "conflict": "This record already exists.",
@@ -590,10 +603,36 @@
       "missingAnswerIds": "{count} answer option(s) are missing IDs and cannot be submitted.",
       "privateSlotHint": "Open a slot first, then start an evaluation below.",
       "slotOpened": "Slot opened successfully",
-      "slotOpenedPickEvaluation": "Slot is ready. Choose an evaluation and tap Start."
+      "slotOpenedPickEvaluation": "Slot is ready. Choose an evaluation and tap Start.",
+      "childAge": "Child age: {age} years",
+      "types": {
+        "multiple_intelligences": "Multiple Intelligences",
+        "pride": "PRIDE Scale",
+        "renzulli": "Renzulli Scale",
+        "holland": "Holland Scale",
+        "learning_styles": "Learning Styles",
+        "torrance": "Torrance Scale"
+      },
+      "ageRange": {
+        "all": "All ages",
+        "range": "{from} - {to} years",
+        "from": "From {from}",
+        "upTo": "Up to {to}"
+      },
+      "attemptStatus": {
+        "in_progress": "In progress",
+        "submitted": "Submitted",
+        "approved": "Approved"
+      }
     },
     "ParentDashboard": {
       "subtitle": "Start evaluations and track your children's results in one place",
+      "welcome": "Welcome, {name}",
+      "defaultName": "Parent",
+      "overview": "Overview",
+      "quickActions": "Quick actions",
+      "viewChildren": "View children",
+      "recentNotifications": "Recent notifications",
       "children": "Children",
       "childrenDesc": "View and manage your registered children",
       "evaluations": "Evaluations",
@@ -616,7 +655,38 @@
       "classesWelcome": "Classes assigned to {name}",
       "noClasses": "No classes assigned yet",
       "grade": "Grade",
-      "childrenCount": "Students"
+      "childrenCount": "Students",
+      "welcome": "Welcome, {name}",
+      "open": "Open"
+    },
+    "EvaluationResults": {
+      "noResult": "No result available yet",
+      "defaultTitle": "Result",
+      "multipleIntelligences": {
+        "top3": "Top 3 intelligences",
+        "dimensions": "Dimension scores"
+      },
+      "pride": {
+        "total": "Total",
+        "level": "Level",
+        "breakdown": "Dimension breakdown"
+      },
+      "renzulli": {
+        "average": "Average",
+        "level": "Level",
+        "dimensions": "Dimensions"
+      },
+      "holland": {
+        "totalLevel": "Total level",
+        "interests": "Interests",
+        "suitable": "Suitable",
+        "notSuitable": "Not suitable"
+      },
+      "learningStyles": {
+        "dimensions": "Style dimensions",
+        "dominant": "Dominant",
+        "strength": "Strength"
+      }
     },
     "Notifications": {
       "title": "Notifications",
@@ -699,7 +769,21 @@
       "attemptForbidden": "You cannot view this result. It may not be approved yet or you do not have access.",
       "attemptNotApproved": "This evaluation has been submitted but not approved yet. Results will appear after approval.",
       "attemptNoResultYet": "No result is available for this evaluation yet.",
-      "backToResults": "Back to results"
+      "backToResults": "Back to results",
+      "pdfExportSoon": "PDF download will be supported soon",
+      "excelExportSoon": "Excel export will be supported soon",
+      "childrenUnit": "children"
+    }
+  },
+  "Layout": {
+    "OrganizationNav": {
+      "home": "Home",
+      "grades": "Grades",
+      "classes": "Classes",
+      "children": "Children",
+      "teachers": "Teachers",
+      "results": "Results",
+      "menu": "Menu"
     }
   },
   "Forms": {
@@ -744,7 +828,11 @@
       "breadcrumb": { "home": "Home", "classes": "Classes" },
       "name": { "label": "Class name", "placeholder": "Enter class name" },
       "grade": { "label": "Grade", "placeholder": "Select grade" },
-      "teacher": { "label": "Teacher (optional)", "placeholder": "Select teacher", "none": "None" },
+      "teacher": {
+        "label": "Teacher (optional)",
+        "placeholder": "Select teacher",
+        "none": "None"
+      },
       "toast": { "saved": "Class saved successfully" }
     },
     "Child": {
@@ -771,7 +859,10 @@
     },
     "Test": {
       "title": { "label": "Test title", "placeholder": "Enter test title" },
-      "description": { "label": "Description", "placeholder": "Enter description" },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter description"
+      },
       "toast": { "created": "Test created successfully" },
       "wizard": {
         "back": "Back",

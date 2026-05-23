@@ -93,7 +93,17 @@ export function ChildFormScreen({
   const { form, submit, isPending } = useServerActionForm({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     schema: schema as any,
-    defaultValues: defaultValues as any,
+    defaultValues: defaultValues as {
+      organizationId: string,
+      name: string,
+      birthDate: string,
+      gender: Gender,
+      classId: string,
+      parentName: string,
+      parentEmail: string,
+      parentPhone: string,
+      parentPassword: string,
+    },
     action,
     onStatusChange: (state) => {
       if (!state?.status) return

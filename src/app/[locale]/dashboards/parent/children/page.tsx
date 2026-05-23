@@ -7,12 +7,13 @@ type Props = {
 }
 
 export default async function ParentChildrenPage({ params }: Props) {
-  const { locale } = await params
-  const { children:privateChildren } = await getPrivateChildren()
-  const { children:orgChildren } = await getOrgChildren()
-  console.log(orgChildren, privateChildren)
-  return (<>
-  <ParentPrivateChildrenScreen locale={locale} privateChildren={privateChildren} />
-  <ParentOrgChildrenScreen locale={locale} orgChildren={orgChildren} />
-  </>)
+  await params
+  const { children: privateChildren } = await getPrivateChildren()
+  const { children: orgChildren } = await getOrgChildren()
+  return (
+    <>
+      <ParentPrivateChildrenScreen privateChildren={privateChildren} />
+      <ParentOrgChildrenScreen orgChildren={orgChildren} />
+    </>
+  )
 }

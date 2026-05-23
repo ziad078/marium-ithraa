@@ -1,9 +1,9 @@
 "use client"
 
 import { useActionState, useEffect, useMemo, useState } from "react"
-import { toast } from "sonner"
-import { Loader2, Pencil, Trash2 } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { Loader2, Pencil, Trash2 } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,9 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { FieldGroup } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Form } from "@/components/ui/form"
 import {
   Select,
   SelectContent,
@@ -25,8 +23,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Gender, StatusCode } from "@/lib/types/enums"
-import { type InitialState } from "@/lib/types/types"
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { useServerActionForm } from "@/features/forms/hooks/useServerActionForm"
+import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
+import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
+import { updateChildSchema } from "@/features/forms/schemas/child.schema"
+import { FormTypes, Gender, StatusCode } from "@/lib/types/enums"
 
 import { type Child } from "../types/interfaces"
 import { updateChildAction } from "../actions/update-child.action"
@@ -37,9 +45,11 @@ type Props = {
 }
 
 export function ChildRowActions({ child }: Props) {
-  const t = useTranslations()
-  const [updateDialogOpenState, setUpdateDialogOpenState] = useState(false)
-  const [deleteDialogOpenState, setDeleteDialogOpenState] = useState(false)
+  const t = useTranslations("Dashboard.Children")
+  const tCommon = useTranslations("Dashboard.common")
+  const { fields } = useFormConfig(FormTypes.CHILD_UPDATE)
+  const [updateOpen, setUpdateOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   const defaultBirthDate = useMemo(() => {
     const d = child.birthDate ? new Date(child.birthDate) : null
@@ -47,12 +57,22 @@ export function ChildRowActions({ child }: Props) {
     return d.toISOString().slice(0, 10)
   }, [child.birthDate])
 
-  const [gender, setGender] = useState<string>(child.gender ?? "")
-
-  const [updateState, updateAction, isUpdating] = useActionState<
-    InitialState,
-    FormData
-  >(updateChildAction, { message: "", error: {}, status: null, formData: null })
+  const { form, submit, isPending } = useServerActionForm({
+    schema: updateChildSchema,
+    defaultValues: {
+      id: child.id,
+      name: child.name,
+      birthDate: defaultBirthDate,
+      gender: (child.gender as Gender) ?? Gender.MALE,
+    },
+    action: updateChildAction,
+    onStatusChange: (state) => {
+      if (state.status === StatusCode.OK) {
+        toast.success(state.message ?? t("toast.updated"))
+        setUpdateOpen(false)
+      } else if (state.status && state.message) toast.error(state.message)
+    },
+  })
 
   const [deleteState, deleteAction, isDeleting] = useActionState<
     DeleteChildState,
@@ -60,109 +80,71 @@ export function ChildRowActions({ child }: Props) {
   >(deleteChildAction, { ok: false })
 
   useEffect(() => {
+    if (!deleteOpen) return
     if (deleteState.ok) {
-      toast.success(t("Dashboard.Children.toast.deleted"))
-      queueMicrotask(() => setDeleteDialogOpenState(false))
-      return
-    }
-    if (deleteState.error) toast.error(deleteState.error)
-  }, [deleteState, t])
-
-  useEffect(() => {
-    if (updateState.status === StatusCode.OK) {
-      toast.success(updateState.message ?? t("Dashboard.Children.toast.updated"))
-      queueMicrotask(() => setUpdateDialogOpenState(false))
-      return
-    }
-    if (updateState.status && updateState.message) toast.error(updateState.message)
-  }, [updateState.message, updateState.status, t])
+      toast.success(t("toast.deleted"))
+      setDeleteOpen(false)
+    } else if (deleteState.error) toast.error(deleteState.error)
+  }, [deleteState, deleteOpen, t])
 
   return (
     <div className="flex items-center justify-center gap-2">
-      <Dialog onOpenChange={setUpdateDialogOpenState} open={updateDialogOpenState}>
+      <Dialog open={updateOpen} onOpenChange={setUpdateOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" size="icon" className="rounded-full">
             <Pencil className="h-4 w-4" />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm max-h-150 overflow-y-auto">
-          <form action={updateAction} className="flex flex-col gap-4">
-            <input type="hidden" name="id" value={child.id} />
-            <input type="hidden" name="gender" value={gender} />
-            <DialogHeader>
-              <DialogTitle>{t("Dashboard.Children.dialog.editTitle")}</DialogTitle>
-              <DialogDescription>{t("Dashboard.Children.dialog.editDescription")}</DialogDescription>
-            </DialogHeader>
-
-            <FieldGroup>
-              <div className="grid gap-2">
-                <Label htmlFor={`child-name-${child.id}`}>{t("Dashboard.Children.fields.name")}</Label>
-                <Input
-                  id={`child-name-${child.id}`}
-                  name="name"
-                  defaultValue={child.name}
-                  required
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor={`child-grade-${child.id}`}>{t("Dashboard.Children.fields.grade")}</Label>
-                <Input
-                  id={`child-grade-${child.id}`}
-                  name="grade"
-                  defaultValue={
-                    typeof child.grade === "object"
-                      ? child.grade?.name
-                      : (child.grade ?? child.gradeName ?? "")
-                  }
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor={`child-birthDate-${child.id}`}>{t("Dashboard.Children.fields.birthDate")}</Label>
-                <Input
-                  id={`child-birthDate-${child.id}`}
-                  type="date"
-                  name="birthDate"
-                  defaultValue={defaultBirthDate}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label>{t("Dashboard.Children.fields.gender")}</Label>
-                <Select value={gender} onValueChange={setGender}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("Dashboard.Children.fields.genderPlaceholder")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={Gender.MALE}>{t("Dashboard.Children.gender.male")}</SelectItem>
-                    <SelectItem value={Gender.FEMALE}>{t("Dashboard.Children.gender.female")}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </FieldGroup>
-
-            <DialogFooter className="mt-4">
-              <Button
-                type="submit"
-                disabled={isUpdating}
-                className="h-11 rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
-              >
-                {isUpdating ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    {t("Dashboard.common.saving")}
-                  </>
-                ) : (
-                  t("Dashboard.common.saveChanges")
+          <DialogHeader>
+            <DialogTitle>{t("dialog.editTitle")}</DialogTitle>
+            <DialogDescription>{t("dialog.editDescription")}</DialogDescription>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((values) => submit(values))}
+              className="flex flex-col gap-4"
+            >
+              <RhfFormFields fields={fields} />
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("fields.gender")}</FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("fields.genderPlaceholder")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={Gender.MALE}>{t("gender.male")}</SelectItem>
+                        <SelectItem value={Gender.FEMALE}>{t("gender.female")}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Button>
-            </DialogFooter>
-          </form>
+              />
+              <DialogFooter className="mt-4">
+                <Button type="submit" disabled={isPending} className="h-11 rounded-xl">
+                  {isPending ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {tCommon("saving")}
+                    </>
+                  ) : (
+                    tCommon("saveChanges")
+                  )}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={deleteDialogOpenState} onOpenChange={setDeleteDialogOpenState}>
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogTrigger asChild>
           <Button
             variant="ghost"
@@ -176,23 +158,18 @@ export function ChildRowActions({ child }: Props) {
           <form action={deleteAction}>
             <input type="hidden" name="id" value={child.id} />
             <DialogHeader>
-              <DialogTitle>{t("Dashboard.Children.dialog.deleteTitle")}</DialogTitle>
-              <DialogDescription>
-                {t("Dashboard.Children.dialog.deleteDescription")}
-              </DialogDescription>
+              <DialogTitle>{t("dialog.deleteTitle")}</DialogTitle>
+              <DialogDescription>{t("dialog.deleteDescription")}</DialogDescription>
             </DialogHeader>
-            {deleteState?.error && (
-              <p className="mt-2 text-sm text-destructive">{deleteState.error}</p>
-            )}
             <DialogFooter className="mt-4">
               <Button type="submit" variant="destructive" disabled={isDeleting}>
                 {isDeleting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    {t("Dashboard.common.deleting")}
+                    {tCommon("deleting")}
                   </>
                 ) : (
-                  t("Dashboard.common.delete")
+                  tCommon("delete")
                 )}
               </Button>
             </DialogFooter>
@@ -202,4 +179,3 @@ export function ChildRowActions({ child }: Props) {
     </div>
   )
 }
-

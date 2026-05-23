@@ -1,6 +1,8 @@
 "use client"
 
 import { useMemo, useState } from "react"
+
+import { getPaginationMeta, paginateArray } from "@/lib/api/pagination"
 import { useTranslations } from "next-intl"
 import { IconPlus } from "@tabler/icons-react"
 
@@ -32,17 +34,24 @@ export function AdminEvaluationsScreen({ evaluations, locale }: Props) {
   const isAr = locale === "ar"
   const [search, setSearch] = useState("")
   const [typeFilter, setTypeFilter] = useState<string>(ALL_TYPES)
+  const [page, setPage] = useState(1)
+  const pageSize = 20
 
   const filtered = useMemo(() => {
     return evaluations.filter((ev) => {
-      const matchesSearch = ev.title
-        .toLowerCase()
-        .includes(search.trim().toLowerCase())
-      const matchesType =
-        typeFilter === ALL_TYPES || ev.type === typeFilter
-      return matchesSearch && matchesType
+      const matchesType = typeFilter === ALL_TYPES || ev.type === typeFilter
+      return matchesType
     })
-  }, [evaluations, search, typeFilter])
+  }, [evaluations, typeFilter])
+
+  const searchFiltered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return filtered
+    return filtered.filter((ev) => ev.title.toLowerCase().includes(q))
+  }, [filtered, search])
+
+  const pagination = getPaginationMeta(searchFiltered.length, page, pageSize)
+  const pageData = paginateArray(searchFiltered, pagination.page, pageSize)
 
   return (
     <div className="space-y-4 px-4 lg:px-6" dir={isAr ? "rtl" : "ltr"}>
@@ -60,10 +69,19 @@ export function AdminEvaluationsScreen({ evaluations, locale }: Props) {
         <Input
           placeholder={t("searchPlaceholder")}
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            setPage(1)
+          }}
           className="max-w-sm"
         />
-        <Select value={typeFilter} onValueChange={setTypeFilter}>
+        <Select
+          value={typeFilter}
+          onValueChange={(value) => {
+            setTypeFilter(value)
+            setPage(1)
+          }}
+        >
           <SelectTrigger className="w-[220px]">
             <SelectValue placeholder={t("filterByType")} />
           </SelectTrigger>
@@ -82,12 +100,18 @@ export function AdminEvaluationsScreen({ evaluations, locale }: Props) {
         </Select>
       </div>
 
-      {filtered.length === 0 ? (
+      {searchFiltered.length === 0 ? (
         <p className="text-sm text-muted-foreground py-8 text-center">
           {t("empty")}
         </p>
       ) : (
-        <DataTable data={filtered} columns={evaluationColumns} />
+        <DataTable
+          data={pageData}
+          columns={evaluationColumns}
+          pagination={pagination}
+          onPageChange={setPage}
+          emptyMessage={t("empty")}
+        />
       )}
     </div>
   )

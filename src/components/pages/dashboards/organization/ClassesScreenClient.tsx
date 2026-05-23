@@ -27,7 +27,6 @@ type Props = {
 }
 
 export function ClassesScreenClient({ locale, classes, grades }: Props) {
-  console.log(classes)
   const isAr = locale === "ar"
   const [search, setSearch] = useState("")
   const [gradeFilter, setGradeFilter] = useState("")

@@ -1,31 +1,18 @@
 "use client"
 
-import { useState } from "react"
-import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
-import { IconPlus } from "@tabler/icons-react"
 import { useTranslations } from "next-intl"
-import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   FormControl,
   FormField,
@@ -33,61 +20,68 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { createPrivateChildAction } from "@/features/children"
+import { useFormConfig } from "@/features/forms"
 import { useServerActionForm } from "@/features/forms/hooks/useServerActionForm"
 import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
-import { createAdminChildSchema } from "@/features/forms/schemas/child.schema"
+import { createPrivateChildSchema } from "@/features/forms/schemas/child.schema"
 import { FormTypes, Gender, StatusCode } from "@/lib/types/enums"
 
-import { createChildAction } from "../actions/create-child.action"
+type Props = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  currentCount: number
+  onSuccess: () => void
+}
 
-export function AddChildDialog() {
-  const t = useTranslations("Dashboard.Children")
+export function ParentPrivateChildDialog({
+  open,
+  onOpenChange,
+  currentCount,
+  onSuccess,
+}: Props) {
+  const t = useTranslations("Forms.Child")
   const tCommon = useTranslations("Dashboard.common")
-  const { fields } = useFormConfig(FormTypes.CHILD_ADMIN)
-  const [isOpen, setIsOpen] = useState(false)
-  const { data: session } = useSession()
+  const { fields } = useFormConfig(FormTypes.CHILD_PRIVATE)
 
   const { form, submit, isPending } = useServerActionForm({
-    schema: createAdminChildSchema,
+    schema: createPrivateChildSchema,
     defaultValues: {
       name: "",
-      grade: "",
       birthDate: "",
       gender: Gender.MALE,
-      user_id: session?.user?.id ?? "",
+      currentCount,
     },
-    action: createChildAction,
+    action: createPrivateChildAction,
     onStatusChange: (state) => {
       if (state.status === StatusCode.CREATED) {
-        toast.success(state.message ?? t("toast.created"))
-        setIsOpen(false)
+        onSuccess()
+        onOpenChange(false)
         form.reset()
-        return
       }
-      if (state.status && state.message) toast.error(state.message)
     },
   })
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <IconPlus />
-          <span className="hidden lg:inline">{t("actions.add")}</span>
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-sm max-h-150 overflow-y-auto">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t("dialog.addTitle")}</DialogTitle>
-          <DialogDescription>{t("dialog.addDescription")}</DialogDescription>
+          <DialogTitle>{t("addTitle")}</DialogTitle>
+          <DialogDescription>{t("subtitle")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((values) =>
-              submit(values, { user_id: session?.user?.id ?? "" }),
+              submit(values, { currentCount: String(currentCount) }),
             )}
-            className="flex flex-col gap-4"
+            className="space-y-4"
           >
             <RhfFormFields fields={fields} />
             <FormField
@@ -95,11 +89,11 @@ export function AddChildDialog() {
               name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("fields.gender")}</FormLabel>
+                  <FormLabel>{t("gender.label")}</FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("fields.genderPlaceholder")} />
+                        <SelectValue placeholder={t("gender.placeholder")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -112,23 +106,14 @@ export function AddChildDialog() {
               )}
             />
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline" type="button">
-                  {tCommon("cancel")}
-                </Button>
-              </DialogClose>
-              <Button
-                type="submit"
-                className="rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
-                disabled={isPending}
-              >
+              <Button type="submit" disabled={isPending} className="rounded-xl">
                 {isPending ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    {tCommon("adding")}
+                    {tCommon("saving")}
                   </>
                 ) : (
-                  tCommon("add")
+                  tCommon("saveChanges")
                 )}
               </Button>
             </DialogFooter>

@@ -1,6 +1,10 @@
 "use client"
 
 import { useActionState, useEffect, useState } from "react"
+import { useTranslations } from "next-intl"
+import { Loader2, Pencil, Trash2 } from "lucide-react"
+import { toast } from "sonner"
+
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -11,35 +15,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { FieldGroup } from "@/components/ui/field"
-import FormFields from "@/components/shared/forms/formFields"
-import { Loader2, Pencil, Trash2 } from "lucide-react"
-import { Employee } from "../types/interfaces"
-import { updateEmployeeAction } from "../actions/update-employee.action"
-import { deleteEmployeeAction, type DeleteEmployeeState } from "../actions/delete-employee.action"
-import useFormFields from "@/hooks/useFormFields"
+import { ServerActionForm } from "@/features/forms"
 import { FormTypes, StatusCode } from "@/lib/types/enums"
-import { toast } from "sonner"
-import { InitialState } from "@/lib/types/types"
+import type { InitialState } from "@/lib/types/types"
+
+import { updateEmployeeAction } from "../actions/update-employee.action"
+import {
+  deleteEmployeeAction,
+  type DeleteEmployeeState,
+} from "../actions/delete-employee.action"
+import type { Employee } from "../types/interfaces"
 
 type Props = {
   employee: Employee
 }
 
 export function EmployeeRowActions({ employee }: Props) {
-  const [updateDialogOpenState, setUpdateDialogOpenState] = useState(false)
-  const [deleteDialogOpenState, setDeleteDialogOpenState] = useState(false)
-  const { getFormFields } = useFormFields({ slug: FormTypes.EMPLOYEE })
-
-  const [updateState, updateAction, isUpdating] = useActionState<
-    InitialState,
-    FormData
-  >(updateEmployeeAction, {
-    message: "",
-    error: {},
-    status: null,
-    formData: null,
-  },)
+  const t = useTranslations("Forms.Employee")
+  const tCommon = useTranslations("Dashboard.common")
+  const [updateOpen, setUpdateOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   const [deleteState, deleteAction, isDeleting] = useActionState<
     DeleteEmployeeState,
@@ -47,69 +42,67 @@ export function EmployeeRowActions({ employee }: Props) {
   >(deleteEmployeeAction, { ok: false })
 
   useEffect(() => {
+    if (!deleteOpen) return
     if (deleteState.ok) {
-      toast.success("تم حذف الموظف بنجاج")
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setDeleteDialogOpenState(false)
+      toast.success(t("toast.deleted"))
+      setDeleteOpen(false)
+    } else if (deleteState.error) {
+      toast.error(deleteState.error)
     }
-    else if(!deleteState.ok) toast.error(deleteState.error)
-    if (updateState.status === StatusCode.OK) {
-      toast.success("تم تعديل الموظف بنجاج")
-      setUpdateDialogOpenState(false)
+  }, [deleteState, deleteOpen, t])
 
+  const handleUpdateStatus = (state: InitialState) => {
+    if (state.status === StatusCode.OK) {
+      toast.success(state.message ?? t("toast.updated"))
+      setUpdateOpen(false)
+      return
     }
-    else if(updateState.status&&updateState.message) toast.error(updateState.message)
-
-  }, [deleteState, updateState])
-
+    if (state.status && state.message) toast.error(state.message)
+  }
 
   return (
     <div className="flex items-center justify-center gap-2">
-      <Dialog onOpenChange={setUpdateDialogOpenState} open={updateDialogOpenState}>
+      <Dialog open={updateOpen} onOpenChange={setUpdateOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" size="icon" className="rounded-full">
             <Pencil className="h-4 w-4" />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm max-h-150 overflow-y-auto">
-          <form action={updateAction} className="flex flex-col gap-4">
-            <input type="hidden" name="id" value={employee.id} />
-            <DialogHeader>
-              <DialogTitle>Edit Employee</DialogTitle>
-              <DialogDescription>
-                Update the employee information and save your changes.
-              </DialogDescription>
-            </DialogHeader>
-            <FieldGroup>
-              {getFormFields().map((field) => {
-                if(field.name==="email"||field.name==="phone"||field.name==="password")return
-                const fieldValue = updateState.formData?.get(field.name) as string
-
-                return (
-
-                  <FormFields key={field.name} defaultValue={fieldValue} {...field} error={updateState?.error || {}} />
-                )
-              })}
-            </FieldGroup>
+          <DialogHeader>
+            <DialogTitle>{t("editTitle")}</DialogTitle>
+            <DialogDescription>{t("editDescription")}</DialogDescription>
+          </DialogHeader>
+          <ServerActionForm
+            formType={FormTypes.EMPLOYEE_UPDATE}
+            action={updateEmployeeAction}
+            hiddenFields={{ id: employee.id }}
+            defaultValues={{
+              id: employee.id,
+              name: employee.user.name,
+              job_title: employee.job_title,
+            }}
+            onStatusChange={handleUpdateStatus}
+          >
             <DialogFooter className="mt-4">
-              <Button type="submit" disabled={isUpdating} className="h-11 rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95">
-                {isUpdating ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Saving
-                  </>
-                ) : (
-                  "Save changes"
-                )}
+              <Button
+                type="submit"
+                className="h-11 rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+              >
+                {tCommon("saveChanges")}
               </Button>
             </DialogFooter>
-          </form>
+          </ServerActionForm>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={deleteDialogOpenState} onOpenChange={setDeleteDialogOpenState}>
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogTrigger asChild>
-          <Button variant="ghost" size="icon" className="rounded-full text-destructive hover:text-destructive">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full text-destructive hover:text-destructive"
+          >
             <Trash2 className="h-4 w-4" />
           </Button>
         </DialogTrigger>
@@ -117,23 +110,18 @@ export function EmployeeRowActions({ employee }: Props) {
           <form action={deleteAction}>
             <input type="hidden" name="id" value={employee.id} />
             <DialogHeader>
-              <DialogTitle>Delete Employee</DialogTitle>
-              <DialogDescription>
-                Are you sure you want to delete this employee? This action cannot be undone.
-              </DialogDescription>
+              <DialogTitle>{t("deleteTitle")}</DialogTitle>
+              <DialogDescription>{t("deleteDescription")}</DialogDescription>
             </DialogHeader>
-            {deleteState?.error && (
-              <p className="mt-2 text-sm text-destructive">{deleteState.error}</p>
-            )}
             <DialogFooter className="mt-4">
               <Button type="submit" variant="destructive" disabled={isDeleting}>
                 {isDeleting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Deleting
+                    {tCommon("deleting")}
                   </>
                 ) : (
-                  "Delete"
+                  tCommon("delete")
                 )}
               </Button>
             </DialogFooter>
@@ -143,4 +131,3 @@ export function EmployeeRowActions({ employee }: Props) {
     </div>
   )
 }
-

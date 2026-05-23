@@ -1,0 +1,84 @@
+"use client"
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useActionState, useEffect, useTransition } from "react"
+import {
+  useForm,
+  type DefaultValues,
+  type FieldValues,
+  type Resolver,
+} from "react-hook-form"
+import type { z } from "zod"
+
+import type { InitialState } from "@/lib/types/types"
+
+const emptyState: InitialState = {
+  message: "",
+  error: {},
+  status: null,
+  formData: null,
+}
+
+type UseServerActionFormOptions<T extends FieldValues> = {
+  schema: z.ZodType<T>
+  defaultValues: DefaultValues<T>
+  action: (_prev: InitialState, formData: FormData) => Promise<InitialState>
+  onStatusChange?: (state: InitialState) => void
+}
+
+export function useServerActionForm<T extends FieldValues>({
+  schema,
+  defaultValues,
+  action,
+  onStatusChange,
+}: UseServerActionFormOptions<T>) {
+  const [state, formAction] = useActionState(action, emptyState)
+  const [isPending, startTransition] = useTransition()
+
+  const form = useForm<T>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(schema as any) as Resolver<T>,
+    defaultValues,
+    mode: "onTouched",
+  })
+
+  useEffect(() => {
+    if (!state?.formData || !(state.formData instanceof FormData)) return
+
+    for (const key of Object.keys(defaultValues as Record<string, unknown>)) {
+      const value = state.formData.get(key)
+      if (value != null) {
+        form.setValue(key as never, String(value) as never)
+      }
+    }
+
+    if (state.error) {
+      for (const [key, messages] of Object.entries(state.error)) {
+        if (messages?.[0]) {
+          form.setError(key as never, { message: messages[0] })
+        }
+      }
+    }
+  }, [state.formData, state.error, defaultValues, form])
+
+  useEffect(() => {
+    if (state?.status) onStatusChange?.(state)
+  }, [state, onStatusChange])
+
+  const submit = (values: T, extra?: Record<string, string>) => {
+    const fd = new FormData()
+    const merged = { ...values, ...extra } as Record<string, unknown>
+
+    for (const [key, value] of Object.entries(merged)) {
+      if (value !== undefined && value !== null && String(value) !== "") {
+        fd.set(key, String(value))
+      }
+    }
+
+    startTransition(() => {
+      formAction(fd)
+    })
+  }
+
+  return { form, submit, state, isPending }
+}

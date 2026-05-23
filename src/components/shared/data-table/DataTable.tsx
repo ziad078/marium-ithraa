@@ -17,18 +17,26 @@ import {
 } from "@/components/ui/table"
 import { ReactNode } from "react"
 
+import type { PaginatedMeta } from "@/lib/api/pagination"
 
+import { DataTablePagination } from "./DataTablePagination"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   children?: ReactNode
+  pagination?: PaginatedMeta
+  onPageChange?: (page: number) => void
+  emptyMessage?: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  children
+  children,
+  pagination,
+  onPageChange,
+  emptyMessage = "No results.",
 }: DataTableProps<TData, TValue>) {
 
   const table = useReactTable({
@@ -80,7 +88,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center">
-                  No results.
+                  {emptyMessage}
                 </TableCell>
               </TableRow>
             )}
@@ -88,6 +96,9 @@ export function DataTable<TData, TValue>({
 
         </Table>
       </div>
+      {pagination && onPageChange ? (
+        <DataTablePagination meta={pagination} onPageChange={onPageChange} />
+      ) : null}
     </div>
   )
 }

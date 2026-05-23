@@ -1,14 +1,22 @@
 "use client"
 
-import { useActionState, useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "@/i18n/navigation"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
+import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import {
   Select,
   SelectContent,
@@ -16,8 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { GradientButton } from "@/components/shared/management/GradientButton"
-import { Button } from "@/components/ui/button"
 import {
   createClassAction,
   updateClassAction,
@@ -25,8 +31,14 @@ import {
 } from "@/features/classes"
 import { type Grade } from "@/features/grades"
 import { type Teacher } from "@/features/teachers/types"
-import { StatusCode } from "@/lib/types/enums"
-import { type InitialState } from "@/lib/types/types"
+import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
+import { useServerActionForm } from "@/features/forms/hooks/useServerActionForm"
+import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
+import {
+  createClassSchema,
+  updateClassSchema,
+} from "@/features/forms/schemas/class.schema"
+import { FormTypes, StatusCode } from "@/lib/types/enums"
 
 type Props = {
   locale: string
@@ -39,7 +51,6 @@ type Props = {
 
 export function ClassFormScreen({
   locale,
-  organizationId,
   grades,
   teachers,
   defaultGradeId,
@@ -47,43 +58,44 @@ export function ClassFormScreen({
 }: Props) {
   const isAr = locale === "ar"
   const router = useRouter()
+  const t = useTranslations("Forms.Class")
+  const tCommon = useTranslations("Dashboard.common")
+  const { fields } = useFormConfig(FormTypes.CLASS)
   const isEdit = Boolean(classItem)
   const action = isEdit ? updateClassAction : createClassAction
 
-  const [gradeId, setGradeId] = useState(
-    classItem?.gradeId ?? defaultGradeId ?? "",
-  )
-  const [teacherId, setTeacherId] = useState(classItem?.teacherId ?? "")
+  const schema = isEdit ? updateClassSchema : createClassSchema
+  const defaultValues = isEdit
+    ? {
+        id: classItem!.id,
+        name: classItem!.name,
+        gradeId: classItem!.gradeId,
+        teacherId: classItem!.teacherId ?? "",
+      }
+    : { name: "", gradeId: defaultGradeId ?? "", teacherId: "" }
 
-  const [state, formAction, isPending] = useActionState<InitialState, FormData>(
+  const { form, submit, isPending } = useServerActionForm({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    schema: schema as any,
+    defaultValues: defaultValues as any,
     action,
-    { message: "", error: {}, status: null, formData: null },
-  )
+    onStatusChange: (state) => {
+      if (!state?.status) return
+      if (state.status === StatusCode.CREATED || state.status === StatusCode.OK) {
+        toast.success(state.message ?? t("toast.saved"))
+        router.push("/dashboards/organization/classes")
+      } else if (state.message) toast.error(state.message)
+    },
+  })
 
-  useEffect(() => {
-    if (!state?.status) return
-    if (state.status === StatusCode.CREATED || state.status === StatusCode.OK) {
-      toast.success(state.message ?? (isAr ? "تم الحفظ بنجاح" : "Saved"))
-      router.push("/dashboards/organization/classes")
-    } else if (state.message) toast.error(state.message)
-  }, [state, isAr, router])
+  const pageTitle = isEdit ? t("editTitle") : t("addTitle")
 
-  const pageTitle = isEdit
-    ? isAr
-      ? "تعديل فصل"
-      : "Edit class"
-    : isAr
-      ? "إضافة فصل"
-      : "Add class"
-
-  const nameError = state.error?.name
-  const nameErr = Array.isArray(nameError) ? nameError[0] : nameError
   return (
     <main className="app-container py-8 space-y-10" dir={isAr ? "rtl" : "ltr"}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "الرئيسية" : "Home" },
-          { href: "/dashboards/organization/classes", label: isAr ? "الفصول" : "Classes" },
+          { href: "/dashboards/organization", label: t("breadcrumb.home") },
+          { href: "/dashboards/organization/classes", label: t("breadcrumb.classes") },
           { label: pageTitle },
         ]}
         title={pageTitle}
@@ -94,75 +106,74 @@ export function ClassFormScreen({
           <CardTitle className="text-base">{pageTitle}</CardTitle>
         </CardHeader>
         <CardContent>
-          <form action={formAction} className="space-y-5">
-            {isEdit && <input type="hidden" name="id" value={classItem!.id} />}
-            <input type="hidden" name="organizationId" value={organizationId} />
-            <input type="hidden" name="gradeId" value={gradeId} />
-            {teacherId ? <input type="hidden" name="teacherId" value={teacherId} /> : null}
-
-            <div className="space-y-2">
-              <Label htmlFor="name">{isAr ? "اسم الفصل" : "Class name"}</Label>
-              <Input
-                id="name"
-                name="name"
-                required
-                defaultValue={classItem?.name}
-                className={nameErr ? "border-red-500" : ""}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((values) => submit(values))}
+              className="space-y-5"
+            >
+              <RhfFormFields fields={fields} />
+              <FormField
+                control={form.control}
+                name="gradeId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("grade.label")}</FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger className="w-full rounded-xl">
+                          <SelectValue placeholder={t("grade.placeholder")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {grades.map((g) => (
+                          <SelectItem key={g.id} value={g.id}>
+                            {g.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {nameErr && <p className="text-sm text-red-500">{nameErr}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label>{isAr ? "المرحلة" : "Grade"}</Label>
-              <Select value={gradeId} onValueChange={setGradeId} required>
-                <SelectTrigger className="w-full rounded-xl">
-                  <SelectValue placeholder={isAr ? "اختر المرحلة" : "Select grade"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {grades.map((g) => (
-                    <SelectItem key={g.id} value={g.id}>
-                      {g.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label>{isAr ? "المعلم (اختياري)" : "Teacher (optional)"}</Label>
-              <Select
-                value={teacherId || "none"}
-                onValueChange={(v) => setTeacherId(v === "none" ? "" : v)}
-              >
-                <SelectTrigger className="w-full rounded-xl">
-                  <SelectValue placeholder={isAr ? "بدون معلم" : "No teacher"} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">{isAr ? "بدون" : "None"}</SelectItem>
-                  {teachers.map((t) => (
-                    <SelectItem key={t.teacherId} value={t.teacherId}>
-                      {t.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex gap-3">
-              <GradientButton
-                type="submit"
-                className="flex-1 h-11 rounded-xl"
-                disabled={isPending}
-              >
-                {isPending ? (isAr ? "جارٍ الحفظ..." : "Saving...") : isAr ? "حفظ" : "Save"}
-              </GradientButton>
-              <Button variant="outline" className="h-11 rounded-xl" asChild>
-                <Link href="/dashboards/organization/classes">
-                  {isAr ? "إلغاء" : "Cancel"}
-                </Link>
-              </Button>
-            </div>
-          </form>
+              <FormField
+                control={form.control}
+                name="teacherId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("teacher.label")}</FormLabel>
+                    <Select
+                      value={field.value || "none"}
+                      onValueChange={(v) => field.onChange(v === "none" ? "" : v)}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full rounded-xl">
+                          <SelectValue placeholder={t("teacher.placeholder")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">{t("teacher.none")}</SelectItem>
+                        {teachers.map((teacher) => (
+                          <SelectItem key={teacher.teacherId} value={teacher.teacherId}>
+                            {teacher.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-3">
+                <GradientButton type="submit" className="h-11 flex-1 rounded-xl" disabled={isPending}>
+                  {isPending ? tCommon("saving") : tCommon("saveChanges")}
+                </GradientButton>
+                <Button variant="outline" className="h-11 rounded-xl" asChild>
+                  <Link href="/dashboards/organization/classes">{tCommon("cancel")}</Link>
+                </Button>
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </main>

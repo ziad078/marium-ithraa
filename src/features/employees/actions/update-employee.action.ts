@@ -16,8 +16,8 @@ export async function updateEmployeeAction(
   if (!parsed.success) return parsed.state
 
   try {
-    const { id, ...payload } = parsed.data
-    await updateEmployee(id, payload)
+    const { id, name, job_title } = parsed.data
+    await updateEmployee(id, { name, job_title })
     return { status: StatusCode.OK, message: "تم تحديث الموظف بنجاح" }
   } catch (error) {
     return actionErrorState(error, formData, {

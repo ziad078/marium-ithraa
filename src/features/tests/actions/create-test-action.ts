@@ -1,38 +1,33 @@
 "use server"
+
+import { revalidatePath } from "next/cache"
+
+import { actionErrorState } from "@/features/forms/action-errors"
+import { parseFormData } from "@/features/forms/parse-form-data"
+import { createTestSchema } from "@/features/forms/schemas/test.schema"
 import { StatusCode } from "@/lib/types/enums"
+import type { InitialState } from "@/lib/types/types"
+
 import { createTest } from "../api"
-import { Test } from "../types/interfaces"
+import type { Test } from "../types/interfaces"
 
 export async function createTestAction(
-  data: Partial<Test>
-): Promise<{ status: StatusCode; message?: string; error?: unknown }> {
+  _prevState: InitialState,
+  formData: FormData,
+): Promise<InitialState> {
+  const parsed = parseFormData(formData, createTestSchema)
+  if (!parsed.success) return parsed.state
+
   try {
-    if (!data.questions || data.questions.length === 0) {
-      return {
-        status: StatusCode.BADREQUEST,
-        message: "questions can't be empty",
-      }
-    }
+    await createTest({
+      title: parsed.data.title,
+      description: parsed.data.description,
+      questions: parsed.data.questions as Test["questions"],
+    })
 
-    const res = await createTest(data)
-    const resJson = await res.json()
-    console.log(resJson)
-    if (!res.ok) {
-      return {
-        error: resJson,
-        status: StatusCode.BADREQUEST,
-      }
-    }
-
-    return {
-      status: StatusCode.CREATED,
-      message: "تم إضافة الاختبار بنجاح",
-    }
+    revalidatePath("/dashboards/admin/tests")
+    return { status: StatusCode.CREATED, message: "تم إضافة الاختبار بنجاح" }
   } catch (error) {
-    console.log(error)
-    return {
-      status: StatusCode.INTERNALSERVERERROR,
-      message: "حدث خطأ غير متوقع" + error,
-    }
+    return actionErrorState(error, formData)
   }
 }

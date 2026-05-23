@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache"
 
 import { actionErrorState } from "@/features/forms/action-errors"
-import { formDataToRecord, parseFormData } from "@/features/forms/parse-form-data"
-import { createOrgChildSchema } from "@/features/forms/schemas/child.schema"
+import { parseFormData } from "@/features/forms/parse-form-data"
+import { createAdminChildSchema, createOrgChildSchema } from "@/features/forms/schemas/child.schema"
 import { StatusCode } from "@/lib/types/enums"
 import { type InitialState } from "@/lib/types/types"
 
@@ -14,9 +14,8 @@ export async function createChildAction(
   _prevState: InitialState,
   formData: FormData,
 ): Promise<InitialState> {
-  const entries = formDataToRecord(formData)
-
-  if (entries.organizationId) {
+  const organizationId = formData.get("organizationId")
+  if (organizationId && String(organizationId).length > 0) {
     const parsed = parseFormData(formData, createOrgChildSchema)
     if (!parsed.success) return parsed.state
 
@@ -57,8 +56,11 @@ export async function createChildAction(
     }
   }
 
+  const adminParsed = parseFormData(formData, createAdminChildSchema)
+  if (!adminParsed.success) return adminParsed.state
+
   try {
-    await createChild(entries)
+    await createChild(adminParsed.data)
     revalidatePath("/dashboards/admin/children")
     return { status: StatusCode.CREATED, message: "تم إضافة الطفل بنجاح" }
   } catch (error) {

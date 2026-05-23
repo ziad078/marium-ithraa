@@ -598,12 +598,73 @@
     "Employee": {
       "dialogTitle": "إضافة موظف",
       "dialogDescription": "أضف موظفاً جديداً إلى مؤسستك.",
+      "editTitle": "تعديل موظف",
+      "editDescription": "تحديث بيانات الموظف.",
+      "deleteTitle": "حذف موظف",
+      "deleteDescription": "هل أنت متأكد من حذف هذا الموظف؟",
       "name": { "label": "الاسم الكامل", "placeholder": "أدخل اسم الموظف" },
       "phone": { "label": "رقم الهاتف", "placeholder": "أدخل رقم الهاتف" },
       "email": { "label": "البريد الإلكتروني", "placeholder": "أدخل البريد الإلكتروني" },
       "password": { "label": "كلمة المرور", "placeholder": "أدخل كلمة المرور" },
       "jobTitle": { "label": "المسمى الوظيفي", "placeholder": "أدخل المسمى الوظيفي" },
-      "toast": { "created": "تم إضافة الموظف بنجاح" }
+      "toast": {
+        "created": "تم إضافة الموظف بنجاح",
+        "updated": "تم تحديث الموظف بنجاح",
+        "deleted": "تم حذف الموظف بنجاح"
+      }
+    },
+    "Grade": {
+      "addTitle": "إضافة مرحلة",
+      "editTitle": "تعديل مرحلة",
+      "breadcrumb": { "home": "الرئيسية", "grades": "المراحل" },
+      "name": { "label": "اسم المرحلة", "placeholder": "أدخل اسم المرحلة" },
+      "toast": { "saved": "تم حفظ المرحلة بنجاح" }
+    },
+    "Class": {
+      "addTitle": "إضافة فصل",
+      "editTitle": "تعديل فصل",
+      "breadcrumb": { "home": "الرئيسية", "classes": "الفصول" },
+      "name": { "label": "اسم الفصل", "placeholder": "أدخل اسم الفصل" },
+      "grade": { "label": "المرحلة", "placeholder": "اختر المرحلة" },
+      "teacher": { "label": "المعلم (اختياري)", "placeholder": "اختر المعلم", "none": "بدون" },
+      "toast": { "saved": "تم حفظ الفصل بنجاح" }
+    },
+    "Child": {
+      "addTitle": "إضافة طفل",
+      "editTitle": "تعديل طفل",
+      "subtitle": "أدخل بيانات الطفل وولي الأمر",
+      "parentSection": "بيانات ولي الأمر",
+      "breadcrumb": { "home": "الرئيسية", "children": "الأطفال" },
+      "name": { "label": "اسم الطفل", "placeholder": "أدخل اسم الطفل" },
+      "birthDate": { "label": "تاريخ الميلاد" },
+      "parentName": { "label": "اسم ولي الأمر" },
+      "parentEmail": { "label": "بريد ولي الأمر" },
+      "parentPhone": { "label": "هاتف ولي الأمر" },
+      "parentPassword": { "label": "كلمة مرور ولي الأمر" },
+      "grade": { "label": "المرحلة", "placeholder": "اختر المرحلة" },
+      "class": { "label": "الفصل", "placeholder": "اختر الفصل" },
+      "gender": {
+        "label": "النوع",
+        "placeholder": "اختر النوع",
+        "male": "ذكر",
+        "female": "أنثى"
+      },
+      "toast": { "saved": "تم حفظ بيانات الطفل بنجاح" }
+    },
+    "Test": {
+      "title": { "label": "عنوان الاختبار", "placeholder": "أدخل عنوان الاختبار" },
+      "description": { "label": "الوصف", "placeholder": "أدخل الوصف" },
+      "toast": { "created": "تم إنشاء الاختبار بنجاح" },
+      "wizard": {
+        "back": "رجوع",
+        "next": "التالي",
+        "submit": "إنشاء الاختبار",
+        "addQuestion": "إضافة سؤال",
+        "addAnswer": "إضافة إجابة",
+        "questionLabel": "السؤال {index}",
+        "questionPlaceholder": "أدخل نص السؤال",
+        "answerPlaceholder": "نص الإجابة"
+      }
     },
     "Teacher": {
       "pageTitle": "إضافة معلم",

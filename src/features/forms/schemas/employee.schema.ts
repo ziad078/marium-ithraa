@@ -12,10 +12,11 @@ export const createEmployeeSchema = z.object({
   organization_id: z.string().min(1, "Organization is required"),
 })
 
-export const updateEmployeeSchema = createEmployeeSchema
-  .partial()
-  .omit({ organization_id: true })
-  .extend({ id: idSchema.shape.id })
+export const updateEmployeeSchema = z.object({
+  id: idSchema.shape.id,
+  name: nameSchema,
+  job_title: z.string().min(1, "Job title is required"),
+})
 
 export type CreateEmployeeFormValues = z.infer<typeof createEmployeeSchema>
 export type UpdateEmployeeFormValues = z.infer<typeof updateEmployeeSchema>

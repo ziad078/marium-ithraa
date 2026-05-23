@@ -11,7 +11,7 @@ import { Form } from "@/components/ui/form"
 import { useAuth } from "@/features/auth/hooks/useAuth"
 import { loginFormConfig } from "@/features/forms/config/login.config"
 import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
-import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
+import { useFormConfig } from "@/features/forms"
 import { loginSchema, type LoginFormValues } from "@/features/forms/schemas/login.schema"
 import { useRouter } from "@/i18n/navigation"
 import { signInWithPhoneAndRedirect } from "@/lib/auth/signInWithCredentials"
@@ -35,6 +35,7 @@ const LoginForm = () => {
   })
 
   const onSubmit = async (values: LoginFormValues) => {
+    console.log("login btn clicked", values)
     setError(null)
     setIsSubmitting(true)
 

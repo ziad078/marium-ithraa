@@ -1,9 +1,9 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { Button, type ButtonProps } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 
-export type GradientButtonProps = ButtonProps
+export type GradientButtonProps = React.ComponentProps<typeof Button>
 
 export function GradientButton({ className, ...props }: GradientButtonProps) {
   return (

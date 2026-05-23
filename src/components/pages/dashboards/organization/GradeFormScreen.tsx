@@ -1,23 +1,28 @@
 "use client"
 
-import { useActionState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "@/i18n/navigation"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { GradientButton } from "@/components/shared/management/GradientButton"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form"
 import {
   createGradeAction,
   updateGradeAction,
   type Grade,
 } from "@/features/grades"
-import { StatusCode } from "@/lib/types/enums"
-import { type InitialState } from "@/lib/types/types"
+import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
+import { useServerActionForm } from "@/features/forms/hooks/useServerActionForm"
+import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
+import {
+  createGradeSchema,
+  updateGradeSchema,
+} from "@/features/forms/schemas/grade.schema"
+import { FormTypes, StatusCode } from "@/lib/types/enums"
 
 type Props = {
   locale: string
@@ -28,39 +33,39 @@ type Props = {
 export function GradeFormScreen({ locale, organizationId, grade }: Props) {
   const isAr = locale === "ar"
   const router = useRouter()
+  const t = useTranslations("Forms.Grade")
+  const tCommon = useTranslations("Dashboard.common")
   const isEdit = Boolean(grade)
   const action = isEdit ? updateGradeAction : createGradeAction
+  const { fields } = useFormConfig(FormTypes.GRADE)
 
-  const [state, formAction, isPending] = useActionState<InitialState, FormData>(
+  const schema = isEdit ? updateGradeSchema : createGradeSchema
+  const defaultValues = isEdit
+    ? { id: grade!.id, name: grade!.name }
+    : { name: "", organizationId }
+
+  const { form, submit, isPending } = useServerActionForm({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    schema: schema as any,
+    defaultValues: defaultValues as any,
     action,
-    { message: "", error: {}, status: null, formData: null },
-  )
+    onStatusChange: (state) => {
+      if (!state?.status) return
+      if (state.status === StatusCode.CREATED || state.status === StatusCode.OK) {
+        toast.success(state.message ?? t("toast.saved"))
+        router.push("/dashboards/organization/grades")
+      } else if (state.message) toast.error(state.message)
+    },
+  })
 
-  useEffect(() => {
-    if (!state?.status) return
-    if (state.status === StatusCode.CREATED || state.status === StatusCode.OK) {
-      toast.success(state.message ?? (isAr ? "تم الحفظ بنجاح" : "Saved"))
-      router.push("/dashboards/organization/grades")
-    } else if (state.message) toast.error(state.message)
-  }, [state, isAr, router])
-
-  const pageTitle = isEdit
-    ? isAr
-      ? "تعديل مرحلة"
-      : "Edit grade"
-    : isAr
-      ? "إضافة مرحلة"
-      : "Add grade"
-
-  const fieldError = state.error?.name
-  const err = Array.isArray(fieldError) ? fieldError[0] : fieldError
+  const pageTitle = isEdit ? t("editTitle") : t("addTitle")
 
   return (
     <main className="app-container py-8 space-y-10" dir={isAr ? "rtl" : "ltr"}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "الرئيسية" : "Home" },
-          { href: "/dashboards/organization/grades", label: isAr ? "المراحل" : "Grades" },
+          { href: "/dashboards/organization", label: t("breadcrumb.home") },
+          { href: "/dashboards/organization/grades", label: t("breadcrumb.grades") },
           { label: pageTitle },
         ]}
         title={pageTitle}
@@ -71,35 +76,24 @@ export function GradeFormScreen({ locale, organizationId, grade }: Props) {
           <CardTitle className="text-base">{pageTitle}</CardTitle>
         </CardHeader>
         <CardContent>
-          <form action={formAction} className="space-y-5">
-            {isEdit && <input type="hidden" name="id" value={grade!.id} />}
-            <input type="hidden" name="organizationId" value={organizationId} />
-            <div className="space-y-2">
-              <Label htmlFor="name">{isAr ? "اسم المرحلة" : "Grade name"}</Label>
-              <Input
-                id="name"
-                name="name"
-                required
-                defaultValue={grade?.name}
-                className={err ? "border-red-500" : ""}
-              />
-              {err && <p className="text-sm text-red-500">{err}</p>}
-            </div>
-            <div className="flex gap-3">
-              <GradientButton
-                type="submit"
-                className="flex-1 h-11 rounded-xl"
-                disabled={isPending}
-              >
-                {isPending ? (isAr ? "جارٍ الحفظ..." : "Saving...") : isAr ? "حفظ" : "Save"}
-              </GradientButton>
-              <Button variant="outline" className="h-11 rounded-xl" asChild>
-                <Link href="/dashboards/organization/grades">
-                  {isAr ? "إلغاء" : "Cancel"}
-                </Link>
-              </Button>
-            </div>
-          </form>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((values) =>
+                submit(values, isEdit ? {} : { organizationId }),
+              )}
+              className="space-y-5"
+            >
+              <RhfFormFields fields={fields} />
+              <div className="flex gap-3">
+                <GradientButton type="submit" className="h-11 flex-1 rounded-xl" disabled={isPending}>
+                  {isPending ? tCommon("saving") : tCommon("saveChanges")}
+                </GradientButton>
+                <Button variant="outline" className="h-11 rounded-xl" asChild>
+                  <Link href="/dashboards/organization/grades">{tCommon("cancel")}</Link>
+                </Button>
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </main>

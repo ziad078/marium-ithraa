@@ -598,12 +598,73 @@
     "Employee": {
       "dialogTitle": "Add employee",
       "dialogDescription": "Add a new employee to your organization.",
+      "editTitle": "Edit employee",
+      "editDescription": "Update employee information.",
+      "deleteTitle": "Delete employee",
+      "deleteDescription": "Are you sure you want to delete this employee?",
       "name": { "label": "Full name", "placeholder": "Enter employee name" },
       "phone": { "label": "Phone", "placeholder": "Enter phone number" },
       "email": { "label": "Email", "placeholder": "Enter email address" },
       "password": { "label": "Password", "placeholder": "Enter password" },
       "jobTitle": { "label": "Job title", "placeholder": "Enter job title" },
-      "toast": { "created": "Employee added successfully" }
+      "toast": {
+        "created": "Employee added successfully",
+        "updated": "Employee updated successfully",
+        "deleted": "Employee deleted successfully"
+      }
+    },
+    "Grade": {
+      "addTitle": "Add grade",
+      "editTitle": "Edit grade",
+      "breadcrumb": { "home": "Home", "grades": "Grades" },
+      "name": { "label": "Grade name", "placeholder": "Enter grade name" },
+      "toast": { "saved": "Grade saved successfully" }
+    },
+    "Class": {
+      "addTitle": "Add class",
+      "editTitle": "Edit class",
+      "breadcrumb": { "home": "Home", "classes": "Classes" },
+      "name": { "label": "Class name", "placeholder": "Enter class name" },
+      "grade": { "label": "Grade", "placeholder": "Select grade" },
+      "teacher": { "label": "Teacher (optional)", "placeholder": "Select teacher", "none": "None" },
+      "toast": { "saved": "Class saved successfully" }
+    },
+    "Child": {
+      "addTitle": "Add child",
+      "editTitle": "Edit child",
+      "subtitle": "Enter child and parent details",
+      "parentSection": "Parent account",
+      "breadcrumb": { "home": "Home", "children": "Children" },
+      "name": { "label": "Child name", "placeholder": "Enter child name" },
+      "birthDate": { "label": "Birth date" },
+      "parentName": { "label": "Parent name" },
+      "parentEmail": { "label": "Parent email" },
+      "parentPhone": { "label": "Parent phone" },
+      "parentPassword": { "label": "Parent password" },
+      "grade": { "label": "Grade", "placeholder": "Select grade" },
+      "class": { "label": "Class", "placeholder": "Select class" },
+      "gender": {
+        "label": "Gender",
+        "placeholder": "Select gender",
+        "male": "Male",
+        "female": "Female"
+      },
+      "toast": { "saved": "Child saved successfully" }
+    },
+    "Test": {
+      "title": { "label": "Test title", "placeholder": "Enter test title" },
+      "description": { "label": "Description", "placeholder": "Enter description" },
+      "toast": { "created": "Test created successfully" },
+      "wizard": {
+        "back": "Back",
+        "next": "Next",
+        "submit": "Create test",
+        "addQuestion": "Add question",
+        "addAnswer": "Add answer",
+        "questionLabel": "Question {index}",
+        "questionPlaceholder": "Enter question text",
+        "answerPlaceholder": "Answer text"
+      }
     },
     "Teacher": {
       "pageTitle": "Add teacher",

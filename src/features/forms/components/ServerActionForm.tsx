@@ -1,8 +1,7 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useActionState, useEffect, useTransition, type ReactNode } from "react"
-import { useForm, type FieldValues } from "react-hook-form"
+import type { ReactNode } from "react"
+import type { DefaultValues, FieldValues } from "react-hook-form"
 import type { z } from "zod"
 
 import { Form } from "@/components/ui/form"
@@ -10,83 +9,52 @@ import { FormTypes } from "@/lib/types/enums"
 import type { InitialState } from "@/lib/types/types"
 
 import { useFormConfig } from "../hooks/useFormConfig"
+import { useServerActionForm } from "../hooks/useServerActionForm"
 import { RhfFormFields } from "./RhfFormFields"
 
-const initialState: InitialState = {
-  message: "",
-  error: {},
-  status: null,
-  formData: null,
-}
-
-type ServerActionFormProps = {
-  formType: FormTypes
+type ServerActionFormProps<T extends FieldValues = FieldValues> = {
+  formType?: FormTypes
+  schema?: z.ZodType<T>
+  defaultValues?: DefaultValues<T>
   action: (_prev: InitialState, formData: FormData) => Promise<InitialState>
   hiddenFields?: Record<string, string>
   onStatusChange?: (state: InitialState) => void
   children?: ReactNode
   className?: string
+  fields?: ReturnType<typeof useFormConfig>["fields"]
 }
 
-export function ServerActionForm({
+export function ServerActionForm<T extends FieldValues = FieldValues>({
   formType,
+  schema: schemaOverride,
+  defaultValues: defaultValuesOverride,
   action,
   hiddenFields = {},
   onStatusChange,
   children,
   className,
-}: ServerActionFormProps) {
-  const { fields, schema, defaultValues } = useFormConfig(formType)
-  const [state, formAction] = useActionState(action, initialState)
-  const [isPending, startTransition] = useTransition()
+  fields: fieldsOverride,
+}: ServerActionFormProps<T>) {
+  const config = useFormConfig(formType ?? FormTypes.SIGNIN)
+  const schema = (schemaOverride ?? config.schema) as z.ZodType<T>
+  const defaultValues = (defaultValuesOverride ?? config.defaultValues) as DefaultValues<T>
+  const fields = fieldsOverride ?? config.fields
 
-  type FormValues = FieldValues
-
-  const form = useForm<FormValues>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: schema ? zodResolver(schema as any) : undefined,
-    defaultValues: defaultValues as FormValues,
-    mode: "onTouched",
+  const { form, submit, isPending } = useServerActionForm<T>({
+    schema,
+    defaultValues,
+    action,
+    onStatusChange,
   })
-
-  useEffect(() => {
-    if (!state?.formData || !(state.formData instanceof FormData)) return
-    for (const field of fields) {
-      const value = state.formData.get(field.name)
-      if (value != null) {
-        form.setValue(field.name, String(value))
-      }
-    }
-    if (state.error) {
-      for (const [key, messages] of Object.entries(state.error)) {
-        if (messages?.[0]) {
-          form.setError(key as never, { message: messages[0] })
-        }
-      }
-    }
-  }, [state.formData, state.error, fields, form])
-
-  useEffect(() => {
-    if (state?.status) onStatusChange?.(state)
-  }, [state, onStatusChange])
-
-  const onSubmit = (values: FormValues) => {
-    const fd = new FormData()
-    for (const [key, value] of Object.entries({ ...hiddenFields, ...values })) {
-      if (value !== undefined && value !== null && value !== "") {
-        fd.set(key, String(value))
-      }
-    }
-    startTransition(() => {
-      formAction(fd)
-    })
-  }
 
   if (!schema) return null
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={className}>
+      <form
+        onSubmit={form.handleSubmit((values) => submit(values, hiddenFields))}
+        className={className}
+      >
         <fieldset disabled={isPending} className="space-y-5">
           <RhfFormFields fields={fields} />
           {children}

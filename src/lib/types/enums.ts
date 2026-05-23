@@ -126,12 +126,17 @@ export enum UserRole {
 }
 
 export enum FormTypes {
-  TEACHER = 'teacher',
-  ANS = "answer",
-  QUESTIONS = "QUESTIONS",
   SIGNIN = "SIGNIN",
   EMPLOYEE = "EMPLOYEE",
-  TEST = "TESTS"
+  EMPLOYEE_UPDATE = "EMPLOYEE_UPDATE",
+  TEACHER = "teacher",
+  GRADE = "grade",
+  CLASS = "class",
+  CHILD_ORG = "childOrg",
+  CHILD_UPDATE = "childUpdate",
+  CHILD_PRIVATE = "childPrivate",
+  CHILD_ADMIN = "childAdmin",
+  TEST = "TESTS",
 }
 
 

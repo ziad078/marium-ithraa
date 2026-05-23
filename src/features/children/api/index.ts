@@ -1,4 +1,5 @@
 import { api } from "@/lib/api/api"
+import { buildPaginationQuery, type PaginationParams } from "@/lib/api/pagination"
 import {
   type Child,
   type CreateChildWithParentPayload,
@@ -19,9 +20,9 @@ export const getAllChildren = async () => {
   )
 }
 
-export const getAllChildrenServer = async () => {
+export const getAllChildrenServer = async (params?: PaginationParams) => {
   return api.server<{ children: Child[] }>(
-    `/${Endpoint.CHILDREN}/${Endpoint.ALL}`,
+    `/${Endpoint.CHILDREN}/${Endpoint.ALL}${buildPaginationQuery(params)}`,
   )
 }
 

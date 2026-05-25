@@ -57,6 +57,7 @@
       "children": "Children"
     },
     "Nav": {
+      "users": "Users",
       "dashboard": "Dashboard",
       "employees": "Employees",
       "children": "Children",

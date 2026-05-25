@@ -18,7 +18,7 @@ export default async function ChildrenPage({ params }: Props) {
     getGradesByOrg(orgId),
     getClassesByOrg(orgId),
   ])
-
+  console.log(childrenRes.children, gradesRes.grades, classesRes.classes)
   return (
     <ChildrenScreen
       childrens={childrenRes.children}

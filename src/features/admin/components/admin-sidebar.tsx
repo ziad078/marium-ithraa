@@ -3,19 +3,13 @@
 import * as React from "react"
 import {
   IconBrain,
-  IconChartBar,
   IconDashboard,
-  IconFolder,
-  IconHelp,
   IconInnerShadowTop,
   IconReport,
-  IconSettings,
   IconUsers,
 } from "@tabler/icons-react"
 
-import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -49,13 +43,8 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
         icon: IconDashboard,
       },
       {
-        title: "users",
+        title: t("Dashboard.Nav.users"),
         url: `${ADMIN_URL}/${Pages.USERS}`,
-        icon: IconUsers,
-      },
-      {
-        title: t("Dashboard.Nav.employees"),
-        url: `${ADMIN_URL}/organizations`,
         icon: IconUsers,
       },
       {
@@ -83,41 +72,26 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
         url: `${ADMIN_URL}/notifications/dispatch`,
         icon: IconReport,
       },
-      // {
-      //   title: t("Dashboard.Nav.tests"),
-      //   url: `${ADMIN_URL}/tests`,
-      //   icon: IconBrain,
-      // },
-      {
-        title: t("Dashboard.Nav.projects"),
-        url: "#",
-        icon: IconFolder,
-      },
-      {
-        title: t("Dashboard.Nav.analytics"),
-        url: "#",
-        icon: IconChartBar,
-      },
     ],
-    navSecondary: [
-      {
-        title: t("Dashboard.Nav.settings"),
-        url: "#",
-        icon: IconSettings,
-      },
-      {
-        title: t("Dashboard.Nav.getHelp"),
-        url: "#",
-        icon: IconHelp,
-      },
-    ],
-    documents: [
-      {
-        name: t("Dashboard.Nav.dataLibrary"),
-        url: "#",
-        icon: IconReport,
-      },
-    ],
+    // navSecondary: [
+    //   {
+    //     title: t("Dashboard.Nav.settings"),
+    //     url: "#",
+    //     icon: IconSettings,
+    //   },
+    //   {
+    //     title: t("Dashboard.Nav.getHelp"),
+    //     url: "#",
+    //     icon: IconHelp,
+    //   },
+    // ],
+    // documents: [
+    //   {
+    //     name: t("Dashboard.Nav.dataLibrary"),
+    //     url: "#",
+    //     icon: IconReport,
+    //   },
+    // ],
   }
 
   return (
@@ -139,8 +113,8 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {/* <NavDocuments items={data.documents} /> */}
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

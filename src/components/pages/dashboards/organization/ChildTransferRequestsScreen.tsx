@@ -18,27 +18,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import {
-  approveChildTransfer,
-  rejectChildTransfer,
-  type ChildTransferRequest,
-} from "@/features/children"
+import { rejectChildTransfer, type ChildTransferRequest } from "@/features/children"
 import { formatChildBirthDate, getChildClassName } from "@/features/children/utils/display"
 import { getTextDirection } from "@/lib/i18n/locale-utils"
+import { ApproveChildTransferDialog } from "./ApproveChildTransferDialog"
 
 type Props = {
   locale: string
   requests: ChildTransferRequest[]
 }
 
-type PendingAction =
-  | { type: "approve"; request: ChildTransferRequest }
-  | { type: "reject"; request: ChildTransferRequest }
-  | null
-
 export function ChildTransferRequestsScreen({ locale, requests }: Props) {
   const [items, setItems] = useState(requests)
-  const [pendingAction, setPendingAction] = useState<PendingAction>(null)
+  const [approveRequest, setApproveRequest] = useState<ChildTransferRequest | null>(null)
+  const [rejectRequest, setRejectRequest] = useState<ChildTransferRequest | null>(null)
   const [isPending, startTransition] = useTransition()
   const isAr = locale === "ar"
 
@@ -47,28 +40,27 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
     [items],
   )
 
-  function completeAction() {
-    if (!pendingAction) return
+  function removeRequest(requestId: string) {
+    setItems((current) => current.filter((item) => item.id !== requestId))
+  }
+
+  function completeReject() {
+    if (!rejectRequest) return
 
     startTransition(async () => {
       try {
-        const response =
-          pendingAction.type === "approve"
-            ? await approveChildTransfer(pendingAction.request.id)
-            : await rejectChildTransfer(pendingAction.request.id)
-
-        setItems((current) =>
-          current.filter((item) => item.id !== pendingAction.request.id),
-        )
-        toast.success(
-          response.message ||
-            (pendingAction.type === "approve"
-              ? "Transfer request approved"
-              : "Transfer request rejected"),
-        )
-        setPendingAction(null)
+        const response = await rejectChildTransfer(rejectRequest.id)
+        removeRequest(rejectRequest.id)
+        toast.success(response.message || (isAr ? "تم رفض طلب النقل" : "Transfer request rejected"))
+        setRejectRequest(null)
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Unable to update transfer request")
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : isAr
+              ? "تعذر تحديث طلب النقل"
+              : "Unable to update transfer request",
+        )
       }
     })
   }
@@ -131,7 +123,7 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
                       value={formatChildBirthDate(child?.birthDate, locale)}
                     />
                     <TransferField
-                      label={isAr ? "الفصل" : "Class"}
+                      label={isAr ? "الفصل الحالي" : "Current class"}
                       value={child ? getChildClassName(child) : "-"}
                     />
                     {requestedBy ? (
@@ -146,7 +138,7 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
                     <Button
                       type="button"
                       className="rounded-lg"
-                      onClick={() => setPendingAction({ type: "approve", request })}
+                      onClick={() => setApproveRequest(request)}
                     >
                       <Check className="size-4" />
                       {isAr ? "اعتماد النقل" : "Approve transfer"}
@@ -155,7 +147,7 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
                       type="button"
                       variant="outline"
                       className="rounded-lg border-destructive/50 text-destructive hover:bg-destructive/10"
-                      onClick={() => setPendingAction({ type: "reject", request })}
+                      onClick={() => setRejectRequest(request)}
                     >
                       <X className="size-4" />
                       {isAr ? "رفض" : "Reject"}
@@ -168,42 +160,38 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
         </section>
       )}
 
-      <Dialog open={Boolean(pendingAction)} onOpenChange={(open) => !open && setPendingAction(null)}>
+      <ApproveChildTransferDialog
+        open={Boolean(approveRequest)}
+        locale={locale}
+        request={approveRequest}
+        onOpenChange={(open) => {
+          if (!open) setApproveRequest(null)
+        }}
+        onApproved={removeRequest}
+      />
+
+      <Dialog open={Boolean(rejectRequest)} onOpenChange={(open) => !open && setRejectRequest(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              {pendingAction?.type === "approve"
-                ? isAr
-                  ? "اعتماد طلب النقل؟"
-                  : "Approve transfer request?"
-                : isAr
-                  ? "رفض طلب النقل؟"
-                  : "Reject transfer request?"}
-            </DialogTitle>
+            <DialogTitle>{isAr ? "رفض طلب النقل؟" : "Reject transfer request?"}</DialogTitle>
             <DialogDescription>
               {isAr
-                ? "سيتم إرسال القرار إلى الخادم ولا يمكن الاعتماد على الواجهة فقط."
-                : "This decision will be sent to the backend and cannot rely on frontend state only."}
+                ? "سيتم إرسال قرار الرفض إلى الخادم وإزالة الطلب من القائمة."
+                : "This rejection will be sent to the backend and the request will be removed from the list."}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
               type="button"
               variant="outline"
-              onClick={() => setPendingAction(null)}
+              onClick={() => setRejectRequest(null)}
               disabled={isPending}
             >
               {isAr ? "إلغاء" : "Cancel"}
             </Button>
-            <Button type="button" onClick={completeAction} disabled={isPending}>
+            <Button type="button" onClick={completeReject} disabled={isPending}>
               {isPending && <Loader2 className="size-4 animate-spin" />}
-              {pendingAction?.type === "approve"
-                ? isAr
-                  ? "اعتماد"
-                  : "Approve"
-                : isAr
-                  ? "رفض"
-                  : "Reject"}
+              {isAr ? "رفض" : "Reject"}
             </Button>
           </DialogFooter>
         </DialogContent>

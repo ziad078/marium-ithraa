@@ -119,9 +119,10 @@ export const getChildTransferRequests = async (fromOrganizationId: string) => {
   }
 }
 
-export const approveChildTransfer = async (requestId: string) => {
+export const approveChildTransfer = async (requestId: string, classId: string) => {
   return api.client<TransferRequestResponse>(`/child-transfers/${requestId}/approve`, {
     method: Methods.PATCH,
+    body: JSON.stringify({ classId }),
   })
 }
 

@@ -12,6 +12,12 @@ export const getClassesByOrg = async (orgId: string) => {
   )
 }
 
+export const getOrganizationClasses = async (organizationId: string) => {
+  return api.client<{ classes: ClassItem[] }>(
+    `/${Endpoint.CLASSES}/organization/${organizationId}`,
+  )
+}
+
 export const getClassesByGrade = async (gradeId: string) => {
   return api.server<{ classes: ClassItem[] }>(
     `/${Endpoint.CLASSES}/grade/${gradeId}`,

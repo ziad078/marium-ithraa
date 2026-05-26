@@ -5,6 +5,7 @@ export type {
 } from "./types"
 export {
   getClassesByOrg,
+  getOrganizationClasses,
   getClassesByGrade,
   getClassById,
   createClass,

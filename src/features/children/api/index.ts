@@ -2,6 +2,7 @@ import { api } from "@/lib/api/api"
 import { buildPaginationQuery, type PaginationParams } from "@/lib/api/pagination"
 import {
   type Child,
+  type ChildTransferRequest,
   type CreateChildFlowPayload,
   type CreateChildResponse,
   type CreateChildWithParentPayload,
@@ -97,5 +98,35 @@ export const requestChildTransfer = async (childId: string, toOrganizationId: st
   return api.client<TransferRequestResponse>("/child-transfers", {
     method: Methods.POST,
     body: JSON.stringify({ childId, toOrganizationId }),
+  })
+}
+
+export const getChildTransferRequests = async (fromOrganizationId: string) => {
+  const response = await api.server<{
+    requests?: ChildTransferRequest[]
+    transferRequests?: ChildTransferRequest[]
+    childTransfers?: ChildTransferRequest[]
+  }>(
+    `/child-transfers?fromOrganizationId=${encodeURIComponent(fromOrganizationId)}&status=pending`,
+  )
+
+  return {
+    requests:
+      response.requests ??
+      response.transferRequests ??
+      response.childTransfers ??
+      [],
+  }
+}
+
+export const approveChildTransfer = async (requestId: string) => {
+  return api.client<TransferRequestResponse>(`/child-transfers/${requestId}/approve`, {
+    method: Methods.PATCH,
+  })
+}
+
+export const rejectChildTransfer = async (requestId: string) => {
+  return api.client<TransferRequestResponse>(`/child-transfers/${requestId}/reject`, {
+    method: Methods.PATCH,
   })
 }

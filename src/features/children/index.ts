@@ -2,6 +2,8 @@ export {
   type Child,
   type ChildProfile,
   type ChildReport,
+  type ChildTransferRequest,
+  type ChildTransferStatus,
   type CreateChildFlowPayload,
   type CreateChildResponse,
   type CreateChildWithParentPayload,
@@ -25,6 +27,9 @@ export {
   getChildByIdClient,
   createChildFlow,
   requestChildTransfer,
+  getChildTransferRequests,
+  approveChildTransfer,
+  rejectChildTransfer,
 } from "./api"
 export { createChildAction } from "./actions/create-child.action"
 export { createPrivateChildAction } from "./actions/create-private-child.action"

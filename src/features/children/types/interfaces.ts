@@ -96,6 +96,31 @@ export interface TransferRequestResponse {
   transferRequestId?: string
 }
 
+export type ChildTransferStatus = "pending" | "approved" | "rejected"
+
+export interface ChildTransferRequest {
+  id: string
+  childId: string
+  fromOrganizationId?: string
+  toOrganizationId?: string
+  status: ChildTransferStatus | string
+  message?: string
+  createdAt?: string
+  updatedAt?: string
+  child?: Child
+  fromOrganization?: {
+    id: string
+    organizationName?: string
+    name?: string
+  }
+  toOrganization?: {
+    id: string
+    organizationName?: string
+    name?: string
+  }
+  requestedBy?: ParentInfo
+}
+
 export interface UpdateChildPayload {
   name?: string
   birthDate?: string

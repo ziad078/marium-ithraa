@@ -13,6 +13,7 @@ import {
   IconHelp,
   IconInnerShadowTop,
   IconReport,
+  IconArrowsExchange,
   IconSearch,
   IconSettings,
   IconUsers,
@@ -62,6 +63,11 @@ export function OrganizationSidebar({ organization, ...props }: React.ComponentP
         title: t("Features.OwnerEvaluations.results"),
         url: `${ORGANIZATIONURL}/results`,
         icon: IconReport,
+      },
+      {
+        title: t("Dashboard.Nav.childTransfers"),
+        url: `${ORGANIZATIONURL}/child-transfers`,
+        icon: IconArrowsExchange,
       },
       {
         title: t("Features.Notifications.title"),

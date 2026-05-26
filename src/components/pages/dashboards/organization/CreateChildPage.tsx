@@ -181,8 +181,10 @@ export function CreateChildPage({
     })
   }
 
+  const isCreatingChild = childState === "creating" || parentState === "creating"
+
   const canSubmit =
-    childState === "creating" &&
+    isCreatingChild &&
     parentState !== null &&
     selectionStatus !== "same" &&
     selectionStatus !== "sent"
@@ -266,7 +268,7 @@ export function CreateChildPage({
               </p>
             )}
 
-            {(childState === "creating" || parentState === "creating") && (
+            {isCreatingChild && (
               <ChildForm
                 form={form}
                 grades={grades}

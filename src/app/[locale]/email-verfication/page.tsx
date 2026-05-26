@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "@/i18n/navigation"
 import { IconBrandGmail, IconBrandMinecraft } from "@tabler/icons-react"
-import { sendVerficationEmail } from "@/features/mailer"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
+import { sendVerificationEmail } from "@/features/mailer"
 
 export default function EmailVerificationPage() {
     const { data: session, status } = useSession()
@@ -26,7 +26,7 @@ export default function EmailVerificationPage() {
 
         try {
             setSending(true)
-            await sendVerficationEmail({ email, userId })
+            await sendVerificationEmail({ email, userId })
             setSended(true)
             setCooldown(60) // 60 ثانية
         } catch (error) {

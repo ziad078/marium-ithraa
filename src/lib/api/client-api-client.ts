@@ -41,7 +41,7 @@ export async function clientApiFetch<T>(
 ): Promise<T> {
   const token = await resolveAccessToken()
 
-  const res = await fetch(`/api${endpoint}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api${endpoint}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",

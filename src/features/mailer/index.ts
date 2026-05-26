@@ -1,1 +1,1 @@
-export {sendVerficationEmail} from "./api"
+export {sendVerificationEmail} from "./api"

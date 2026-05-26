@@ -175,7 +175,7 @@ export enum Endpoint {
   REQUEST_EXTRA = "request-extra",
   TEACHERS = "teachers",
   MAILER = "mailer",
-  VERIFYEMAIL = 'verfy-email',
+  VERIFYEMAIL = 'verify-email',
   ROLES = "roles",
   ORGANIZATIONOWNER = "organization-owner",
   TESTS = "tests",

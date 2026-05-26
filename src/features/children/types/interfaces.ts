@@ -5,6 +5,7 @@ export interface ParentInfo {
   name?: string
   email?: string
   phone?: string
+  children?: Child[]
 }
 
 export interface ChildClassRef {
@@ -61,6 +62,38 @@ export interface CreatePrivateChildPayload {
   name: string
   birthDate: string
   gender: string
+}
+
+export interface CreateChildFlowPayload {
+  name: string
+  birthDate: string
+  gender: string
+  classId: string
+  parentPhone: string
+  parentEmail?: string
+  parentName?: string
+}
+
+export type CreateChildResponse =
+  | {
+      type: "CREATED"
+      message: string
+      childId: string
+    }
+  | {
+      type: "TRANSFER_REQUIRED"
+      message: string
+      transferRequestId: string
+    }
+
+export interface ParentSearchResult {
+  parent: ParentInfo | null
+  children?: Child[]
+}
+
+export interface TransferRequestResponse {
+  message: string
+  transferRequestId?: string
 }
 
 export interface UpdateChildPayload {

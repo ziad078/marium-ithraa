@@ -1,4 +1,4 @@
-import { ChildFormScreen } from "@/components/pages/dashboards/organization/ChildFormScreen"
+import { CreateChildPage } from "@/components/pages/dashboards/organization/CreateChildPage"
 import { getClassesByOrg } from "@/features/classes"
 import { getGradesByOrg } from "@/features/grades"
 import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
@@ -20,21 +20,13 @@ export default async function NewChildPage({ params, searchParams }: Props) {
   ])
 
   return (
-    <ChildFormScreen
+    <CreateChildPage
       locale={locale}
       organizationId={orgId}
       grades={gradesRes.grades}
       classes={classesRes.classes}
-      child={
-        classId || gradeId
-          ? {
-              id: "",
-              name: "",
-              classId,
-              gradeId,
-            }
-          : undefined
-      }
+      initialClassId={classId}
+      initialGradeId={gradeId}
     />
   )
 }

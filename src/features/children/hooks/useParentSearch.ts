@@ -1,0 +1,78 @@
+"use client"
+
+import { useEffect, useMemo, useState } from "react"
+
+import { searchParentsByPhone } from "@/features/children/api"
+import type { ParentInfo } from "@/features/children/types/interfaces"
+
+type ParentState = null | "found" | "creating"
+type RequestState = "idle" | "loading" | "success"
+
+export function useParentSearch(phone: string) {
+  const normalizedPhone = useMemo(() => phone.trim(), [phone])
+  const [parent, setParent] = useState<ParentInfo | null>(null)
+  const [parentState, setParentState] = useState<ParentState>(null)
+  const [requestState, setRequestState] = useState<RequestState>("idle")
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!normalizedPhone) return
+
+    const controller = new AbortController()
+    const timer = window.setTimeout(async () => {
+      setRequestState("loading")
+      setError(null)
+
+      try {
+        const result = await searchParentsByPhone(normalizedPhone)
+        console.log(result)
+        if (controller.signal.aborted) return
+
+        if (result.parent) {
+          setParent({
+            ...result.parent,
+            children: result.parent.children ?? result.children ?? [],
+          })
+          setParentState("found")
+        } else {
+          setParent(null)
+          setParentState("creating")
+        }
+        setRequestState("success")
+      } catch (err) {
+        if (controller.signal.aborted) return
+
+        const status = typeof err === "object" && err !== null && "status" in err
+          ? Number((err as { status: unknown }).status)
+          : undefined
+
+        if (status === 404) {
+          setParent(null)
+          setParentState("creating")
+          setRequestState("success")
+          return
+        }
+
+        setParent(null)
+        setParentState(null)
+        setRequestState("idle")
+        setError(err instanceof Error ? err.message : "Unable to search parent")
+      }
+    }, 500)
+
+    return () => {
+      controller.abort()
+      window.clearTimeout(timer)
+    }
+  }, [normalizedPhone])
+
+  return {
+    parent: normalizedPhone ? parent : null,
+    parentState: normalizedPhone ? parentState : null,
+    requestState: normalizedPhone ? requestState : "idle",
+    isSearching: normalizedPhone ? requestState === "loading" : false,
+    error: normalizedPhone ? error : null,
+  }
+}
+
+export type { ParentState, RequestState }

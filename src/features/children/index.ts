@@ -2,8 +2,13 @@ export {
   type Child,
   type ChildProfile,
   type ChildReport,
+  type CreateChildFlowPayload,
+  type CreateChildResponse,
   type CreateChildWithParentPayload,
   type CreatePrivateChildPayload,
+  type ParentInfo,
+  type ParentSearchResult,
+  type TransferRequestResponse,
   type UpdateChildPayload,
 } from "./types/interfaces"
 export {
@@ -16,6 +21,10 @@ export {
   getPrivateChildren,
   getOrgChildren,
   createPrivateChild,
+  searchParentsByPhone,
+  getChildByIdClient,
+  createChildFlow,
+  requestChildTransfer,
 } from "./api"
 export { createChildAction } from "./actions/create-child.action"
 export { createPrivateChildAction } from "./actions/create-private-child.action"

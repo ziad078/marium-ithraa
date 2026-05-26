@@ -2,8 +2,12 @@ import { api } from "@/lib/api/api"
 import { buildPaginationQuery, type PaginationParams } from "@/lib/api/pagination"
 import {
   type Child,
+  type CreateChildFlowPayload,
+  type CreateChildResponse,
   type CreateChildWithParentPayload,
   type CreatePrivateChildPayload,
+  type ParentSearchResult,
+  type TransferRequestResponse,
   type UpdateChildPayload,
 } from "../types/interfaces"
 import { Endpoint, Methods } from "@/lib/types/enums"
@@ -69,5 +73,29 @@ export const createPrivateChild = async (data: CreatePrivateChildPayload) => {
   return api.server(`/${Endpoint.PARENT}/${Endpoint.CHILDREN}`, {
     method: Methods.POST,
     body: JSON.stringify(data),
+  })
+}
+
+export const searchParentsByPhone = async (phone: string) => {
+  return api.client<ParentSearchResult>(
+    `/${Endpoint.PARENT}s/search?phone=${encodeURIComponent(phone)}`,
+  )
+}
+
+export const getChildByIdClient = async (childId: string) => {
+  return api.client<{ child: Child }>(`/${Endpoint.CHILDREN}/${childId}`)
+}
+
+export const createChildFlow = async (data: CreateChildFlowPayload) => {
+  return api.client<CreateChildResponse>(`/${Endpoint.CHILDREN}`, {
+    method: Methods.POST,
+    body: JSON.stringify(data),
+  })
+}
+
+export const requestChildTransfer = async (childId: string, toOrganizationId: string) => {
+  return api.client<TransferRequestResponse>("/child-transfers", {
+    method: Methods.POST,
+    body: JSON.stringify({ childId, toOrganizationId }),
   })
 }

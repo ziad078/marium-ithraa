@@ -1,6 +1,7 @@
 import { getSession, signOut } from "next-auth/react"
 
 import { ApiError } from "../errors/ApiError"
+import type { ValidationErrors } from "../types/types"
 import { Pages, Routes, StatusCode } from "../types/enums"
 
 let cachedToken: string | null = null
@@ -32,6 +33,52 @@ async function resolveAccessToken(): Promise<string | null> {
   const token = session?.user?.accessToken ?? null
   cachedToken = token
   return token
+}
+
+function getApiErrorMessage(data: unknown) {
+  if (typeof data === "string") return data
+
+  if (typeof data !== "object" || data === null) return "Request failed"
+
+  const maybeMessage = (data as { message?: unknown }).message
+  if (typeof maybeMessage === "string") return maybeMessage
+  if (Array.isArray(maybeMessage)) {
+    return maybeMessage.filter((item): item is string => typeof item === "string").join(", ")
+  }
+
+  const maybeErrors = (data as { errors?: unknown }).errors
+  if (typeof maybeErrors === "object" && maybeErrors !== null) {
+    const messages = Object.values(maybeErrors)
+      .flatMap((value) => (Array.isArray(value) ? value : [value]))
+      .filter((value): value is string => typeof value === "string")
+
+    if (messages.length > 0) return messages.join(", ")
+  }
+
+  return "Request failed"
+}
+
+function getValidationErrors(data: unknown): ValidationErrors | undefined {
+  if (typeof data !== "object" || data === null) return undefined
+
+  const maybeErrors = (data as { errors?: unknown }).errors ?? data
+  if (typeof maybeErrors !== "object" || maybeErrors === null) return undefined
+
+  const errors = Object.entries(maybeErrors).reduce<ValidationErrors>(
+    (acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        const messages = value.filter((item): item is string => typeof item === "string")
+        if (messages.length > 0) acc[key] = messages
+        return acc
+      }
+
+      if (typeof value === "string") acc[key] = [value]
+      return acc
+    },
+    {},
+  )
+
+  return Object.keys(errors).length > 0 ? errors : undefined
 }
 
 export async function clientApiFetch<T>(
@@ -75,14 +122,7 @@ export async function clientApiFetch<T>(
   }
 
   if (!res.ok) {
-    const message =
-      typeof data === "object" &&
-      data !== null &&
-      "message" in data &&
-      typeof (data as { message: unknown }).message === "string"
-        ? (data as { message: string }).message
-        : "Request failed"
-    throw new ApiError(message, res.status)
+    throw new ApiError(getApiErrorMessage(data), res.status, getValidationErrors(data))
   }
 
   return data as T

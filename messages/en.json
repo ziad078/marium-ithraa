@@ -385,7 +385,11 @@
       "Wizard": {
         "next": "Next",
         "back": "Back",
-        "submit": "Complete signup"
+        "submit": "Complete signup",
+        "submitting": "Signing up...",
+        "success": "Account created successfully",
+        "autoLoginFailed": "Account created, but automatic sign in failed",
+        "unableToCreate": "Unable to create account"
       },
       "TypeStep": {
         "title": "Choose beneficiary account type",

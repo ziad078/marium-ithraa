@@ -6,6 +6,11 @@ import type { VerifyEmailResponse } from "../types"
 
 export type { VerifyEmailResponse }
 
+export type BeneficiariesSignupResponse = {
+  message?: string
+  userId?: string
+}
+
 export const verifyEmailClient = async (token: string) => {
   const query = new URLSearchParams({ token }).toString()
 
@@ -34,10 +39,13 @@ export const verifyEmail = verifyEmailServer
 export const beneficiariesSignupClient = async (
   body: BeneficiaryOrganizationFormValues,
 ) => {
-  return api.client<void>(`/${Endpoint.AUTH}/${Endpoint.BENEFICIARIESSIGNUP}`, {
-    method: Methods.POST,
-    body: JSON.stringify(body),
-  })
+  return api.client<BeneficiariesSignupResponse>(
+    `/${Endpoint.AUTH}/${Endpoint.BENEFICIARIESSIGNUP}`,
+    {
+      method: Methods.POST,
+      body: JSON.stringify(body),
+    },
+  )
 }
 
 export const logoutClient = async () => {

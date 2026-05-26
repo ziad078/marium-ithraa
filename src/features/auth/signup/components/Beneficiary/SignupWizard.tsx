@@ -22,6 +22,8 @@ import { useAuth } from "@/features/auth/hooks/useAuth"
 import { ApiError } from "@/lib/errors/ApiError"
 import { signInWithPhoneAndRedirect } from "@/lib/auth/signInWithCredentials"
 import { useLocale } from "next-intl"
+import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 export function SignupWizard() {
   const t = useTranslations("Signup.Beneficiary.Wizard")
@@ -31,6 +33,7 @@ export function SignupWizard() {
   const { login } = useAuth()
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const schema = useMemo(
     () =>
@@ -62,18 +65,22 @@ export function SignupWizard() {
   })
 
   function next() {
+    setSubmitError(null)
     setStep((s) => s + 1)
   }
 
   function back() {
+    setSubmitError(null)
     setStep((s) => s - 1)
   }
 
   async function onSubmit(values: BeneficiaryOrganizationFormValues) {
+    setSubmitError(null)
+
     try {
       setIsSubmitting(true)
 
-      await beneficiariesSignupClient({
+      const response = await beneficiariesSignupClient({
         name: values.name,
         email: values.email,
         password: values.password,
@@ -83,16 +90,41 @@ export function SignupWizard() {
         organizationType: values.organizationType,
       })
 
-      await signInWithPhoneAndRedirect({
+      toast.success(
+        response.message || t("success"),
+      )
+
+      const loginResult = await signInWithPhoneAndRedirect({
         phone: values.phone,
         password: values.password,
         push: router.push,
         login,
         locale,
       })
+
+      if (!loginResult.ok) {
+        const message = t("autoLoginFailed")
+        setSubmitError(message)
+        toast.error(message)
+      }
     } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : t("unableToCreate")
+
+      setSubmitError(message)
+      toast.error(message)
+
       if (error instanceof ApiError) {
-        console.error("Signup failed", error.message)
+        Object.entries(error.validationErrors ?? {}).forEach(([name, messages]) => {
+          const firstMessage = messages[0]
+          if (!firstMessage) return
+
+          form.setError(name as keyof BeneficiaryOrganizationFormValues, {
+            message: firstMessage,
+          })
+        })
       }
     } finally {
       setIsSubmitting(false)
@@ -124,15 +156,26 @@ export function SignupWizard() {
               </div>
             )}
 
+            {submitError && (
+              <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+                {submitError}
+              </div>
+            )}
+
             <div className="flex items-center justify-between gap-4">
               {step > 1 && (
-                <Button type="button" variant="outline" onClick={back}>
+                <Button type="button" variant="outline" onClick={back} disabled={isSubmitting}>
                   {t("back")}
                 </Button>
               )}
               <div className="ml-auto">
                 <Button type="submit" disabled={isSubmitting}>
-                  {step === 1 ? t("next") : t("submit")}
+                  {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+                  {step === 1
+                    ? t("next")
+                    : isSubmitting
+                      ? t("submitting")
+                      : t("submit")}
                 </Button>
               </div>
             </div>

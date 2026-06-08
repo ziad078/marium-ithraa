@@ -2,7 +2,7 @@ import { ChildrenScreen } from "@/components/pages/dashboards/organization/Child
 import { getAllChildrenByOrg } from "@/features/children"
 import { getClassesByOrg } from "@/features/classes"
 import { getGradesByOrg } from "@/features/grades"
-import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { requireCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -10,15 +10,15 @@ type Props = {
 
 export default async function ChildrenPage({ params }: Props) {
   await params
-  const org = await getCurrentOrganization()
-  const orgId = org.user.organization.id
+  const org = await requireCurrentOrganization()
+  const orgId = org.id
 
   const [childrenRes, gradesRes, classesRes] = await Promise.all([
     getAllChildrenByOrg(orgId),
     getGradesByOrg(orgId),
     getClassesByOrg(orgId),
   ])
-  console.log(childrenRes.children, gradesRes.grades, classesRes.classes)
+
   return (
     <ChildrenScreen
       childrens={childrenRes.children}

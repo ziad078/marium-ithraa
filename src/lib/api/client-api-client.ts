@@ -61,24 +61,28 @@ function getApiErrorMessage(data: unknown) {
 function getValidationErrors(data: unknown): ValidationErrors | undefined {
   if (typeof data !== "object" || data === null) return undefined
 
-  const maybeErrors = (data as { errors?: unknown }).errors ?? data
-  if (typeof maybeErrors !== "object" || maybeErrors === null) return undefined
+  const record = data as Record<string, unknown>
+  const maybeErrors = record.errors ?? record.message
 
-  const errors = Object.entries(maybeErrors).reduce<ValidationErrors>(
-    (acc, [key, value]) => {
-      if (Array.isArray(value)) {
-        const messages = value.filter((item): item is string => typeof item === "string")
-        if (messages.length > 0) acc[key] = messages
+  if (typeof maybeErrors === "object" && maybeErrors !== null && !Array.isArray(maybeErrors)) {
+    const errors = Object.entries(maybeErrors).reduce<ValidationErrors>(
+      (acc, [key, value]) => {
+        if (Array.isArray(value)) {
+          const messages = value.filter((item): item is string => typeof item === "string")
+          if (messages.length > 0) acc[key] = messages
+          return acc
+        }
+
+        if (typeof value === "string") acc[key] = [value]
         return acc
-      }
+      },
+      {},
+    )
 
-      if (typeof value === "string") acc[key] = [value]
-      return acc
-    },
-    {},
-  )
+    return Object.keys(errors).length > 0 ? errors : undefined
+  }
 
-  return Object.keys(errors).length > 0 ? errors : undefined
+  return undefined
 }
 
 export async function clientApiFetch<T>(
@@ -97,7 +101,7 @@ export async function clientApiFetch<T>(
     },
   })
 
-  if (res.status === StatusCode.UNAUTHARIZED) {
+  if (res.status === StatusCode.UNAUTHORIZED) {
     clearAuthTokenCache()
 
     if (retryOnUnauthorized) {
@@ -111,7 +115,7 @@ export async function clientApiFetch<T>(
       callbackUrl: `/${Routes.AUTH}/${Pages.LOGIN}`,
       redirect: true,
     })
-    throw new ApiError("Unauthorized", StatusCode.UNAUTHARIZED)
+    throw new ApiError("Unauthorized", StatusCode.UNAUTHORIZED)
   }
 
   let data: unknown

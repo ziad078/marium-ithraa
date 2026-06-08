@@ -65,11 +65,14 @@ export enum InputTypes {
 
 export enum StatusCode {
   BADREQUEST = 400,
-  INTERNALSERVERERROR = 500,
-  OK = 200,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOTFOUND = 404,
   CONFLICT = 409,
+  GONE = 410,
+  OK = 200,
   CREATED = 201,
-  UNAUTHARIZED = 401,
+  INTERNALSERVERERROR = 500,
 }
 export enum Navigate {
   NEXT = "next",
@@ -186,6 +189,9 @@ export enum Endpoint {
   EMPLOYEESBYORGNIZATION = `${EMPLOYEES}/organization`,
   USERS = "users",
   ORGANIZATIONS = "organizations",
+  ME = "me",
+  PENDING = "pending",
+  REJECT = "reject",
   CHILDREN = "children",
   GRADES = "grades",
   PARENT = "parent",

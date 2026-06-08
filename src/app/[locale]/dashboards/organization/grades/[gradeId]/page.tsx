@@ -5,7 +5,7 @@ import { getAllChildrenByOrg } from "@/features/children"
 import { type Child } from "@/features/children/types/interfaces"
 import { type Grade } from "@/features/grades"
 import { getGradeById } from "@/features/grades"
-import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { requireCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
 
 type Props = {
   params: Promise<{ locale: string; gradeId: string }>
@@ -13,8 +13,8 @@ type Props = {
 
 export default async function GradeDetailPage({ params }: Props) {
   const { gradeId } = await params
-  const org = await getCurrentOrganization()
-  const orgId = org.user.organization.id
+  const org = await requireCurrentOrganization()
+  const orgId = org.id
 
   let grade: Grade
   let children: Child[]

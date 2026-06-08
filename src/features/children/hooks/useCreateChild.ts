@@ -3,6 +3,9 @@
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
 
+import { getFriendlyApiErrorMessage } from "@/lib/helpers/apiErrorMessages"
+import { StatusCode } from "@/lib/types/enums"
+
 import { createChildFlow } from "@/features/children/api"
 import type {
   CreateChildFlowPayload,
@@ -55,7 +58,12 @@ export function useCreateChild(options?: {
           return
         }
 
-        toast.error(message)
+        if (status === StatusCode.FORBIDDEN) {
+          toast.error(getFriendlyApiErrorMessage(err))
+          return
+        }
+
+        toast.error(getFriendlyApiErrorMessage(err, message))
       }
     })
   }

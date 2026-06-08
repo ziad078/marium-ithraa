@@ -5,7 +5,7 @@ import { type ClassItem } from "@/features/classes"
 import { getClassById } from "@/features/classes"
 import { getGradesByOrg } from "@/features/grades"
 import { getTeachersByOrg } from "@/features/teachers/api"
-import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { requireCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
 
 type Props = {
   params: Promise<{ locale: string; classId: string }>
@@ -13,8 +13,8 @@ type Props = {
 
 export default async function EditClassPage({ params }: Props) {
   const { locale, classId } = await params
-  const org = await getCurrentOrganization()
-  const orgId = org.user.organization.id
+  const org = await requireCurrentOrganization()
+  const orgId = org.id
 
   let classItem: ClassItem
   let gradesRes

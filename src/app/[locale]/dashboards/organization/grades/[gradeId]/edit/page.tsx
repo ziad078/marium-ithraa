@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { GradeFormScreen } from "@/components/pages/dashboards/organization/GradeFormScreen"
 import { type Grade } from "@/features/grades"
 import { getGradeById } from "@/features/grades"
-import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { requireCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
 
 type Props = {
   params: Promise<{ locale: string; gradeId: string }>
@@ -11,7 +11,7 @@ type Props = {
 
 export default async function EditGradePage({ params }: Props) {
   const { locale, gradeId } = await params
-  const org = await getCurrentOrganization()
+  const org = await requireCurrentOrganization()
 
   let grade: Grade
   try {
@@ -23,7 +23,7 @@ export default async function EditGradePage({ params }: Props) {
   return (
     <GradeFormScreen
       locale={locale}
-      organizationId={org.user.organization.id}
+      organizationId={org.id}
       grade={grade}
     />
   )

@@ -48,6 +48,11 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
         icon: IconUsers,
       },
       {
+        title: t("Features.Organizations.admin.nav"),
+        url: `${ADMIN_URL}/organizations`,
+        icon: IconUsers,
+      },
+      {
         title: t("Dashboard.Nav.children"),
         url: `${ADMIN_URL}/children`,
         icon: IconUsers,

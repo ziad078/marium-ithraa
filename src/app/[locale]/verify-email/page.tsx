@@ -17,8 +17,6 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
 
   const result = token ? await verifyEmail(token) : null
 
-  console.log(result)
-
   return (
     <main className="min-h-dvh pt-36 pb-16">
       <div className="app-container">

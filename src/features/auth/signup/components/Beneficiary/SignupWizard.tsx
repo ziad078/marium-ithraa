@@ -81,17 +81,22 @@ export function SignupWizard() {
       setIsSubmitting(true)
 
       const response = await beneficiariesSignupClient({
-        name: values.name,
-        email: values.email,
+        name: values.name.trim(),
+        email: values.email.trim(),
         password: values.password,
-        phone: values.phone,
+        phone: values.phone.trim(),
         accountType: values.accountType,
-        organizationName: values.organizationName,
+        organizationName: values.organizationName.trim(),
         organizationType: values.organizationType,
       })
 
+      const isOrganizationSignup = values.accountType === "organization"
+      const pendingMessage = t("organizationPendingSuccess")
+
       toast.success(
-        response.message || t("success"),
+        isOrganizationSignup
+          ? pendingMessage
+          : response.message || t("success"),
       )
 
       const loginResult = await signInWithPhoneAndRedirect({

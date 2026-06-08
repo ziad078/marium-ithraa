@@ -1,0 +1,344 @@
+"use client"
+
+import { useMemo, useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { IconCheck, IconRefresh, IconX } from "@tabler/icons-react"
+import { useTranslations } from "next-intl"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+
+import { DataTable } from "@/components/shared/data-table/DataTable"
+import { SiteHeader } from "@/components/site-header"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
+import { getFriendlyApiErrorMessage, getFieldValidationError } from "@/lib/helpers/apiErrorMessages"
+import { ApprovalStatus } from "@/lib/types/enums"
+import { ApiError } from "@/lib/errors/ApiError"
+import type { ColumnDef } from "@tanstack/react-table"
+
+import {
+  useApproveOrganization,
+  useOrganizationsByStatus,
+  useRejectOrganization,
+} from "../hooks"
+import { createRejectionReasonSchema } from "../schemas/rejection.schema"
+import type { Organization } from "../types/interfaces"
+import { OrganizationApprovalBadge } from "./OrganizationApprovalBadge"
+
+type StatusFilter = ApprovalStatus
+
+function formatDate(value?: string | null) {
+  if (!value) return "—"
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return "—"
+  return date.toLocaleDateString()
+}
+
+export function AdminOrganizationsScreen({ locale }: { locale: string }) {
+  const t = useTranslations("Features.Organizations.admin")
+  const tValidation = useTranslations("Features.Organizations.admin.rejectValidation")
+  const isAr = locale === "ar"
+
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>(ApprovalStatus.PENDING)
+  const [approveTarget, setApproveTarget] = useState<Organization | null>(null)
+  const [rejectTarget, setRejectTarget] = useState<Organization | null>(null)
+
+  const { data, isLoading, isError, error, refetch } =
+    useOrganizationsByStatus(statusFilter)
+
+  const approveMutation = useApproveOrganization()
+  const rejectMutation = useRejectOrganization()
+
+  const rejectionSchema = useMemo(
+    () => createRejectionReasonSchema((key) => tValidation(key)),
+    [tValidation],
+  )
+
+  const rejectionForm = useForm({
+    resolver: zodResolver(rejectionSchema),
+    defaultValues: { rejectionReason: "" },
+  })
+
+  const organizations = data?.organizations ?? []
+
+  const columns = useMemo<ColumnDef<Organization>[]>(
+    () => [
+      {
+        accessorKey: "organizationName",
+        header: t("columns.name"),
+      },
+      {
+        accessorKey: "organizationType",
+        header: t("columns.type"),
+        cell: ({ row }) => t(`types.${row.original.organizationType}`),
+      },
+      {
+        id: "ownerName",
+        header: t("columns.owner"),
+        cell: ({ row }) => row.original.owner?.name ?? "—",
+      },
+      {
+        id: "ownerEmail",
+        header: t("columns.email"),
+        cell: ({ row }) => row.original.owner?.email ?? "—",
+      },
+      {
+        accessorKey: "approvalStatus",
+        header: t("columns.status"),
+        cell: ({ row }) => (
+          <OrganizationApprovalBadge status={row.original.approvalStatus} />
+        ),
+      },
+      {
+        id: "submittedAt",
+        header: t("columns.submitted"),
+        cell: ({ row }) => formatDate(row.original.createdAt),
+      },
+      {
+        id: "reviewedAt",
+        header: t("columns.reviewed"),
+        cell: ({ row }) =>
+          formatDate(row.original.approvedAt ?? row.original.rejectedAt),
+      },
+      {
+        id: "actions",
+        header: t("columns.actions"),
+        cell: ({ row }) => {
+          const org = row.original
+
+          if (org.approvalStatus === ApprovalStatus.PENDING) {
+            return (
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setApproveTarget(org)}
+                  aria-label={t("approveAria", { name: org.organizationName })}
+                >
+                  <IconCheck className="size-4" />
+                  {t("approve")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => {
+                    rejectionForm.reset({ rejectionReason: "" })
+                    setRejectTarget(org)
+                  }}
+                  aria-label={t("rejectAria", { name: org.organizationName })}
+                >
+                  <IconX className="size-4" />
+                  {t("reject")}
+                </Button>
+              </div>
+            )
+          }
+
+          if (org.approvalStatus === ApprovalStatus.REJECTED && org.rejectionReason) {
+            return (
+              <p className="max-w-xs text-xs text-muted-foreground">{org.rejectionReason}</p>
+            )
+          }
+
+          return <span className="text-xs text-muted-foreground">—</span>
+        },
+      },
+    ],
+    [rejectionForm, t],
+  )
+
+  async function handleApprove() {
+    if (!approveTarget) return
+
+    try {
+      await approveMutation.mutateAsync(approveTarget.id)
+      toast.success(t("approveSuccess"))
+      setApproveTarget(null)
+    } catch (err) {
+      toast.error(getFriendlyApiErrorMessage(err, t("approveFailed")))
+    }
+  }
+
+  async function handleReject(values: { rejectionReason: string }) {
+    if (!rejectTarget) return
+
+    try {
+      await rejectMutation.mutateAsync({
+        id: rejectTarget.id,
+        rejectionReason: values.rejectionReason,
+      })
+      toast.success(t("rejectSuccess"))
+      setRejectTarget(null)
+      rejectionForm.reset({ rejectionReason: "" })
+    } catch (err) {
+      const fieldError = getFieldValidationError(err, "rejectionReason")
+      if (fieldError) {
+        rejectionForm.setError("rejectionReason", { message: fieldError })
+      }
+      toast.error(getFriendlyApiErrorMessage(err, t("rejectFailed")))
+    }
+  }
+
+  const emptyMessage =
+    statusFilter === ApprovalStatus.PENDING
+      ? t("empty.pending")
+      : statusFilter === ApprovalStatus.APPROVED
+        ? t("empty.approved")
+        : t("empty.rejected")
+
+  return (
+    <>
+      <SiteHeader titleKey="Features.Organizations.admin.title" />
+      <div className="flex flex-1 flex-col" dir={isAr ? "rtl" : "ltr"}>
+        <div className="@container/main flex flex-1 flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-semibold">{t("title")}</h2>
+            <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+          </div>
+
+          <Tabs
+            value={statusFilter}
+            onValueChange={(value) => setStatusFilter(value as StatusFilter)}
+          >
+            <TabsList>
+              <TabsTrigger value={ApprovalStatus.PENDING}>{t("tabs.pending")}</TabsTrigger>
+              <TabsTrigger value={ApprovalStatus.APPROVED}>{t("tabs.approved")}</TabsTrigger>
+              <TabsTrigger value={ApprovalStatus.REJECTED}>{t("tabs.rejected")}</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {isError ? (
+            <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 space-y-3">
+              <p className="text-sm text-destructive">
+                {error instanceof ApiError && error.status === 403
+                  ? t("errors.forbidden")
+                  : getFriendlyApiErrorMessage(error, t("errors.loadFailed"))}
+              </p>
+              <Button variant="outline" size="sm" onClick={() => refetch()}>
+                <IconRefresh className="size-4" />
+                {t("retry")}
+              </Button>
+            </div>
+          ) : isLoading ? (
+            <div className="space-y-3">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          ) : organizations.length === 0 ? (
+            <div className="rounded-2xl border border-dashed p-10 text-center text-sm text-muted-foreground">
+              {emptyMessage}
+            </div>
+          ) : (
+            <DataTable data={organizations} columns={columns} />
+          )}
+        </div>
+      </div>
+
+      <Dialog open={Boolean(approveTarget)} onOpenChange={(open) => !open && setApproveTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("approveDialog.title")}</DialogTitle>
+            <DialogDescription>
+              {t("approveDialog.description", {
+                name: approveTarget?.organizationName ?? "",
+              })}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setApproveTarget(null)}>
+              {t("cancel")}
+            </Button>
+            <Button onClick={handleApprove} disabled={approveMutation.isPending}>
+              {t("approve")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={Boolean(rejectTarget)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setRejectTarget(null)
+            rejectionForm.reset({ rejectionReason: "" })
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("rejectDialog.title")}</DialogTitle>
+            <DialogDescription>
+              {t("rejectDialog.description", {
+                name: rejectTarget?.organizationName ?? "",
+              })}
+            </DialogDescription>
+          </DialogHeader>
+
+          <Form {...rejectionForm}>
+            <form onSubmit={rejectionForm.handleSubmit(handleReject)} className="space-y-4">
+              <FormField
+                control={rejectionForm.control}
+                name="rejectionReason"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("rejectDialog.reasonLabel")}</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        rows={4}
+                        placeholder={t("rejectDialog.reasonPlaceholder")}
+                        aria-describedby="rejection-reason-help"
+                      />
+                    </FormControl>
+                    <p id="rejection-reason-help" className="text-xs text-muted-foreground">
+                      {t("rejectDialog.reasonHelp")}
+                    </p>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setRejectTarget(null)
+                    rejectionForm.reset({ rejectionReason: "" })
+                  }}
+                >
+                  {t("cancel")}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="destructive"
+                  disabled={rejectMutation.isPending}
+                >
+                  {t("reject")}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}

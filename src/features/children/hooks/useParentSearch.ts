@@ -25,7 +25,6 @@ export function useParentSearch(phone: string) {
 
       try {
         const result = await searchParentsByPhone(normalizedPhone)
-        console.log(result)
         if (controller.signal.aborted) return
 
         if (result.parent) {

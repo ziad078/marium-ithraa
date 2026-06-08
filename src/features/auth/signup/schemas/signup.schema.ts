@@ -2,23 +2,34 @@ import { z } from "zod"
 
 type TranslateFn = (key: string) => string
 
+const phonePattern = /^\+?[0-9\s\-()]{8,20}$/
+
 export const createBeneficiaryOrganizationSchema = (t: TranslateFn) =>
   z.object({
     accountType: z.enum(["teacher", "parent", "organization"]),
     name: z
       .string()
+      .trim()
       .min(2, t("name.min"))
       .max(50, t("name.max")),
-    email: z.string().email(t("email.invalid")),
+    email: z.string().trim().email(t("email.invalid")),
     password: z
       .string()
       .min(8, t("password.min"))
       .regex(
         /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])/,
-        t("password.pattern")
+        t("password.pattern"),
       ),
-    phone: z.string().min(6, t("phone.min")),
-    organizationName: z.string().min(2, t("organization_name.min")),
+    phone: z
+      .string()
+      .trim()
+      .min(8, t("phone.min"))
+      .regex(phonePattern, t("phone.invalid")),
+    organizationName: z
+      .string()
+      .trim()
+      .min(2, t("organization_name.min"))
+      .max(120, t("organization_name.max")),
     organizationType: z
       .union([
         z.enum(["center", "nursery", "training", "school"]),

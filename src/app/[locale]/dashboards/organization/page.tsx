@@ -1,4 +1,6 @@
+import { OrganizationStatusScreen } from "@/features/organizations"
 import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { ApprovalStatus } from "@/lib/types/enums"
 import {
   OrganizationDashboardScreen,
   getOrganizationDashboardMockData,
@@ -12,10 +14,15 @@ export default async function OrganizationDashboardPage({ params }: Props) {
   const { locale } = await params
   const org = await getCurrentOrganization()
 
-  const organizationName =
-    org?.user?.organization?.organizationName ??
-    (locale === "ar" ? "مدرسة النور" : "Al Noor School")
+  if (!org) {
+    return null
+  }
 
+  if (org.approvalStatus !== ApprovalStatus.APPROVED) {
+    return <OrganizationStatusScreen organization={org} locale={locale} />
+  }
+
+  const organizationName = org.organizationName
   const { stats, activities } = getOrganizationDashboardMockData(locale)
 
   return (
@@ -27,4 +34,3 @@ export default async function OrganizationDashboardPage({ params }: Props) {
     />
   )
 }
-

@@ -11,8 +11,6 @@ type PageProps = {
 
 export default async function EmployeeDetailPage({ params }: PageProps) {
   const employee = await getEmployeeById((await params).employeeId)
-  console.log(employee)
-
 
   const initials = employee.user.name
     ?.split(" ")

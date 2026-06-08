@@ -4,7 +4,7 @@ import { ChildFormScreen } from "@/components/pages/dashboards/organization/Chil
 import { getChildById } from "@/features/children"
 import { getClassesByOrg } from "@/features/classes"
 import { getGradesByOrg } from "@/features/grades"
-import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { requireCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
 
 type Props = {
   params: Promise<{ locale: string; childId: string }>
@@ -12,8 +12,8 @@ type Props = {
 
 export default async function EditChildPage({ params }: Props) {
   const { locale, childId } = await params
-  const org = await getCurrentOrganization()
-  const orgId = org.user.organization.id
+  const org = await requireCurrentOrganization()
+  const orgId = org.id
 
   let child
   let gradesRes

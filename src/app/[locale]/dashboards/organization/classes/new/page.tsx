@@ -1,7 +1,7 @@
 import { ClassFormScreen } from "@/components/pages/dashboards/organization/ClassFormScreen"
 import { getGradesByOrg } from "@/features/grades"
 import { getTeachersByOrg } from "@/features/teachers/api"
-import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { requireCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -11,8 +11,8 @@ type Props = {
 export default async function NewClassPage({ params, searchParams }: Props) {
   const { locale } = await params
   const { gradeId } = await searchParams
-  const org = await getCurrentOrganization()
-  const orgId = org.user.organization.id
+  const org = await requireCurrentOrganization()
+  const orgId = org.id
 
   const [gradesRes, teachersRes] = await Promise.all([
     getGradesByOrg(orgId),

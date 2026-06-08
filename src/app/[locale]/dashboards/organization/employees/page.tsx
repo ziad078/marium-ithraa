@@ -3,11 +3,11 @@ import DashboardCards from "@/components/shared/cards/DashboardCards"
 import { DataTable } from "@/components/shared/data-table/DataTable"
 import { SiteHeader } from "@/components/site-header"
 import { AddEmployeeDialog, columns, getEmployeesByOrganization } from "@/features/employees"
-import { getCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
+import { requireCurrentOrganization } from "@/lib/helpers/getCurrentOrganization"
 import { CardInfo } from "@/lib/types/types"
 export default async function OrgEmployeesPage() {
-  const organizationOwner = (await getCurrentOrganization())
-  const orgId = organizationOwner?.user?.organization?.id
+  const organizationOwner = (await requireCurrentOrganization())
+  const orgId = organizationOwner?.id
   const { employees } = await getEmployeesByOrganization(orgId)
 
   const cards: CardInfo[] = [

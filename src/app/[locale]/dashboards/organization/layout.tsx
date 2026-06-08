@@ -1,5 +1,6 @@
 import Footer from '@/components/layouts/footer'
 import OrganizationHeader from '@/components/layouts/organizationHeader/OrganizationHeader'
+import { OrganizationRouteGuard } from '@/features/organizations'
 import { routing } from '@/i18n/routing'
 import { getCurrentOrganization } from '@/lib/helpers/getCurrentOrganization'
 import { hasLocale } from 'next-intl'
@@ -38,9 +39,11 @@ const OrgnizationLayout = async ({
   
     return (
         <RequireRoles allowed={[UserRole.ORGANIZATIONOWNER, UserRole.ADMIN]} redirectTo={`/${locale}/${Routes.UNAUTHARIZED}`}>
-            <OrganizationHeader locale={locale} />
+            <OrganizationHeader locale={locale} approvalStatus={organization.approvalStatus} />
             <div className="pt-28">
-              {children}
+              <OrganizationRouteGuard organization={organization} locale={locale}>
+                {children}
+              </OrganizationRouteGuard>
             </div>
             <Footer locale={locale} />
         </RequireRoles>

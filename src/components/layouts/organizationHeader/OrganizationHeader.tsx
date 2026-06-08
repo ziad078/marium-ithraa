@@ -10,9 +10,11 @@ import { AuthNavActions } from "@/features/auth/components/AuthNavActions"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import Searchbar from "@/components/layouts/header/search"
+import { ApprovalStatus } from "@/lib/types/enums"
 
 type OrganizationHeaderProps = {
   locale: string
+  approvalStatus?: ApprovalStatus
 }
 
 const navLinks = [
@@ -24,10 +26,23 @@ const navLinks = [
   { labelKey: "results", href: "/dashboards/organization/results" },
 ] as const
 
-const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
+const operationalLinkHrefs = new Set([
+  "/dashboards/organization/grades",
+  "/dashboards/organization/classes",
+  "/dashboards/organization/children",
+  "/dashboards/organization/teachers",
+])
+
+const OrganizationHeader = ({ locale, approvalStatus = ApprovalStatus.APPROVED }: OrganizationHeaderProps) => {
   const pathname = usePathname()
   const t = useTranslations("Layout.OrganizationNav")
   const [mobileOpen, setMobileOpen] = useState(false)
+  const isApproved = approvalStatus === ApprovalStatus.APPROVED
+
+  const visibleLinks = navLinks.filter((item) => {
+    if (isApproved) return true
+    return !operationalLinkHrefs.has(item.href)
+  })
 
   const isActive = (href: string) => {
     if (href === "/dashboards/organization") {
@@ -58,7 +73,7 @@ const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((item) => (
+            {visibleLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -122,7 +137,7 @@ const OrganizationHeader = ({ locale }: OrganizationHeaderProps) => {
                 </div>
 
                 <div className="p-4 space-y-2">
-                  {navLinks.map((item) => (
+                  {visibleLinks.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}

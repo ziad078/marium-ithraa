@@ -70,7 +70,7 @@ export function isActionFailure(state: InitialState): boolean {
     state.status === StatusCode.BADREQUEST ||
     state.status === StatusCode.CONFLICT ||
     state.status === StatusCode.INTERNALSERVERERROR ||
-    state.status === StatusCode.UNAUTHARIZED
+    state.status === StatusCode.UNAUTHORIZED
   )
 }
 

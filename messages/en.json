@@ -374,10 +374,12 @@
           "pattern": "Password must contain uppercase, lowercase, number and special character."
         },
         "phone": {
-          "min": "Please enter a valid phone number."
+          "min": "Please enter a valid phone number.",
+          "invalid": "Please enter a valid phone number."
         },
         "organization_name": {
-          "min": "Organization name must be at least 2 characters."
+          "min": "Organization name must be at least 2 characters.",
+          "max": "Organization name must be at most 120 characters."
         },
         "organization_type": {
           "required": "Please select an organization type."
@@ -389,6 +391,7 @@
         "submit": "Complete signup",
         "submitting": "Signing up...",
         "success": "Account created successfully",
+        "organizationPendingSuccess": "Your organization registration has been submitted successfully and is awaiting admin approval.",
         "autoLoginFailed": "Account created, but automatic sign in failed",
         "unableToCreate": "Unable to create account"
       },
@@ -629,6 +632,86 @@
         "in_progress": "In progress",
         "submitted": "Submitted",
         "approved": "Approved"
+      }
+    },
+    "Organizations": {
+      "statusLabel": "Organization status",
+      "status": {
+        "pending": "Pending approval",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "types": {
+        "center": "Educational center",
+        "nursery": "Nursery",
+        "training": "Training center",
+        "school": "School"
+      },
+      "pending": {
+        "title": "Your organization registration is awaiting admin approval.",
+        "description": "You will be able to manage classes, children, grades, and teachers after approval."
+      },
+      "rejected": {
+        "title": "Your organization registration was rejected.",
+        "description": "Please review the reason below and contact support if you need help.",
+        "reasonLabel": "Rejection reason",
+        "contactSupport": "Contact support",
+        "backToLogin": "Back to login"
+      },
+      "approvalRequired": "Your organization must be approved before you can perform this action.",
+      "admin": {
+        "nav": "Organizations",
+        "title": "Organizations",
+        "subtitle": "Review and manage organization registration requests.",
+        "tabs": {
+          "pending": "Pending",
+          "approved": "Approved",
+          "rejected": "Rejected"
+        },
+        "columns": {
+          "name": "Organization",
+          "type": "Type",
+          "owner": "Owner",
+          "email": "Owner email",
+          "status": "Status",
+          "submitted": "Submitted",
+          "reviewed": "Reviewed",
+          "actions": "Actions"
+        },
+        "approve": "Approve",
+        "reject": "Reject",
+        "cancel": "Cancel",
+        "retry": "Retry",
+        "approveAria": "Approve {name}",
+        "rejectAria": "Reject {name}",
+        "approveSuccess": "Organization approved successfully",
+        "approveFailed": "Unable to approve organization",
+        "rejectSuccess": "Organization rejected successfully",
+        "rejectFailed": "Unable to reject organization",
+        "approveDialog": {
+          "title": "Approve organization",
+          "description": "Are you sure you want to approve {name}?"
+        },
+        "rejectDialog": {
+          "title": "Reject organization",
+          "description": "Provide a reason for rejecting {name}.",
+          "reasonLabel": "Rejection reason",
+          "reasonPlaceholder": "Explain why this registration cannot be approved",
+          "reasonHelp": "Required. Between 3 and 500 characters."
+        },
+        "rejectValidation": {
+          "min": "Rejection reason must be at least 3 characters.",
+          "max": "Rejection reason must be at most 500 characters."
+        },
+        "empty": {
+          "pending": "No organizations awaiting review.",
+          "approved": "No approved organizations yet.",
+          "rejected": "No rejected organizations yet."
+        },
+        "errors": {
+          "forbidden": "You do not have permission to manage organizations.",
+          "loadFailed": "Unable to load organizations."
+        }
       }
     },
     "ParentDashboard": {

@@ -1,6 +1,6 @@
 import RequireRoles from "@/features/auth/components/RequireRoles"
+import { Link } from "@/i18n/navigation"
 import { UserRole } from "@/lib/types/enums"
-import ChildTestsScreen from "@/components/pages/tests/ChildTestsScreen"
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -8,59 +8,31 @@ type Props = {
 
 export default async function TestsPage({ params }: Props) {
   const { locale } = await params
-  const direction = locale === "ar" ? "rtl" : "ltr"
+  const isAr = locale === "ar"
 
   return (
     <RequireRoles allowed={[UserRole.PARENT]} redirectTo="/unautharized">
-      <ChildTestsScreen
-        direction={direction}
-        profileName="كريم محمد علي"
-        gradeLabel="الرابع الإبتدائى"
-        schoolLabel="مدرسة الإبداع"
-        evaluationStatusLabel="تم التقييم"
-        evaluationStatusColorHex="#2ccc00"
-        tabs={[
-          { id: "plan", label: "الخطة الإثرائية" },
-          { id: "reports", label: "التقارير" },
-          { id: "indicators", label: "المؤشرات" },
-          { id: "tests", label: "الاختبارات", active: true },
-        ]}
-        descriptionTitle="الاختبارات"
-        description="اطّلع على اختبارات طفلك وتابع نتائج تقييم ذكاءاته ومهاراته."
-        childTests={[
-          {
-            id: "t1",
-            title: "اختبار الصفات السلوكية للموهبة",
-            datePrefixLabel: "تاريخ الإجراء:",
-            dateValue: "10 مايو 2026",
-            dateValueColorHex: "#7222e3",
-            statusLabel: "لم يبدأ",
-            statusColorHex: "#cc001b",
-            actionLabel: "بدء الاختبار",
-          },
-          {
-            id: "t2",
-            title: "اختبار الصفات السلوكية للموهبة",
-            datePrefixLabel: "تاريخ الإجراء:",
-            dateValue: "10 مايو 2026",
-            dateValueColorHex: "#7222e3",
-            statusLabel: "لم يبدأ",
-            statusColorHex: "#cc001b",
-            actionLabel: "بدء الاختبار",
-          },
-          {
-            id: "t3",
-            title: "اختبار الذكاءات المتعددة",
-            datePrefixLabel: "تاريخ الإجراء:",
-            dateValue: "متاح الآن",
-            dateValueColorHex: "#7222e3",
-            statusLabel: "مكتمل",
-            statusColorHex: "#2ccc00",
-            actionLabel: "إعادة الاختبار",
-          },
-        ]}
-      />
+      <main
+        className="app-container flex min-h-[60vh] items-center justify-center py-16"
+        dir={isAr ? "rtl" : "ltr"}
+      >
+        <section className="max-w-xl space-y-4 rounded-2xl border border-border/60 bg-background p-8 text-center shadow-sm">
+          <h1 className="text-2xl font-bold text-foreground">
+            This tests flow is no longer available. Please use evaluations.
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            {isAr
+              ? "تم إيقاف واجهة الاختبارات القديمة. يمكنك متابعة تقييمات الأطفال من صفحة التقييمات."
+              : "The legacy tests interface has been retired. Child assessments now live in evaluations."}
+          </p>
+          <Link
+            href="/dashboards/parent/evaluations"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
+          >
+            {isAr ? "فتح التقييمات" : "Open evaluations"}
+          </Link>
+        </section>
+      </main>
     </RequireRoles>
   )
 }
-

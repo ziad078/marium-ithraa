@@ -24,7 +24,14 @@ export type Organization = {
   updatedAt?: string
 }
 
-export type OrganizationsListResponse = {
+/**
+ * Backend contract: organization list endpoints return Organization[] directly.
+ * The API layer tolerates the legacy { organizations: Organization[] } shape
+ * while callers should consume this normalized array type.
+ */
+export type OrganizationsListResponse = Organization[]
+
+export type LegacyOrganizationsListResponse = {
   organizations: Organization[]
 }
 

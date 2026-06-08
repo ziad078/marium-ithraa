@@ -1,13 +1,6 @@
 "use client"
 
-import {
-  Baby,
-  BookOpen,
-  Brain,
-  ClipboardList,
-  FileText,
-  Send,
-} from "lucide-react"
+import { Baby, Brain, ClipboardList, FileText, Send } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
 import { useMemo } from "react"
 
@@ -19,7 +12,6 @@ import { WelcomeHero } from "@/components/shared/dashboard/WelcomeHero"
 import { useAdminChildren } from "@/features/children"
 import { useEvaluations } from "@/features/evaluations/hooks"
 import { useNotificationsList } from "@/features/notifications/hooks"
-import { useAdminTests } from "@/features/tests"
 import { Pages, Routes } from "@/lib/types/enums"
 import { useSession } from "next-auth/react"
 
@@ -27,39 +19,31 @@ const ADMIN_URL = `/${Routes.DASHBOARDS}/${Pages.ADMIN}`
 
 export function AdminDashboardScreen() {
   const locale = useLocale()
-  const t = useTranslations("Dashboard")
   const tNav = useTranslations("Dashboard.Nav")
   const tNotif = useTranslations("Features.Notifications")
   const isAr = locale === "ar"
   const { data: session } = useSession()
 
   const { data: childrenData, isLoading: loadingChildren } = useAdminChildren()
-  const { data: testsData, isLoading: loadingTests } = useAdminTests()
   const { data: evaluationsData, isLoading: loadingEvaluations } = useEvaluations()
   const evaluations = Array.isArray(evaluationsData) ? evaluationsData : []
   const { data: notificationsData } = useNotificationsList({ page: 1, limit: 5 })
 
-  const displayName = session?.user?.name ?? (isAr ? "المشرف" : "Admin")
+  const displayName = session?.user?.name ?? (isAr ? "Admin" : "Admin")
 
   const stats = useMemo(
     () => [
       {
         label: tNav("children"),
-        value: loadingChildren ? "—" : String(childrenData?.children?.length ?? 0),
+        value: loadingChildren ? "-" : String(childrenData?.children?.length ?? 0),
         icon: <Baby />,
         variant: "purple" as const,
       },
       {
         label: tNav("evaluations"),
-        value: loadingEvaluations ? "—" : String(evaluations.length),
+        value: loadingEvaluations ? "-" : String(evaluations.length),
         icon: <Brain />,
         variant: "violet" as const,
-      },
-      {
-        label: tNav("tests"),
-        value: loadingTests ? "—" : String(testsData?.tests?.length ?? 0),
-        icon: <BookOpen />,
-        variant: "pink" as const,
       },
       {
         label: tNotif("title"),
@@ -71,11 +55,9 @@ export function AdminDashboardScreen() {
     [
       childrenData,
       evaluations,
-      testsData,
       notificationsData,
       loadingChildren,
       loadingEvaluations,
-      loadingTests,
       tNav,
       tNotif,
     ],
@@ -87,8 +69,8 @@ export function AdminDashboardScreen() {
       return [
         {
           id: "placeholder",
-          title: isAr ? "لا توجد نشاطات حديثة" : "No recent activity",
-          timeAgo: "—",
+          title: isAr ? "No recent activity" : "No recent activity",
+          timeAgo: "-",
           icon: <ClipboardList />,
         },
       ]
@@ -107,60 +89,52 @@ export function AdminDashboardScreen() {
   return (
     <DashboardHomeLayout locale={locale}>
       <WelcomeHero
-        title={
-          isAr ? `مرحباً ${displayName}` : `Welcome, ${displayName}`
-        }
+        title={isAr ? `Welcome, ${displayName}` : `Welcome, ${displayName}`}
         subtitle={
           isAr
-            ? "إدارة المنصة والتقييمات والمستخدمين من مكان واحد"
+            ? "Manage the platform, evaluations, and users from one place"
             : "Manage the platform, evaluations, and users from one place"
         }
       />
 
       <section className="space-y-4">
         <h2 className="text-start text-xl font-bold text-foreground">
-          {isAr ? "إحصائيات المنصة" : "Platform stats"}
+          {isAr ? "Platform stats" : "Platform stats"}
         </h2>
         <StatsGrid items={stats} />
       </section>
 
       <section className="space-y-4">
         <h2 className="text-start text-xl font-bold text-foreground">
-          {isAr ? "اختصارات سريعة" : "Quick actions"}
+          {isAr ? "Quick actions" : "Quick actions"}
         </h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           <QuickActionCard
             title={tNav("evaluations")}
-            description={
-              isAr ? "إنشاء وإدارة التقييمات" : "Create and manage evaluations"
-            }
+            description={isAr ? "Create and manage evaluations" : "Create and manage evaluations"}
             href={`${ADMIN_URL}/evaluations`}
             icon={<Brain />}
-            actionLabel={isAr ? "فتح" : "Open"}
+            actionLabel={isAr ? "Open" : "Open"}
           />
           <QuickActionCard
             title={tNav("attempts")}
-            description={
-              isAr ? "مراجعة واعتماد المحاولات" : "Review and approve attempts"
-            }
+            description={isAr ? "Review and approve attempts" : "Review and approve attempts"}
             href={`${ADMIN_URL}/attempts`}
             icon={<ClipboardList />}
-            actionLabel={isAr ? "فتح" : "Open"}
+            actionLabel={isAr ? "Open" : "Open"}
           />
           <QuickActionCard
             title={tNotif("dispatchTitle")}
-            description={
-              isAr ? "إرسال إشعار لمستخدم" : "Send a notification to a user"
-            }
+            description={isAr ? "Send a notification to a user" : "Send a notification to a user"}
             href={`${ADMIN_URL}/notifications/dispatch`}
             icon={<Send />}
-            actionLabel={isAr ? "إرسال" : "Send"}
+            actionLabel={isAr ? "Send" : "Send"}
           />
         </div>
       </section>
 
       <ActivityFeed
-        title={isAr ? "آخر التنبيهات" : "Recent notifications"}
+        title={isAr ? "Recent notifications" : "Recent notifications"}
         items={activities}
       />
     </DashboardHomeLayout>

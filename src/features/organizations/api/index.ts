@@ -4,10 +4,22 @@ import { api } from "@/lib/api/api"
 import { User } from "@/features/users"
 import type {
   ApprovalStatus,
+  LegacyOrganizationsListResponse,
   Organization,
   OrganizationsListResponse,
   RejectOrganizationPayload,
 } from "../types/interfaces"
+
+type OrganizationsListApiResponse =
+  | OrganizationsListResponse
+  | LegacyOrganizationsListResponse
+
+function normalizeOrganizationsList(
+  response: OrganizationsListApiResponse,
+): OrganizationsListResponse {
+  if (Array.isArray(response)) return response
+  return response.organizations ?? []
+}
 
 export const createEmployee = async (employee: CreateEmployee) => {
   return api.server(`/${Endpoint.EMPLOYEES}`, {
@@ -32,19 +44,24 @@ export async function getMyOrganizationServer() {
 }
 
 export async function getAllOrganizations() {
-  return api.client<OrganizationsListResponse>(`/${Endpoint.ORGANIZATIONS}`)
+  const response = await api.client<OrganizationsListApiResponse>(
+    `/${Endpoint.ORGANIZATIONS}`,
+  )
+  return normalizeOrganizationsList(response)
 }
 
 export async function getPendingOrganizations() {
-  return api.client<OrganizationsListResponse>(
+  const response = await api.client<OrganizationsListApiResponse>(
     `/${Endpoint.ORGANIZATIONS}/${Endpoint.PENDING}`,
   )
+  return normalizeOrganizationsList(response)
 }
 
 export async function getOrganizationsByStatus(status: ApprovalStatus) {
-  return api.client<OrganizationsListResponse>(
+  const response = await api.client<OrganizationsListApiResponse>(
     `/${Endpoint.ORGANIZATIONS}?status=${status}`,
   )
+  return normalizeOrganizationsList(response)
 }
 
 export async function approveOrganization(id: string) {

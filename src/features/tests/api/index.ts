@@ -1,11 +1,14 @@
-import { Endpoint, Methods } from "@/lib/types/enums"
 import { Test } from "../types/interfaces"
-import { api } from "@/lib/api/api"
+import { ApiError } from "@/lib/errors/ApiError"
+
+const TESTS_FLOW_DEPRECATED_MESSAGE =
+  "This tests flow is no longer available. Please use evaluations."
 
 export const getAllTests = async () => {
-    return api.client<{tests: Test[]}>(`/${Endpoint.TESTS}`)
+  throw new ApiError(TESTS_FLOW_DEPRECATED_MESSAGE, 410)
 }
 
 export const createTest = async (data: Partial<Test>) => {
-    return api.server(`/${Endpoint.TESTS}`, { method: Methods.POST, body: JSON.stringify(data) })
+  void data
+  throw new ApiError(TESTS_FLOW_DEPRECATED_MESSAGE, 410)
 }

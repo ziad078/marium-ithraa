@@ -77,7 +77,7 @@ export function AdminOrganizationsScreen({ locale }: { locale: string }) {
     defaultValues: { rejectionReason: "" },
   })
 
-  const organizations = data?.organizations ?? []
+  const organizations = data ?? []
 
   const columns = useMemo<ColumnDef<Organization>[]>(
     () => [

@@ -85,9 +85,9 @@ export function AuthNavActions({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/dashboards" className="cursor-pointer">
+              <Link href="/auth/login" className="cursor-pointer">
                 <UserCircle className="size-4" />
-                {tAuth("profile")}
+                {tAuth("dashboard")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

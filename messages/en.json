@@ -452,7 +452,7 @@
     }
   },
   "Auth": {
-    "profile": "Profile",
+    "dashboard": "Dashboard",
     "logout": "Log out",
     "signup": "Sign up",
     "redirecting": "Redirecting...",

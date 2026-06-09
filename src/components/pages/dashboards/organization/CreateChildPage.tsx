@@ -46,12 +46,14 @@ import { type Grade } from "@/features/grades"
 import { useRouter } from "@/i18n/navigation"
 import { Gender } from "@/lib/types/enums"
 import { cn } from "@/lib/utils"
+import PhoneInput from "react-phone-number-input"
+import "react-phone-number-input/style.css"
+
 
 const createChildFlowSchema = z.object({
   parentPhone: z.string().trim().min(1, "Parent phone is required"),
   parentName: z.string().trim().optional(),
   parentEmail: z.string().trim().email("Enter a valid email").optional().or(z.literal("")),
-  parentPassword: z.string().optional(),
   name: z.string().trim().min(1, "Child name is required"),
   birthDate: z.string().min(1, "Birth date is required"),
   gender: z.enum([Gender.MALE, Gender.FEMALE]),
@@ -94,7 +96,6 @@ export function CreateChildPage({
       parentPhone: "",
       parentName: "",
       parentEmail: "",
-      parentPassword: "",
       name: "",
       birthDate: "",
       gender: Gender.MALE,
@@ -163,10 +164,7 @@ export function CreateChildPage({
         form.setError("parentName", { message: "Parent name is required" })
         hasParentError = true
       }
-      if (!values.parentPassword?.trim()) {
-        form.setError("parentPassword", { message: "Parent password is required" })
-        hasParentError = true
-      }
+      
       if (hasParentError) return
     }
 
@@ -329,7 +327,19 @@ function ParentPhoneInput({
           <FormLabel>Parent phone</FormLabel>
           <FormControl>
             <div className="relative">
-              <Input {...field} type="tel" className="h-11 rounded-lg pr-10" placeholder="+20..." />
+              {/* <Input {...field} type="tel" className="h-11 rounded-lg pr-10" placeholder="+20..." /> */}
+              <PhoneInput
+                international
+                defaultCountry="SA"
+                placeholder={""}
+                disabled={field.disabled}
+                value={String(field.value ?? "")}
+                onChange={(value) => field.onChange(value ?? "")}
+                onBlur={field.onBlur}
+                className={cn(
+                  "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs",
+                )}
+              />
               {isSearching && (
                 <Loader2 className="absolute right-3 top-3 size-5 animate-spin text-muted-foreground" />
               )}
@@ -439,19 +449,7 @@ function CreateParentFields({ form }: { form: UseFormReturn<CreateChildFlowValue
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="parentPassword"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Parent password</FormLabel>
-            <FormControl>
-              <Input {...field} type="password" className="h-11 rounded-lg bg-background" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      
     </div>
   )
 }

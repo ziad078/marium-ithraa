@@ -94,7 +94,7 @@ export function NavUser({
               <DropdownMenuItem asChild>
                 <Link href="/dashboards">
                   <IconUserCircle />
-                  {t("profile")}
+                  {t("dashboard")}
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>

@@ -6,7 +6,15 @@ import RequireRoles from "@/features/auth/components/RequireRoles"
 import { ParentSidebar } from "@/features/parent"
 import { UserRole } from "@/lib/types/enums"
 
-export default async function ParentLayout({ children }: { children: ReactNode }) {
+export default async function ParentLayout({
+  children,
+  params,
+}: {
+  children: ReactNode
+  params: { locale: string }
+}) {
+  const dir = params.locale === "ar" ? "rtl" : "ltr"
+
   return (
     <RequireRoles allowed={[UserRole.PARENT]} redirectTo="/unauthorized">
       <SidebarProvider
@@ -17,7 +25,7 @@ export default async function ParentLayout({ children }: { children: ReactNode }
           } as React.CSSProperties
         }
       >
-        <ParentSidebar variant="inset" />
+        <ParentSidebar variant="inset" dir={dir} />
         <SidebarInset className="bg-[#f3eefb]">
           <DashboardTopBar />
           <div className="flex-1">{children}</div>

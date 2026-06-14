@@ -29,7 +29,7 @@ export async function createPrivateChildAction(
     const { name, birthDate, gender } = parsed.data
     await createPrivateChild({ name, birthDate, gender })
     revalidatePath("/dashboards/parent/children")
-    return actionSuccess("Actions.children.created", StatusCode.CREATED)
+    return actionSuccess("children.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData)
   }

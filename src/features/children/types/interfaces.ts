@@ -2,6 +2,7 @@ import { Gender } from "@/lib/types/enums"
 
 export interface ParentInfo {
   id?: string
+  userId?: string
   name?: string
   email?: string
   phone?: string
@@ -24,6 +25,7 @@ export interface Child {
   classId?: string
   gradeId?: string
   parentId?: string
+  parentUserId?: string
   userId?: string
   attemptsUsed?: number
   retakeUsed?: boolean

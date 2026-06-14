@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import React, { ReactNode } from "react"
 
 import { DashboardTopBar } from "@/components/shared/dashboard/DashboardTopBar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -6,7 +6,15 @@ import RequireRoles from "@/features/auth/components/RequireRoles"
 import TeacherSidebar from "@/features/teachers/components/teacher-sidebar"
 import { UserRole } from "@/lib/types/enums"
 
-export default async function TeacherLayout({ children }: { children: ReactNode }) {
+const TeacherLayout = async ({
+  children,
+  params,
+}: {
+  children: ReactNode
+  params: { locale: string }
+}) => {
+  const dir = params.locale === "ar" ? "rtl" : "ltr"
+
   return (
     <RequireRoles allowed={[UserRole.TEACHER, UserRole.ADMIN]} redirectTo="/unauthorized">
       <SidebarProvider
@@ -17,7 +25,7 @@ export default async function TeacherLayout({ children }: { children: ReactNode 
           } as React.CSSProperties
         }
       >
-        <TeacherSidebar variant="inset" />
+        <TeacherSidebar variant="inset" dir={dir} />
         <SidebarInset className="bg-[#f3eefb]">
           <DashboardTopBar />
           <div className="flex-1">{children}</div>
@@ -26,3 +34,5 @@ export default async function TeacherLayout({ children }: { children: ReactNode 
     </RequireRoles>
   )
 }
+
+export default TeacherLayout

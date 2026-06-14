@@ -49,10 +49,10 @@ export async function createChildAction(
         },
       })
       revalidatePath("/dashboards/organization/children")
-      return actionSuccess("Actions.children.created", StatusCode.CREATED)
+      return actionSuccess("children.created", StatusCode.CREATED)
     } catch (error) {
       return actionErrorState(error, formData, {
-        conflict: "Actions.children.conflict",
+        conflict: "children.conflict",
       })
     }
   }
@@ -63,10 +63,10 @@ export async function createChildAction(
   try {
     await createChild(adminParsed.data)
     revalidatePath("/dashboards/admin/children")
-    return actionSuccess("Actions.children.created", StatusCode.CREATED)
+    return actionSuccess("children.created", StatusCode.CREATED)
   } catch (error) {
     return actionErrorState(error, formData, {
-      conflict: "Actions.children.conflict",
+      conflict: "children.conflict",
     })
   }
 }

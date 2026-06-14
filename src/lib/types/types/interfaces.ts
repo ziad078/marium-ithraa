@@ -87,6 +87,77 @@ export interface EvaluationAttempt {
   parent?: unknown
   approval?: unknown | null
   answers?: EvaluationAnswer[]
+  parentUserId?: string
+}
+
+export interface ParentProfile {
+  id: string
+  userId: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface PaymentResponse {
+  id: string
+  checkoutUrl: string
+  expiresAt: string
+  status: string
+}
+
+export interface CreatePaymentPayload {
+  attemptId: string
+  amount: number
+  currency: string
+  returnUrl?: string
+}
+
+export interface EvaluationSlot {
+  id: string
+  childId: string
+  status: string
+  expiresAt?: string | null
+  paymentId?: string | null
+  requestType?: string
+  createdAt?: string
+  updatedAt?: string
+  attemptId?: string | null
+  payment?: PaymentResponse | null
+}
+
+export interface TransferRequestPayload {
+  childId: string
+  toOrganizationId: string
+}
+
+export interface Organization {
+  id: string
+  name?: string
+  organizationName?: string
+  type?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface Class {
+  id: string
+  name?: string
+  gradeId?: string
+  organizationId?: string
+}
+
+export interface TransferRequest {
+  id: string
+  childId: string
+  fromOrganizationId?: string
+  toOrganizationId?: string
+  status: string
+  message?: string
+  createdAt?: string
+  updatedAt?: string
+  child?: Child
+  fromOrganization?: Organization
+  toOrganization?: Organization
+  requestedBy?: ParentProfile
 }
 
 export interface CreateEvaluationDimensionPayload {

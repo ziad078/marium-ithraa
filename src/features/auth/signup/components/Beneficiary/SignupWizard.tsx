@@ -13,11 +13,12 @@ import BeneficiarySignupTypeStep from "./BeneficiarySignupTypeStep"
 import OrganizationSignupForm from "./OrganizationSignupForm"
 import ParentSignupForm from "./ParentSignupForm"
 import TeacherSignupForm from "./TeacherSignupForm"
+import EnricherSignupForm from "./EnricherSignupForm"
 import {
   type BeneficiaryOrganizationFormValues,
   createBeneficiaryOrganizationSchema,
 } from "../../schemas/signup.schema"
-import { beneficiariesSignupClient } from "@/features/auth/api"
+import { beneficiariesSignupClient, enrichersSignupClient, parentSignupClient } from "@/features/auth/api"
 import { useAuth } from "@/features/auth/hooks/useAuth"
 import { ApiError } from "@/lib/errors/ApiError"
 import { signInWithPhoneAndRedirect } from "@/lib/auth/signInWithCredentials"
@@ -80,22 +81,37 @@ export function SignupWizard() {
     try {
       setIsSubmitting(true)
 
-      const response = await beneficiariesSignupClient({
+      const basePayload = {
         name: values.name.trim(),
         email: values.email.trim(),
         password: values.password,
         phone: values.phone.trim(),
-        accountType: values.accountType,
-        organizationName: values.organizationName.trim(),
-        organizationType: values.organizationType,
-      })
+      }
 
-      const isOrganizationSignup = values.accountType === "organization"
-      const pendingMessage = t("organizationPendingSuccess")
+      let response: { message?: string }
+
+      if (values.accountType === "parent") {
+        response = await parentSignupClient(basePayload)
+      } else if (values.accountType === "enricher") {
+        response = await enrichersSignupClient({
+          ...basePayload,
+          accountType: values.accountType,
+          organizationName: values.organizationName?.trim() || "",
+        })
+      } else {
+        response = await beneficiariesSignupClient({
+          ...basePayload,
+          accountType: values.accountType,
+          organizationName: values.organizationName?.trim() || "",
+          organizationType: values.organizationType || "",
+        })
+      }
+
+      const isPendingApproval = values.accountType === "organization" || values.accountType === "enricher"
 
       toast.success(
-        isOrganizationSignup
-          ? pendingMessage
+        isPendingApproval
+          ? t("organizationPendingSuccess")
           : response.message || t("success"),
       )
 
@@ -158,6 +174,7 @@ export function SignupWizard() {
                 {type === "teacher" && <TeacherSignupForm />}
                 {type === "parent" && <ParentSignupForm />}
                 {type === "organization" && <OrganizationSignupForm />}
+                {type === "enricher" && <EnricherSignupForm />}
               </div>
             )}
 

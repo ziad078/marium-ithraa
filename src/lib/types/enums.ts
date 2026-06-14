@@ -15,7 +15,7 @@ export enum Routes {
   DASHBOARDS = "dashboards",
   UNAUTHARIZED = "unautharized",
   CHOSEROLE = "chose-role",
-  EMAILVERIFICATION = "email-verfication",
+  EMAILVERIFICATION = "email-verification",
   NOTIFICATIONS = 'notifications',
 }
 
@@ -31,10 +31,16 @@ export enum Pages {
   TEACHER = "teacher",
   CHILDREN = "children",
   PARENT = "parent",
+  ENRICHER = "enricher",
+  DEALS = "deals",
+  PROPOSALS = "proposals",
 }
 
 export enum AccountType {
+  PARENT = "parent",
+  TEACHER = "teacher",
   ORGANIZATION = "organization",
+  ENRICHER = "enricher",
 }
 
 export enum InputTypes {
@@ -126,6 +132,7 @@ export enum UserRole {
   ORGANIZATIONOWNER = 'ORGANIZATIONOWNER',
   TEACHER = 'TEACHER',
   PARENT = 'PARENT',
+  ENRICHER = 'ENRICHER',
 }
 
 export enum FormTypes {
@@ -189,6 +196,8 @@ export enum Endpoint {
   ALL = "all",
   AUTH = "auth",
   BENEFICIARIESSIGNUP = "beneficiaries-signup",
+  ENRICHERS_SIGNUP = "enrichers-signup",
+  PARENT_SIGNUP = "parent-signup",
   EMPLOYEES = "employees",
   EMPLOYEESBYORGNIZATION = `${EMPLOYEES}/organization`,
   USERS = "users",
@@ -211,5 +220,17 @@ export enum Endpoint {
   READ_ALL = "read-all",
   READ = "read",
   DISPATCH = "dispatch",
+  DEALS = "deals",
+  PROPOSALS = "proposals",
+  ACTIVITIES = "activities",
+  ENRICHERS = "enrichers",
+  ORG_CHILDREN = "org-children",
+  SELECT = "select",
+  ASSIGN = "asign",
+  GET_CHILDREN = "get-children",
+  WITH_DEALS = "with-deals",
+  WEBHOOK = "webhook",
+  UPLOADS = "uploads",
+  SEARCH = "search",
 
 }

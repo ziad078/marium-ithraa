@@ -654,8 +654,8 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
   )
 }
 
-const SidebarMenuAction = React.forwardRef<HTMLButtonElement, React.ComponentProps<"button"> & { asChild?: boolean }>(
-  ({ className, asChild = false, ...props }, ref) => {
+const SidebarMenuAction = React.forwardRef<HTMLButtonElement, React.ComponentProps<"button"> & { asChild?: boolean; showOnHover?: boolean }>(
+  ({ className, asChild = false, showOnHover = false, ...props }, ref) => {
     const Comp: any = asChild ? Slot.Root : "button"
 
     return (
@@ -668,6 +668,8 @@ const SidebarMenuAction = React.forwardRef<HTMLButtonElement, React.ComponentPro
           // Increases the hit area of the button on mobile.
           "after:absolute after:-inset-2 md:after:hidden",
           "group-data-[collapsible=icon]:hidden",
+          showOnHover &&
+            "opacity-0 group-hover/menu-item:opacity-100 group-data-[state=open]/menu-item:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
           className
         )}
         {...props}
@@ -677,6 +679,15 @@ const SidebarMenuAction = React.forwardRef<HTMLButtonElement, React.ComponentPro
 )
 
 SidebarMenuAction.displayName = "SidebarMenuAction"
+
+function SidebarMenuSubButton({
+  className,
+  asChild = false,
+  size = "md",
+  isActive = false,
+  ...props
+}: React.ComponentProps<"a"> & {
+  asChild?: boolean
   size?: "sm" | "md"
   isActive?: boolean
 }) {
@@ -696,6 +707,17 @@ SidebarMenuAction.displayName = "SidebarMenuAction"
         "group-data-[collapsible=icon]:hidden",
         className
       )}
+      {...props}
+    />
+  )
+}
+
+function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">) {
+  return (
+    <li
+      data-slot="sidebar-menu-sub-item"
+      data-sidebar="menu-sub-item"
+      className={cn("group/menu-sub-item relative", className)}
       {...props}
     />
   )

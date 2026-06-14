@@ -3,10 +3,10 @@ import { getEmployeeById } from "@/features/employees"
 import EmployeesInfo from "@/features/employees/components/EmployeesInfo"
 
 type PageProps = {
-  params: {
+  params: Promise<{
     locale: string
     employeeId: string
-  }
+  }>
 }
 
 export default async function EmployeeDetailPage({ params }: PageProps) {

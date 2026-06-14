@@ -3,7 +3,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   reactCompiler: true,
   images: {
     remotePatterns: [

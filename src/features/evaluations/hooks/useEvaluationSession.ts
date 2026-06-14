@@ -93,35 +93,43 @@ export function useEvaluationSession(
   }, [attempt])
 
   useEffect(() => {
-    if (!attempt?.expiresAt) return
+    if (!attempt?.expiresAt || locked) return
     const id = window.setInterval(() => setNow(Date.now()), 1000)
     return () => window.clearInterval(id)
-  }, [attempt?.expiresAt])
+  }, [attempt?.expiresAt, locked])
 
   const remainingMs = useMemo(() => msUntil(attempt?.expiresAt), [attempt?.expiresAt, now])
   const isExpired = remainingMs !== null && remainingMs <= 0
 
+  const lockedRef = useRef(locked)
+  lockedRef.current = locked
+  const answersRef = useRef(answers)
+  answersRef.current = answers
+  const refetchRef = useRef(refetch)
+  refetchRef.current = refetch
+  const submitMutationRef = useRef(submitMutation)
+  submitMutationRef.current = submitMutation
+
   useEffect(() => {
     if (!attempt) return
     if (!isExpired) return
-    if (locked) return
-    if (submitMutation.isPending) return
+    if (lockedRef.current) return
+    if (submitMutationRef.current.isPending) return
 
-    const payload: SubmitAttemptDto = buildAttemptAnswersPayload(answers)
+    const payload: SubmitAttemptDto = buildAttemptAnswersPayload(answersRef.current)
     assertParentAttemptPayload(payload)
 
-    submitMutation.mutate(payload, {
+    submitMutationRef.current.mutate(payload, {
       onSuccess: () => {
         toast.info("Time expired. Attempt submitted.")
-        void refetch()
+        void refetchRef.current()
       },
       onError: (e: unknown) => {
         toast.error(e instanceof Error ? e.message : "Failed to auto-submit.")
-        void refetch()
+        void refetchRef.current()
       },
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isExpired])
+  }, [isExpired, attempt])
 
   useEffect(() => {
     if (!dirty || locked) return
@@ -136,11 +144,8 @@ export function useEvaluationSession(
   const setAnswer = useCallback(
     (questionId: string, selectedAnswerId: string) => {
       if (locked) return
-      setAnswers((prev) => {
-        const next = { ...prev, [questionId]: selectedAnswerId }
-        setDirty(true)
-        return next
-      })
+      setAnswers((prev) => ({ ...prev, [questionId]: selectedAnswerId }))
+      setDirty(true)
     },
     [locked],
   )

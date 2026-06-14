@@ -11,9 +11,10 @@ const TeacherLayout = async ({
   params,
 }: {
   children: ReactNode
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }) => {
-  const dir = params.locale === "ar" ? "rtl" : "ltr"
+  const { locale } = await params
+  const dir = locale === "ar" ? "rtl" : "ltr"
 
   return (
     <RequireRoles allowed={[UserRole.TEACHER, UserRole.ADMIN]} redirectTo="/unauthorized">

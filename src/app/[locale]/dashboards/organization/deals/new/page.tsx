@@ -1,0 +1,123 @@
+"use client"
+
+import { useState } from "react"
+import { useLocale, useTranslations } from "next-intl"
+import { useRouter } from "@/i18n/navigation"
+import { toast } from "sonner"
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useCreateDeal, useActivities } from "@/features/deals"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
+import { Pages, Routes } from "@/lib/types/enums"
+
+const ORG_URL = `/${Routes.DASHBOARDS}/${Pages.ORGANIZATION}`
+
+export default function NewDealPage() {
+  const locale = useLocale()
+  const t = useTranslations("Features.Deals")
+  const router = useRouter()
+  const { data: activities, isLoading: loadingActivities } = useActivities()
+  const create = useCreateDeal(() => {
+    router.push(`${ORG_URL}/${Pages.DEALS}`)
+  })
+
+  const [activityId, setActivityId] = useState("")
+  const [studentsCount, setStudentsCount] = useState("")
+  const [deadline, setDeadline] = useState("")
+
+  const activitiesList = Array.isArray(activities) ? activities : []
+
+  const handleSubmit = async () => {
+    const count = parseInt(studentsCount, 10)
+    if (!activityId || isNaN(count) || count <= 0) {
+      toast.error(t("validationError"))
+      return
+    }
+    try {
+      await create.mutateAsync({
+        activityId,
+        studentsCount: count,
+        deadline: deadline ? new Date(deadline).toISOString() : undefined,
+      })
+    } catch {
+      toast.error(t("createError"))
+    }
+  }
+
+  if (loadingActivities) {
+    return (
+      <div className="space-y-4 p-4 lg:p-6">
+        <Skeleton className="h-10 w-48" />
+        <Skeleton className="h-40 w-full" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-6 p-4 lg:p-6 max-w-xl" dir={getTextDirection(locale)}>
+      <h2 className="text-xl font-semibold">{t("createDeal")}</h2>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">{t("dealDetails")}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-1">
+            <Label>{t("activity")}</Label>
+            <Select value={activityId} onValueChange={setActivityId}>
+              <SelectTrigger>
+                <SelectValue placeholder={t("selectActivity")} />
+              </SelectTrigger>
+              <SelectContent>
+                {activitiesList.map((a) => (
+                  <SelectItem key={a.id} value={a.id}>
+                    {a.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1">
+            <Label>{t("studentsCount")}</Label>
+            <Input
+              type="number"
+              value={studentsCount}
+              onChange={(e) => setStudentsCount(e.target.value)}
+              placeholder="10"
+              min="1"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <Label>{t("deadline")}</Label>
+            <Input
+              type="datetime-local"
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+            />
+          </div>
+
+          <Button
+            onClick={handleSubmit}
+            disabled={create.isPending}
+            className="w-full"
+          >
+            {create.isPending ? t("creating") : t("publishDeal")}
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

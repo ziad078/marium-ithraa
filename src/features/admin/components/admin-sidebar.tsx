@@ -7,6 +7,8 @@ import {
   IconInnerShadowTop,
   IconReport,
   IconUsers,
+  IconBriefcase,
+  IconActivity,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -76,6 +78,16 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t("Features.Notifications.dispatchTitle"),
         url: `${ADMIN_URL}/notifications/dispatch`,
         icon: IconReport,
+      },
+      {
+        title: t("Dashboard.Nav.activities"),
+        url: `${ADMIN_URL}/activities`,
+        icon: IconActivity,
+      },
+      {
+        title: t("Dashboard.Nav.deals"),
+        url: `${ADMIN_URL}/deals`,
+        icon: IconBriefcase,
       },
     ],
     // navSecondary: [

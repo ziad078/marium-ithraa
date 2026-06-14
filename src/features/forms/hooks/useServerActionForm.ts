@@ -74,7 +74,7 @@ export function useServerActionForm<T extends FieldValues>({
     const merged = { ...values, ...extra } as Record<string, unknown>
 
     for (const [key, value] of Object.entries(merged)) {
-      if (value !== undefined && value !== null && String(value) !== "") {
+      if (value !== undefined && value !== null) {
         fd.set(key, String(value))
       }
     }

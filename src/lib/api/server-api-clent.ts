@@ -31,6 +31,7 @@
 // lib/server-api-client.ts
 
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { ApiError } from "../errors/ApiError";
 import { StatusCode } from "../types/enums";
 import nextAuthOptions from "@/server/auth";
@@ -51,6 +52,10 @@ export async function serverApiFetch<T>(
     },
     cache: "no-store",
   });
+
+  if (res.status === 401) {
+    redirect("/auth/login");
+  }
 
   let data;
   try {

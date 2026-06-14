@@ -51,6 +51,7 @@ function roleHome(locale: string, roles?: Role[] | UserRole[] | string[]) {
     [UserRole.ORGANIZATIONOWNER]: Pages.ORGANIZATION,
     [UserRole.TEACHER]: Pages.TEACHER,
     [UserRole.PARENT]: Pages.PARENT,
+    [UserRole.ENRICHER]: Pages.ENRICHER,
   }
 
   const primaryRole = normalized[0]
@@ -67,6 +68,7 @@ const ACCESS_MAP: Record<string, UserRole[]> = {
   [Pages.TEACHER]: [UserRole.TEACHER, UserRole.ADMIN],
   [Pages.ADMIN]: [UserRole.ADMIN],
   [Pages.PARENT]: [UserRole.PARENT, UserRole.ADMIN],
+  [Pages.ENRICHER]: [UserRole.ENRICHER],
 }
 
 export default async function proxy(request: NextRequest) {

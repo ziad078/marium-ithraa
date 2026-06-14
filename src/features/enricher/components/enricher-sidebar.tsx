@@ -1,0 +1,80 @@
+"use client"
+
+import * as React from "react"
+import { IconDashboard, IconFileDescription, IconNotification } from "@tabler/icons-react"
+import { useSession } from "next-auth/react"
+import { useTranslations } from "next-intl"
+
+import { NavMain } from "@/components/nav-main"
+import { NavUser } from "@/components/nav-user"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar"
+import { Pages, Routes } from "@/lib/types/enums"
+
+const ENRICHER_URL = `/${Routes.DASHBOARDS}/${Pages.ENRICHER}`
+
+export function EnricherSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  const { data: session } = useSession()
+  const t = useTranslations("Dashboard.Nav")
+  const tEnricher = useTranslations("Features.EnricherDashboard")
+  const tNotif = useTranslations("Features.Notifications")
+
+  const data = {
+    user: {
+      name: session?.user.name || "",
+      email: session?.user.email || "",
+      avatar: "/avatars/shadcn.jpg",
+    },
+    navMain: [
+      {
+        title: t("dashboard"),
+        url: ENRICHER_URL,
+        icon: IconDashboard,
+      },
+      {
+        title: tEnricher("deals"),
+        url: `${ENRICHER_URL}/${Pages.DEALS}`,
+        icon: IconFileDescription,
+      },
+      {
+        title: tEnricher("proposals"),
+        url: `${ENRICHER_URL}/${Pages.PROPOSALS}`,
+        icon: IconFileDescription,
+      },
+      {
+        title: tNotif("title"),
+        url: `/${Routes.DASHBOARDS}/notifications`,
+        icon: IconNotification,
+      },
+    ],
+  }
+
+  return (
+    <Sidebar collapsible="offcanvas" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
+              <a href={ENRICHER_URL}>
+                <span className="text-base font-semibold">{tEnricher("brand")}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={data.navMain} />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+    </Sidebar>
+  )
+}

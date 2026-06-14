@@ -6,7 +6,7 @@ const phonePattern = /^\+?[0-9\s\-()]{8,20}$/
 
 export const createBeneficiaryOrganizationSchema = (t: TranslateFn) =>
   z.object({
-    accountType: z.enum(["teacher", "parent", "organization"]),
+    accountType: z.enum(["teacher", "parent", "organization", "enricher"]),
     name: z
       .string()
       .trim()
@@ -25,19 +25,29 @@ export const createBeneficiaryOrganizationSchema = (t: TranslateFn) =>
       .trim()
       .min(8, t("phone.min"))
       .regex(phonePattern, t("phone.invalid")),
-    organizationName: z
-      .string()
-      .trim()
-      .min(2, t("organization_name.min"))
-      .max(120, t("organization_name.max")),
+    organizationName: z.string().trim().max(120, t("organization_name.max")).optional().default(""),
     organizationType: z
       .union([
         z.enum(["center", "nursery", "training", "school"]),
         z.literal(""),
       ])
-      .refine((val) => val !== "", {
+      .optional()
+      .default(""),
+  }).superRefine((data, ctx) => {
+    if ((data.accountType === "organization" || data.accountType === "enricher") && !data.organizationName) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: t("organization_name.min"),
+        path: ["organizationName"],
+      })
+    }
+    if (data.accountType === "organization" && !data.organizationType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
         message: t("organization_type.required"),
-      }),
+        path: ["organizationType"],
+      })
+    }
   })
 
 export type BeneficiaryOrganizationFormValues = z.input<

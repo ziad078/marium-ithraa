@@ -23,6 +23,7 @@ const navLinks = [
   { labelKey: "classes", href: "/dashboards/organization/classes" },
   { labelKey: "children", href: "/dashboards/organization/children" },
   { labelKey: "teachers", href: "/dashboards/organization/teachers" },
+  { labelKey: "deals", href: "/dashboards/organization/deals" },
   { labelKey: "results", href: "/dashboards/organization/results" },
 ] as const
 
@@ -31,6 +32,7 @@ const operationalLinkHrefs = new Set([
   "/dashboards/organization/classes",
   "/dashboards/organization/children",
   "/dashboards/organization/teachers",
+  "/dashboards/organization/deals",
 ])
 
 const OrganizationHeader = ({ locale, approvalStatus = ApprovalStatus.APPROVED }: OrganizationHeaderProps) => {

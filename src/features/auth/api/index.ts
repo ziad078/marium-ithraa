@@ -18,6 +18,34 @@ export type BeneficiariesSignupResponse = {
   organization?: BeneficiarySignupOrganization
 }
 
+export type EnricherSignupResponse = {
+  message?: string
+  user?: {
+    id: string
+    name: string
+    roles: string[]
+  }
+  enricher?: {
+    id: string
+    userId: string
+    organizationName?: string
+    approvalStatus: string
+  }
+}
+
+export type ParentSignupResponse = {
+  message?: string
+  user?: {
+    id: string
+    name: string
+    roles: string[]
+  }
+  parentProfile?: {
+    id: string
+    userId: string
+  }
+}
+
 export const verifyEmailClient = async (token: string) => {
   const query = new URLSearchParams({ token }).toString()
 
@@ -48,6 +76,35 @@ export const beneficiariesSignupClient = async (
 ) => {
   return api.client<BeneficiariesSignupResponse>(
     `/${Endpoint.AUTH}/${Endpoint.BENEFICIARIESSIGNUP}`,
+    {
+      method: Methods.POST,
+      body: JSON.stringify(body),
+    },
+  )
+}
+
+export const enrichersSignupClient = async (
+  body: BeneficiaryOrganizationFormValues,
+) => {
+  return api.client<EnricherSignupResponse>(
+    `/${Endpoint.AUTH}/${Endpoint.ENRICHERS_SIGNUP}`,
+    {
+      method: Methods.POST,
+      body: JSON.stringify(body),
+    },
+  )
+}
+
+export const parentSignupClient = async (
+  body: {
+    name: string
+    email: string
+    password: string
+    phone: string
+  },
+) => {
+  return api.client<ParentSignupResponse>(
+    `/${Endpoint.AUTH}/${Endpoint.PARENT_SIGNUP}`,
     {
       method: Methods.POST,
       body: JSON.stringify(body),

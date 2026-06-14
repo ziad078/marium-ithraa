@@ -2,14 +2,11 @@
 
 import * as React from "react"
 import {
-  IconCamera,
   IconChartBar,
   IconDashboard,
   IconDatabase,
-  IconFileAi,
   IconFileDescription,
   IconFileWord,
-  IconFolder,
   IconHelp,
   IconInnerShadowTop,
   IconReport,
@@ -17,6 +14,7 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
+  IconBriefcase,
 } from "@tabler/icons-react"
 
 import { NavDocuments } from "@/components/nav-documents"
@@ -75,67 +73,9 @@ export function OrganizationSidebar({ organization, ...props }: React.ComponentP
         icon: IconReport,
       },
       {
-        title: t("Dashboard.Nav.analytics"),
-        url: "#",
-        icon: IconChartBar,
-      },
-      {
-        title: t("Dashboard.Nav.projects"),
-        url: "#",
-        icon: IconFolder,
-      },
-      {
-        title: t("Dashboard.Nav.team"),
-        url: "#",
-        icon: IconUsers,
-      },
-    ],
-    navClouds: [
-      {
-        title: t("Dashboard.Nav.capture"),
-        icon: IconCamera,
-        isActive: true,
-        url: "#",
-        items: [
-          {
-            title: t("Dashboard.Nav.activeProposals"),
-            url: "#",
-          },
-          {
-            title: t("Dashboard.Nav.archived"),
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: t("Dashboard.Nav.proposal"),
-        icon: IconFileDescription,
-        url: "#",
-        items: [
-          {
-            title: t("Dashboard.Nav.activeProposals"),
-            url: "#",
-          },
-          {
-            title: t("Dashboard.Nav.archived"),
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: t("Dashboard.Nav.prompts"),
-        icon: IconFileAi,
-        url: "#",
-        items: [
-          {
-            title: t("Dashboard.Nav.activeProposals"),
-            url: "#",
-          },
-          {
-            title: t("Dashboard.Nav.archived"),
-            url: "#",
-          },
-        ],
+        title: t("Dashboard.Nav.deals"),
+        url: `${ORGANIZATIONURL}/${Pages.DEALS}`,
+        icon: IconBriefcase,
       },
     ],
     navSecondary: [

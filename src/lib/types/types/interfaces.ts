@@ -1,4 +1,5 @@
 import { Child } from "@/features/children"
+import { ChildTransferRequest } from "@/features/children/types/interfaces"
 
 export type EvaluationType =
   | "multiple_intelligences"
@@ -93,6 +94,9 @@ export interface EvaluationAttempt {
 export interface ParentProfile {
   id: string
   userId: string
+  phone?: string
+  email?: string
+  children?: Child[]
   createdAt: string
   updatedAt: string
 }

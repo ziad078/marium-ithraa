@@ -8,6 +8,7 @@ const DASHBOARD_BY_ROLE: Partial<Record<UserRole, string>> = {
   [UserRole.ORGANIZATIONOWNER]: `/${Routes.DASHBOARDS}/${Pages.ORGANIZATION}`,
   [UserRole.TEACHER]: `/${Routes.DASHBOARDS}/${Pages.TEACHER}`,
   [UserRole.PARENT]: `/${Routes.DASHBOARDS}/${Pages.PARENT}`,
+  [UserRole.ENRICHER]: `/${Routes.DASHBOARDS}/${Pages.ENRICHER}`,
 }
 
 export function getLoginPath(): string {

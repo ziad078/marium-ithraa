@@ -9,14 +9,12 @@ import { clearAuthTokenCache } from "@/lib/api/client-api-client"
 
 import { useAuth } from "./useAuth"
 
-/**
- * Runs once per app load to handle expired refresh tokens and sync API token cache.
- */
 export function useInitAuth() {
   const locale = useLocale()
   const { status } = useSession()
   const { logout, sessionExpired, session } = useAuth()
   const handledExpiry = useRef(false)
+  const hasSyncedToken = useRef(false)
 
   useEffect(() => {
     if (status === "loading") return
@@ -33,7 +31,8 @@ export function useInitAuth() {
       return
     }
 
-    if (status === "authenticated") {
+    if (status === "authenticated" && !hasSyncedToken.current) {
+      hasSyncedToken.current = true
       clearAuthTokenCache()
     }
   }, [locale, status, sessionExpired, session?.user, logout])

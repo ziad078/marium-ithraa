@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react"
 import type { ReactNode } from "react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { ArrowRightLeft, Calendar, Check, Loader2, School, X } from "lucide-react"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
@@ -51,15 +51,15 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
       try {
         const response = await rejectChildTransfer(rejectRequest.id)
         removeRequest(rejectRequest.id)
-        toast.success(response.message || (isAr ? "تم رفض طلب النقل" : "Transfer request rejected"))
+        showSuccessToast({ raw: response.message || (isAr ? "تم رفض طلب النقل" : "Transfer request rejected") })
         setRejectRequest(null)
       } catch (error) {
-        toast.error(
-          error instanceof Error
+        showErrorToast(
+          { raw: error instanceof Error
             ? error.message
             : isAr
               ? "تعذر تحديث طلب النقل"
-              : "Unable to update transfer request",
+              : "Unable to update transfer request" }
         )
       }
     })

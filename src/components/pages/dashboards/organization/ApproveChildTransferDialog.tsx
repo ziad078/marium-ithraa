@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { Check, Loader2, School } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -61,7 +61,7 @@ export function ApproveChildTransferDialog({
     setClasses([])
 
     if (!targetOrganizationId) {
-      toast.error(isAr ? "تعذر تحديد المؤسسة المستهدفة." : "Unable to identify the target organization.")
+      showErrorToast({ raw: isAr ? "تعذر تحديد المؤسسة المستهدفة." : "Unable to identify the target organization." })
       return
     }
 
@@ -73,12 +73,12 @@ export function ApproveChildTransferDialog({
       })
       .catch((error) => {
         if (!isActive) return
-        toast.error(
-          error instanceof Error
+        showErrorToast(
+          { raw: error instanceof Error
             ? error.message
             : isAr
               ? "تعذر تحميل الفصول."
-              : "Unable to load classes.",
+              : "Unable to load classes." }
         )
       })
       .finally(() => {
@@ -103,14 +103,14 @@ export function ApproveChildTransferDialog({
       const response = await approveChildTransfer(request.id, selectedClassId)
       onApproved(request.id)
       onOpenChange(false)
-      toast.success(response.message || (isAr ? "تم اعتماد طلب النقل." : "Transfer request approved."))
+      showSuccessToast({ raw: response.message || (isAr ? "تم اعتماد طلب النقل." : "Transfer request approved.") })
     } catch (error) {
-      toast.error(
-        error instanceof Error
+      showErrorToast(
+        { raw: error instanceof Error
           ? error.message
           : isAr
             ? "تعذر اعتماد طلب النقل."
-            : "Unable to approve transfer request.",
+            : "Unable to approve transfer request." }
       )
     } finally {
       setIsSubmitting(false)

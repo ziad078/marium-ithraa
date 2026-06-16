@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import { useSession } from "next-auth/react"
 import { useLocale } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast } from "@/lib/toast/app-toast"
 
 import { clearAuthTokenCache } from "@/lib/api/client-api-client"
 
@@ -22,10 +22,10 @@ export function useInitAuth() {
     if (sessionExpired && session?.user && !handledExpiry.current) {
       handledExpiry.current = true
       clearAuthTokenCache()
-      toast.error(
-        locale === "ar"
+      showErrorToast(
+        { raw: locale === "ar"
           ? "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
-          : "Your session has expired. Please sign in again.",
+          : "Your session has expired. Please sign in again." }
       )
       void logout({ silent: true })
       return

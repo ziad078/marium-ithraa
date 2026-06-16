@@ -1,0 +1,84 @@
+
+> frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.2.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+./src/components/pages/dashboards/parent/ParentPrivateChildrenScreen.tsx
+Error evaluating Node.js code
+SyntaxError: D:\projects\ithraa\frontend\src\components\pages\dashboards\parent\ParentPrivateChildrenScreen.tsx: Identifier 'Button' has already been declared. (14:9)
+
+[0m [90m 12 |[39m
+ [90m 13 |[39m [36mimport[39m { [33mCard[39m[33m,[39m [33mCardContent[39m } [36mfrom[39m [32m"@/components/ui/card"[39m
+[31m[1m>[22m[39m[90m 14 |[39m [36mimport[39m { [33mButton[39m } [36mfrom[39m [32m"@/components/ui/button"[39m
+ [90m    |[39m          [31m[1m^[22m[39m
+ [90m 15 |[39m [36mimport[39m { [33mDialog[39m[33m,[39m [33mDialogTrigger[39m } [36mfrom[39m [32m"@/components/ui/dialog"[39m
+ [90m 16 |[39m [36mimport[39m { type [33mChild[39m } [36mfrom[39m [32m"@/features/children"[39m
+ [90m 17 |[39m [36mimport[39m {[0m
+    [at constructor (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:137105)]
+    [at TypeScriptParserMixin.raise (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:194164)]
+    [at TypeScriptScopeHandler.declareName (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:270924)]
+    [at TypeScriptParserMixin.declareNameFromIdentifier (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:279226)]
+    [at TypeScriptParserMixin.checkIdentifier (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:279152)]
+    [at TypeScriptParserMixin.checkLVal (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:278197)]
+    [at TypeScriptParserMixin.finishImportSpecifier (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:422705)]
+    [at TypeScriptParserMixin.parseImportSpecifier (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:425882)]
+    [at TypeScriptParserMixin.parseImportSpecifier (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:338125)]
+    [at TypeScriptParserMixin.parseNamedImportSpecifiers (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:425483)]
+    [at TypeScriptParserMixin.parseImportSpecifiersAndAfter (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:422062)]
+    [at TypeScriptParserMixin.parseImport (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:421803)]
+    [at TypeScriptParserMixin.parseImport (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:322073)]
+    [at TypeScriptParserMixin.parseStatementContent (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:391781)]
+    [at TypeScriptParserMixin.parseStatementContent (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:324042)]
+    [at TypeScriptParserMixin.parseStatementLike (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:389494)]
+    [at TypeScriptParserMixin.parseModuleItem (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:389055)]
+    [at TypeScriptParserMixin.parseBlockOrModuleBlockBody (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:401400)]
+    [at TypeScriptParserMixin.parseBlockBody (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:401223)]
+    [at TypeScriptParserMixin.parseProgram (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:386857)]
+    [at TypeScriptParserMixin.parseTopLevel (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:386575)]
+    [at TypeScriptParserMixin.parse (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:426834)]
+    [at TypeScriptParserMixin.parse (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:337631)]
+    [at parse (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:191:427092)]
+    [at parser (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:1:142456)]
+    [at <anonymous>]
+    [at normalizeFile (D:\projects\ithraa\frontend\node_modules\next\dist\compiled\babel\bundle.js:13:13275)]
+    [at <anonymous>]
+    [at consumeIterator (D:\projects\ithraa\frontend\node_modules\next\dist\build\babel\loader\util.js:13:38)]
+    [at transform (D:\projects\ithraa\frontend\node_modules\next\dist\build\babel\loader\transform.js:89:44)]
+    [at async (D:\projects\ithraa\frontend\node_modules\next\dist\build\babel\loader\index.js:36:108)]
+    at async DummySpan.traceAsyncFn (turbopack:///[turbopack-node]/transforms/webpack-loaders.ts:115:12) [D:\projects\ithraa\frontend\.next\build\chunks\[root-of-the-server]__0iz~thn._.js:126:16]
+    [at async nextBabelLoader (D:\projects\ithraa\frontend\node_modules\next\dist\build\babel\loader\index.js:36:63)]
+    at async DummySpan.traceAsyncFn (turbopack:///[turbopack-node]/transforms/webpack-loaders.ts:115:12) [D:\projects\ithraa\frontend\.next\build\chunks\[root-of-the-server]__0iz~thn._.js:126:16]
+
+Import trace:
+  Server Component:
+    ./src/components/pages/dashboards/parent/ParentPrivateChildrenScreen.tsx
+    ./src/app/[locale]/dashboards/parent/children/page.tsx
+
+
+./src/components/pages/dashboards/parent/ParentPrivateChildrenScreen.tsx:14:10
+the name `Button` is defined multiple times
+  [90m12 |[0m
+  [90m13 |[0m [36mimport[0m { [33mCard[0m, [33mCardContent[0m } [36mfrom[0m [32m"@/components/ui/card"[0m
+[31m[1m>[0m [90m14 |[0m [36mimport[0m { [33mButton[0m } [36mfrom[0m [32m"@/components/ui/button"[0m
+  [90m   |[0m          [31m[1m^^^^^^[0m
+  [90m15 |[0m [36mimport[0m { [33mDialog[0m, [33mDialogTrigger[0m } [36mfrom[0m [32m"@/components/ui/dialog"[0m
+  [90m16 |[0m [36mimport[0m { [36mtype[0m [33mChild[0m } [36mfrom[0m [32m"@/features/children"[0m
+  [90m17 |[0m [36mimport[0m {
+
+Ecmascript file had an error
+
+Import trace:
+  Server Component:
+    ./src/components/pages/dashboards/parent/ParentPrivateChildrenScreen.tsx
+    ./src/app/[locale]/dashboards/parent/children/page.tsx
+
+
+    at async DummySpan.traceAsyncFn (turbopack:///[turbopack-node]/transforms/webpack-loaders.ts:115:12) [D:\projects\ithraa\frontend\.next\build\chunks\[root-of-the-server]__0iz~thn._.js:126:16])
+    at async DummySpan.traceAsyncFn (turbopack:///[turbopack-node]/transforms/webpack-loaders.ts:115:12) [D:\projects\ithraa\frontend\.next\build\chunks\[root-of-the-server]__0iz~thn._.js:126:16])
+    at <unknown> (./src/components/pages/dashboards/parent/ParentPrivateChildrenScreen.tsx:14:10)

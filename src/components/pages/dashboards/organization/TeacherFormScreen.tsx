@@ -2,10 +2,10 @@
 
 import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
-import { GradientButton } from "@/components/shared/management/GradientButton"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { createTeacherAction } from "@/features/teachers"
 import { ServerActionForm } from "@/features/forms"
@@ -20,12 +20,12 @@ export function TeacherFormScreen({ locale }: { locale: string }) {
 
   const handleStatus = (state: InitialState) => {
     if (state.status === StatusCode.CREATED) {
-      toast.success(state.message ?? t("toast.created"))
+      showSuccessToast(t, state.message ?? "toast.created")
       router.push("/dashboards/organization/teachers")
       return
     }
     if (state.status && state.message) {
-      toast.error(state.message)
+      showErrorToast(t, state.message)
     }
   }
 
@@ -51,9 +51,9 @@ export function TeacherFormScreen({ locale }: { locale: string }) {
             action={createTeacherAction}
             onStatusChange={handleStatus}
           >
-            <GradientButton className="h-11 w-full rounded-xl" type="submit">
+            <Button variant="gradient" className="h-11 w-full rounded-xl" type="submit">
               {tCommon("add")}
-            </GradientButton>
+            </Button>
           </ServerActionForm>
         </CardContent>
       </Card>

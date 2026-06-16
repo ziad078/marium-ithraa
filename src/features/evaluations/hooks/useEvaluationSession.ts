@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { toast } from "sonner"
+import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import type { EvaluationAttempt, SubmitAttemptDto } from "../types"
 import {
@@ -121,11 +121,11 @@ export function useEvaluationSession(
 
     submitMutationRef.current.mutate(payload, {
       onSuccess: () => {
-        toast.info("Time expired. Attempt submitted.")
+        showInfoToast({ raw: "Time expired. Attempt submitted." })
         void refetchRef.current()
       },
       onError: (e: unknown) => {
-        toast.error(e instanceof Error ? e.message : "Failed to auto-submit.")
+        showErrorToast({ raw: e instanceof Error ? e.message : "Failed to auto-submit." })
         void refetchRef.current()
       },
     })
@@ -169,9 +169,9 @@ export function useEvaluationSession(
       await saveMutation.mutateAsync(payload)
       lastSavedRef.current = snapshot
       setDirty(false)
-      toast.success("Progress saved.")
+      showSuccessToast({ raw: "Progress saved." })
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Failed to save progress.")
+      showErrorToast({ raw: e instanceof Error ? e.message : "Failed to save progress." })
     }
   }, [answers, buildSavePayload, locked, saveMutation])
 
@@ -193,12 +193,12 @@ export function useEvaluationSession(
     assertParentAttemptPayload(payload)
     try {
       await submitMutation.mutateAsync(payload)
-      toast.success("Attempt submitted.")
+      showSuccessToast({ raw: "Attempt submitted." })
       lastSavedRef.current = JSON.stringify(answers)
       setDirty(false)
       await refetch()
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Failed to submit attempt.")
+      showErrorToast({ raw: e instanceof Error ? e.message : "Failed to submit attempt." })
       throw e
     }
   }, [answers, locked, refetch, submitMutation])

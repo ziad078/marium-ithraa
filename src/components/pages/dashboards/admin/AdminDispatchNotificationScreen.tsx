@@ -3,10 +3,9 @@
 import { useState } from "react"
 import { Send } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -73,7 +72,7 @@ export function AdminDispatchNotificationScreen({ locale }: Props) {
     e.preventDefault()
 
     if (!userId.trim() || !title.trim() || !message.trim()) {
-      toast.error(t("requiredFields"))
+      showErrorToast(t, "requiredFields")
       return
     }
 
@@ -82,10 +81,10 @@ export function AdminDispatchNotificationScreen({ locale }: Props) {
       metadata = parseMetadataJson(metadataRaw)
     } catch (err) {
       if (err instanceof Error && err.message === "INVALID_JSON") {
-        toast.error(t("metadataInvalidJson"))
+        showErrorToast(t, "metadataInvalidJson")
         return
       }
-      toast.error(t("metadataInvalidObject"))
+      showErrorToast(t, "metadataInvalidObject")
       return
     }
 
@@ -99,9 +98,7 @@ export function AdminDispatchNotificationScreen({ locale }: Props) {
         type: (type.trim() || undefined) as NotificationType | undefined,
         metadata,
       })
-      toast.success(
-        isAr ? "تم إرسال الإشعار إلى قائمة الانتظار" : t("dispatchSuccess"),
-      )
+      showSuccessToast({ raw: isAr ? "تم إرسال الإشعار إلى قائمة الانتظار" : t("dispatchSuccess") })
       setTitle("")
       setMessage("")
       setMetadataRaw("")
@@ -112,7 +109,7 @@ export function AdminDispatchNotificationScreen({ locale }: Props) {
           : e instanceof Error
             ? e.message
             : t("loadError")
-      toast.error(msg)
+      showErrorToast({ raw: msg })
     }
   }
 
@@ -237,14 +234,14 @@ export function AdminDispatchNotificationScreen({ locale }: Props) {
                 >
                   <Link href="/dashboards/admin">{t("cancel")}</Link>
                 </Button>
-                <GradientButton
+                <Button variant="gradient"
                   type="submit"
                   className="rounded-xl gap-2"
                   disabled={dispatch.isPending}
                 >
                   <Send className="size-4" />
                   {dispatch.isPending ? t("sending") : t("dispatchSubmit")}
-                </GradientButton>
+                </Button>
               </div>
             </form>
           </CardContent>

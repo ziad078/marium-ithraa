@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useParams } from "next/navigation"
 import { useLocale, useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import AttemptSummary from "@/components/evaluation/AttemptSummary"
 import { AttemptResultView } from "@/components/evaluation/results/AttemptResultView"
@@ -110,10 +110,10 @@ export default function AdminAttemptDetailPage() {
               onClick={async () => {
                 try {
                   await approve.mutateAsync()
-                  toast.success(t("approveSuccess"))
+                  showSuccessToast(t, "approveSuccess")
                   setConfirmOpen(false)
                 } catch (e: unknown) {
-                  toast.error(e instanceof Error ? e.message : t("error"))
+                  showErrorToast({ raw: e instanceof Error ? e.message : t("error") })
                 }
               }}
               disabled={approve.isPending}

@@ -492,6 +492,24 @@
             "placeholder": "اكتب اسم مؤسستك"
           }
         }
+      },
+      "Teacher": {
+        "title": "بيانات المعلم",
+        "subtitle": "أدخل بياناتك لإنشاء حساب معلم.",
+        "fields": {
+          "name": {
+            "label": "اسم المعلم",
+            "placeholder": "اسم المعلم"
+          },
+          "phone": {
+            "label": "رقم الهاتف",
+            "placeholder": "رقم الهاتف"
+          },
+          "subject": {
+            "label": "التخصص",
+            "placeholder": "التخصص"
+          }
+        }
       }
     }
   },

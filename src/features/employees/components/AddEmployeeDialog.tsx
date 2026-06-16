@@ -4,7 +4,7 @@ import { IconPlus } from "@tabler/icons-react"
 import { Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,12 +30,12 @@ export function AddEmployeeDialog({ organizationId }: { organizationId: string }
 
   const handleStatus = (state: InitialState) => {
     if (state.status === StatusCode.CREATED) {
-      toast.success(state.message ?? t("toast.created"))
+      showSuccessToast(t, state.message ?? "toast.created")
       setIsOpen(false)
       return
     }
     if (state.status && state.message) {
-      toast.error(state.message)
+      showErrorToast(t, state.message)
     }
   }
 

@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl"
 
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -132,14 +131,14 @@ export function NotificationListItem({
             </Button>
           )}
           {!compact && item.isRead && (
-            <GradientButton
+            <Button variant="gradient"
               type="button"
               size="sm"
               className="h-8 rounded-xl px-3"
               onClick={onOpen}
             >
               {t("open")}
-            </GradientButton>
+            </Button>
           )}
         </div>
       </CardContent>

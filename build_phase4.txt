@@ -1,0 +1,23 @@
+
+> frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.2.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 32.5s
+  Running TypeScript ...
+Failed to type check.
+
+./src/components/pages/dashboards/NotificationsScreen.tsx:102:7
+Type error: Cannot find name 'toast'.
+
+  [90m100 |[0m       showSuccessToast(t, [32m"markAllRead"[0m)
+  [90m101 |[0m     } [36mcatch[0m (e: unknown) {
+[31m[1m>[0m [90m102 |[0m       toast.error(e [36minstanceof[0m [33mError[0m ? e.message : t([32m"loadError"[0m))
+  [90m    |[0m       [31m[1m^[0m
+  [90m103 |[0m     }
+  [90m104 |[0m   }
+  [90m105 |[0m
+Next.js build worker exited with code: 1 and signal: null

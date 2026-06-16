@@ -492,6 +492,24 @@
             "placeholder": "Enter your organization name"
           }
         }
+      },
+      "Teacher": {
+        "title": "Teacher details",
+        "subtitle": "Enter your details to create your teacher account.",
+        "fields": {
+          "name": {
+            "label": "Teacher name",
+            "placeholder": "Teacher name"
+          },
+          "phone": {
+            "label": "Phone number",
+            "placeholder": "Phone number"
+          },
+          "subject": {
+            "label": "Subject",
+            "placeholder": "Subject"
+          }
+        }
       }
     }
   },

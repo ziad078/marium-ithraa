@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { toast } from "sonner"
+import { showErrorToast } from "@/lib/toast/app-toast"
 import { useRouter } from "next/navigation"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -41,14 +41,14 @@ export default function EvaluationBuilder({ evaluationId }: { evaluationId: stri
           onClick={async () => {
             const parsed = startAttemptSchema.safeParse({ childId, childType })
             if (!parsed.success) {
-              toast.error("Please provide a valid childId and childType.")
+              showErrorToast({ raw: "Please provide a valid childId and childType." })
               return
             }
             try {
               const attempt = await start.mutateAsync(parsed.data)
               router.push(`/dashboards/parent/attempts/${attempt.id}`)
             } catch (e: unknown) {
-              toast.error(e instanceof Error ? e.message : "Failed to start evaluation.")
+              showErrorToast({ raw: e instanceof Error ? e.message : "Failed to start evaluation." })
             }
           }}
           disabled={start.isPending}

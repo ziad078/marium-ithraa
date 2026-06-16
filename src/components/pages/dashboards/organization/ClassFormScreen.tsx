@@ -3,10 +3,9 @@
 import Link from "next/link"
 import { useRouter } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
@@ -82,9 +81,9 @@ export function ClassFormScreen({
     onStatusChange: (state) => {
       if (!state?.status) return
       if (state.status === StatusCode.CREATED || state.status === StatusCode.OK) {
-        toast.success(state.message ?? t("toast.saved"))
+        showSuccessToast(t, state.message ?? "toast.saved")
         router.push("/dashboards/organization/classes")
-      } else if (state.message) toast.error(state.message)
+      } else if (state.message) showErrorToast(t, state.message)
     },
   })
 
@@ -165,9 +164,9 @@ export function ClassFormScreen({
                 )}
               />
               <div className="flex gap-3">
-                <GradientButton type="submit" className="h-11 flex-1 rounded-xl" disabled={isPending}>
+                <Button variant="gradient" type="submit" className="h-11 flex-1 rounded-xl" disabled={isPending}>
                   {isPending ? tCommon("saving") : tCommon("saveChanges")}
-                </GradientButton>
+                </Button>
                 <Button variant="outline" className="h-11 rounded-xl" asChild>
                   <Link href="/dashboards/organization/classes">{tCommon("cancel")}</Link>
                 </Button>

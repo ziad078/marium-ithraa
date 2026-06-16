@@ -5,7 +5,7 @@
 // import { cn } from "@/lib/utils"
 // import { Card, CardContent } from "@/components/ui/card"
 // import { Button } from "@/components/ui/button"
-// import { GradientButton } from "@/components/shared/management/GradientButton"
+// import { Button variant="gradient" } from "@/components/shared/management/Button variant="gradient""
 
 // export type EntityCardField = {
 //   label: string
@@ -53,9 +53,9 @@
 //           >
 //             {deleteLabel}
 //           </Button>
-//           <GradientButton type="button" className="rounded-xl" onClick={onEdit}>
+//           <Button variant="gradient" type="button" className="rounded-xl" onClick={onEdit}>
 //             {editLabel}
-//           </GradientButton>
+//           </Button>
 //         </div>
 //       </CardContent>
 //     </Card>
@@ -72,7 +72,6 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -171,13 +170,13 @@ export function EntityCard({
             >
               {deleteLabel}
             </Button>
-            <GradientButton
+            <Button variant="gradient"
               type="button"
               className="rounded-xl"
               onClick={() => setEditOpen(true)}
             >
               {editLabel}
-            </GradientButton>
+            </Button>
           </div>
         </CardContent>
       </Card>

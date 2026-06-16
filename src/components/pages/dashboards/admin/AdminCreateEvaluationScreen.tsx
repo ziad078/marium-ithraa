@@ -4,7 +4,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { Plus, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -101,10 +101,10 @@ export function AdminCreateEvaluationScreen({ locale }: Props) {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       await create.mutateAsync(values)
-      toast.success(t("createSuccess"))
+      showSuccessToast(t, "createSuccess")
       router.push("/dashboards/admin/evaluations")
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t("error"))
+      showErrorToast({ raw: e instanceof Error ? e.message : t("error") })
     }
   })
 

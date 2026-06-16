@@ -1,8 +1,8 @@
 "use client"
 
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { toast } from "sonner"
 
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { getFriendlyApiErrorMessage } from "@/lib/helpers/apiErrorMessages"
 import type {
   TransferRequest,
@@ -31,12 +31,13 @@ export function useTransferRequests(
 export function useCreateTransferRequest(onSuccess?: () => void) {
   return useMutation({
     mutationFn: createTransferRequest,
+    meta: { skipGlobalError: true },
     onSuccess: () => {
-      toast.success("Transfer request created")
+      showSuccessToast({ raw: "Transfer request created" })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      toast.error(getFriendlyApiErrorMessage(error))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(error) })
     },
   })
 }
@@ -45,12 +46,13 @@ export function useApproveTransferRequest(onSuccess?: () => void) {
   return useMutation({
     mutationFn: ({ requestId, classId }: { requestId: string; classId: string }) =>
       approveTransferRequest(requestId, classId),
+    meta: { skipGlobalError: true },
     onSuccess: () => {
-      toast.success("Transfer approved")
+      showSuccessToast({ raw: "Transfer approved" })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      toast.error(getFriendlyApiErrorMessage(error))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(error) })
     },
   })
 }
@@ -58,12 +60,13 @@ export function useApproveTransferRequest(onSuccess?: () => void) {
 export function useRejectTransferRequest(onSuccess?: () => void) {
   return useMutation({
     mutationFn: rejectTransferRequest,
+    meta: { skipGlobalError: true },
     onSuccess: () => {
-      toast.success("Transfer rejected")
+      showSuccessToast({ raw: "Transfer rejected" })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      toast.error(getFriendlyApiErrorMessage(error))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(error) })
     },
   })
 }

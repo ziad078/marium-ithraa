@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -126,9 +126,9 @@ function CapacityRequestActions({ request }: { request: CapacityRequest }) {
   const handleApprove = async () => {
     try {
       await approveMutation.mutateAsync({ id: request.id })
-      toast.success("Capacity request approved")
+      showSuccessToast({ raw: "Capacity request approved" })
     } catch {
-      toast.error("Failed to approve")
+      showErrorToast({ raw: "Failed to approve" })
     }
   }
 
@@ -137,9 +137,9 @@ function CapacityRequestActions({ request }: { request: CapacityRequest }) {
       await rejectMutation.mutateAsync({ id: request.id, reason: rejectReason || undefined })
       setRejectOpen(false)
       setRejectReason("")
-      toast.success("Capacity request rejected")
+      showSuccessToast({ raw: "Capacity request rejected" })
     } catch {
-      toast.error("Failed to reject")
+      showErrorToast({ raw: "Failed to reject" })
     }
   }
 

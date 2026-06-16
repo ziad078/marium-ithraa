@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { toast } from "sonner"
+import { showErrorToast } from "@/lib/toast/app-toast"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -64,14 +64,14 @@ export default function StartEvaluationPage() {
         <Button
           onClick={async () => {
             if (!payload) {
-              toast.error("Please provide a valid childId and childType.")
+              showErrorToast({ raw: "Please provide a valid childId and childType." })
               return
             }
             try {
               const attempt = await start.mutateAsync(payload)
               router.push(`/dashboards/parent/attempts/${attempt.id}`)
             } catch (e: unknown) {
-              toast.error(e instanceof Error ? e.message : "Failed to start evaluation.")
+              showErrorToast({ raw: e instanceof Error ? e.message : "Failed to start evaluation." })
             }
           }}
           disabled={start.isPending}

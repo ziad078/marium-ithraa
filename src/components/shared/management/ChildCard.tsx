@@ -5,7 +5,6 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export type ChildCardProps = {
@@ -67,9 +66,9 @@ export function ChildCard({
           >
             {deleteLabel}
           </Button>
-          <GradientButton type="button" className="rounded-xl" onClick={onEdit}>
+          <Button variant="gradient" type="button" className="rounded-xl" onClick={onEdit}>
             {editLabel}
-          </GradientButton>
+          </Button>
         </div>
       </CardContent>
     </Card>

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -52,11 +52,11 @@ export function ParentChildEvaluationsScreen({ childId }: Props) {
     try {
       await mutation.mutateAsync()
       setSlotReady(true)
-      toast.success(t("slotOpened"))
+      showSuccessToast(t, "slotOpened")
       void available.refetch()
       void attempts.refetch()
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t("error"))
+      showErrorToast({ raw: e instanceof Error ? e.message : t("error") })
     }
   }
 
@@ -113,9 +113,9 @@ export function ParentChildEvaluationsScreen({ childId }: Props) {
               onClick={async () => {
                 try {
                   await extra.mutateAsync()
-                  toast.success(t("savedSuccess"))
+                  showSuccessToast(t, "savedSuccess")
                 } catch (e: unknown) {
-                  toast.error(e instanceof Error ? e.message : t("error"))
+                  showErrorToast({ raw: e instanceof Error ? e.message : t("error") })
                 }
               }}
             >
@@ -205,12 +205,12 @@ function AvailableEvaluationCard({
               try {
                 const attempt = await start.mutateAsync({ childId, childType: "private" })
                 if (!attempt?.id) {
-                  toast.error(t("error"))
+                  showErrorToast(t, "error")
                   return
                 }
                 router.push(`/dashboards/parent/attempts/${attempt.id}`)
               } catch (e: unknown) {
-                toast.error(e instanceof Error ? e.message : t("error"))
+                showErrorToast({ raw: e instanceof Error ? e.message : t("error") })
               }
             }}
           >

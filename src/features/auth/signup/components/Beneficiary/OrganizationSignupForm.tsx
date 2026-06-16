@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { PhoneInputField } from "@/components/shared/forms/PhoneInputField"
 import {
   Field,
   FieldContent,
@@ -95,18 +96,10 @@ export default function OrganizationSignupForm() {
 
         <Field>
           <FieldContent>
-            <FormField
-              control={form.control}
+            <PhoneInputField
               name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("fields.phone.label")}</FormLabel>
-                  <FormControl>
-                    <Input type="tel" placeholder={t("fields.phone.placeholder")} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label={t("fields.phone.label")}
+              placeholder={t("fields.phone.placeholder")}
             />
           </FieldContent>
         </Field>

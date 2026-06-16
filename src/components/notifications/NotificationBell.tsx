@@ -2,10 +2,9 @@
 
 import { Bell } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { NotificationListItem } from "@/components/notifications/NotificationListItem"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -61,9 +60,9 @@ export function NotificationBell() {
   const handleMarkAll = async () => {
     try {
       await markAll.mutateAsync()
-      toast.success(t("markAllRead"))
+      showSuccessToast(t, "markAllRead")
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t("loadError"))
+      showErrorToast({ raw: e instanceof Error ? e.message : t("loadError") })
     }
   }
 
@@ -148,9 +147,9 @@ export function NotificationBell() {
         <Separator />
 
         <div className="p-2">
-          <GradientButton asChild className="w-full rounded-xl">
+          <Button variant="gradient" asChild className="w-full rounded-xl">
             <Link href="/dashboards/notifications">{t("viewAll")}</Link>
-          </GradientButton>
+          </Button>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

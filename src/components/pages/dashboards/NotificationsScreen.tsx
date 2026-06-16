@@ -3,7 +3,7 @@
 import { Bell, Inbox } from "lucide-react"
 import { useMemo, useState } from "react"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { NotificationListItem } from "@/components/notifications/NotificationListItem"
 import {
@@ -14,7 +14,6 @@ import {
 import { StatsGrid } from "@/components/shared/dashboard/StatsGrid"
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EmptyState } from "@/components/shared/management/EmptyState"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -98,9 +97,9 @@ export function NotificationsScreen({ locale }: Props) {
   const handleMarkAll = async () => {
     try {
       await markAll.mutateAsync()
-      toast.success(t("markAllRead"))
+      showSuccessToast(t, "markAllRead")
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : t("loadError"))
+      showErrorToast({ raw: e instanceof Error ? e.message : t("loadError") })
     }
   }
 
@@ -179,13 +178,13 @@ export function NotificationsScreen({ locale }: Props) {
                   </SelectContent>
                 </Select>
 
-                <GradientButton
+                <Button variant="gradient"
                   className="rounded-xl"
                   disabled={markAll.isPending || unreadCount === 0}
                   onClick={() => void handleMarkAll()}
                 >
                   {t("markAllRead")}
-                </GradientButton>
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -225,7 +224,7 @@ export function NotificationsScreen({ locale }: Props) {
                   try {
                     await markOne.mutateAsync(item.id)
                   } catch (e: unknown) {
-                    toast.error(e instanceof Error ? e.message : t("loadError"))
+      showErrorToast({ raw: e instanceof Error ? e.message : t("loadError") })
                   }
                 }}
                 onOpen={() => void handleOpen(item)}

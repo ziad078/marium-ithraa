@@ -9,7 +9,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 
@@ -110,9 +109,9 @@ function EvaluationStatusCard({ item, locale }: { item: EvaluationStatusItem; lo
             </p>
           </div>
         </div>
-        <GradientButton className="h-9 w-full rounded-lg" disabled={item.reminderDisabled}>
+        <Button variant="gradient" className="h-9 w-full rounded-lg" disabled={item.reminderDisabled}>
           {isAr ? "إرسال تذكير" : "Send reminder"}
-        </GradientButton>
+        </Button>
       </CardContent>
     </Card>
   )
@@ -136,10 +135,10 @@ function ReportCard({ item, locale }: { item: ReportItem; locale: string }) {
           <Button variant="outline" className="rounded-lg border-fuchsia-500/60 text-fuchsia-600">
             {isAr ? "تنزيل Excel" : "Excel"}
           </Button>
-          <GradientButton className="rounded-lg">
+          <Button variant="gradient" className="rounded-lg">
             <Download className="size-4" />
             {isAr ? "تنزيل PDF" : "PDF"}
-          </GradientButton>
+          </Button>
         </div>
       </CardContent>
     </Card>

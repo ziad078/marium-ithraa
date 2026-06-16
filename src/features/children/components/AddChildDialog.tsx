@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { Loader2 } from "lucide-react"
 import { IconPlus } from "@tabler/icons-react"
 import { useTranslations } from "next-intl"
@@ -60,12 +60,12 @@ export function AddChildDialog() {
     action: createChildAction,
     onStatusChange: (state) => {
       if (state.status === StatusCode.CREATED) {
-        toast.success(state.message ?? t("toast.created"))
+        showSuccessToast(t, state.message ?? "toast.created")
         setIsOpen(false)
         form.reset()
         return
       }
-      if (state.status && state.message) toast.error(state.message)
+      if (state.status && state.message) showErrorToast(t, state.message)
     },
   })
 

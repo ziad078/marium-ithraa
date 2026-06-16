@@ -3,7 +3,7 @@
 import type { ReactNode } from "react"
 import Link from "next/link"
 
-import { GradientButton } from "@/components/shared/management/GradientButton"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
@@ -43,9 +43,9 @@ export function QuickActionCard({
             <p className="text-sm text-muted-foreground">{description}</p>
           </div>
         </div>
-        <GradientButton asChild className="mt-auto w-full rounded-xl">
+        <Button variant="gradient" asChild className="mt-auto w-full rounded-xl">
           <Link href={href}>{actionLabel}</Link>
-        </GradientButton>
+        </Button>
       </CardContent>
     </Card>
   )

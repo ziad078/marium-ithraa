@@ -3,11 +3,6 @@
 import { useState } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import { useFormContext } from "react-hook-form"
-import PhoneInput from "react-phone-number-input"
-
-import Checkbox from "@/components/shared/forms/CheckboxField"
-import Select from "@/components/shared/forms/Select"
-import TextArea from "@/components/shared/forms/TextArea"
 import {
   FormControl,
   FormField,
@@ -16,11 +11,20 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { PhoneInputField } from "@/components/shared/forms/PhoneInputField"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import { InputTypes } from "@/lib/types/enums"
 import type { IFormField } from "@/lib/types/interfaces"
 import { cn } from "@/lib/utils"
-
-import "react-phone-number-input/style.css"
 
 type Props = {
   fields: IFormField[]
@@ -31,20 +35,36 @@ export function RhfFormFields({ fields }: Props) {
 
   return (
     <>
-      {fields.map((field) => (
-        <FormField
-          key={field.name}
-          control={form.control}
-          name={field.name as never}
-          render={({ field: rhfField }) => (
-            <FormItem>
-              <FormLabel>{field.label}</FormLabel>
-              <FormControl>{renderControl(field, rhfField)}</FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      ))}
+      {fields.map((field) => {
+        const type = field.type as InputTypes
+
+        if (type === InputTypes.TEL) {
+          return (
+            <PhoneInputField
+              key={field.name}
+              name={field.name}
+              label={field.label ?? ""}
+              placeholder={field.placeholder}
+              disabled={field.disabled}
+            />
+          )
+        }
+
+        return (
+          <FormField
+            key={field.name}
+            control={form.control}
+            name={field.name as never}
+            render={({ field: rhfField }) => (
+              <FormItem>
+                <FormLabel>{field.label}</FormLabel>
+                <FormControl>{renderControl(field, rhfField)}</FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )
+      })}
     </>
   )
 }
@@ -60,23 +80,6 @@ function renderControl(
   },
 ) {
   const type = field.type as InputTypes
-
-  if (type === InputTypes.TEL) {
-    return (
-      <PhoneInput
-        international
-        defaultCountry="SA"
-        placeholder={field.placeholder}
-        disabled={field.disabled}
-        value={String(rhfField.value ?? "")}
-        onChange={(value) => rhfField.onChange(value ?? "")}
-        onBlur={rhfField.onBlur}
-        className={cn(
-          "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs",
-        )}
-      />
-    )
-  }
 
   if (type === InputTypes.PASSWORD) {
     return (
@@ -95,27 +98,44 @@ function renderControl(
   if (type === InputTypes.CHECKBOX) {
     return (
       <Checkbox
-        name={rhfField.name}
-        label={field.label}
-        checked={field.checked}
+        checked={field.checked ?? false}
+        onCheckedChange={(checked) => rhfField.onChange(checked)}
       />
     )
   }
 
   if (type === InputTypes.TEXTAREA) {
-    const { name: _fieldName, ...textareaProps } = field
     return (
-      <TextArea
-        {...textareaProps}
-        name={rhfField.name}
-        error={{}}
-        defaultValue={String(rhfField.value ?? "")}
+      <Textarea
+        placeholder={field.placeholder}
+        disabled={field.disabled}
+        value={String(rhfField.value ?? "")}
+        onChange={(e) => rhfField.onChange(e.target.value)}
+        onBlur={rhfField.onBlur}
       />
     )
   }
 
   if (type === InputTypes.SELECT && field.data) {
-    return <Select {...field} data={field.data} error={{}} />
+    return (
+      <Select
+        value={String(rhfField.value ?? "")}
+        onValueChange={(value) => rhfField.onChange(value)}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder={field.placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {field.data.map((item) => (
+              <SelectItem key={item.id || item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    )
   }
 
   return (

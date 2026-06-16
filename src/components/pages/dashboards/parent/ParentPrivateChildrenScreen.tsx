@@ -8,9 +8,8 @@ import { ParentPrivateChildDialog } from "./ParentPrivateChildDialog"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EmptyState } from "@/components/shared/management/EmptyState"
-import { GradientButton } from "@/components/shared/management/GradientButton"
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import { type Child } from "@/features/children"
 import {
@@ -56,14 +55,14 @@ export function ParentPrivateChildrenScreen({ privateChildren }: Props) {
       <div className="flex justify-end">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <GradientButton
+            <Button variant="gradient"
               type="button"
               className="rounded-xl gap-2"
               disabled={atLimit}
             >
               <Plus className="size-4" />
               {t("addChild")}
-            </GradientButton>
+            </Button>
           </DialogTrigger>
           <ParentPrivateChildDialog
             open={open}

@@ -1,13 +1,13 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2 } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
+import { SubmitButton } from "@/components/shared/forms/SubmitButton"
 import { useAuth } from "@/features/auth/hooks/useAuth"
 import { loginFormConfig } from "@/features/forms/config/login.config"
 import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
@@ -16,7 +16,7 @@ import { loginSchema, type LoginFormValues } from "@/features/forms/schemas/logi
 import { useRouter } from "@/i18n/navigation"
 import { signInWithPhoneAndRedirect } from "@/lib/auth/signInWithCredentials"
 import { FormTypes } from "@/lib/types/enums"
-import { toast } from "sonner"
+import { showSuccessToast } from "@/lib/toast/app-toast"
 
 const LoginForm = () => {
   const t = useTranslations("Auth.Login")
@@ -52,7 +52,7 @@ const LoginForm = () => {
         return
       }
 
-      toast.success(t("success"))
+      showSuccessToast(t, "success")
     } catch {
       setError(t("errors.unexpected"))
     } finally {
@@ -93,20 +93,14 @@ const LoginForm = () => {
           </div>
         )}
 
-        <Button
-          type="submit"
-          className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
-          disabled={isSubmitting}
+        <SubmitButton
+          variant="gradient"
+          className="h-11 w-full rounded-xl"
+          loading={isSubmitting}
+          loadingText={t("submitting")}
         >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              {t("submitting")}
-            </>
-          ) : (
-            t("submit")
-          )}
-        </Button>
+          {t("submit")}
+        </SubmitButton>
 
         <div className="text-center text-sm text-muted-foreground">
           {t("noAccount")}{" "}

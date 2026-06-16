@@ -8,7 +8,7 @@ import { IconBrandGmail, IconBrandMinecraft } from "@tabler/icons-react"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { sendVerificationEmail } from "@/features/mailer"
 
 export default function EmailVerificationPage() {
@@ -31,7 +31,7 @@ export default function EmailVerificationPage() {
             setCooldown(60) // 60 ثانية
         } catch (error) {
             console.error(error)
-            toast.error("Failed to send email")
+            showErrorToast({ raw: "Failed to send email" })
         } finally {
             setSending(false)
         }
@@ -47,7 +47,7 @@ export default function EmailVerificationPage() {
     // toast مرة واحدة
     useEffect(() => {
         if (sended) {
-            toast.success("Email sent successfully")
+            showSuccessToast({ raw: "Email sent successfully" })
         }
     }, [sended])
 

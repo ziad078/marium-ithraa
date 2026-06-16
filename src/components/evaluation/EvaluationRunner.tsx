@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast } from "@/lib/toast/app-toast"
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -90,7 +90,7 @@ export default function EvaluationRunner({ attemptId }: { attemptId: string }) {
           <Button
             onClick={() => {
               if (!session.allAnswered) {
-                toast.error(t("answerAllRequired"))
+                showErrorToast(t, "answerAllRequired")
                 return
               }
               setConfirmOpen(true)
@@ -149,14 +149,14 @@ export default function EvaluationRunner({ attemptId }: { attemptId: string }) {
         isSubmitting={session.submitMutation.isPending}
         onConfirm={async () => {
           if (!session.allAnswered) {
-            toast.error(t("answerAllRequired"))
+            showErrorToast(t, "answerAllRequired")
             return
           }
           try {
             await session.submit()
             setConfirmOpen(false)
           } catch {
-            toast.error(t("error"))
+            showErrorToast(t, "error")
           }
         }}
       />

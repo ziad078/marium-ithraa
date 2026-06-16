@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useLocale, useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { showErrorToast } from "@/lib/toast/app-toast"
 import { Pencil } from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -126,7 +126,7 @@ export default function EnricherDealDetailPage() {
               onClick={async () => {
                 const amount = parseFloat(price)
                 if (isNaN(amount) || amount <= 0) {
-                  toast.error(t("invalidPrice"))
+                  showErrorToast(t, "invalidPrice")
                   return
                 }
                 try {
@@ -137,7 +137,7 @@ export default function EnricherDealDetailPage() {
                   }
                   setPrice("")
                 } catch {
-                  toast.error(existingProposal ? "Failed to update proposal" : t("submitError"))
+                  showErrorToast({ raw: existingProposal ? "Failed to update proposal" : t("submitError") })
                 }
               }}
               disabled={submit.isPending || update.isPending}

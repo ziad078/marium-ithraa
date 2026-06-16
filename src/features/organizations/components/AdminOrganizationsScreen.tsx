@@ -2,10 +2,12 @@
 
 import { useMemo, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { IconCheck, IconRefresh, IconX } from "@tabler/icons-react"
+import { IconCheck, IconX } from "@tabler/icons-react"
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
+
+import { ErrorCard } from "@/components/shared/cards/ErrorCard"
 
 import { DataTable } from "@/components/shared/data-table/DataTable"
 import { SiteHeader } from "@/components/site-header"
@@ -170,10 +172,10 @@ export function AdminOrganizationsScreen({ locale }: { locale: string }) {
 
     try {
       await approveMutation.mutateAsync(approveTarget.id)
-      toast.success(t("approveSuccess"))
+      showSuccessToast(t, "approveSuccess")
       setApproveTarget(null)
     } catch (err) {
-      toast.error(getFriendlyApiErrorMessage(err, t("approveFailed")))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(err, "approveFailed") })
     }
   }
 
@@ -185,7 +187,7 @@ export function AdminOrganizationsScreen({ locale }: { locale: string }) {
         id: rejectTarget.id,
         rejectionReason: values.rejectionReason,
       })
-      toast.success(t("rejectSuccess"))
+      showSuccessToast(t, "rejectSuccess")
       setRejectTarget(null)
       rejectionForm.reset({ rejectionReason: "" })
     } catch (err) {
@@ -193,7 +195,7 @@ export function AdminOrganizationsScreen({ locale }: { locale: string }) {
       if (fieldError) {
         rejectionForm.setError("rejectionReason", { message: fieldError })
       }
-      toast.error(getFriendlyApiErrorMessage(err, t("rejectFailed")))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(err, "rejectFailed") })
     }
   }
 
@@ -226,17 +228,14 @@ export function AdminOrganizationsScreen({ locale }: { locale: string }) {
           </Tabs>
 
           {isError ? (
-            <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 space-y-3">
-              <p className="text-sm text-destructive">
-                {error instanceof ApiError && error.status === 403
+            <ErrorCard
+              message={
+                error instanceof ApiError && error.status === 403
                   ? t("errors.forbidden")
-                  : getFriendlyApiErrorMessage(error, t("errors.loadFailed"))}
-              </p>
-              <Button variant="outline" size="sm" onClick={() => refetch()}>
-                <IconRefresh className="size-4" />
-                {t("retry")}
-              </Button>
-            </div>
+                  : getFriendlyApiErrorMessage(error, t("errors.loadFailed"))
+              }
+              retry={{ label: t("retry"), onClick: () => refetch() }}
+            />
           ) : isLoading ? (
             <div className="space-y-3">
               <Skeleton className="h-10 w-full" />

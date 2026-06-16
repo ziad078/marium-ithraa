@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { getFriendlyApiErrorMessage } from "@/lib/helpers/apiErrorMessages"
 import { StatusCode } from "@/lib/types/enums"
@@ -33,7 +33,7 @@ export function useCreateChild(options?: {
 
         if (response.type === "CREATED") {
           setRequestState("success")
-          toast.success(response.message)
+          showSuccessToast({ raw: response.message })
           options?.onCreated?.(response)
           return
         }
@@ -53,17 +53,17 @@ export function useCreateChild(options?: {
         const message = err instanceof Error ? err.message : "Unable to create child"
 
         if (status === 409) {
-          toast.error(message || "Child already exists in your school")
+          showErrorToast({ raw: message || "Child already exists in your school" })
           options?.onConflict?.(message || "Child already exists in your school")
           return
         }
 
         if (status === StatusCode.FORBIDDEN) {
-          toast.error(getFriendlyApiErrorMessage(err))
+          showErrorToast({ raw: getFriendlyApiErrorMessage(err) })
           return
         }
 
-        toast.error(getFriendlyApiErrorMessage(err, message))
+        showErrorToast({ raw: getFriendlyApiErrorMessage(err, message) })
       }
     })
   }

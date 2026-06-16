@@ -1,0 +1,23 @@
+
+> frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.2.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 31.8s
+  Running TypeScript ...
+Failed to type check.
+
+./src/features/organizations/components/AdminOrganizationsScreen.tsx:229:14
+Type error: Cannot find name 'ErrorCard'.
+
+  [90m227 |[0m
+  [90m228 |[0m           {isError ? (
+[31m[1m>[0m [90m229 |[0m             <[33mErrorCard[0m
+  [90m    |[0m              [31m[1m^[0m
+  [90m230 |[0m               message={
+  [90m231 |[0m                 error [36minstanceof[0m [33mApiError[0m && error.status === [35m403[0m
+  [90m232 |[0m                   ? t([32m"errors.forbidden"[0m)
+Next.js build worker exited with code: 1 and signal: null

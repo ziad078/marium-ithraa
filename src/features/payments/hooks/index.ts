@@ -1,8 +1,8 @@
 "use client"
 
 import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
 
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { getFriendlyApiErrorMessage } from "@/lib/helpers/apiErrorMessages"
 import type {
   CreatePaymentPayload,
@@ -13,12 +13,13 @@ import { createPayment, initiatePayment, retryPayment } from "@/features/payment
 export function useCreatePayment(onSuccess?: (response: PaymentResponse) => void) {
   return useMutation({
     mutationFn: createPayment,
+    meta: { skipGlobalError: true },
     onSuccess: (response) => {
-      toast.success("Payment created successfully")
+      showSuccessToast({ raw: "Payment created successfully" })
       onSuccess?.(response)
     },
     onError: (error: unknown) => {
-      toast.error(getFriendlyApiErrorMessage(error))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(error) })
     },
   })
 }
@@ -26,12 +27,13 @@ export function useCreatePayment(onSuccess?: (response: PaymentResponse) => void
 export function useInitiatePayment(onSuccess?: (response: PaymentResponse) => void) {
   return useMutation({
     mutationFn: initiatePayment,
+    meta: { skipGlobalError: true },
     onSuccess: (response) => {
-      toast.success("Payment initiation succeeded")
+      showSuccessToast({ raw: "Payment initiation succeeded" })
       onSuccess?.(response)
     },
     onError: (error: unknown) => {
-      toast.error(getFriendlyApiErrorMessage(error))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(error) })
     },
   })
 }
@@ -39,12 +41,13 @@ export function useInitiatePayment(onSuccess?: (response: PaymentResponse) => vo
 export function useRetryPayment(onSuccess?: (response: PaymentResponse) => void) {
   return useMutation({
     mutationFn: retryPayment,
+    meta: { skipGlobalError: true },
     onSuccess: (response) => {
-      toast.success("Payment retry succeeded")
+      showSuccessToast({ raw: "Payment retry succeeded" })
       onSuccess?.(response)
     },
     onError: (error: unknown) => {
-      toast.error(getFriendlyApiErrorMessage(error))
+      showErrorToast({ raw: getFriendlyApiErrorMessage(error) })
     },
   })
 }

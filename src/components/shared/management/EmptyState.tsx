@@ -2,7 +2,7 @@ import * as React from "react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { GradientButton } from "@/components/shared/management/GradientButton"
+import { Button } from "@/components/ui/button"
 
 export type EmptyStateProps = {
   title: string
@@ -295,9 +295,9 @@ export function EmptyState({ title, actionLabel, actionHref, illustration, class
 
         <h3 className="text-2xl font-extrabold text-foreground">{title}</h3>
         {actionLabel && actionHref ? (
-          <GradientButton asChild className="h-11 w-full rounded-xl">
+          <Button variant="gradient" asChild className="h-11 w-full rounded-xl">
             <Link href={actionHref}>{actionLabel}</Link>
-          </GradientButton>
+          </Button>
         ) : null}
       </div>
     </div>

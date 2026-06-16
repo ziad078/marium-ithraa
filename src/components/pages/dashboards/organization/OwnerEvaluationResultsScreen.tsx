@@ -3,11 +3,11 @@
 import { useState } from "react"
 import { CalendarDays, Download, FileText } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { toast } from "sonner"
+import { ErrorCard } from "@/components/shared/cards/ErrorCard"
+import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
 import { EmptyState } from "@/components/shared/management/EmptyState"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -81,21 +81,10 @@ function MetricCard({
   )
 }
 
-function QueryError({
-  message,
-  onRetry,
-  retryLabel,
-}: {
-  message: string
-  onRetry: () => void
-  retryLabel: string
-}) {
+function QueryError({ message, onRetry, retryLabel }: { message: string; onRetry: () => void; retryLabel: string }) {
   return (
-    <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-center space-y-2">
-      <p className="text-sm text-destructive">{message}</p>
-      <Button variant="outline" size="sm" onClick={onRetry}>
-        {retryLabel}
-      </Button>
+    <div className="p-4">
+      <ErrorCard message={message} retry={{ label: retryLabel, onClick: onRetry }} />
     </div>
   )
 }
@@ -182,11 +171,11 @@ function ReportsTab({
   )
 
   const showPdfExportSoon = () => {
-    toast.info(t("pdfExportSoon"))
+    showInfoToast(t, "pdfExportSoon")
   }
 
   const showExcelExportSoon = () => {
-    toast.info(t("excelExportSoon"))
+    showInfoToast(t, "excelExportSoon")
   }
 
   if (reportsQuery.isLoading) {
@@ -277,10 +266,10 @@ function ReportCard({
           >
             {t("downloadExcel")}
           </Button>
-          <GradientButton className="rounded-lg" onClick={onPdfExport}>
+          <Button variant="gradient" className="rounded-lg" onClick={onPdfExport}>
             <Download className="size-4" />
             {t("downloadPdf")}
-          </GradientButton>
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -591,13 +580,13 @@ function StatusTab({
           onReminder={async () => {
             try {
               await reminderMutation.mutateAsync(getChildId(item)!)
-              toast.success(
-                locale === "ar"
+              showSuccessToast(
+                { raw: locale === "ar"
                   ? "تم إرسال التذكير بنجاح"
-                  : t("reminderSuccess"),
+                  : t("reminderSuccess") }
               )
             } catch (e: unknown) {
-              toast.error(e instanceof Error ? e.message : t("error"))
+              showErrorToast({ raw: e instanceof Error ? e.message : t("error") })
             }
           }}
         />
@@ -642,13 +631,13 @@ function StatusChildCard({
             <p className="font-medium text-emerald-600">{item.statusLabel}</p>
           </div>
         </div>
-        <GradientButton
+        <Button variant="gradient"
           className="h-9 w-full rounded-lg"
           disabled={!item.canSendReminder || isPending}
           onClick={onReminder}
         >
           {t("sendReminder")}
-        </GradientButton>
+        </Button>
       </CardContent>
     </Card>
   )

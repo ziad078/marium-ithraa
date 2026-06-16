@@ -3,7 +3,7 @@
 import { useCallback, useMemo } from "react"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useLocale } from "next-intl"
-import { toast } from "sonner"
+import { showInfoToast } from "@/lib/toast/app-toast"
 
 import { logoutClient } from "@/features/auth/api"
 import { clearAuthTokenCache } from "@/lib/api/client-api-client"
@@ -76,7 +76,7 @@ export function useAuth() {
       await signOut({ callbackUrl, redirect: true })
 
       if (!options?.silent) {
-        toast.info(locale === "ar" ? "تم تسجيل الخروج" : "Signed out")
+        showInfoToast({ raw: locale === "ar" ? "تم تسجيل الخروج" : "Signed out" })
       }
     },
     [locale],

@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useFormContext } from "react-hook-form"
 
 import {
@@ -11,9 +12,10 @@ import {
 } from "@/components/ui/form"
 
 import { Input } from "@/components/ui/input"
+import { PhoneInputField } from "@/components/shared/forms/PhoneInputField"
 
 const TeacherSignup = () => {
-
+  const t = useTranslations("Signup.Beneficiary.Teacher")
   const { control } = useFormContext()
 
   return (
@@ -24,27 +26,19 @@ const TeacherSignup = () => {
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>اسم المعلم</FormLabel>
+            <FormLabel>{t("fields.name.label")}</FormLabel>
             <FormControl>
-              <Input placeholder="اسم المعلم" {...field} />
+              <Input placeholder={t("fields.name.placeholder")} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <FormField
-        control={control}
+      <PhoneInputField
         name="phone"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>رقم الهاتف</FormLabel>
-            <FormControl>
-              <Input placeholder="رقم الهاتف" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        label={t("fields.phone.label")}
+        placeholder={t("fields.phone.placeholder")}
       />
 
       <FormField
@@ -52,9 +46,9 @@ const TeacherSignup = () => {
         name="subject"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>التخصص</FormLabel>
+            <FormLabel>{t("fields.subject.label")}</FormLabel>
             <FormControl>
-              <Input placeholder="التخصص" {...field} />
+              <Input placeholder={t("fields.subject.placeholder")} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -1,0 +1,91 @@
+
+> frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.2.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 28.5s
+  Running TypeScript ...
+  Finished TypeScript in 25.8s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/92) ...
+  Generating static pages using 11 workers (23/92) 
+  Generating static pages using 11 workers (46/92) 
+  Generating static pages using 11 workers (69/92) 
+✓ Generating static pages using 11 workers (92/92) in 569ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /_not-found
+├ ƒ /[locale]
+├ ƒ /[locale]/auth/Beneficiarysignup
+├ ƒ /[locale]/auth/login
+├ ƒ /[locale]/chose-role
+├ ƒ /[locale]/dashboards/admin
+├ ƒ /[locale]/dashboards/admin/activities
+├ ƒ /[locale]/dashboards/admin/attempts
+├ ƒ /[locale]/dashboards/admin/attempts/[attemptId]
+├ ƒ /[locale]/dashboards/admin/capacity-requests
+├ ƒ /[locale]/dashboards/admin/children
+├ ƒ /[locale]/dashboards/admin/deals
+├ ƒ /[locale]/dashboards/admin/deals/[dealId]
+├ ƒ /[locale]/dashboards/admin/evaluations
+├ ƒ /[locale]/dashboards/admin/evaluations/[evaluationId]
+├ ƒ /[locale]/dashboards/admin/evaluations/create
+├ ƒ /[locale]/dashboards/admin/notifications/dispatch
+├ ƒ /[locale]/dashboards/admin/organizations
+├ ƒ /[locale]/dashboards/admin/users
+├ ƒ /[locale]/dashboards/enricher
+├ ƒ /[locale]/dashboards/enricher/deals
+├ ƒ /[locale]/dashboards/enricher/deals/[dealId]
+├ ƒ /[locale]/dashboards/enricher/proposals
+├ ƒ /[locale]/dashboards/notifications
+├ ƒ /[locale]/dashboards/organization
+├ ƒ /[locale]/dashboards/organization/attempts/[attemptId]
+├ ƒ /[locale]/dashboards/organization/child-transfers
+├ ƒ /[locale]/dashboards/organization/children
+├ ƒ /[locale]/dashboards/organization/children/[childId]
+├ ƒ /[locale]/dashboards/organization/children/new
+├ ƒ /[locale]/dashboards/organization/classes
+├ ƒ /[locale]/dashboards/organization/classes/[classId]
+├ ƒ /[locale]/dashboards/organization/classes/[classId]/edit
+├ ƒ /[locale]/dashboards/organization/classes/new
+├ ƒ /[locale]/dashboards/organization/deals
+├ ƒ /[locale]/dashboards/organization/deals/[dealId]
+├ ƒ /[locale]/dashboards/organization/deals/new
+├ ƒ /[locale]/dashboards/organization/employees
+├ ƒ /[locale]/dashboards/organization/employees/[employeeId]
+├ ƒ /[locale]/dashboards/organization/grades
+├ ƒ /[locale]/dashboards/organization/grades/[gradeId]
+├ ƒ /[locale]/dashboards/organization/grades/[gradeId]/edit
+├ ƒ /[locale]/dashboards/organization/grades/new
+├ ƒ /[locale]/dashboards/organization/results
+├ ƒ /[locale]/dashboards/organization/teachers
+├ ƒ /[locale]/dashboards/organization/teachers/new
+├ ƒ /[locale]/dashboards/parent
+├ ƒ /[locale]/dashboards/parent/attempts/[attemptId]
+├ ƒ /[locale]/dashboards/parent/children
+├ ƒ /[locale]/dashboards/parent/children/[childId]/evaluations
+├ ƒ /[locale]/dashboards/parent/evaluations
+├ ƒ /[locale]/dashboards/parent/evaluations/[evaluationId]
+├ ƒ /[locale]/dashboards/parent/evaluations/[evaluationId]/start
+├ ƒ /[locale]/dashboards/teacher
+├ ƒ /[locale]/dashboards/teacher/classes
+├ ƒ /[locale]/email-verification
+├ ƒ /[locale]/flow-6
+├ ƒ /[locale]/notifications
+├ ƒ /[locale]/tests
+├ ƒ /[locale]/unauthorized
+├ ƒ /[locale]/verify-email
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/auth/refresh
+└ ƒ /api/auth/verify-email
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -8,6 +8,7 @@ import { useRouter } from "@/i18n/navigation"
 
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/shared/forms/SubmitButton"
 
 import BeneficiarySignupTypeStep from "./BeneficiarySignupTypeStep"
 import OrganizationSignupForm from "./OrganizationSignupForm"
@@ -23,8 +24,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth"
 import { ApiError } from "@/lib/errors/ApiError"
 import { signInWithPhoneAndRedirect } from "@/lib/auth/signInWithCredentials"
 import { useLocale } from "next-intl"
-import { Loader2 } from "lucide-react"
-import { toast } from "sonner"
+import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 export function SignupWizard() {
   const t = useTranslations("Signup.Beneficiary.Wizard")
@@ -109,10 +109,10 @@ export function SignupWizard() {
 
       const isPendingApproval = values.accountType === "organization" || values.accountType === "enricher"
 
-      toast.success(
-        isPendingApproval
+      showSuccessToast(
+        { raw: isPendingApproval
           ? t("organizationPendingSuccess")
-          : response.message || t("success"),
+          : response.message || t("success") }
       )
 
       const loginResult = await signInWithPhoneAndRedirect({
@@ -126,7 +126,7 @@ export function SignupWizard() {
       if (!loginResult.ok) {
         const message = t("autoLoginFailed")
         setSubmitError(message)
-        toast.error(message)
+        showErrorToast({ raw: message })
       }
     } catch (error) {
       const message =
@@ -135,7 +135,7 @@ export function SignupWizard() {
           : t("unableToCreate")
 
       setSubmitError(message)
-      toast.error(message)
+      showErrorToast({ raw: message })
 
       if (error instanceof ApiError) {
         Object.entries(error.validationErrors ?? {}).forEach(([name, messages]) => {
@@ -191,14 +191,9 @@ export function SignupWizard() {
                 </Button>
               )}
               <div className="ml-auto">
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting && <Loader2 className="size-4 animate-spin" />}
-                  {step === 1
-                    ? t("next")
-                    : isSubmitting
-                      ? t("submitting")
-                      : t("submit")}
-                </Button>
+                <SubmitButton loading={isSubmitting} loadingText={step === 1 ? undefined : t("submitting")}>
+                  {step === 1 ? t("next") : t("submit")}
+                </SubmitButton>
               </div>
             </div>
           </form>

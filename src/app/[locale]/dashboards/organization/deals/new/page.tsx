@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
-import { toast } from "sonner"
+import { showErrorToast } from "@/lib/toast/app-toast"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -41,7 +41,7 @@ export default function NewDealPage() {
   const handleSubmit = async () => {
     const count = parseInt(studentsCount, 10)
     if (!activityId || isNaN(count) || count <= 0) {
-      toast.error(t("validationError"))
+      showErrorToast(t, "validationError")
       return
     }
     try {
@@ -51,7 +51,7 @@ export default function NewDealPage() {
         deadline: deadline ? new Date(deadline).toISOString() : undefined,
       })
     } catch {
-      toast.error(t("createError"))
+      showErrorToast(t, "createError")
     }
   }
 

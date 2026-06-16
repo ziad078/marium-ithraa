@@ -4,6 +4,8 @@ export type {
   AttemptAnswerPayload,
   AttemptsResponse,
   AvailableEvaluationsResponse,
+  ChildReference,
+  ChildType,
   CreateEvaluationDimensionPayload,
   CreateEvaluationPayload,
   CreateEvaluationQuestionAnswerPayload,
@@ -28,6 +30,7 @@ export const evaluationTypeSchema = z.enum([
   "holland",
   "learning_styles",
   "torrance",
+  "preschool_giftedness",
 ])
 
 export const uuidSchema = z.string().uuid()
@@ -47,6 +50,7 @@ export const submitAttemptSchema = z.object({
 
 export const startAttemptSchema = z.object({
   childId: uuidSchema,
+  childType: z.enum(["organization", "private"]),
   expiresInSeconds: z.number().int().positive().optional(),
   expiresAt: z.string().datetime().optional(),
 })

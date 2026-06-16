@@ -14,6 +14,7 @@ export default function EvaluationBuilder({ evaluationId }: { evaluationId: stri
   const router = useRouter()
   const start = useStartAttempt(evaluationId)
   const [childId, setChildId] = useState("")
+  const [childType, setChildType] = useState<"organization" | "private">("private")
 
   return (
     <Card className="max-w-xl">
@@ -25,11 +26,22 @@ export default function EvaluationBuilder({ evaluationId }: { evaluationId: stri
           <label className="text-sm">Child ID</label>
           <Input value={childId} onChange={(e) => setChildId(e.target.value)} placeholder="uuid" />
         </div>
+        <div className="space-y-1">
+          <label className="text-sm">Child Type</label>
+          <select
+            value={childType}
+            onChange={(e) => setChildType(e.target.value as "organization" | "private")}
+            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+          >
+            <option value="private">Private</option>
+            <option value="organization">Organization</option>
+          </select>
+        </div>
         <Button
           onClick={async () => {
-            const parsed = startAttemptSchema.safeParse({ childId })
+            const parsed = startAttemptSchema.safeParse({ childId, childType })
             if (!parsed.success) {
-              toast.error("Please provide a valid childId.")
+              toast.error("Please provide a valid childId and childType.")
               return
             }
             try {

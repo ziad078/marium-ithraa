@@ -88,10 +88,14 @@ export type CreateChildResponse =
       transferRequestId: string
     }
 
-export interface ParentSearchResult {
-  parent: ParentInfo | null
-  children?: Child[]
-}
+export type ParentSearchResult =
+  | {
+      status: "parent_found"
+      parent: ParentInfo
+      children: (Child & { type: "organization" | "private" })[]
+    }
+  | { status: "not_found" }
+  | { status: "not_parent"; user: { id: string; name?: string; phone: string; email?: string } }
 
 export interface TransferRequestResponse {
   message: string
@@ -102,7 +106,8 @@ export type ChildTransferStatus = "pending" | "approved" | "rejected"
 
 export interface ChildTransferRequest {
   id: string
-  childId: string
+  organizationChildId?: string | null
+  privateChildId?: string | null
   fromOrganizationId?: string
   toOrganizationId?: string
   status: ChildTransferStatus | string

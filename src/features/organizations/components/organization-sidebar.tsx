@@ -58,7 +58,7 @@ export function OrganizationSidebar({ organization, ...props }: React.ComponentP
         icon: IconUsers,
       },
       {
-        title: t("Features.OwnerEvaluations.results"),
+        title: t("Features.OrganizationEvaluations.results"),
         url: `${ORGANIZATIONURL}/results`,
         icon: IconReport,
       },

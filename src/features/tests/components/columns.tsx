@@ -15,7 +15,7 @@ export const columns: ColumnDef<Test>[] = [
   {
     id: "title",
     accessorKey: "title",
-    header: () => <TH k="Features.Tests.Title" />,
+    header: () => <TH k="Features.Tests.title" />,
     cell: ({ row }) => (<Link
       href={`/${Routes.DASHBOARDS}/${Pages.ADMIN}/${Pages.TESTS}/${row.original.id}`}
       className="font-medium text-primary hover:underline"
@@ -26,12 +26,12 @@ export const columns: ColumnDef<Test>[] = [
   {
     id: "questionNo",
     accessorKey: "questionNo",
-    header: () => <TH k="Features.Tests.QuestionNo" />,
+    header: () => <TH k="Features.Tests.questionCount" />,
   },
   // {
   //   id: "assignments",
   //   accessorFn: ({ assignments }) => assignments.length,
-  //   header: () => <TH k="Features.Tests.AssignmentNo" />,
+  //   header: () => <TH k="Features.Tests.assignmentCount" />,
   // },
   // {
   //   id: "actions",

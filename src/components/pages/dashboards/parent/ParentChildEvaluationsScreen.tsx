@@ -203,7 +203,7 @@ function AvailableEvaluationCard({
             disabled={start.isPending}
             onClick={async () => {
               try {
-                const attempt = await start.mutateAsync({ childId })
+                const attempt = await start.mutateAsync({ childId, childType: "private" })
                 if (!attempt?.id) {
                   toast.error(t("error"))
                   return

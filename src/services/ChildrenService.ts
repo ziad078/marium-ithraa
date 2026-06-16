@@ -15,24 +15,32 @@ import { normalizeChild } from "@/lib/helpers/data-normalizers"
 
 export const ChildrenService = {
   async getChildren(userId: string): Promise<Child[]> {
-    const response = await api.client<{ children: Child[] }>(
-      `/${Endpoint.CHILDREN}?userId=${encodeURIComponent(userId)}`,
-    )
-    return response.children.map(normalizeChild).filter(Boolean) as Child[]
+    const response = await api.client<{
+      organizationChildren: Child[]
+      privateChildren: Child[]
+    }>(`/${Endpoint.CHILDREN}?userId=${encodeURIComponent(userId)}`)
+    return [
+      ...(response.organizationChildren ?? []).map(normalizeChild).filter(Boolean),
+      ...(response.privateChildren ?? []).map(normalizeChild).filter(Boolean),
+    ] as Child[]
   },
 
   async getAllChildren(): Promise<Child[]> {
-    const response = await api.client<{ children: Child[] }>(
-      `/${Endpoint.CHILDREN}/${Endpoint.ALL}`,
-    )
-    return response.children.map(normalizeChild).filter(Boolean) as Child[]
+    const response = await api.client<{
+      organizationChildren: Child[]
+      privateChildren: Child[]
+    }>(`/${Endpoint.CHILDREN}/${Endpoint.ALL}`)
+    return [
+      ...(response.organizationChildren ?? []).map(normalizeChild).filter(Boolean),
+      ...(response.privateChildren ?? []).map(normalizeChild).filter(Boolean),
+    ] as Child[]
   },
 
   async getAllChildrenByOrg(orgId: string): Promise<Child[]> {
-    const response = await api.client<{ children: Child[] }>(
+    const response = await api.client<Child[]>(
       `/${Endpoint.CHILDREN}/organization/${encodeURIComponent(orgId)}`,
     )
-    return response.children.map(normalizeChild).filter(Boolean) as Child[]
+    return response.map(normalizeChild).filter(Boolean) as Child[]
   },
 
   async getChildById(childId: string): Promise<Child> {
@@ -76,17 +84,17 @@ export const ChildrenService = {
   },
 
   async getPrivateChildren(): Promise<Child[]> {
-    const response = await api.client<{ children: Child[] }>(
+    const response = await api.client<Child[]>(
       `/${Endpoint.PARENT}/${Endpoint.CHILDREN}`,
     )
-    return response.children.map(normalizeChild).filter(Boolean) as Child[]
+    return response.map(normalizeChild).filter(Boolean) as Child[]
   },
 
   async getOrgChildren(): Promise<Child[]> {
-    const response = await api.client<{ children: Child[] }>(
+    const response = await api.client<Child[]>(
       `/${Endpoint.PARENT}/org-${Endpoint.CHILDREN}`,
     )
-    return response.children.map(normalizeChild).filter(Boolean) as Child[]
+    return response.map(normalizeChild).filter(Boolean) as Child[]
   },
 
   async createPrivateChild(
@@ -107,11 +115,12 @@ export const ChildrenService = {
 
   async requestChildTransfer(
     childId: string,
+    childType: import("@/lib/types/types/interfaces").ChildType,
     toOrganizationId: string,
   ): Promise<TransferRequestResponse> {
     return api.client<TransferRequestResponse>(`/${Endpoint.TRANSFERS}`, {
       method: Methods.POST,
-      body: JSON.stringify({ childId, toOrganizationId }),
+      body: JSON.stringify({ childId, childType, toOrganizationId }),
     })
   },
 

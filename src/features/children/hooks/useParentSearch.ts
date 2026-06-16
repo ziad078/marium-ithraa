@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react"
 import { searchParentsByPhone } from "@/features/children/api"
 import type { ParentInfo } from "@/features/children/types/interfaces"
 
-type ParentState = null | "found" | "creating"
+type ParentState = null | "found" | "creating" | "not_parent"
 type RequestState = "idle" | "loading" | "success"
 
 export function useParentSearch(phone: string) {
@@ -14,6 +14,7 @@ export function useParentSearch(phone: string) {
   const [parentState, setParentState] = useState<ParentState>(null)
   const [requestState, setRequestState] = useState<RequestState>("idle")
   const [error, setError] = useState<string | null>(null)
+  const [notParentUser, setNotParentUser] = useState<{ id: string; name?: string; phone: string; email?: string } | null>(null)
 
   useEffect(() => {
     if (!normalizedPhone) return
@@ -27,30 +28,25 @@ export function useParentSearch(phone: string) {
         const result = await searchParentsByPhone(normalizedPhone)
         if (controller.signal.aborted) return
 
-        if (result.parent) {
+        if (result.status === "parent_found") {
           setParent({
             ...result.parent,
             children: result.parent.children ?? result.children ?? [],
           })
           setParentState("found")
+          setNotParentUser(null)
+        } else if (result.status === "not_parent") {
+          setParent(null)
+          setParentState("not_parent")
+          setNotParentUser(result.user)
         } else {
           setParent(null)
           setParentState("creating")
+          setNotParentUser(null)
         }
         setRequestState("success")
       } catch (err) {
         if (controller.signal.aborted) return
-
-        const status = typeof err === "object" && err !== null && "status" in err
-          ? Number((err as { status: unknown }).status)
-          : undefined
-
-        if (status === 404) {
-          setParent(null)
-          setParentState("creating")
-          setRequestState("success")
-          return
-        }
 
         setParent(null)
         setParentState(null)
@@ -71,6 +67,7 @@ export function useParentSearch(phone: string) {
     requestState: normalizedPhone ? requestState : "idle",
     isSearching: normalizedPhone ? requestState === "loading" : false,
     error: normalizedPhone ? error : null,
+    notParentUser: normalizedPhone ? notParentUser : null,
   }
 }
 

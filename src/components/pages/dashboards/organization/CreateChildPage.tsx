@@ -106,7 +106,7 @@ export function CreateChildPage({
 
   const parentPhone = useWatch({ control: form.control, name: "parentPhone" })
   const gradeId = useWatch({ control: form.control, name: "gradeId" })
-  const { parent, parentState, isSearching, error: parentSearchError } = useParentSearch(parentPhone)
+  const { parent, parentState, isSearching, error: parentSearchError, notParentUser } = useParentSearch(parentPhone)
   const { createChild, isLoading } = useCreateChild({
     onCreated: () => router.push("/dashboards/organization/children"),
     onTransferRequired: (response) => setTransferResponse(response),
@@ -146,7 +146,7 @@ export function CreateChildPage({
 
     setSelectionStatus("loading")
     try {
-      await requestChildTransfer(selectedChild.id, organizationId)
+      await requestChildTransfer(selectedChild.id, "organization", organizationId)
       setSelectionStatus("sent")
       toast.success("Transfer request sent")
     } catch (err) {
@@ -168,21 +168,28 @@ export function CreateChildPage({
       if (hasParentError) return
     }
 
+    if (parentState === "not_parent") {
+      if (!values.parentName?.trim()) {
+        form.setError("parentName", { message: "Parent name is required" })
+        return
+      }
+    }
+
     createChild({
       name: values.name,
       birthDate: values.birthDate,
       gender: values.gender,
       classId: values.classId,
       parentPhone: values.parentPhone,
-      parentEmail: values.parentEmail || parent?.email || undefined,
-      parentName: values.parentName || parent?.name || undefined,
+      parentEmail: values.parentEmail || parent?.email || notParentUser?.email || undefined,
+      parentName: values.parentName || parent?.name || notParentUser?.name || undefined,
     })
   }
 
   const isCreatingChild = childState === "creating" || parentState === "creating"
 
   const canSubmit =
-    isCreatingChild &&
+    (isCreatingChild || parentState === "not_parent") &&
     parentState !== null &&
     selectionStatus !== "same" &&
     selectionStatus !== "sent"
@@ -242,6 +249,10 @@ export function CreateChildPage({
 
               {!isSearching && parentState === "creating" && (
                 <CreateParentFields form={form} />
+              )}
+
+              {!isSearching && parentState === "not_parent" && notParentUser && (
+                <NotParentFields form={form} user={notParentUser} />
               )}
             </CardContent>
           </Card>
@@ -628,6 +639,50 @@ function TransferModal({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  )
+}
+
+function NotParentFields({
+  form,
+  user,
+}: {
+  form: UseFormReturn<CreateChildFlowValues>
+  user: { id: string; name?: string; phone: string; email?: string }
+}) {
+  return (
+    <div className="space-y-4 rounded-xl border border-amber-200 bg-amber-50/50 p-4">
+      <p className="text-sm font-medium text-amber-800">User exists — assign parent role</p>
+      <p className="text-sm text-muted-foreground">
+        A user with phone {user.phone} already exists but is not a parent. Fill in the name to create
+        a parent profile for them.
+      </p>
+      <FormField
+        control={form.control}
+        name="parentName"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Parent name</FormLabel>
+            <FormControl>
+              <Input {...field} defaultValue={user.name} className="h-11 rounded-lg bg-background" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="parentEmail"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Parent email</FormLabel>
+            <FormControl>
+              <Input {...field} type="email" defaultValue={user.email} className="h-11 rounded-lg bg-background" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
   )
 }
 

@@ -1,6 +1,36 @@
 import { Child } from "@/features/children"
 import { ChildTransferRequest } from "@/features/children/types/interfaces"
 
+// ============================================
+// Child Entity Split — types
+// ============================================
+
+export type ChildType = "organization" | "private"
+
+export interface ChildReference {
+  childId: string
+  childType: ChildType
+}
+
+/** Resolve the actual child ID from an object carrying
+ *  `organizationChildId` or `privateChildId` (never both). */
+export function getChildId(
+  entity: { organizationChildId?: string | null; privateChildId?: string | null } | null | undefined,
+): string | null {
+  if (!entity) return null
+  return entity.organizationChildId || entity.privateChildId || null
+}
+
+/** Resolve the child type from an object with dual ID fields. */
+export function getChildType(
+  entity: { organizationChildId?: string | null; privateChildId?: string | null } | null | undefined,
+): ChildType | null {
+  if (!entity) return null
+  if (entity.organizationChildId) return "organization"
+  if (entity.privateChildId) return "private"
+  return null
+}
+
 export type EvaluationType =
   | "multiple_intelligences"
   | "pride"
@@ -8,6 +38,7 @@ export type EvaluationType =
   | "holland"
   | "learning_styles"
   | "torrance"
+  | "preschool_giftedness"
 
 export type EvaluationAttemptStatus =
   | "in_progress"
@@ -74,7 +105,8 @@ export interface EvaluationAnswer {
 export interface EvaluationAttempt {
   id: string
   parentId: string
-  childId: string
+  organizationChildId: string | null
+  privateChildId: string | null
   evaluationId: string
   attemptNumber: number
   status: EvaluationAttemptStatus
@@ -110,6 +142,7 @@ export interface PaymentResponse {
 
 export interface CreatePaymentPayload {
   attemptId: string
+  privateChildId: string
   amount: number
   currency: string
   returnUrl?: string
@@ -117,7 +150,8 @@ export interface CreatePaymentPayload {
 
 export interface EvaluationSlot {
   id: string
-  childId: string
+  organizationChildId: string | null
+  privateChildId: string | null
   status: string
   expiresAt?: string | null
   paymentId?: string | null
@@ -130,6 +164,7 @@ export interface EvaluationSlot {
 
 export interface TransferRequestPayload {
   childId: string
+  childType: ChildType
   toOrganizationId: string
 }
 
@@ -151,7 +186,8 @@ export interface Class {
 
 export interface TransferRequest {
   id: string
-  childId: string
+  organizationChildId?: string | null
+  privateChildId?: string | null
   fromOrganizationId?: string
   toOrganizationId?: string
   status: string
@@ -198,6 +234,7 @@ export interface CreateEvaluationPayload {
 
 export interface StartEvaluationPayload {
   childId: string
+  childType: ChildType
   expiresAt?: string
   expiresInSeconds?: number
 }
@@ -217,6 +254,7 @@ export interface SubmitAttemptPayload {
 
 export interface AvailableEvaluationsResponse {
   childId: string
+  childType?: ChildType
   age: number
   evaluations: Evaluation[]
 }

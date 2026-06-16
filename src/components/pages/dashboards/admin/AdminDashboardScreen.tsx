@@ -35,7 +35,10 @@ export function AdminDashboardScreen() {
     () => [
       {
         label: tNav("children"),
-        value: loadingChildren ? "-" : String(childrenData?.children?.length ?? 0),
+        value: loadingChildren ? "-" : String(
+          (childrenData?.organizationChildren?.length ?? 0) +
+          (childrenData?.privateChildren?.length ?? 0),
+        ),
         icon: <Baby />,
         variant: "purple" as const,
       },

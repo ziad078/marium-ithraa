@@ -13,17 +13,17 @@ import { normalizeChild } from "@/lib/helpers/data-normalizers"
 
 export const ParentService = {
   async getPrivateChildren(): Promise<Child[]> {
-    const response = await api.client<{ children: Child[] }>(
+    const response = await api.client<Child[]>(
       `/${Endpoint.PARENT}/${Endpoint.CHILDREN}`,
     )
-    return response.children.map(normalizeChild).filter(Boolean) as Child[]
+    return response.map(normalizeChild).filter(Boolean) as Child[]
   },
 
   async getOrgChildren(): Promise<Child[]> {
-    const response = await api.client<{ children: Child[] }>(
+    const response = await api.client<Child[]>(
       `/${Endpoint.PARENT}/org-${Endpoint.CHILDREN}`,
     )
-    return response.children.map(normalizeChild).filter(Boolean) as Child[]
+    return response.map(normalizeChild).filter(Boolean) as Child[]
   },
 
   async createPrivateChild(
@@ -51,11 +51,12 @@ export const ParentService = {
 
   async requestChildTransfer(
     childId: string,
+    childType: import("@/lib/types/types/interfaces").ChildType,
     toOrganizationId: string,
   ): Promise<TransferRequestResponse> {
     return api.client<TransferRequestResponse>(`/${Endpoint.TRANSFERS}`, {
       method: Methods.POST,
-      body: JSON.stringify({ childId, toOrganizationId }),
+      body: JSON.stringify({ childId, childType, toOrganizationId }),
     })
   },
 

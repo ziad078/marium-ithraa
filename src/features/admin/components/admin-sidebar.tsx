@@ -3,6 +3,7 @@
 import * as React from "react"
 import {
   IconBrain,
+  IconDatabase,
   IconDashboard,
   IconInnerShadowTop,
   IconReport,
@@ -83,6 +84,11 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
         title: t("Dashboard.Nav.activities"),
         url: `${ADMIN_URL}/activities`,
         icon: IconActivity,
+      },
+      {
+        title: t("Dashboard.Nav.capacityRequests"),
+        url: `${ADMIN_URL}/capacity-requests`,
+        icon: IconDatabase,
       },
       {
         title: t("Dashboard.Nav.deals"),

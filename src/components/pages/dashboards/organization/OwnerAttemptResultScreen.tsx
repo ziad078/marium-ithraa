@@ -25,7 +25,7 @@ export function OwnerAttemptResultScreen() {
   const locale = useLocale()
   const params = useParams<{ attemptId: string }>()
   const attemptId = params.attemptId ?? ""
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const tEval = useTranslations("Features.Evaluations")
   const tCommon = useTranslations("Dashboard.common")
 

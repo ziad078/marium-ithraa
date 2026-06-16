@@ -17,16 +17,18 @@ export default function StartEvaluationPage() {
   const start = useStartAttempt(evaluationId)
 
   const [childId, setChildId] = useState("")
+  const [childType, setChildType] = useState<"organization" | "private">("private")
   const [expiresInSeconds, setExpiresInSeconds] = useState<string>("")
 
   const payload = useMemo(() => {
     const maybe = {
       childId,
+      childType,
       expiresInSeconds: expiresInSeconds ? Number(expiresInSeconds) : undefined,
     }
     const parsed = startAttemptSchema.safeParse(maybe)
     return parsed.success ? parsed.data : null
-  }, [childId, expiresInSeconds])
+  }, [childId, childType, expiresInSeconds])
 
   return (
     <Card className="max-w-xl">
@@ -37,6 +39,17 @@ export default function StartEvaluationPage() {
         <div className="space-y-1">
           <label className="text-sm">Child ID</label>
           <Input value={childId} onChange={(e) => setChildId(e.target.value)} placeholder="uuid" />
+        </div>
+        <div className="space-y-1">
+          <label className="text-sm">Child Type</label>
+          <select
+            value={childType}
+            onChange={(e) => setChildType(e.target.value as "organization" | "private")}
+            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
+          >
+            <option value="private">Private</option>
+            <option value="organization">Organization</option>
+          </select>
         </div>
         <div className="space-y-1">
           <label className="text-sm">Expires in seconds (optional)</label>
@@ -51,7 +64,7 @@ export default function StartEvaluationPage() {
         <Button
           onClick={async () => {
             if (!payload) {
-              toast.error("Please provide a valid childId.")
+              toast.error("Please provide a valid childId and childType.")
               return
             }
             try {

@@ -17,12 +17,12 @@ export function formatAgeRange(
     if (ageFrom != null) return `From ${ageFrom}`
     return `Up to ${ageTo}`
   }
-  if (ageFrom == null && ageTo == null) return t("ageRange.all")
+  if (ageFrom == null && ageTo == null)     return t("ageRangeOptions.all")
   if (ageFrom != null && ageTo != null) {
-    return t("ageRange.range", { from: ageFrom, to: ageTo })
+    return t("ageRangeOptions.range", { from: ageFrom, to: ageTo })
   }
-  if (ageFrom != null) return t("ageRange.from", { from: ageFrom })
-  return t("ageRange.upTo", { to: ageTo ?? 0 })
+  if (ageFrom != null)     return t("ageRangeOptions.from", { from: ageFrom })
+  return t("ageRangeOptions.upTo", { to: ageTo ?? 0 })
 }
 
 export const EVALUATION_TYPE_LABELS: Record<
@@ -57,6 +57,11 @@ export const EVALUATION_TYPE_LABELS: Record<
   torrance: {
     ar: "تورانس",
     en: "Torrance",
+  },
+
+  preschool_giftedness: {
+    ar: "الموهبة في مرحلة ما قبل المدرسة",
+    en: "Preschool Giftedness",
   },
 };
 

@@ -62,14 +62,10 @@
       "employees": "Employees",
       "children": "Children",
       "childTransfers": "Transfer requests",
+      "capacityRequests": "Capacity requests",
       "analytics": "Analytics",
       "projects": "Projects",
       "team": "Team",
-      "capture": "Capture",
-      "proposal": "Proposal",
-      "prompts": "Prompts",
-      "activeProposals": "Active Proposals",
-      "archived": "Archived",
       "settings": "Settings",
       "getHelp": "Get Help",
       "search": "Search",
@@ -203,11 +199,6 @@
       "goToEdit": "Go to edit page",
       "actions": {
         "add": "Add Child"
-      },
-      "toast": {
-        "created": "Child created successfully",
-        "updated": "Child updated successfully",
-        "deleted": "Child deleted successfully"
       },
       "dialog": {
         "addTitle": "Add Child",
@@ -358,8 +349,7 @@
         }
       }
     },
-    "title": "hi here",
-    "subtitle": "Learn something"
+    "title": "hi here"
   },
   "Signup": {
     "Beneficiary": {
@@ -535,7 +525,7 @@
     }
   },
   "Actions": {
-    "": {
+    "common": {
       "validationFailed": "Please check the form fields.",
       "serverError": "Something went wrong. Please contact support.",
       "conflict": "This record already exists.",
@@ -597,15 +587,15 @@
       "deleting": "Deleting..."
     },
     "Tests": {
-      "Title": "Test Title",
-      "QuestionNo": "Questions number",
-      "AssignmentNo": "Assignments number",
-      "TableTitle": "Tests table",
-      "Toast": {
-        "Created": "Test created suceessfuly"
+      "title": "Test Title",
+      "questionCount": "Questions number",
+      "assignmentCount": "Assignments number",
+      "tableTitle": "Tests table",
+      "toast": {
+        "created": "Test created successfully"
       },
-      "Actions": {
-        "Add": "create"
+      "actions": {
+        "add": "Add"
       }
     },
     "Evaluations": {
@@ -692,9 +682,10 @@
         "renzulli": "Renzulli Scale",
         "holland": "Holland Scale",
         "learning_styles": "Learning Styles",
-        "torrance": "Torrance Scale"
+        "torrance": "Torrance Scale",
+        "preschool_giftedness": "Preschool Giftedness"
       },
-      "ageRange": {
+      "ageRangeOptions": {
         "all": "All ages",
         "range": "{from} - {to} years",
         "from": "From {from}",
@@ -894,7 +885,7 @@
       "metadataInvalidObject": "Metadata must be a JSON object",
       "attemptResult": "Result"
     },
-    "OwnerEvaluations": {
+    "OrganizationEvaluations": {
       "results": "Results",
       "subtitle": "Track your institution's children evaluation results",
       "reportsTab": "Reports",
@@ -1054,12 +1045,7 @@
       "phone": { "label": "Phone", "placeholder": "Enter phone number" },
       "email": { "label": "Email", "placeholder": "Enter email address" },
       "password": { "label": "Password", "placeholder": "Enter password" },
-      "jobTitle": { "label": "Job title", "placeholder": "Enter job title" },
-      "toast": {
-        "created": "Employee added successfully",
-        "updated": "Employee updated successfully",
-        "deleted": "Employee deleted successfully"
-      }
+      "jobTitle": { "label": "Job title", "placeholder": "Enter job title" }
     },
     "Grade": {
       "addTitle": "Add grade",

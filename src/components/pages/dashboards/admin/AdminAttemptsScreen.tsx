@@ -25,15 +25,17 @@ export function AdminAttemptsScreen({ locale }: Props) {
   const isAr = locale === "ar"
   const [status, setStatus] = useState(ALL)
   const [evaluationId, setEvaluationId] = useState("")
-  const [childId, setChildId] = useState("")
+  const [orgChildId, setOrgChildId] = useState("")
+  const [privChildId, setPrivChildId] = useState("")
 
   const filters = useMemo(
     () => ({
       status: status === ALL ? undefined : status,
       evaluationId: evaluationId || undefined,
-      childId: childId || undefined,
+      organizationChildId: orgChildId || undefined,
+      privateChildId: privChildId || undefined,
     }),
-    [status, evaluationId, childId],
+    [status, evaluationId, orgChildId, privChildId],
   )
 
   const { data, isLoading, isError, refetch } = useAttempts(filters)
@@ -62,9 +64,15 @@ export function AdminAttemptsScreen({ locale }: Props) {
           className="max-w-xs"
         />
         <Input
-          placeholder={t("childIdFilter")}
-          value={childId}
-          onChange={(e) => setChildId(e.target.value)}
+          placeholder="Org child ID"
+          value={orgChildId}
+          onChange={(e) => setOrgChildId(e.target.value)}
+          className="max-w-xs"
+        />
+        <Input
+          placeholder="Private child ID"
+          value={privChildId}
+          onChange={(e) => setPrivChildId(e.target.value)}
           className="max-w-xs"
         />
       </div>

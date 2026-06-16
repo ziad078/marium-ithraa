@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/api"
 import { Endpoint, Methods } from "@/lib/types/enums"
-import { Evaluation, CreateEvaluationPayload, AvailableEvaluationsResponse, StartEvaluationPayload, EvaluationAttempt, AttemptsResponse, SaveAttemptProgressPayload, SubmitAttemptPayload } from "@/lib/types/types/interfaces"
+import { ChildType, Evaluation, CreateEvaluationPayload, AvailableEvaluationsResponse, StartEvaluationPayload, EvaluationAttempt, AttemptsResponse, SaveAttemptProgressPayload, SubmitAttemptPayload } from "@/lib/types/types/interfaces"
 export type OwnerEvaluationFiltersResponse = {
   classes: {
     id: string
@@ -49,7 +49,8 @@ export type OwnerClassEvaluationSummary = {
     percentage: number | null
   }[]
   children: {
-    childId: string
+    organizationChildId: string | null
+    privateChildId: string | null
     childName: string
     className: string
     status: "not_started" | "in_progress" | "submitted" | "approved"
@@ -68,7 +69,8 @@ export type OwnerClassEvaluationStatus = {
   evaluationId: string
   evaluationTitle: string
   children: {
-    childId: string
+    organizationChildId: string | null
+    privateChildId: string | null
     childName: string
     className: string
     status: "not_started" | "in_progress" | "submitted" | "approved"
@@ -89,7 +91,8 @@ export type OwnerEvaluationReportCard = {
 export type GetAttemptsFilters = {
   status?: string
   evaluationId?: string
-  childId?: string
+  organizationChildId?: string
+  privateChildId?: string
 }
 
 const buildQueryString = (params: Record<string, string | undefined>) => {
@@ -214,7 +217,8 @@ export const getAttempts = async (filters?: GetAttemptsFilters) => {
   const query = buildQueryString({
     status: filters?.status,
     evaluationId: filters?.evaluationId,
-    childId: filters?.childId,
+    organizationChildId: filters?.organizationChildId,
+    privateChildId: filters?.privateChildId,
   })
 
   return api.server<AttemptsResponse>(`/${Endpoint.ATTEMPTS}${query}`)
@@ -224,7 +228,8 @@ export const getAttemptsClient = async (filters?: GetAttemptsFilters) => {
   const query = buildQueryString({
     status: filters?.status,
     evaluationId: filters?.evaluationId,
-    childId: filters?.childId,
+    organizationChildId: filters?.organizationChildId,
+    privateChildId: filters?.privateChildId,
   })
 
   return api.client<AttemptsResponse>(`/${Endpoint.ATTEMPTS}${query}`)

@@ -232,5 +232,6 @@ export enum Endpoint {
   WEBHOOK = "webhook",
   UPLOADS = "uploads",
   SEARCH = "search",
+  CAPACITY_REQUESTS = "capacity-requests",
 
 }

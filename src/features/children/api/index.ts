@@ -1,5 +1,6 @@
 import { api } from "@/lib/api/api"
 import { buildPaginationQuery, type PaginationParams } from "@/lib/api/pagination"
+import type { ChildType } from "@/lib/types/types/interfaces"
 import {
   type Child,
   type ChildTransferRequest,
@@ -14,25 +15,28 @@ import {
 import { Endpoint, Methods } from "@/lib/types/enums"
 
 export const getChildren = async (userId: string) => {
-  return api.server<{ children: Child[] }>(
-    `/${Endpoint.CHILDREN}?userId=${userId}`,
-  )
+  return api.server<{
+    organizationChildren: Child[]
+    privateChildren: Child[]
+  }>(`/${Endpoint.CHILDREN}?userId=${userId}`)
 }
 
 export const getAllChildren = async () => {
-  return api.client<{ children: Child[] }>(
-    `/${Endpoint.CHILDREN}/${Endpoint.ALL}`,
-  )
+  return api.client<{
+    organizationChildren: Child[]
+    privateChildren: Child[]
+  }>(`/${Endpoint.CHILDREN}/${Endpoint.ALL}`)
 }
 
 export const getAllChildrenServer = async (params?: PaginationParams) => {
-  return api.server<{ children: Child[] }>(
-    `/${Endpoint.CHILDREN}/${Endpoint.ALL}${buildPaginationQuery(params)}`,
-  )
+  return api.server<{
+    organizationChildren: Child[]
+    privateChildren: Child[]
+  }>(`/${Endpoint.CHILDREN}/${Endpoint.ALL}${buildPaginationQuery(params)}`)
 }
 
 export const getAllChildrenByOrg = async (orgId: string) => {
-  return api.server<{ children: Child[] }>(
+  return api.server<Child[]>(
     `/${Endpoint.CHILDREN}/organization/${orgId}`,
   )
 }
@@ -93,10 +97,10 @@ export const createChildFlow = async (data: CreateChildFlowPayload) => {
   })
 }
 
-export const requestChildTransfer = async (childId: string, toOrganizationId: string) => {
+export const requestChildTransfer = async (childId: string, childType: ChildType, toOrganizationId: string) => {
   return api.client<TransferRequestResponse>("/child-transfers", {
     method: Methods.POST,
-    body: JSON.stringify({ childId, toOrganizationId }),
+    body: JSON.stringify({ childId, childType, toOrganizationId }),
   })
 }
 

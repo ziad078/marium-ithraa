@@ -37,6 +37,7 @@ import { getEvaluationTypeLabel } from "@/features/evaluations/utils/labels"
 import { Link } from "@/i18n/navigation"
 import { getDateLocale, getTextDirection } from "@/lib/i18n/locale-utils"
 import { cn } from "@/lib/utils"
+import { getChildId } from "@/lib/types/types/interfaces"
 
 type Props = { locale: string }
 
@@ -120,7 +121,7 @@ function FiltersBar({
   }[]
   disabled?: boolean
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const tEval = useTranslations("Features.Evaluations")
 
   return (
@@ -175,7 +176,7 @@ function ReportsTab({
   locale: string
   evaluationId: string
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const reportsQuery = useOwnerEvaluationReports(
     evaluationId || undefined,
   )
@@ -240,7 +241,7 @@ function ReportCard({
   onExcelExport: () => void
   locale: string
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const dateLabel = report.reportDate
     ? new Date(report.reportDate).toLocaleDateString(getDateLocale(locale))
     : "—"
@@ -293,7 +294,7 @@ function ResultsTab({
   classId: string
   evaluationId: string
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const summaryQuery = useOwnerClassEvaluationSummary(classId, evaluationId)
 
   if (!classId || !evaluationId) {
@@ -354,7 +355,7 @@ function ResultsTabContent({
 }: {
   summary: OwnerClassEvaluationSummary
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const isLearningStyles = summary.evaluationType === "learning_styles"
   const topDims = summary.topDimensions ?? []
 
@@ -452,7 +453,7 @@ function ResultsTabContent({
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {summary.children.map((child) => (
               <ChildResultCard
-                key={child.childId}
+                key={getChildId(child) ?? child.childName}
                 isLearningStyles={isLearningStyles}
                 child={child}
               />
@@ -471,7 +472,7 @@ function ChildResultCard({
   child: OwnerClassEvaluationSummary["children"][number]
   isLearningStyles: boolean
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
 
   const resultLine = isLearningStyles
     ? [child.topResultLabel, child.topDimensionName]
@@ -539,7 +540,7 @@ function StatusTab({
   classId: string
   evaluationId: string
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const statusQuery = useOwnerClassEvaluationStatus(classId, evaluationId)
   const reminderMutation = useSendOwnerEvaluationReminder(
     classId,
@@ -584,12 +585,12 @@ function StatusTab({
     <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {children.map((item) => (
         <StatusChildCard
-          key={item.childId}
+          key={getChildId(item) ?? item.childName}
           item={item}
           isPending={reminderMutation.isPending}
           onReminder={async () => {
             try {
-              await reminderMutation.mutateAsync(item.childId)
+              await reminderMutation.mutateAsync(getChildId(item)!)
               toast.success(
                 locale === "ar"
                   ? "تم إرسال التذكير بنجاح"
@@ -611,7 +612,8 @@ function StatusChildCard({
   isPending,
 }: {
   item: {
-    childId: string
+    organizationChildId: string | null
+    privateChildId: string | null
     childName: string
     className: string
     statusLabel: string
@@ -620,7 +622,7 @@ function StatusChildCard({
   onReminder: () => void
   isPending: boolean
 }) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
 
   return (
     <Card className="rounded-2xl border bg-white shadow-sm">
@@ -653,7 +655,7 @@ function StatusChildCard({
 }
 
 export function OwnerEvaluationResultsScreen({ locale }: Props) {
-  const t = useTranslations("Features.OwnerEvaluations")
+  const t = useTranslations("Features.OrganizationEvaluations")
   const tCommon = useTranslations("Dashboard.common")
 
   const filtersQuery = useOwnerEvaluationFilters()

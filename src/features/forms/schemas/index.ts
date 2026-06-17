@@ -1,4 +1,5 @@
 export * from "./common.schema"
+export * from "./birthDate.schema"
 export * from "./login.schema"
 export * from "./employee.schema"
 export * from "./teacher.schema"

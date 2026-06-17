@@ -42,7 +42,7 @@ const Header = ({ locale }: { locale: string }) => {
 
 
     return (
-        <header className="fixed top-6 left-0 w-full z-50">
+        <header className="fixed top-6 start-0 w-full z-50">
             <div className="app-container">
                 <div
                     className={[
@@ -147,7 +147,7 @@ const Header = ({ locale }: { locale: string }) => {
                                     ) : (
                                       <Button
                                         asChild
-                                        className="w-full rounded-2xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+                                        className="w-full rounded-2xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
                                       >
                                         <Link
                                           href={loginPath}

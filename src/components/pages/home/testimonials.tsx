@@ -1,9 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
-import { HOME_TESTIMONIALS } from "@/lib/home.constants"
+import { HOME_TESTIMONIALS, type HomeTestimonial } from "@/lib/home.constants"
 import { Card, CardContent } from "@/components/ui/card"
 import { SwiperSlider } from "@/components/shared/swiper/swiper-slider"
 
@@ -26,13 +26,11 @@ function Stars({ value }: { value: number }) {
 }
 
 export default function HomeTestimonials() {
-  const locale = useLocale()
   const t = useTranslations("HomePage.Testimonials")
-  const isRtl = locale === "ar"
 
   return (
     <section className="app-container pb-16 lg:pb-24">
-      <div className={cn(isRtl ? "text-right" : "text-left")}>
+      <div className="text-start">
         <h2 className="text-2xl font-extrabold text-primary sm:text-3xl">
           {t("title")}
         </h2>
@@ -47,36 +45,38 @@ export default function HomeTestimonials() {
             768: { slidesPerView: 2, spaceBetween: 16 },
             1024: { slidesPerView: 3, spaceBetween: 18 },
           }}
-          renderItem={(item) => (
-            <Card className="h-full rounded-2xl border border-border/60 bg-[#131E430A] shadow-sm">
-              <CardContent className="p-6">
-                <div className={cn("flex items-start gap-3")}>
-                  <Image
-                    src={item.avatarSrc}
-                    alt={t("avatarAlt")}
-                    width={48}
-                    height={48}
-                    className="size-12 rounded-full border border-border/60"
-                  />
-                  <div className="min-w-0">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-sm font-bold text-foreground">
-                        {t(`items.${item.key}.name`)}
+          renderItem={(item) => {
+            const tItem = item as HomeTestimonial
+            return (
+              <Card className="h-full rounded-2xl border border-border/60 bg-[#131E430A] shadow-sm">
+                <CardContent className="p-6">
+                  <div className={cn("flex items-start gap-3")}>
+                    <Image
+                      src={tItem.avatarSrc}
+                      alt={t("avatarAlt")}
+                      width={48}
+                      height={48}
+                      className="size-12 rounded-full border border-border/60"
+                    />
+                    <div className="min-w-0">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="text-sm font-bold text-foreground">
+                          {t(`items.${tItem.key}.name`)}
+                        </div>
+                        <Stars value={tItem.rating} />
                       </div>
-                      <Stars value={item.rating} />
-                    </div>
-                    <div className="mt-1 text-xs text-muted-foreground">
-                      {t(`items.${item.key}.role`)}
+                      <div className="mt-1 text-xs text-muted-foreground">
+                        {t(`items.${tItem.key}.role`)}
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <p className={cn("mt-4 text-sm leading-relaxed text-muted-foreground")}>
-                  {t(`items.${item.key}.quote`)}
-                </p>
-              </CardContent>
-            </Card>
-          )}
+                  <p className={cn("mt-4 text-sm leading-relaxed text-muted-foreground")}>
+                    {t(`items.${tItem.key}.quote`)}
+                  </p>
+                </CardContent>
+              </Card>
+            )
+          }}
         />
       </div>
     </section>

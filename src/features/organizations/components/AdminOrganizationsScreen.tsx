@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { IconCheck, IconX } from "@tabler/icons-react"
+import { Check, X } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useForm } from "react-hook-form"
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
@@ -135,7 +135,7 @@ export function AdminOrganizationsScreen({ locale }: { locale: string }) {
                   onClick={() => setApproveTarget(org)}
                   aria-label={t("approveAria", { name: org.organizationName })}
                 >
-                  <IconCheck className="size-4" />
+                  <Check className="size-4" />
                   {t("approve")}
                 </Button>
                 <Button
@@ -147,7 +147,7 @@ export function AdminOrganizationsScreen({ locale }: { locale: string }) {
                   }}
                   aria-label={t("rejectAria", { name: org.organizationName })}
                 >
-                  <IconX className="size-4" />
+                  <X className="size-4" />
                   {t("reject")}
                 </Button>
               </div>

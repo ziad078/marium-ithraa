@@ -89,7 +89,7 @@ export function EmployeeRowActions({ employee }: Props) {
             <DialogFooter className="mt-4">
               <Button
                 type="submit"
-                className="h-11 rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+                className="h-11 rounded-xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
               >
                 {tCommon("saveChanges")}
               </Button>

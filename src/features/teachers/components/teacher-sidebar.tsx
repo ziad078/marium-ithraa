@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { IconDashboard, IconNotification } from "@tabler/icons-react"
+import { LayoutDashboard, Bell } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useTranslations } from "next-intl"
 
@@ -36,17 +36,17 @@ export default function TeacherSidebar(props: React.ComponentProps<typeof Sideba
       {
         title: t("dashboard"),
         url: TEACHER_URL,
-        icon: IconDashboard,
+        icon: LayoutDashboard,
       },
       {
         title: tTeacher("classes"),
         url: `${TEACHER_URL}/classes`,
-        icon: IconDashboard,
+        icon: LayoutDashboard,
       },
       {
         title: tNotif("title"),
         url: `/${Routes.DASHBOARDS}/notifications`,
-        icon: IconNotification,
+        icon: Bell,
       },
     ],
   }

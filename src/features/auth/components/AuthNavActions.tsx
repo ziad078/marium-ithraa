@@ -126,7 +126,7 @@ export function AuthNavActions({
       )}
       <Button
         asChild
-        className="rounded-full px-5 bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+        className="rounded-full px-5 bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
       >
         <Link href={loginPath} className="inline-flex items-center gap-2">
           <LogIn className="h-4 w-4" />

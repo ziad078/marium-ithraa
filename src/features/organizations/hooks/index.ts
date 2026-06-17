@@ -9,7 +9,6 @@ import {
   getMyOrganization,
   getOrganizationsByStatus,
   getPendingOrganizations,
-  getUserOrganization,
   rejectOrganization,
 } from "../api"
 import type { RejectOrganizationPayload } from "../types/interfaces"
@@ -25,7 +24,7 @@ export const organizationKeys = {
 export function useOrganization(userId?: string) {
   return useQuery({
     queryKey: ["organization", userId],
-    queryFn: async () => getUserOrganization(userId!),
+    queryFn: getMyOrganization,
     enabled: !!userId,
     staleTime: 1000 * 60 * 10,
   })

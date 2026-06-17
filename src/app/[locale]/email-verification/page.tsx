@@ -4,7 +4,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "@/i18n/navigation"
-import { IconBrandGmail, IconBrandMinecraft } from "@tabler/icons-react"
+import { Mail, Gift } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
@@ -99,14 +99,14 @@ export default function EmailVerificationPage() {
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <Button asChild variant="secondary" className="h-11 rounded-xl">
                                     <a href="https://mail.google.com/" target="_blank">
-                                        <IconBrandGmail />
+                                        <Mail />
                                         Open Gmail
                                     </a>
                                 </Button>
 
                                 <Button asChild variant="secondary" className="h-11 rounded-xl">
                                     <a href="https://outlook.live.com/mail/" target="_blank">
-                                        <IconBrandMinecraft />
+                                        <Gift />
                                         Open Outlook
                                     </a>
                                 </Button>
@@ -114,7 +114,7 @@ export default function EmailVerificationPage() {
 
                             <Button
                                 asChild
-                                className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+                                className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
                             >
                                 <Link href={`/auth/login`}>Back to login</Link>
                             </Button>
@@ -122,7 +122,7 @@ export default function EmailVerificationPage() {
                             <Button
                                 onClick={sendEmail}
                                 disabled={sending || cooldown > 0}
-                                className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+                                className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
                             >
                                 {sending ? (
                                     <>

@@ -3,7 +3,7 @@
 import { Controller, type Control } from "react-hook-form"
 
 import type { BeneficiaryOrganizationFormValues } from "../../schemas/signup.schema"
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
   Field,
@@ -12,19 +12,16 @@ import {
   FieldLabel,
   FieldTitle,
 } from "@/components/ui/field"
-import { cn } from "@/lib/utils"
 
 interface Props {
   control: Control<BeneficiaryOrganizationFormValues>
 }
 
 export default function BeneficiarySignupTypeStep({ control }: Props) {
-  const locale = useLocale()
   const t = useTranslations("Signup.Beneficiary.TypeStep")
-  const isRtl = locale === "ar"
 
   return (
-    <div className={cn("space-y-6", isRtl ? "text-right" : "text-left")}>
+    <div className="space-y-6 text-start">
       <div>
         <h1 className="text-2xl font-extrabold text-primary sm:text-3xl">
           {t("title")}

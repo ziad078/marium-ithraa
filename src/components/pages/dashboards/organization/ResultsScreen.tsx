@@ -11,12 +11,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
+import { METRIC_VARIANTS, type MetricVariant } from "@/components/shared/dashboard/metric-variants"
 
 export type ClassMetric = {
   id: string
   title: string
   value: string
-  variant?: "purple" | "indigo" | "pink"
+  variant?: MetricVariant
 }
 
 export type ChildResultItem = {
@@ -53,11 +54,7 @@ export type ResultsData = {
   reports: ReportItem[]
 }
 
-const metricVariantClass: Record<NonNullable<ClassMetric["variant"]>, string> = {
-  purple: "bg-[#a782f3] text-white",
-  indigo: "bg-[#3a1379] text-white",
-  pink: "bg-[#e88ecf] text-white",
-}
+const metricVariantClass: Record<MetricVariant, string> = METRIC_VARIANTS
 
 function MetricCard({ title, value, variant = "purple" }: ClassMetric) {
   return (
@@ -169,13 +166,13 @@ export function ResultsScreen({
 
       <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="grid h-auto w-full grid-cols-3 gap-3 bg-transparent p-0">
-          <TabsTrigger value="evaluation" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-[#d6c0f7]">
+          <TabsTrigger value="evaluation" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-surface-accent">
             {isAr ? "حالة التقييم" : "Evaluation status"}
           </TabsTrigger>
-          <TabsTrigger value="results" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-[#d6c0f7]">
+          <TabsTrigger value="results" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-surface-accent">
             {isAr ? "النتائج" : "Results"}
           </TabsTrigger>
-          <TabsTrigger value="reports" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-[#d6c0f7]">
+          <TabsTrigger value="reports" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-surface-accent">
             {isAr ? "التقارير" : "Reports"}
           </TabsTrigger>
         </TabsList>

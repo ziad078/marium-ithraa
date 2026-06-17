@@ -1,6 +1,6 @@
 "use client"
 
-import { IconTrendingUp } from "@tabler/icons-react"
+import { TrendingUp } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 import { Badge } from "@/components/ui/badge"
@@ -35,14 +35,14 @@ export function EmployeesCards({cards}: {cards: CardInfo[]}) {
           </CardTitle>
           <CardAction>
             {card.badage.exist&&(<Badge variant="outline">
-              <IconTrendingUp />
+              <TrendingUp />
               +12.5%
             </Badge>)}
           </CardAction>
         </CardHeader>
         {card.footer.exist&&(<CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            {t("Dashboard.cards.trendingUp")} <IconTrendingUp className="size-4" />
+            {t("Dashboard.cards.trendingUp")} <TrendingUp className="size-4" />
           </div>
           <div className="text-muted-foreground">
             {t("Dashboard.cards.last6Months")}

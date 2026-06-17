@@ -1,13 +1,14 @@
+import * as React from "react"
 import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardDescription, CardTitle, CardAction, CardFooter } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CardInfo } from '@/lib/types/types'
-import { IconTrendingUp } from '@tabler/icons-react'
+import { TrendingUp } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import LoadingCard from './LoadingCard'
 import ErrorCard from './ErrorCard'
 
-const DashboardCard = ({ card }: { card: CardInfo }) => {
+const DashboardCard = React.memo(function DashboardCard({ card }: { card: CardInfo }) {
     const t = useTranslations()
 
     if(card.isLoading)return <LoadingCard/>
@@ -23,14 +24,14 @@ const DashboardCard = ({ card }: { card: CardInfo }) => {
                 </CardTitle>
                 <CardAction>
                     {card.badage.exist && (<Badge variant="outline">
-                        <IconTrendingUp />
+                        <TrendingUp />
                         +12.5%
                     </Badge>)}
                 </CardAction>
             </CardHeader>
             {card.footer.exist && (<CardFooter className="flex-col items-start gap-1.5 text-sm">
                 <div className="line-clamp-1 flex gap-2 font-medium">
-                    {t("Dashboard.cards.trendingUp")} <IconTrendingUp className="size-4" />
+                    {t("Dashboard.cards.trendingUp")} <TrendingUp className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
                     {t("Dashboard.cards.last6Months")}
@@ -38,6 +39,6 @@ const DashboardCard = ({ card }: { card: CardInfo }) => {
             </CardFooter>)}
         </Card>
     )
-}
+})
 
 export default DashboardCard

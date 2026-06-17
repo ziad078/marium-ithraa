@@ -1,6 +1,6 @@
-export const formatCurrency = (number: number) => {
-  const currencyFormatter = Intl.NumberFormat("ar-sa", {
-    currency: "",
+export const formatCurrency = (number: number, currency: string = "SAR", locale: string = "en") => {
+  const currencyFormatter = Intl.NumberFormat(locale, {
+    currency,
     style: "currency",
     numberingSystem: "latn"
   });

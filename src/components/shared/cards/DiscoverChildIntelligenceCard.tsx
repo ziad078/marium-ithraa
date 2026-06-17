@@ -24,7 +24,7 @@ export function DiscoverChildIntelligenceCard({
   return (
     <section
       className={cn(
-        "relative overflow-hidden rounded-[12px] bg-[#7222e3] text-white",
+        "relative overflow-hidden rounded-[12px] bg-brand-purple text-white",
         // Match design size while still responsive
         "w-full max-w-[413px] min-h-[254px]",
         className
@@ -32,11 +32,11 @@ export function DiscoverChildIntelligenceCard({
       aria-label={title}
     >
       {/* Decorative icons */}
-      <div className="pointer-events-none absolute left-[83px] top-0 h-[38px] w-[38px]" aria-hidden="true">
+      <div className="pointer-events-none absolute start-[83px] top-0 h-[38px] w-[38px]" aria-hidden="true">
         <Image src={imgMindMap} alt="" fill sizes="38px" />
       </div>
 
-      <div className="pointer-events-none absolute left-[19px] top-0 h-[45.324px] w-[45.324px]" aria-hidden="true">
+      <div className="pointer-events-none absolute start-[19px] top-0 h-[45.324px] w-[45.324px]" aria-hidden="true">
         <div className="flex h-full w-full items-center justify-center">
           <div className="rotate-[-26.95deg]">
             <div className="relative h-[33.708px] w-[33.708px]">
@@ -46,7 +46,7 @@ export function DiscoverChildIntelligenceCard({
         </div>
       </div>
 
-      <div className="pointer-events-none absolute right-[16px] top-[16px] h-[38px] w-[38px]" aria-hidden="true">
+      <div className="pointer-events-none absolute end-[16px] top-[16px] h-[38px] w-[38px]" aria-hidden="true">
         <Image src={imgMindMap} alt="" fill sizes="38px" />
       </div>
 

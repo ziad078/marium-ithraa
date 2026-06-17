@@ -35,7 +35,7 @@ const Hero = () => {
 
       <div className="app-container relative pt-40 pb-14 lg:pt-40 lg:pb-20">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          <div className={cn("order-2 lg:order-1", isRtl ? "text-right" : "text-left")}>
+          <div className="order-2 text-start lg:order-1">
             <div className="mb-5 inline-flex items-center gap-3">
               <Image
                 src="/logo.svg"
@@ -71,7 +71,7 @@ const Hero = () => {
                     )}
                   >
                     <Link href={c.href} className={cn("gap-4")}>
-                      <span className={cn("min-w-0", isRtl ? "text-right" : "text-left")}>
+                      <span className="min-w-0 text-start">
                         <span className="block text-sm font-semibold text-foreground sm:text-base">
                           {t(`cards.${c.key}.label`)}
                         </span>

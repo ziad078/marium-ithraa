@@ -107,7 +107,7 @@ export type EntityCardProps = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function EntityCard({
+const EntityCardImpl = function EntityCard({
   fields,
   editLabel,
   deleteLabel,
@@ -189,3 +189,5 @@ export function EntityCard({
     </>
   )
 }
+
+export const EntityCard = React.memo(EntityCardImpl)

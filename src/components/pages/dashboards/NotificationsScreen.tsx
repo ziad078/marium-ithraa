@@ -39,7 +39,7 @@ type Props = { locale: string }
 const LIMIT = 10
 
 const tabTriggerClass =
-  "h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-[#d6c0f7] data-[state=active]:shadow"
+  "h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-surface-accent data-[state=active]:shadow"
 
 export function NotificationsScreen({ locale }: Props) {
   const t = useTranslations("Features.Notifications")
@@ -105,7 +105,7 @@ export function NotificationsScreen({ locale }: Props) {
 
   return (
     <main
-      className="min-h-screen bg-[#f3eefb] py-8"
+      className="min-h-screen bg-surface py-8"
       dir={isAr ? "rtl" : "ltr"}
     >
       <div className="app-container space-y-8">

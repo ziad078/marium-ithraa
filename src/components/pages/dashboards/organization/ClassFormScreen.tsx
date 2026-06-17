@@ -1,6 +1,6 @@
 "use client"
 
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { useRouter } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
@@ -30,6 +30,7 @@ import {
 } from "@/features/classes"
 import { type Grade } from "@/features/grades"
 import { type Teacher } from "@/features/teachers/types"
+import { z } from "zod"
 import { useFormConfig } from "@/features/forms/hooks/useFormConfig"
 import { useServerActionForm } from "@/features/forms/hooks/useServerActionForm"
 import { RhfFormFields } from "@/features/forms/components/RhfFormFields"
@@ -74,9 +75,8 @@ export function ClassFormScreen({
     : { name: "", gradeId: defaultGradeId ?? "", teacherId: "" }
 
   const { form, submit, isPending } = useServerActionForm({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    schema: schema as any,
-    defaultValues: defaultValues as { name: string, gradeId: string, teacherId: string },
+    schema: schema as z.ZodType<any, any, any>,
+    defaultValues: defaultValues as Record<string, unknown>,
     action,
     onStatusChange: (state) => {
       if (!state?.status) return

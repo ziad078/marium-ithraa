@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useEffect, useMemo, useState } from "react"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { useLocale, useTranslations } from "next-intl"
 import { Layers3, Loader2, Plus, School, Users } from "lucide-react"
 

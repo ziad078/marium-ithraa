@@ -20,7 +20,7 @@ export default async function RequireRoles({
   if (!session?.user) redirect(redirectTo ?? `/${Routes.AUTH}/login`)
 
   const ok = hasAnyRole(session.user.roles, allowed)
-  if (!ok) redirect(redirectTo ?? `/${Routes.UNAUTHARIZED}`)
+  if (!ok) redirect(redirectTo ?? `/${Routes.UNAUTHORIZED}`)
 
   return children
 }

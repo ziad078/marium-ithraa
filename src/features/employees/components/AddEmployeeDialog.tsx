@@ -1,6 +1,6 @@
 "use client"
 
-import { IconPlus } from "@tabler/icons-react"
+import { Plus } from "lucide-react"
 import { Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
@@ -43,7 +43,7 @@ export function AddEmployeeDialog({ organizationId }: { organizationId: string }
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <IconPlus />
+          <Plus />
           <span className="hidden lg:inline">{t("dialogTitle")}</span>
         </Button>
       </DialogTrigger>
@@ -66,7 +66,7 @@ export function AddEmployeeDialog({ organizationId }: { organizationId: string }
             </DialogClose>
             <Button
               type="submit"
-              className="rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+              className="rounded-xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
             >
               <Loader2 className="mr-2 h-4 w-4 animate-spin hidden in-[[disabled]]:inline" />
               {tCommon("add")}

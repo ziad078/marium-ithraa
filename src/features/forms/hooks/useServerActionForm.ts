@@ -36,8 +36,7 @@ export function useServerActionForm<T extends FieldValues>({
   const [isPending, startTransition] = useTransition()
 
   const form = useForm<T>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(schema as any) as Resolver<T>,
+    resolver: zodResolver(schema as unknown as z.ZodType<any, any, any>) as Resolver<T>,
     defaultValues,
     mode: "onTouched",
   })

@@ -1,14 +1,5 @@
-import { Test } from "../types/interfaces"
-import { ApiError } from "@/lib/errors/ApiError"
+import type { Test } from "../types/interfaces"
 
-const TESTS_FLOW_DEPRECATED_MESSAGE =
-  "This tests flow is no longer available. Please use evaluations."
-
-export const getAllTests = async () => {
-  throw new ApiError(TESTS_FLOW_DEPRECATED_MESSAGE, 410)
-}
-
-export const createTest = async (data: Partial<Test>) => {
-  void data
-  throw new ApiError(TESTS_FLOW_DEPRECATED_MESSAGE, 410)
+export async function createTest(data: Partial<Test>) {
+  throw new Error("Tests flow is deprecated. Use evaluations API instead.")
 }

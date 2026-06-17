@@ -1,10 +1,1 @@
-import { useQuery } from "@tanstack/react-query"
-import { getAllTests } from "../api"
-
-export function useAdminTests() {
-  return useQuery({
-    queryKey: ["admin", "tests"],
-    queryFn: getAllTests,
-    staleTime: 1000 * 60 * 10,
-  })
-}
+// Tests flow is deprecated. Use evaluations API instead.

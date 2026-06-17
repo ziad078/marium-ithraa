@@ -1,7 +1,6 @@
 import { CreateEmployee } from "@/features/employees/types/interfaces"
 import { Endpoint, Methods } from "@/lib/types/enums"
 import { api } from "@/lib/api/api"
-import { User } from "@/features/users"
 import type {
   ApprovalStatus,
   LegacyOrganizationsListResponse,
@@ -26,13 +25,6 @@ export const createEmployee = async (employee: CreateEmployee) => {
     method: Methods.POST,
     body: JSON.stringify(employee),
   })
-}
-
-/** @deprecated Use getMyOrganization instead */
-export async function getUserOrganization(userId: string) {
-  return api.server<{ user: User }>(
-    `/${Endpoint.USERS}/${Endpoint.ORGANIZATIONOWNER}/${userId}`,
-  )
 }
 
 export async function getMyOrganization() {

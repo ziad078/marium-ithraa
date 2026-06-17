@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { IconDashboard, IconFileText, IconNotification } from "@tabler/icons-react"
+import { LayoutDashboard, FileText, Bell } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useTranslations } from "next-intl"
 
@@ -36,22 +36,22 @@ export default function ParentSidebar(props: React.ComponentProps<typeof Sidebar
       {
         title: t("dashboard"),
         url: PARENT_URL,
-        icon: IconDashboard,
+        icon: LayoutDashboard,
       },
       {
         title: tParent("children"),
         url: `${PARENT_URL}/children`,
-        icon: IconFileText,
+        icon: FileText,
       },
       {
         title: tParent("evaluations"),
         url: `${PARENT_URL}/evaluations`,
-        icon: IconFileText,
+        icon: FileText,
       },
       {
         title: tNotif("title"),
         url: `/${Routes.DASHBOARDS}/notifications`,
-        icon: IconNotification,
+        icon: Bell,
       },
     ],
   }

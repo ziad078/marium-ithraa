@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
-  useActivities,
+  useActivitiesWithDeals,
   useCreateActivity,
   useUpdateActivity,
   useDeleteActivity,
@@ -28,7 +28,7 @@ import type { Activity } from "@/features/deals"
 export default function AdminActivitiesPage() {
   const locale = useLocale()
   const t = useTranslations("Features.Activities")
-  const { data, isLoading } = useActivities()
+  const { data, isLoading } = useActivitiesWithDeals()
   const create = useCreateActivity()
   const update = useUpdateActivity()
   const del = useDeleteActivity()
@@ -101,7 +101,7 @@ export default function AdminActivitiesPage() {
                 <tr key={a.id} className="border-b last:border-0">
                   <td className="p-3">{a.name}</td>
                   <td className="p-3 text-muted-foreground">
-                    {(a as any).deals?.length ?? "—"}
+                    {a.deals?.length ?? "—"}
                   </td>
                   <td className="p-3 text-end space-x-2">
                     <Button variant="ghost" size="sm" onClick={() => openEdit(a)}>

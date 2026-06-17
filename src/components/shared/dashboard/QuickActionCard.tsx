@@ -1,7 +1,8 @@
 "use client"
 
+import * as React from "react"
 import type { ReactNode } from "react"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -16,7 +17,7 @@ type Props = {
   className?: string
 }
 
-export function QuickActionCard({
+export const QuickActionCard = React.memo(function QuickActionCard({
   title,
   description,
   href,
@@ -34,7 +35,7 @@ export function QuickActionCard({
       <CardContent className="flex h-full flex-col gap-4 p-5 text-start">
         <div className="flex items-start gap-3">
           {icon ? (
-            <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-[#f3eefb] text-fuchsia-600 [&_svg]:size-5">
+            <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-surface text-fuchsia-600 [&_svg]:size-5">
               {icon}
             </div>
           ) : null}
@@ -49,4 +50,4 @@ export function QuickActionCard({
       </CardContent>
     </Card>
   )
-}
+})

@@ -45,6 +45,17 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --color-surface: #f3eefb;
+  --color-surface-accent: #d6c0f7;
+  --color-brand-purple: #7222e3;
+  --color-brand-navy: #2b4683;
+  --color-stat-purple: #a782f3;
+  --color-stat-violet: #6f2ae7;
+  --color-stat-pink: #ff9ad7;
+  --color-stat-indigo: #2b115d;
+  --color-muted-icon: #898293;
+  --color-metric-indigo: #3a1379;
+  --color-metric-pink: #e88ecf;
 }
 
 :root {

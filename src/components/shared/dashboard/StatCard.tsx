@@ -5,10 +5,10 @@ import { Card, CardContent } from "@/components/ui/card"
 export type StatCardVariant = "purple" | "violet" | "pink" | "indigo"
 
 const variantClasses: Record<StatCardVariant, string> = {
-  purple: "bg-[#a782f3] text-white",
-  violet: "bg-[#6f2ae7] text-white",
-  pink: "bg-[#ff9ad7] text-white",
-  indigo: "bg-[#2b115d] text-white",
+  purple: "bg-stat-purple text-white",
+  violet: "bg-stat-violet text-white",
+  pink: "bg-stat-pink text-white",
+  indigo: "bg-stat-indigo text-white",
 }
 
 export type StatCardProps = {
@@ -19,7 +19,7 @@ export type StatCardProps = {
   className?: string
 }
 
-export function StatCard({
+export const StatCard = React.memo(function StatCard({
   label,
   value,
   icon,
@@ -50,5 +50,5 @@ export function StatCard({
       </CardContent>
     </Card>
   )
-}
+})
 

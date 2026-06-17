@@ -2,15 +2,15 @@
 
 import * as React from "react"
 import {
-  IconBrain,
-  IconDatabase,
-  IconDashboard,
-  IconInnerShadowTop,
-  IconReport,
-  IconUsers,
-  IconBriefcase,
-  IconActivity,
-} from "@tabler/icons-react"
+  Brain,
+  Database,
+  LayoutDashboard,
+  PanelTop,
+  FileBarChart,
+  Users,
+  Briefcase,
+  Activity,
+} from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -43,76 +43,76 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {
         title: t("Dashboard.Nav.dashboard"),
         url: ADMIN_URL,
-        icon: IconDashboard,
+        icon: LayoutDashboard,
       },
       {
         title: t("Dashboard.Nav.users"),
         url: `${ADMIN_URL}/${Pages.USERS}`,
-        icon: IconUsers,
+        icon: Users,
       },
       {
         title: t("Features.Organizations.admin.nav"),
         url: `${ADMIN_URL}/organizations`,
-        icon: IconUsers,
+        icon: Users,
       },
       {
         title: t("Dashboard.Nav.children"),
         url: `${ADMIN_URL}/children`,
-        icon: IconUsers,
+        icon: Users,
       },
       {
         title: t("Dashboard.Nav.evaluations"),
         url: `${ADMIN_URL}/evaluations`,
-        icon: IconBrain,
+        icon: Brain,
       },
       {
         title: t("Dashboard.Nav.attempts"),
         url: `${ADMIN_URL}/attempts`,
-        icon: IconReport,
+        icon: FileBarChart,
       },
       {
         title: t("Features.Notifications.title"),
         url: `/${Routes.DASHBOARDS}/notifications`,
-        icon: IconReport,
+        icon: FileBarChart,
       },
       {
         title: t("Features.Notifications.dispatchTitle"),
         url: `${ADMIN_URL}/notifications/dispatch`,
-        icon: IconReport,
+        icon: FileBarChart,
       },
       {
         title: t("Dashboard.Nav.activities"),
         url: `${ADMIN_URL}/activities`,
-        icon: IconActivity,
+        icon: Activity,
       },
       {
         title: t("Dashboard.Nav.capacityRequests"),
         url: `${ADMIN_URL}/capacity-requests`,
-        icon: IconDatabase,
+        icon: Database,
       },
       {
         title: t("Dashboard.Nav.deals"),
         url: `${ADMIN_URL}/deals`,
-        icon: IconBriefcase,
+        icon: Briefcase,
       },
     ],
     // navSecondary: [
     //   {
     //     title: t("Dashboard.Nav.settings"),
     //     url: "#",
-    //     icon: IconSettings,
+    //     icon: Settings,
     //   },
     //   {
     //     title: t("Dashboard.Nav.getHelp"),
     //     url: "#",
-    //     icon: IconHelp,
+    //     icon: HelpCircle,
     //   },
     // ],
     // documents: [
     //   {
     //     name: t("Dashboard.Nav.dataLibrary"),
     //     url: "#",
-    //     icon: IconReport,
+    //     icon: FileBarChart,
     //   },
     // ],
   }
@@ -127,7 +127,7 @@ export function AdminSidebar(props: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <a href="#">
-                <IconInnerShadowTop className="size-5!" />
+                <PanelTop className="size-5!" />
                 <span className="text-base font-semibold">{"Admin"}</span>
               </a>
             </SidebarMenuButton>

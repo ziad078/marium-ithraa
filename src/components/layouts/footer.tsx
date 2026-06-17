@@ -45,7 +45,7 @@ const Footer = ({ locale }: { locale?: string }) => {
   return (
     <footer className="relative overflow-hidden bg-white">
       <div
-        className="pointer-events-none absolute inset-y-0 left-0 w-[45%] opacity-60 blur-[0.5px]"
+        className="pointer-events-none absolute inset-y-0 start-0 w-[45%] opacity-60 blur-[0.5px]"
         style={{
           background:
             "radial-gradient(closest-side, rgba(168, 85, 247, 0.18), transparent 70%)",
@@ -112,7 +112,7 @@ const Footer = ({ locale }: { locale?: string }) => {
               </Button>
             </div>
 
-            <div className={`mt-6 space-y-2 text-sm text-muted-foreground ${isRtl ? "text-right" : "text-left"}`}>
+            <div className="mt-6 space-y-2 text-sm text-muted-foreground text-start">
               <a className="block w-fit hover:text-foreground" href={`mailto:${t("Contact.Email")}`}>
                 {t("Contact.Email")}
               </a>
@@ -124,7 +124,7 @@ const Footer = ({ locale }: { locale?: string }) => {
 
           <div className="lg:col-span-7">
             <div className="grid gap-8 sm:grid-cols-2">
-              <div className={isRtl ? "text-right" : "text-left"}>
+              <div className="text-start">
                 <h3 className="text-sm font-semibold text-foreground">{t("Paths.Title")}</h3>
                 <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                   {pathsLinks.map((l) => (
@@ -137,7 +137,7 @@ const Footer = ({ locale }: { locale?: string }) => {
                 </ul>
               </div>
 
-              <div className={isRtl ? "text-right" : "text-left"}>
+              <div className="text-start">
                 <h3 className="text-sm font-semibold text-foreground">{t("About.Title")}</h3>
                 <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                   {aboutLinks.map((l) => (

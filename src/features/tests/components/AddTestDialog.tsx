@@ -1,6 +1,6 @@
 "use client"
 
-import { IconPlus } from "@tabler/icons-react"
+import { Plus } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 
@@ -23,7 +23,7 @@ export function AddTestDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          <IconPlus />
+          <Plus />
           <span className="hidden lg:inline">{t("Actions.Add")}</span>
         </Button>
       </DialogTrigger>

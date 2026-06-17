@@ -27,7 +27,7 @@ export default async function EnricherLayout({
         }
       >
         <EnricherSidebar variant="inset" dir={dir} />
-        <SidebarInset className="bg-[#f3eefb]">
+        <SidebarInset className="bg-surface">
           <DashboardTopBar />
           <div className="flex-1">{children}</div>
         </SidebarInset>

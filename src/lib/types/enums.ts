@@ -13,7 +13,7 @@ export enum Routes {
   ROOT = "",
   AUTH = "auth",
   DASHBOARDS = "dashboards",
-  UNAUTHARIZED = "unautharized",
+  UNAUTHORIZED = "UNAUTHORIZED",
   CHOSEROLE = "chose-role",
   EMAILVERIFICATION = "email-verification",
   NOTIFICATIONS = 'notifications',

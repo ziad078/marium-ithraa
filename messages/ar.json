@@ -237,7 +237,45 @@
         "gender": "الجنس"
       }
     },
-    "Employees": {
+        "ChildTransferRequests": {
+          "title": "طلبات نقل الأطفال",
+          "subtitle": "راجع طلبات نقل الأطفال الواردة إلى مؤسستك واعتمدها من هنا.",
+          "noPending": "لا توجد طلبات نقل معلقة",
+          "incoming": "طلب نقل وارد",
+          "pendingBadge": "معلق",
+          "fromOrganization": "من مؤسسة",
+          "birthDate": "تاريخ الميلاد",
+          "currentClass": "الفصل الحالي",
+          "requestedBy": "مقدم الطلب",
+          "approveTransfer": "اعتماد النقل",
+          "reject": "رفض",
+          "rejectTitle": "رفض طلب النقل؟",
+          "rejectDescription": "سيتم إرسال قرار الرفض إلى الخادم وإزالة الطلب من القائمة.",
+          "cancel": "إلغاء",
+          "unknownChild": "طفل غير معروف",
+          "anotherOrganization": "مؤسسة أخرى",
+          "transferRequestRejected": "تم رفض طلب النقل",
+          "unableToUpdate": "تعذر تحديث طلب النقل",
+          "dashboardBreadcrumb": "لوحة التحكم",
+          "transferRequestsBreadcrumb": "طلبات النقل"
+        },
+        "ApproveChildTransfer": {
+          "title": "اعتماد نقل الطفل",
+          "description": "اختر الفصل الذي سينضم إليه {childName} في {organizationName}.",
+          "classLabel": "الفصل",
+          "loadingClasses": "جاري تحميل الفصول...",
+          "selectClass": "اختر الفصل",
+          "noClasses": "لا توجد فصول متاحة لهذه المؤسسة.",
+          "cancel": "إلغاء",
+          "approveTransfer": "اعتماد النقل",
+          "targetOrganization": "المؤسسة المستهدفة",
+          "unableToIdentify": "تعذر تحديد المؤسسة المستهدفة.",
+          "unableToLoadClasses": "تعذر تحميل الفصول.",
+          "approvedToast": "تم اعتماد طلب النقل.",
+          "unableToApprove": "تعذر اعتماد طلب النقل.",
+          "theChild": "الطفل"
+        },
+        "Employees": {
       "titles": {
         "details": "تفاصيل الموظف"
       },
@@ -350,6 +388,15 @@
         }
       }
     }
+  },
+  "error": {
+    "title": "حدث خطأ ما",
+    "description": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة.",
+    "cta": "الرجوع للرئيسية"
   },
   "Signup": {
     "Beneficiary": {
@@ -518,6 +565,7 @@
     "logout": "تسجيل الخروج",
     "signup": "إنشاء حساب",
     "redirecting": "جاري التحويل...",
+    "checking": "جاري التحقق من الجلسة...",
     "sessionExpired": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
     "Login": {
       "title": "تسجيل الدخول",
@@ -1028,6 +1076,19 @@
       "updateProposal": "تحديث العرض",
       "updatePrice": "تحديث السعر"
     }
+  },
+  "Flow6": {
+    "title": "اكتشف ذكاء طفلك",
+    "description": "ابدأ الرحلة الذكية مع طفلك اليوم! اكتشف نوع ذكائه، وساعده على تنمية قدراته بطريقة تناسبه، بخطوات سهلة ونتائج فورية.",
+    "ctaLabel": "اكتشف"
+  },
+  "TestsPage": {
+    "title": "هذه الصفحة غير متاحة حالياً. يرجى استخدام التقييمات.",
+    "description": "تم إيقاف واجهة الاختبارات القديمة. يمكنك متابعة تقييمات الأطفال من صفحة التقييمات.",
+    "openEvaluations": "فتح التقييمات"
+  },
+  "Common": {
+    "search": "بحث..."
   },
   "Layout": {
     "OrganizationNav": {

@@ -3,6 +3,7 @@
 import { useMemo, useState, useTransition } from "react"
 import type { ReactNode } from "react"
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
+import { useTranslations } from "next-intl"
 import { ArrowRightLeft, Calendar, Check, Loader2, School, X } from "lucide-react"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
@@ -33,7 +34,7 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
   const [approveRequest, setApproveRequest] = useState<ChildTransferRequest | null>(null)
   const [rejectRequest, setRejectRequest] = useState<ChildTransferRequest | null>(null)
   const [isPending, startTransition] = useTransition()
-  const isAr = locale === "ar"
+  const t = useTranslations("Dashboard.ChildTransferRequests")
 
   const pendingItems = useMemo(
     () => items.filter((item) => item.status === "pending"),
@@ -51,15 +52,13 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
       try {
         const response = await rejectChildTransfer(rejectRequest.id)
         removeRequest(rejectRequest.id)
-        showSuccessToast({ raw: response.message || (isAr ? "تم رفض طلب النقل" : "Transfer request rejected") })
+        showSuccessToast({ raw: response.message || t("transferRequestRejected") })
         setRejectRequest(null)
       } catch (error) {
         showErrorToast(
           { raw: error instanceof Error
             ? error.message
-            : isAr
-              ? "تعذر تحديث طلب النقل"
-              : "Unable to update transfer request" }
+            : t("unableToUpdate") }
         )
       }
     })
@@ -69,19 +68,15 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
     <main className="app-container py-8 space-y-8" dir={getTextDirection(locale)}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "لوحة التحكم" : "Dashboard" },
-          { label: isAr ? "طلبات النقل" : "Transfer requests" },
+          { href: "/dashboards/organization", label: t("dashboardBreadcrumb") },
+          { label: t("transferRequestsBreadcrumb") },
         ]}
-        title={isAr ? "طلبات نقل الأطفال" : "Child transfer requests"}
-        subtitle={
-          isAr
-            ? "راجع طلبات نقل الأطفال الواردة إلى مؤسستك واعتمدها من هنا."
-            : "Review incoming child transfer requests for your organization."
-        }
+        title={t("title")}
+        subtitle={t("subtitle")}
       />
 
       {pendingItems.length === 0 ? (
-        <EmptyState title={isAr ? "لا توجد طلبات نقل معلقة" : "No pending transfer requests"} />
+        <EmptyState title={t("noPending")} />
       ) : (
         <section className="grid gap-5 lg:grid-cols-2">
           {pendingItems.map((request) => {
@@ -89,7 +84,7 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
             const fromName =
               request.fromOrganization?.organizationName ||
               request.fromOrganization?.name ||
-              (isAr ? "مؤسسة أخرى" : "Another organization")
+              t("anotherOrganization")
             const requestedBy = request.requestedBy?.name || request.requestedBy?.phone
 
             return (
@@ -98,15 +93,15 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <CardTitle className="text-base">
-                        {child?.name || (isAr ? "طفل غير معروف" : "Unknown child")}
+                        {child?.name || t("unknownChild")}
                       </CardTitle>
                       <p className="mt-1 text-sm text-muted-foreground">
-                        {isAr ? "طلب نقل وارد" : "Incoming transfer request"}
+                        {t("incoming")}
                       </p>
                     </div>
                     <Badge variant="secondary" className="gap-1">
                       <ArrowRightLeft className="size-3" />
-                      {isAr ? "معلق" : "Pending"}
+                      {t("pendingBadge")}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -114,21 +109,21 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
                   <div className="grid gap-3 text-sm sm:grid-cols-2">
                     <TransferField
                       icon={<School />}
-                      label={isAr ? "من مؤسسة" : "From organization"}
+                      label={t("fromOrganization")}
                       value={fromName}
                     />
                     <TransferField
                       icon={<Calendar />}
-                      label={isAr ? "تاريخ الميلاد" : "Birth date"}
+                      label={t("birthDate")}
                       value={formatChildBirthDate(child?.birthDate, locale)}
                     />
                     <TransferField
-                      label={isAr ? "الفصل الحالي" : "Current class"}
+                      label={t("currentClass")}
                       value={child ? getChildClassName(child) : "-"}
                     />
                     {requestedBy ? (
                       <TransferField
-                        label={isAr ? "مقدم الطلب" : "Requested by"}
+                        label={t("requestedBy")}
                         value={requestedBy}
                       />
                     ) : null}
@@ -141,7 +136,7 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
                       onClick={() => setApproveRequest(request)}
                     >
                       <Check className="size-4" />
-                      {isAr ? "اعتماد النقل" : "Approve transfer"}
+                      {t("approveTransfer")}
                     </Button>
                     <Button
                       type="button"
@@ -150,7 +145,7 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
                       onClick={() => setRejectRequest(request)}
                     >
                       <X className="size-4" />
-                      {isAr ? "رفض" : "Reject"}
+                      {t("reject")}
                     </Button>
                   </div>
                 </CardContent>
@@ -173,11 +168,9 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
       <Dialog open={Boolean(rejectRequest)} onOpenChange={(open) => !open && setRejectRequest(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{isAr ? "رفض طلب النقل؟" : "Reject transfer request?"}</DialogTitle>
+            <DialogTitle>{t("rejectTitle")}</DialogTitle>
             <DialogDescription>
-              {isAr
-                ? "سيتم إرسال قرار الرفض إلى الخادم وإزالة الطلب من القائمة."
-                : "This rejection will be sent to the backend and the request will be removed from the list."}
+              {t("rejectDescription")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -187,11 +180,11 @@ export function ChildTransferRequestsScreen({ locale, requests }: Props) {
               onClick={() => setRejectRequest(null)}
               disabled={isPending}
             >
-              {isAr ? "إلغاء" : "Cancel"}
+              {t("cancel")}
             </Button>
             <Button type="button" onClick={completeReject} disabled={isPending}>
               {isPending && <Loader2 className="size-4 animate-spin" />}
-              {isAr ? "رفض" : "Reject"}
+              {t("reject")}
             </Button>
           </DialogFooter>
         </DialogContent>

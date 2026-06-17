@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
+import { useTranslations } from "next-intl"
 import { Check, Loader2, School } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -38,7 +39,7 @@ export function ApproveChildTransferDialog({
   onOpenChange,
   onApproved,
 }: Props) {
-  const isAr = locale === "ar"
+  const t = useTranslations("Dashboard.ApproveChildTransfer")
   const [classes, setClasses] = useState<ClassItem[]>([])
   const [selectedClassId, setSelectedClassId] = useState("")
   const [isLoadingClasses, setIsLoadingClasses] = useState(false)
@@ -49,9 +50,9 @@ export function ApproveChildTransferDialog({
     return (
       request?.toOrganization?.organizationName ||
       request?.toOrganization?.name ||
-      (isAr ? "المؤسسة المستهدفة" : "target organization")
+      t("targetOrganization")
     )
-  }, [isAr, request?.toOrganization?.name, request?.toOrganization?.organizationName])
+  }, [t, request?.toOrganization?.name, request?.toOrganization?.organizationName])
 
   useEffect(() => {
     if (!open || !request) return
@@ -61,7 +62,7 @@ export function ApproveChildTransferDialog({
     setClasses([])
 
     if (!targetOrganizationId) {
-      showErrorToast({ raw: isAr ? "تعذر تحديد المؤسسة المستهدفة." : "Unable to identify the target organization." })
+      showErrorToast({ raw: t("unableToIdentify") })
       return
     }
 
@@ -76,9 +77,7 @@ export function ApproveChildTransferDialog({
         showErrorToast(
           { raw: error instanceof Error
             ? error.message
-            : isAr
-              ? "تعذر تحميل الفصول."
-              : "Unable to load classes." }
+            : t("unableToLoadClasses") }
         )
       })
       .finally(() => {
@@ -88,7 +87,7 @@ export function ApproveChildTransferDialog({
     return () => {
       isActive = false
     }
-  }, [isAr, open, request, targetOrganizationId])
+    }, [t, open, request, targetOrganizationId])
 
   function handleOpenChange(nextOpen: boolean) {
     if (!nextOpen && isSubmitting) return
@@ -103,14 +102,12 @@ export function ApproveChildTransferDialog({
       const response = await approveChildTransfer(request.id, selectedClassId)
       onApproved(request.id)
       onOpenChange(false)
-      showSuccessToast({ raw: response.message || (isAr ? "تم اعتماد طلب النقل." : "Transfer request approved.") })
+      showSuccessToast({ raw: response.message || t("approvedToast") })
     } catch (error) {
       showErrorToast(
         { raw: error instanceof Error
           ? error.message
-          : isAr
-            ? "تعذر اعتماد طلب النقل."
-            : "Unable to approve transfer request." }
+          : t("unableToApprove") }
       )
     } finally {
       setIsSubmitting(false)
@@ -118,31 +115,29 @@ export function ApproveChildTransferDialog({
   }
 
   const hasClasses = classes.length > 0
-  const childName = request?.child?.name || (isAr ? "الطفل" : "the child")
+  const childName = request?.child?.name || t("theChild")
   const canSubmit = Boolean(selectedClassId) && !isLoadingClasses && !isSubmitting
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isAr ? "اعتماد نقل الطفل" : "Approve child transfer"}</DialogTitle>
+          <DialogTitle>{t("title")}</DialogTitle>
           <DialogDescription>
-            {isAr
-              ? `اختر الفصل الذي سينضم إليه ${childName} في ${targetOrganizationName}.`
-              : `Choose the class ${childName} will join in ${targetOrganizationName}.`}
+            {t("description", { childName, organizationName: targetOrganizationName })}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm font-medium">
             <School className="size-4 text-muted-foreground" />
-            <span>{isAr ? "الفصل" : "Class"}</span>
+            <span>{t("classLabel")}</span>
           </div>
 
           {isLoadingClasses ? (
             <div className="flex h-11 items-center gap-2 rounded-lg border px-3 text-sm text-muted-foreground">
               <Loader2 className="size-4 animate-spin" />
-              {isAr ? "جاري تحميل الفصول..." : "Loading classes..."}
+              {t("loadingClasses")}
             </div>
           ) : (
             <Select
@@ -151,7 +146,7 @@ export function ApproveChildTransferDialog({
               disabled={!targetOrganizationId || !hasClasses || isSubmitting}
             >
               <SelectTrigger className="h-11 w-full rounded-lg">
-                <SelectValue placeholder={isAr ? "اختر الفصل" : "Select a class"} />
+                <SelectValue placeholder={t("selectClass")} />
               </SelectTrigger>
               <SelectContent>
                 {classes.map((classItem) => (
@@ -165,7 +160,7 @@ export function ApproveChildTransferDialog({
 
           {!isLoadingClasses && targetOrganizationId && !hasClasses ? (
             <p className="text-sm text-muted-foreground">
-              {isAr ? "لا توجد فصول متاحة لهذه المؤسسة." : "No classes are available for this organization."}
+              {t("noClasses")}
             </p>
           ) : null}
         </div>
@@ -177,11 +172,11 @@ export function ApproveChildTransferDialog({
             onClick={() => handleOpenChange(false)}
             disabled={isSubmitting}
           >
-            {isAr ? "إلغاء" : "Cancel"}
+            {t("cancel")}
           </Button>
           <Button type="button" onClick={handleApprove} disabled={!canSubmit}>
             {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
-            {isAr ? "اعتماد النقل" : "Approve transfer"}
+            {t("approveTransfer")}
           </Button>
         </DialogFooter>
       </DialogContent>

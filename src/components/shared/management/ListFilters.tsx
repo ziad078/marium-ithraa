@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+import { getTextDirection } from "@/lib/i18n/locale-utils"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -40,18 +42,18 @@ export function ListFilters({
   gradeFilter,
   classFilter,
 }: ListFiltersProps) {
-  const isAr = locale === "ar"
+  const t = useTranslations("Common")
 
   return (
     <div
       className="flex flex-col gap-3 md:flex-row md:items-end md:gap-4"
-      dir={isAr ? "rtl" : "ltr"}
+      dir={getTextDirection(locale)}
     >
       <div className="flex-1">
         <Input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder={searchPlaceholder ?? (isAr ? "بحث..." : "Search...")}
+          placeholder={searchPlaceholder ?? t("search")}
           className="rounded-xl"
         />
       </div>

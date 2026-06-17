@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 
 import { getPaginationMeta, paginateArray } from "@/lib/api/pagination"
 import { useTranslations } from "next-intl"
-import { IconPlus } from "@tabler/icons-react"
+import { Plus } from "lucide-react"
 
 import { DataTable } from "@/components/shared/data-table/DataTable"
 import { Button } from "@/components/ui/button"
@@ -59,7 +59,7 @@ export function AdminEvaluationsScreen({ evaluations, locale }: Props) {
         <h2 className="text-xl font-semibold">{t("listTitle")}</h2>
         <Link href={`/${Routes.DASHBOARDS}/${Pages.ADMIN}/evaluations/create`}>
           <Button variant="outline" size="sm">
-            <IconPlus className="size-4" />
+            <Plus className="size-4" />
             <span className="hidden lg:inline">{t("create")}</span>
           </Button>
         </Link>

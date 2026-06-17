@@ -115,7 +115,7 @@ export function AdminDispatchNotificationScreen({ locale }: Props) {
 
   return (
     <main
-      className="min-h-screen bg-[#f3eefb] py-8"
+      className="min-h-screen bg-surface py-8"
       dir={isAr ? "rtl" : "ltr"}
     >
       <div className="app-container space-y-8">

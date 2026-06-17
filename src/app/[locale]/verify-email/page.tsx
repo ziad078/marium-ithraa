@@ -54,7 +54,7 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
 
               <Button
                 asChild
-                className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-indigo-600 text-white hover:opacity-95"
+                className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
               >
                 <Link href={`/auth/login`}>Go to login</Link>
               </Button>

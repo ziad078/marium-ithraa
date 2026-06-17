@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { IconDashboard, IconFileDescription, IconNotification } from "@tabler/icons-react"
+import { LayoutDashboard, FileText, Bell } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useTranslations } from "next-intl"
 
@@ -36,22 +36,22 @@ export function EnricherSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {
         title: t("dashboard"),
         url: ENRICHER_URL,
-        icon: IconDashboard,
+        icon: LayoutDashboard,
       },
       {
         title: tEnricher("deals"),
         url: `${ENRICHER_URL}/${Pages.DEALS}`,
-        icon: IconFileDescription,
+        icon: FileText,
       },
       {
         title: tEnricher("proposals"),
         url: `${ENRICHER_URL}/${Pages.PROPOSALS}`,
-        icon: IconFileDescription,
+        icon: FileText,
       },
       {
         title: tNotif("title"),
         url: `/${Routes.DASHBOARDS}/notifications`,
-        icon: IconNotification,
+        icon: Bell,
       },
     ],
   }

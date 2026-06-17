@@ -8,7 +8,7 @@ import { IUserResponseDto } from "../types"
 
 function TH({ k }: { k: string }) {
   const t = useTranslations()
-  return k
+  return t(k)
 }
 
 export const columns: ColumnDef<IUserResponseDto>[] = [

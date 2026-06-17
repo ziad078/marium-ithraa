@@ -36,16 +36,13 @@ import type { EvaluationType } from "@/features/evaluations/types"
 import { getEvaluationTypeLabel } from "@/features/evaluations/utils/labels"
 import { Link } from "@/i18n/navigation"
 import { getDateLocale, getTextDirection } from "@/lib/i18n/locale-utils"
+import { METRIC_VARIANTS, type MetricVariant } from "@/components/shared/dashboard/metric-variants"
 import { cn } from "@/lib/utils"
 import { getChildId } from "@/lib/types/types/interfaces"
 
 type Props = { locale: string }
 
-const metricVariants = {
-  purple: "bg-[#a782f3] text-white",
-  indigo: "bg-[#3a1379] text-white",
-  pink: "bg-[#e88ecf] text-white",
-} as const
+const metricVariants = METRIC_VARIANTS
 
 function formatScore(value: number | null | undefined): string {
   if (value == null || Number.isNaN(value)) return "—"
@@ -661,7 +658,7 @@ export function OwnerEvaluationResultsScreen({ locale }: Props) {
 
   return (
     <main
-      className="min-h-screen bg-[#f3eefb] py-8 space-y-8"
+      className="min-h-screen bg-surface py-8 space-y-8"
       dir={getTextDirection(locale)}
     >
       <div className="app-container space-y-6">
@@ -703,19 +700,19 @@ export function OwnerEvaluationResultsScreen({ locale }: Props) {
           <TabsList className="grid h-auto w-full grid-cols-3 gap-3 bg-transparent p-0">
             <TabsTrigger
               value="reports"
-              className="h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-[#d6c0f7] data-[state=active]:shadow"
+              className="h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-surface-accent data-[state=active]:shadow"
             >
               {t("reportsTab")}
             </TabsTrigger>
             <TabsTrigger
               value="results"
-              className="h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-[#d6c0f7] data-[state=active]:shadow"
+              className="h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-surface-accent data-[state=active]:shadow"
             >
               {t("resultsTab")}
             </TabsTrigger>
             <TabsTrigger
               value="status"
-              className="h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-[#d6c0f7] data-[state=active]:shadow"
+              className="h-11 rounded-xl bg-white/80 text-base data-[state=active]:bg-surface-accent data-[state=active]:shadow"
             >
               {t("statusTab")}
             </TabsTrigger>

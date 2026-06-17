@@ -1,6 +1,6 @@
 "use client"
 
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import { HOME_FEATURES } from "@/lib/home.constants"
 import { Card, CardContent } from "@/components/ui/card"
@@ -13,13 +13,11 @@ const ICONS = {
 } as const
 
 export default function HomeFeatures() {
-  const locale = useLocale()
   const t = useTranslations("HomePage.Features")
-  const isRtl = locale === "ar"
 
   return (
     <section className="app-container py-14 lg:py-20">
-      <div className={cn(isRtl ? "text-right" : "text-left")}>
+      <div className="text-start">
         <h2 className="text-2xl font-extrabold text-primary sm:text-3xl">
           {t("title")}
         </h2>
@@ -43,7 +41,7 @@ export default function HomeFeatures() {
                 tone
               )}
             >
-              <CardContent className={cn("p-6", isRtl ? "text-right" : "text-left")}>
+              <CardContent className="p-6 text-start">
                 <div className="flex items-center gap-3">
                   <div className="grid size-10 place-items-center rounded-xl bg-background/60 text-primary shadow-sm">
                     <Icon className="size-5" />

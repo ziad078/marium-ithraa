@@ -213,7 +213,16 @@ export function CreateChildPage({
               <CardTitle className="text-base">Parent identification</CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
+<<<<<<< HEAD
               <ParentPhoneInput form={form} isSearching={isSearching} />
+=======
+              <div className="relative">
+                <PhoneInputField name="parentPhone" label="Parent phone" placeholder="+20..." />
+                {isSearching && (
+                  <Loader2 className="absolute start-3 top-9 size-5 animate-spin text-muted-foreground" />
+                )}
+              </div>
+>>>>>>> a3b9769 (open cede refactor)
 
               {parentSearchError && (
                 <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">

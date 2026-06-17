@@ -10,7 +10,6 @@ export {
 } from "./types/interfaces"
 export {
   createEmployee,
-  getUserOrganization,
   getMyOrganization,
   getMyOrganizationServer,
   getAllOrganizations,

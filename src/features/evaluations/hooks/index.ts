@@ -115,18 +115,12 @@ export function useStartEvaluation(evaluationId: string) {
   })
 }
 
-/** @deprecated Use useStartEvaluation */
-export const useStartAttempt = useStartEvaluation
-
 export function useSaveAttemptProgress(attemptId: string) {
   return useMutation({
     mutationFn: (data: SaveAttemptDto) =>
       saveAttemptProgressClient(attemptId, data),
   })
 }
-
-/** @deprecated Use useSaveAttemptProgress */
-export const useSaveAttempt = useSaveAttemptProgress
 
 export function useSubmitAttempt(attemptId: string) {
   const queryClient = useQueryClient()

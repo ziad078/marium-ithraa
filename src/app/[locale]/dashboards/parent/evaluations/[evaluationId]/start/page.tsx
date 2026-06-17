@@ -1,20 +1,21 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
+import { useRouter } from "@/i18n/navigation"
 import { showErrorToast } from "@/lib/toast/app-toast"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { useStartAttempt } from "@/features/evaluations/hooks"
+import { useStartEvaluation } from "@/features/evaluations/hooks"
 import { startAttemptSchema } from "@/features/evaluations/types"
 
 export default function StartEvaluationPage() {
   const params = useParams<{ evaluationId: string }>()
   const router = useRouter()
   const evaluationId = params.evaluationId
-  const start = useStartAttempt(evaluationId)
+  const start = useStartEvaluation(evaluationId)
 
   const [childId, setChildId] = useState("")
   const [childType, setChildType] = useState<"organization" | "private">("private")

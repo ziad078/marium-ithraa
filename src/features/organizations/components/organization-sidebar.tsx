@@ -2,20 +2,20 @@
 
 import * as React from "react"
 import {
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileDescription,
-  IconFileWord,
-  IconHelp,
-  IconInnerShadowTop,
-  IconReport,
-  IconArrowsExchange,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-  IconBriefcase,
-} from "@tabler/icons-react"
+  BarChart3,
+  LayoutDashboard,
+  Database,
+  FileText,
+  FileType,
+  HelpCircle,
+  PanelTop,
+  FileBarChart,
+  ArrowLeftRight,
+  Search,
+  Settings,
+  Users,
+  Briefcase,
+} from "lucide-react"
 
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
@@ -50,66 +50,66 @@ export function OrganizationSidebar({ organization, ...props }: React.ComponentP
       {
         title: t("Dashboard.Nav.dashboard"),
         url: ORGANIZATIONURL,
-        icon: IconDashboard,
+        icon: LayoutDashboard,
       },
       {
         title: t("Dashboard.Nav.employees"),
         url: `${ORGANIZATIONURL}/${Pages.EMPLOYEES}`,
-        icon: IconUsers,
+        icon: Users,
       },
       {
         title: t("Features.OrganizationEvaluations.results"),
         url: `${ORGANIZATIONURL}/results`,
-        icon: IconReport,
+        icon: FileBarChart,
       },
       {
         title: t("Dashboard.Nav.childTransfers"),
         url: `${ORGANIZATIONURL}/child-transfers`,
-        icon: IconArrowsExchange,
+        icon: ArrowLeftRight,
       },
       {
         title: t("Features.Notifications.title"),
         url: `/${Routes.DASHBOARDS}/notifications`,
-        icon: IconReport,
+        icon: FileBarChart,
       },
       {
         title: t("Dashboard.Nav.deals"),
         url: `${ORGANIZATIONURL}/${Pages.DEALS}`,
-        icon: IconBriefcase,
+        icon: Briefcase,
       },
     ],
     navSecondary: [
       {
         title: t("Dashboard.Nav.settings"),
         url: "#",
-        icon: IconSettings,
+        icon: Settings,
       },
       {
         title: t("Dashboard.Nav.getHelp"),
         url: "#",
-        icon: IconHelp,
+        icon: HelpCircle,
       },
       {
         title: t("Dashboard.Nav.search"),
         url: "#",
-        icon: IconSearch,
+        icon: Search,
       },
     ],
     documents: [
       {
         name: t("Dashboard.Nav.dataLibrary"),
         url: "#",
-        icon: IconDatabase,
+        icon: Database,
       },
       {
         name: t("Dashboard.Nav.reports"),
         url: "#",
-        icon: IconReport,
+        icon: FileBarChart,
       },
       {
         name: t("Dashboard.Nav.wordAssistant"),
         url: "#",
-        icon: IconFileWord,
+        icon: FileType,
       },
     ],
   }
@@ -123,7 +123,7 @@ export function OrganizationSidebar({ organization, ...props }: React.ComponentP
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <div>
-                <IconInnerShadowTop className="size-5!" />
+                <PanelTop className="size-5!" />
                 <span className="text-base font-semibold">{organization?.user.name}</span>
               </div>
             </SidebarMenuButton>

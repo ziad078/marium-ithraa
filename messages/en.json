@@ -237,15 +237,53 @@
         "gender": "Gender"
       }
     },
-    "Employees": {
+        "ChildTransferRequests": {
+          "title": "Child transfer requests",
+          "subtitle": "Review incoming child transfer requests for your organization.",
+          "noPending": "No pending transfer requests",
+          "incoming": "Incoming transfer request",
+          "pendingBadge": "Pending",
+          "fromOrganization": "From organization",
+          "birthDate": "Birth date",
+          "currentClass": "Current class",
+          "requestedBy": "Requested by",
+          "approveTransfer": "Approve transfer",
+          "reject": "Reject",
+          "rejectTitle": "Reject transfer request?",
+          "rejectDescription": "This rejection will be sent to the backend and the request will be removed from the list.",
+          "cancel": "Cancel",
+          "unknownChild": "Unknown child",
+          "anotherOrganization": "Another organization",
+          "transferRequestRejected": "Transfer request rejected",
+          "unableToUpdate": "Unable to update transfer request",
+          "dashboardBreadcrumb": "Dashboard",
+          "transferRequestsBreadcrumb": "Transfer requests"
+        },
+        "ApproveChildTransfer": {
+          "title": "Approve child transfer",
+          "description": "Choose the class {childName} will join in {organizationName}.",
+          "classLabel": "Class",
+          "loadingClasses": "Loading classes...",
+          "selectClass": "Select a class",
+          "noClasses": "No classes are available for this organization.",
+          "cancel": "Cancel",
+          "approveTransfer": "Approve transfer",
+          "targetOrganization": "target organization",
+          "unableToIdentify": "Unable to identify the target organization.",
+          "unableToLoadClasses": "Unable to load classes.",
+          "approvedToast": "Transfer request approved.",
+          "unableToApprove": "Unable to approve transfer request.",
+          "theChild": "the child"
+        },
+        "Employees": {
       "titles": {
         "details": "Employee Details"
       },
       "fields": {
         "email": "Email",
         "phone": "Phone",
-        "role": "الدور",
-        "job": "الوظيفة"
+        "role": "Role",
+        "job": "Job"
       },
       "errors": {
         "loadFailed": "Failed to load employee"
@@ -349,7 +387,16 @@
         }
       }
     },
-    "title": "hi here"
+    "title": "Welcome to Ithraa"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "cta": "Go home"
   },
   "Signup": {
     "Beneficiary": {
@@ -518,6 +565,7 @@
     "logout": "Log out",
     "signup": "Sign up",
     "redirecting": "Redirecting...",
+    "checking": "Checking session...",
     "sessionExpired": "Your session has expired. Please sign in again.",
     "Login": {
       "title": "Login",
@@ -1028,6 +1076,19 @@
       "updateProposal": "Update proposal",
       "updatePrice": "Update price"
     }
+  },
+  "Flow6": {
+    "title": "Discover your child\u2019s intelligence",
+    "description": "Start the smart journey today\u2014discover their strengths and help them grow with easy steps and instant results.",
+    "ctaLabel": "Discover"
+  },
+  "TestsPage": {
+    "title": "This tests flow is no longer available. Please use evaluations.",
+    "description": "The legacy tests interface has been retired. Child assessments now live in evaluations.",
+    "openEvaluations": "Open evaluations"
+  },
+  "Common": {
+    "search": "Search..."
   },
   "Layout": {
     "OrganizationNav": {

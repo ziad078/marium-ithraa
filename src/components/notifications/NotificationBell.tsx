@@ -81,7 +81,7 @@ export function NotificationBell() {
           <Bell className="size-5" />
           {count > 0 && (
             <Badge
-              className="absolute -top-1 -right-1 h-5 min-w-5 justify-center rounded-full border-0 bg-linear-to-r from-fuchsia-600 to-violet-600 px-1 text-[11px] text-white"
+              className="absolute -top-1 -end-1 h-5 min-w-5 justify-center rounded-full border-0 bg-linear-to-r from-fuchsia-600 to-violet-600 px-1 text-[11px] text-white"
               aria-label={`${count}`}
             >
               {count > 99 ? "99+" : count}
@@ -98,7 +98,7 @@ export function NotificationBell() {
         )}
         // dir={isAr ? "rtl" : "ltr"}
       >
-        <DropdownMenuLabel className="flex items-center justify-between gap-2 bg-[#f3eefb]/60 px-4 py-3">
+        <DropdownMenuLabel className="flex items-center justify-between gap-2 bg-surface/60 px-4 py-3">
           <span className="font-bold text-foreground">{t("title")}</span>
           {count > 0 && (
             <Button
@@ -118,7 +118,7 @@ export function NotificationBell() {
 
         <Separator />
 
-        <div className="max-h-[min(24rem,60vh)] overflow-y-auto bg-[#f3eefb]/30 p-2">
+        <div className="max-h-[min(24rem,60vh)] overflow-y-auto bg-surface/30 p-2">
           {listQuery.isLoading ? (
             <div className="space-y-2 p-1">
               {Array.from({ length: 3 }).map((_, i) => (

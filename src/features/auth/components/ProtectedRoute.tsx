@@ -28,7 +28,7 @@ export function ProtectedRoute({
   const t = useTranslations("Auth")
   const { isAuthenticated, isLoading, checkRole, loginPath } = useAuth()
   const unauthorizedPath =
-    unauthorizedRedirect ?? `/${locale}/${Routes.UNAUTHARIZED}`
+    unauthorizedRedirect ?? `/${locale}/${Routes.UNAUTHORIZED}`
 
   const roleOk = !allowed?.length || checkRole(allowed)
 
@@ -56,7 +56,7 @@ export function ProtectedRoute({
   if (isLoading) {
     return (
       <AuthLoadingScreen
-        label={locale === "ar" ? "جاري التحقق من الجلسة..." : "Checking session..."}
+        label={t("checking")}
       />
     )
   }

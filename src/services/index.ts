@@ -1,5 +1,0 @@
-export * from "./ChildrenService"
-export * from "./ParentService"
-export * from "./EvaluationService"
-export * from "./PaymentService"
-export * from "./TransferService"

@@ -68,7 +68,7 @@ export function NotificationListItem({
         >
           <div
             className={cn(
-              "grid shrink-0 place-items-center rounded-xl bg-[#f3eefb] text-fuchsia-600",
+              "grid shrink-0 place-items-center rounded-xl bg-surface text-fuchsia-600",
               compact ? "size-9 [&_svg]:size-4" : "size-11 [&_svg]:size-5",
             )}
           >

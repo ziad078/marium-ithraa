@@ -46,7 +46,7 @@ export function OwnerAttemptResultScreen() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
+      <main className="min-h-screen bg-surface py-8" dir={getTextDirection(locale)}>
         <div className="app-container space-y-4">
           <Skeleton className="h-10 w-64" />
           <Skeleton className="h-32 w-full rounded-2xl" />
@@ -59,7 +59,7 @@ export function OwnerAttemptResultScreen() {
   if (isError) {
     const forbidden = isForbiddenError(error)
     return (
-      <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
+      <main className="min-h-screen bg-surface py-8" dir={getTextDirection(locale)}>
         <div className="app-container space-y-6">
           <ManagementPageHeader breadcrumbs={breadcrumbs} title={t("attemptResult")} />
           <Card className="rounded-2xl border bg-white">
@@ -86,7 +86,7 @@ export function OwnerAttemptResultScreen() {
 
   if (!attempt) {
     return (
-      <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
+      <main className="min-h-screen bg-surface py-8" dir={getTextDirection(locale)}>
         <div className="app-container space-y-6">
           <ManagementPageHeader breadcrumbs={breadcrumbs} title={t("attemptResult")} />
           <Card className="rounded-2xl border bg-white">
@@ -103,7 +103,7 @@ export function OwnerAttemptResultScreen() {
   const evaluationType = attempt.evaluation?.type ?? "multiple_intelligences"
 
   return (
-    <main className="min-h-screen bg-[#f3eefb] py-8" dir={getTextDirection(locale)}>
+    <main className="min-h-screen bg-surface py-8" dir={getTextDirection(locale)}>
       <div className="app-container space-y-6">
         <ManagementPageHeader
           breadcrumbs={breadcrumbs}

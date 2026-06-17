@@ -25,7 +25,7 @@ const AdminLayout = async ({
         }
       >
         <AdminSidebar variant="inset" dir={dir} />
-        <SidebarInset className="bg-[#f3eefb]">{children}</SidebarInset>
+        <SidebarInset className="bg-surface">{children}</SidebarInset>
       </SidebarProvider>
     </RequireRoles>
   )

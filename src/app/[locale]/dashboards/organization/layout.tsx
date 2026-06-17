@@ -29,7 +29,7 @@ const OrgnizationLayout = async ({
 
     const organization = await getCurrentOrganization()
     if (!organization) {
-      redirect(`/${locale}/${Routes.UNAUTHARIZED}`)
+      redirect(`/${locale}/${Routes.UNAUTHORIZED}`)
     }
     if (!hasLocale(routing.locales, locale)) {
       notFound();
@@ -38,7 +38,7 @@ const OrgnizationLayout = async ({
     setRequestLocale(locale);
   
     return (
-        <RequireRoles allowed={[UserRole.ORGANIZATIONOWNER, UserRole.ADMIN]} redirectTo={`/${locale}/${Routes.UNAUTHARIZED}`}>
+        <RequireRoles allowed={[UserRole.ORGANIZATIONOWNER, UserRole.ADMIN]} redirectTo={`/${locale}/${Routes.UNAUTHORIZED}`}>
             <OrganizationHeader locale={locale} approvalStatus={organization.approvalStatus} />
             <div className="pt-28">
               <OrganizationRouteGuard organization={organization} locale={locale}>

@@ -1,10 +1,10 @@
 "use client"
 
 import {
-  IconDotsVertical,
-  IconLogout,
-  IconUserCircle,
-} from "@tabler/icons-react"
+  MoreVertical,
+  LogOut,
+  UserCircle,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 
 import {
@@ -64,7 +64,7 @@ export function NavUser({
                   {user.email}
                 </span>
               </div>
-              <IconDotsVertical className="ml-auto size-4" />
+              <MoreVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -93,14 +93,19 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link href="/dashboards">
+<<<<<<< HEAD
                   <IconUserCircle />
                   {t("dashboard")}
+=======
+                  <UserCircle />
+                  {t("profile")}
+>>>>>>> a3b9769 (open cede refactor)
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => void logout()}>
-              <IconLogout />
+              <LogOut />
               {t("logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>

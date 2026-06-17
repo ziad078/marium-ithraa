@@ -19,7 +19,7 @@ export type ChildCardProps = {
   onDelete?: () => void
 }
 
-export function ChildCard({
+export const ChildCard = React.memo(function ChildCard({
   name,
   className,
   evaluationStatus,
@@ -73,5 +73,5 @@ export function ChildCard({
       </CardContent>
     </Card>
   )
-}
+})
 

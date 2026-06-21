@@ -93,13 +93,8 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link href="/dashboards">
-<<<<<<< HEAD
-                  <IconUserCircle />
-                  {t("dashboard")}
-=======
                   <UserCircle />
-                  {t("profile")}
->>>>>>> a3b9769 (open cede refactor)
+                  {t("dashboard")}
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>

@@ -9,7 +9,6 @@ import { toast } from "sonner"
 import { z } from "zod"
 
 import { ManagementPageHeader } from "@/components/shared/management/ManagementPageHeader"
-import { GradientButton } from "@/components/shared/management/GradientButton"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -213,16 +212,7 @@ export function CreateChildPage({
               <CardTitle className="text-base">Parent identification</CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
-<<<<<<< HEAD
               <ParentPhoneInput form={form} isSearching={isSearching} />
-=======
-              <div className="relative">
-                <PhoneInputField name="parentPhone" label="Parent phone" placeholder="+20..." />
-                {isSearching && (
-                  <Loader2 className="absolute start-3 top-9 size-5 animate-spin text-muted-foreground" />
-                )}
-              </div>
->>>>>>> a3b9769 (open cede refactor)
 
               {parentSearchError && (
                 <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -299,14 +289,14 @@ export function CreateChildPage({
             )}
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <GradientButton
+              <Button
                 type="submit"
                 className="h-11 flex-1 rounded-lg"
                 disabled={!canSubmit || isLoading}
               >
                 {isLoading && <Loader2 className="size-4 animate-spin" />}
                 Create Child
-              </GradientButton>
+              </Button>
               <Button
                 type="button"
                 variant="outline"

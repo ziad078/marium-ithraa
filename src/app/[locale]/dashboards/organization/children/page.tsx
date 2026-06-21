@@ -21,7 +21,7 @@ export default async function ChildrenPage({ params }: Props) {
 
   return (
     <ChildrenScreen
-      childrens={childrenRes}
+      childrens={childrenRes.children}
       grades={gradesRes.grades}
       classes={classesRes.classes}
     />

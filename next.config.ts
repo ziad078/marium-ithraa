@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from 'next-intl/plugin';
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   reactCompiler: true,
@@ -9,6 +11,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "www.figma.com",
+        pathname: "/api/mcp/asset/**",
+      },
+      {
+        protocol: "https",
+        hostname: "purecatamphetamine.github.io",
         pathname: "/api/mcp/asset/**",
       },
     ],
@@ -30,11 +37,13 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              isDev 
+                ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" 
+                : "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Keep unsafe-eval for react-compiler, unsafe-inline for next.js hydration
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https://www.figma.com",
               "font-src 'self' data:",
-              "connect-src 'self' ${process.env.NEXT_PUBLIC_BACKEND_URL ?? ''}",
+              `connect-src 'self' ${process.env.NEXT_PUBLIC_BACKEND_URL ?? ''}`,
               "frame-src 'none'",
               "object-src 'none'",
               "base-uri 'self'",

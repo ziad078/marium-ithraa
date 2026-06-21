@@ -1144,7 +1144,12 @@
         "placeholder": "Select teacher",
         "none": "None"
       },
-      "toast": { "saved": "Class saved successfully" }
+      "toast": { "saved": "Class saved successfully" },
+      "actions": {
+        "classes": {
+          "created": "تم انئاء الفصل بنجاح"
+        }
+      }
     },
     "Child": {
       "addTitle": "Add child",

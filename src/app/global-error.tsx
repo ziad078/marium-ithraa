@@ -1,4 +1,9 @@
+
 "use client"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect } from "react"
 
 export default function GlobalError({
   error,
@@ -7,13 +12,40 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.error(error)
+    }
+  }, [error])
+
   return (
     <html>
-      <body>
-        <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-          <h2 className="text-2xl font-semibold">Critical error</h2>
-          <p className="text-muted-foreground">Please refresh the page.</p>
-          <button onClick={() => reset()}>Try again</button>
+      <body className="min-h-screen bg-background text-foreground">
+        <div className="flex min-h-screen flex-col items-center justify-center p-4">
+          <Card className="w-full max-w-md border-amber-50 shadow-md">
+            <CardHeader>
+              <CardTitle className="text-center text-2xl font-bold">Oops, something went wrong!</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-center">
+              <p className="text-muted-foreground">
+                A critical error occurred. Please try again.
+              </p>
+              {process.env.NODE_ENV === "development" && (
+                <div className="rounded-md bg-destructive/10 p-3 text-left text-sm text-destructive">
+                  <p className="font-semibold">Error details:</p>
+                  <p>{error.message}</p>
+                  {error.stack && (
+                    <pre className="mt-2 max-h-32 overflow-auto text-xs">
+                      {error.stack}
+                    </pre>
+                  )}
+                </div>
+              )}
+              <Button onClick={() => reset()} className="w-full">
+                Try again
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </body>
     </html>

@@ -14,7 +14,9 @@ export default function Error({
   const t = useTranslations("error")
 
   useEffect(() => {
-    console.error(error)
+    if (process.env.NODE_ENV === "development") {
+      console.error(error)
+    }
   }, [error])
 
   return (

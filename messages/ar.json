@@ -1140,7 +1140,12 @@
       "name": { "label": "اسم الفصل", "placeholder": "أدخل اسم الفصل" },
       "grade": { "label": "المرحلة", "placeholder": "اختر المرحلة" },
       "teacher": { "label": "المعلم (اختياري)", "placeholder": "اختر المعلم", "none": "بدون" },
-      "toast": { "saved": "تم حفظ الفصل بنجاح" }
+      "toast": { "saved": "تم حفظ الفصل بنجاح" },
+      "actions": {
+        "classes": {
+          "created": "تم انئاء الفصل بنجاح"
+        }
+      }
     },
     "Child": {
       "addTitle": "إضافة طفل",

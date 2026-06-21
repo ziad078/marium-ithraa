@@ -36,7 +36,7 @@ export const getAllChildrenServer = async (params?: PaginationParams) => {
 }
 
 export const getAllChildrenByOrg = async (orgId: string) => {
-  return api.server<Child[]>(
+  return api.server<{children: Child[]}>(
     `/${Endpoint.CHILDREN}/organization/${orgId}`,
   )
 }

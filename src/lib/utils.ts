@@ -18,7 +18,9 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
 
   const backendUrl = process.env.BACKEND_URL
   if (!backendUrl) {
-    console.error("[auth] BACKEND_URL is not configured")
+    if (process.env.NODE_ENV === "development") {
+      console.error("[auth] BACKEND_URL is not configured")
+    }
     return { ...token, error: "RefreshAccessTokenError" }
   }
 
@@ -57,7 +59,9 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
       error: undefined,
     }
   } catch (error) {
-    console.error("[auth] refreshAccessToken failed", error)
+    if (process.env.NODE_ENV === "development") {
+      console.error("[auth] refreshAccessToken failed", error)
+    }
     return {
       ...token,
       error: "RefreshAccessTokenError",

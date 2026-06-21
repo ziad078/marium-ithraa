@@ -22,20 +22,22 @@ export default function EmailVerificationPage() {
     const [cooldown, setCooldown] = useState(0)
 
     const sendEmail = useCallback(async () => {
-        if (!email || !userId) return
+    if (!email || !userId) return
 
-        try {
-            setSending(true)
-            await sendVerificationEmail({ email, userId })
-            setSended(true)
-            setCooldown(60) // 60 ثانية
-        } catch (error) {
-            console.error(error)
-            showErrorToast({ raw: "Failed to send email" })
-        } finally {
-            setSending(false)
-        }
-    }, [email, userId])
+    try {
+      setSending(true)
+      await sendVerificationEmail({ email, userId })
+      setSended(true)
+      setCooldown(60) // 60 ثانية
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(error)
+      }
+      showErrorToast({ raw: "Failed to send email" })
+    } finally {
+      setSending(false)
+    }
+  }, [email, userId])
 
     // إرسال أول مرة تلقائي
     useEffect(() => {

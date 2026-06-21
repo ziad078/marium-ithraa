@@ -47,7 +47,7 @@ export default function AnswerGroup({
             <div
               key={opt.id}
               className={cn(
-                "flex items-start gap-3 rounded-md border p-3 transition-colors",
+                "flex flex-row-reverse items-start gap-3 rounded-md border p-3 transition-colors",
                 disabled ? "opacity-70" : "hover:bg-accent/40",
               )}
             >

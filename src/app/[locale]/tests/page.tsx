@@ -13,7 +13,7 @@ export default async function TestsPage({ params }: Props) {
   const t = await getTranslations("TestsPage")
 
   return (
-    <RequireRoles allowed={[UserRole.PARENT]} redirectTo="/unautharized">
+    <RequireRoles allowed={[UserRole.PARENT]} redirectTo="/unauthorized">
       <main
         className="app-container flex min-h-[60vh] items-center justify-center py-16"
         dir={getTextDirection(locale)}

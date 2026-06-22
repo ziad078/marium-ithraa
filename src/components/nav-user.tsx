@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Link } from "@/i18n/navigation"
 import { useAuth } from "@/features/auth/hooks/useAuth"
+import { Pages, Routes } from "@/lib/types/enums"
 
 export function NavUser({
   user,
@@ -92,7 +93,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/dashboards">
+                <Link href={`/${Routes.AUTH}/${Pages.LOGIN}`}>
                   <UserCircle />
                   {t("dashboard")}
                 </Link>

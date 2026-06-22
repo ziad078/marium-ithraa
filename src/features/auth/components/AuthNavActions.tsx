@@ -19,6 +19,7 @@ import LanguageSwitcher from "@/components/layouts/header/langSwitch"
 import { NotificationBell } from "@/components/notifications/NotificationBell"
 
 import { useAuth } from "../hooks/useAuth"
+import { Routes, Pages } from "@/lib/types/enums"
 
 type Props = {
   locale: string
@@ -85,7 +86,8 @@ export function AuthNavActions({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/auth/login" className="cursor-pointer">
+              <Link href={`/${Routes.AUTH}/${Pages.LOGIN}`}
+                className="cursor-pointer">
                 <UserCircle className="size-4" />
                 {tAuth("dashboard")}
               </Link>

@@ -54,7 +54,7 @@ const OrganizationHeader = ({ locale, approvalStatus = ApprovalStatus.APPROVED }
   }
 
   return (
-    <header className="fixed top-6 start-0 z-50 w-full">
+    <header className="fixed top-6 inset-s-0 z-50 w-full">
       <div className="app-container">
         <div
           className={[

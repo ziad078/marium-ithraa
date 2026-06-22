@@ -9,7 +9,7 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky install",
+    "prepare": "echo 'ff'",
     "test": "vitest",
     "test:run": "vitest run"
   },

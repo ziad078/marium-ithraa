@@ -20,7 +20,7 @@ export default async function ClassDetailPage({ params }: Props) {
     classItem = fetched
     const orgId = classItem.organizationId
     children = orgId
-      ? (await getAllChildrenByOrg(orgId)).filter(
+      ? (await getAllChildrenByOrg(orgId)).children.filter(
           (c) => (c.classId ?? c.class?.id) === classId,
         )
       : (classItem.children ?? [])

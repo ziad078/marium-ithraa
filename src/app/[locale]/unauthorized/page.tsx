@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
-import { Routes } from "@/lib/types/enums"
+import { Pages, Routes } from "@/lib/types/enums"
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -12,8 +12,7 @@ export async function generateMetadata({ params }: Props) {
   return { title: t("title") }
 }
 
-export default async function UnauthorizedPage({ params }: Props) {
-  const { locale } = await params
+export default async function UnauthorizedPage() {
   const t = await getTranslations("Unauthorized")
 
   return (
@@ -22,7 +21,7 @@ export default async function UnauthorizedPage({ params }: Props) {
         <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
         <p className="text-sm text-muted-foreground">{t("description")}</p>
         <Link
-          href={`/${locale}/${Routes.AUTH}`}
+          href={`/${Routes.AUTH}/${Pages.LOGIN}`}
           className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
         >
           {t("goHome")}

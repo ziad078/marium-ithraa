@@ -235,7 +235,7 @@ function ReportCard({
   return (
     <Card className="rounded-2xl border bg-white shadow-sm">
       <CardContent
-        className="space-y-3 p-4 text-right"
+        className="space-y-3 p-4 text-end"
         dir={getTextDirection(locale)}
       >
         <p className="font-bold text-primary">{report.title}</p>
@@ -391,7 +391,7 @@ function ResultsTabContent({
   return (
     <div className="space-y-8">
       <section className="space-y-3">
-        <h3 className="text-2xl font-bold text-right text-foreground">
+        <h3 className="text-2xl font-bold text-end text-foreground">
           {t("classStats")}
         </h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -402,7 +402,7 @@ function ResultsTabContent({
       </section>
 
       <section className="space-y-3">
-        <h3 className="text-2xl font-bold text-right text-foreground">
+        <h3 className="text-2xl font-bold text-end text-foreground">
           {t("topDimensions")}
         </h3>
         {topDims.length === 0 ? (
@@ -430,7 +430,7 @@ function ResultsTabContent({
       </section>
 
       <section className="space-y-3">
-        <h3 className="text-2xl font-bold text-right text-foreground">
+        <h3 className="text-2xl font-bold text-end text-foreground">
           {t("childrenResults")}
         </h3>
         {summary.children.length === 0 ? (
@@ -478,7 +478,7 @@ function ChildResultCard({
             />
             <AvatarFallback className="rounded-xl text-xs">CH</AvatarFallback>
           </Avatar>
-          <div className="min-w-0 flex-1 text-right text-xs space-y-1">
+          <div className="min-w-0 flex-1 text-end text-xs space-y-1">
             <p className="font-semibold text-primary truncate">
               {child.childName}
             </p>
@@ -622,7 +622,7 @@ function StatusChildCard({
             />
             <AvatarFallback className="rounded-xl text-xs">CH</AvatarFallback>
           </Avatar>
-          <div className="min-w-0 flex-1 text-right text-sm space-y-1">
+          <div className="min-w-0 flex-1 text-end text-sm space-y-1">
             <p className="font-semibold text-primary truncate">{item.childName}</p>
             <p className="text-muted-foreground truncate">{item.className}</p>
             <p className="font-medium text-emerald-600">{item.statusLabel}</p>

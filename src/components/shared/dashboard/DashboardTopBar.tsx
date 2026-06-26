@@ -27,7 +27,7 @@ export function DashboardTopBar({ withSidebar = true, className }: Props) {
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
         {withSidebar ? (
           <>
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger className="-ms-1" />
             <Separator
               orientation="vertical"
               className="mx-2 data-[orientation=vertical]:h-4"

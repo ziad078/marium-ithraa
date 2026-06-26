@@ -17,7 +17,7 @@ export default async function EnricherLayout({
   const dir = locale === "ar" ? "rtl" : "ltr"
 
   return (
-    <RequireRoles allowed={[UserRole.ENRICHER]} redirectTo="/unauthorized">
+    <RequireRoles allowed={[UserRole.ENRICHER]} redirectTo="/unauthorized" locale={locale}>
       <SidebarProvider
         style={
           {

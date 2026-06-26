@@ -79,7 +79,7 @@ export default function ChooseRolePage() {
                 >
                   {loadingRoleId === role.id ? (
                     <>
-                      <Loader2 className="mr-2 animate-spin" />
+                      <Loader2 className="me-2 animate-spin" />
                       Redirecting...
                     </>
                   ) : (

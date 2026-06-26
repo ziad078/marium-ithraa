@@ -96,7 +96,7 @@ export default function EnricherDealsPage() {
                   <Link
                     href={`${ENRICHER_URL}/${Pages.DEALS}/${deal.id}`}
                   >
-                    <ExternalLink className="size-3.5 mr-1" />
+                    <ExternalLink className="size-3.5 me-1" />
                     {t("viewDetails")}
                   </Link>
                 </Button>

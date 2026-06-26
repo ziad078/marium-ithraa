@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import "flag-icons/css/flag-icons.min.css";
 import {
@@ -9,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname, useRouter } from '@/i18n/navigation';
 
 export default function LanguageSwitcher({ locale }: { locale: string }) {
   const pathname = usePathname();

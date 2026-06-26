@@ -162,17 +162,17 @@ function ReevaluationSummaryCard({
 
         <div className="content-stretch flex gap-[8px] items-center justify-center relative shrink-0">
           <div className="content-stretch flex flex-col gap-[4px] items-end relative shrink-0 w-[148px]">
-            <p className="font-sans leading-[1.6] relative shrink-0 text-brand-navy text-right w-min" dir="auto">
+            <p className="font-sans leading-[1.6] relative shrink-0 text-brand-navy text-end w-min" dir="auto">
               <span className="font-bold text-[16px]">الأسم:</span>
               <span className="leading-[1.6] text-[14px]">&nbsp;</span>
               <span className="leading-[1.6] text-brand-purple text-[16px]">{profileName}</span>
             </p>
-            <p className="font-sans leading-[1.6] relative shrink-0 text-brand-navy text-right w-min" dir="auto">
+            <p className="font-sans leading-[1.6] relative shrink-0 text-brand-navy text-end w-min" dir="auto">
               <span className="font-bold text-[16px]">الصف:</span>
               <span className="leading-[1.6] text-[14px]">&nbsp;</span>
               <span className="leading-[1.6] text-brand-navy text-[14px]">{gradeLabel}</span>
             </p>
-            <p className="font-sans leading-[1.6] relative shrink-0 text-brand-navy text-right w-min" dir="auto">
+            <p className="font-sans leading-[1.6] relative shrink-0 text-brand-navy text-end w-min" dir="auto">
               <span className="font-bold text-[16px]">المدرسة:</span>
               <span className="leading-[1.6] text-[14px]">&nbsp;</span>
               <span className="leading-[1.6] text-brand-purple text-[16px]">{schoolLabel}</span>
@@ -181,7 +181,7 @@ function ReevaluationSummaryCard({
             <div className="content-stretch flex items-center justify-center relative shrink-0">
               <div className="content-stretch flex gap-[4px] items-center justify-center relative shrink-0">
                 <div
-                  className="flex flex-col font-bold justify-center leading-0 not-italic relative shrink-0 text-[16px] text-right whitespace-nowrap"
+                  className="flex flex-col font-bold justify-center leading-0 not-italic relative shrink-0 text-[16px] text-end whitespace-nowrap"
                 >
                   <p className="leading-[1.6]" dir="auto">
                     {evaluationStatusLabel}
@@ -234,12 +234,12 @@ function TestCard({ test }: { test: ChildTestCardData }) {
   return (
     <article className="bg-white content-stretch flex flex-col gap-[8px] items-end overflow-clip px-[8px] py-[16px] relative shadow-[0px_0px_24px_0px_rgba(0,0,0,0.12)] shrink-0 w-full md:w-[413px]">
       <div className="content-stretch flex flex-col gap-[4px] items-end relative shrink-0 w-[329px]">
-        <p className="font-sans font-bold leading-[1.6] not-italic relative shrink-0 text-[16px] text-brand-purple text-right whitespace-nowrap" dir="auto">
+        <p className="font-sans font-bold leading-[1.6] not-italic relative shrink-0 text-[16px] text-brand-purple text-end whitespace-nowrap" dir="auto">
           {test.title}
         </p>
 
         <div className="content-stretch flex flex-col gap-[4px] items-end relative shrink-0 w-[175px]">
-          <p className="font-sans leading-[1.6] not-italic relative shrink-0 text-black text-right whitespace-nowrap" dir="auto">
+          <p className="font-sans leading-[1.6] not-italic relative shrink-0 text-black text-end whitespace-nowrap" dir="auto">
             <span className="font-bold text-[16px] text-brand-navy">{test.datePrefixLabel}</span>
             <span className="leading-[1.6] text-[14px]">&nbsp;</span>
             <span className="leading-[1.6] text-[14px]" style={{ color: test.dateValueColorHex }}>
@@ -249,7 +249,7 @@ function TestCard({ test }: { test: ChildTestCardData }) {
 
           <div className="flex items-center justify-center relative shrink-0">
             <div className="flex gap-[4px] items-center justify-center relative shrink-0">
-              <div className="flex flex-col font-bold justify-center leading-0 not-italic relative shrink-0 text-[16px] text-right whitespace-nowrap">
+              <div className="flex flex-col font-bold justify-center leading-0 not-italic relative shrink-0 text-[16px] text-end whitespace-nowrap">
                 <p className="leading-[1.6]" dir="auto" style={{ color: test.statusColorHex }}>
                   {test.statusLabel}
                 </p>
@@ -342,7 +342,7 @@ export default function ChildTestsScreen({
 
         <TestsTabs tabs={tabs} />
 
-        <p className="font-sans font-bold leading-[1.6] not-italic relative shrink-0 text-muted-icon text-[16px] text-right w-full" dir="auto">
+        <p className="font-sans font-bold leading-[1.6] not-italic relative shrink-0 text-muted-icon text-[16px] text-end w-full" dir="auto">
           هذه الاختبارات مساعدة عملية للكشف المبكر و ليست أداة تشخيص ولا تغني عن الذهاب لأي مختص وحقوق ملكيتها الفكرية مملوكة لإثراء
         </p>
 
@@ -387,7 +387,7 @@ export default function ChildTestsScreen({
             </div>
           </div>
 
-          <p className="font-sans font-bold leading-[1.6] not-italic relative shrink-0 text-muted-icon text-[16px] text-right w-full" dir="auto">
+          <p className="font-sans font-bold leading-[1.6] not-italic relative shrink-0 text-muted-icon text-[16px] text-end w-full" dir="auto">
             هذه الاختبارات مساعدة عملية للكشف المبكر و ليست أداة تشخيص ولا تغني عن الذهاب لأي مختص وحقوق ملكيتها الفكرية مملوكة لإثراء
           </p>
 
@@ -398,7 +398,7 @@ export default function ChildTestsScreen({
           </div>
 
           <div className="pt-2 w-full">
-            <h2 className="font-sans font-bold text-[32px] text-right leading-[1.6]">{descriptionTitle}</h2>
+            <h2 className="font-sans font-bold text-[32px] text-end leading-[1.6]">{descriptionTitle}</h2>
             <p className="font-sans font-normal text-[16px] text-center leading-[1.6]">{description}</p>
           </div>
         </div>
@@ -406,7 +406,7 @@ export default function ChildTestsScreen({
 
       {/* Desktop hero text */}
       <div className="hidden md:flex absolute content-stretch flex-col gap-[8px] items-end leading-[1.6] left-[calc(66.67%+39px)] not-italic text-brand-navy top-[160px] w-[361px] whitespace-nowrap">
-        <p className="font-sans font-bold relative shrink-0 text-[32px] text-right leading-[1.6]" dir="auto">
+        <p className="font-sans font-bold relative shrink-0 text-[32px] text-end leading-[1.6]" dir="auto">
           {descriptionTitle}
         </p>
         <p className="font-sans font-normal relative shrink-0 text-[16px] text-center leading-[1.6]" dir="auto">

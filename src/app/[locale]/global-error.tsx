@@ -31,7 +31,7 @@ export default function GlobalError({
                 A critical error occurred. Please try again.
               </p>
               {process.env.NODE_ENV === "development" && (
-                <div className="rounded-md bg-destructive/10 p-3 text-left text-sm text-destructive">
+                <div className="rounded-md bg-destructive/10 p-3 text-start text-sm text-destructive">
                   <p className="font-semibold">Error details:</p>
                   <p>{error.message}</p>
                   {error.stack && (

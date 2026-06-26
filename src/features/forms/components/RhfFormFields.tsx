@@ -24,7 +24,6 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { InputTypes } from "@/lib/types/enums"
 import type { IFormField } from "@/lib/types/interfaces"
-import { cn } from "@/lib/utils"
 
 type Props = {
   fields: IFormField[]
@@ -140,7 +139,7 @@ function renderControl(
 
   return (
     <Input
-      type={type === InputTypes.EMAIL ? "email" : type === InputTypes.NUMBER ? "number" : "text"}
+      type={type === InputTypes.EMAIL ? "email" : type === InputTypes.NUMBER ? "number" :  type === InputTypes.DATE ? "date" : "text"}
       placeholder={field.placeholder}
       disabled={field.disabled}
       autoFocus={field.autoFocus}

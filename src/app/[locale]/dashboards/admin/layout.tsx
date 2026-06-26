@@ -15,7 +15,7 @@ const AdminLayout = async ({
   const dir = locale === "ar" ? "rtl" : "ltr"
 
   return (
-    <RequireRoles allowed={[UserRole.ADMIN]}>
+    <RequireRoles allowed={[UserRole.ADMIN]} locale={locale}>
       <SidebarProvider
         style={
           {

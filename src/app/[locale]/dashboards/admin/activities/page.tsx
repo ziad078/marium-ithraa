@@ -79,7 +79,7 @@ export default function AdminActivitiesPage() {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">{t("title")}</h2>
         <Button onClick={() => { setName(""); setCreateOpen(true) }}>
-          <Plus className="size-4 mr-2" />
+          <Plus className="size-4 me-2" />
           {t("create")}
         </Button>
       </div>

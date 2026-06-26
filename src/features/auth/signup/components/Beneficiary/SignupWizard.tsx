@@ -190,7 +190,7 @@ export function SignupWizard() {
                   {t("back")}
                 </Button>
               )}
-              <div className="ml-auto">
+              <div className="ms-auto">
                 <SubmitButton loading={isSubmitting} loadingText={step === 1 ? undefined : t("submitting")}>
                   {step === 1 ? t("next") : t("submit")}
                 </SubmitButton>

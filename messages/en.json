@@ -662,6 +662,9 @@
       },
       "actions": {
         "add": "Add"
+      },
+      "Actions": {
+        "Add": "Add"
       }
     },
     "Evaluations": {
@@ -993,6 +996,8 @@
       "childrenUnit": "children"
     },
     "Deals": {
+      "price": "Price",
+      "dashboard": "Dashboard",
       "deals": "Deals",
       "dealsSubtitle": "Browse and manage deals",
       "createDeal": "Create deal",
@@ -1201,5 +1206,10 @@
       "jobTitle": { "label": "Job title", "placeholder": "Enter job title" },
       "toast": { "created": "Teacher added successfully" }
     }
+  },
+  "Unauthorized": {
+    "title": "What are u doing here man!!",
+    "description": "You aren't allowed to be here",
+    "goHome": "Home from here"
   }
 }

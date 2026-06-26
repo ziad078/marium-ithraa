@@ -77,7 +77,7 @@ function ChildResultCard({ child, locale }: { child: ChildResultItem; locale: st
             <AvatarImage src={child.imageSrc ?? "/avatar-placeholder.svg"} alt={child.name} className="rounded-xl object-cover" />
             <AvatarFallback className="rounded-xl text-xs">CH</AvatarFallback>
           </Avatar>
-          <div className="min-w-0 text-right text-xs">
+          <div className="min-w-0 text-end text-xs">
             <p className="truncate text-primary">{isAr ? `الاسم: ${child.name}` : `Name: ${child.name}`}</p>
             <p className="truncate text-primary/80">{isAr ? `الفصل: ${child.className}` : `Class: ${child.className}`}</p>
             <p className="truncate text-primary/80">{isAr ? `النتيجة: ${child.value}` : `Result: ${child.value}`}</p>
@@ -98,7 +98,7 @@ function EvaluationStatusCard({ item, locale }: { item: EvaluationStatusItem; lo
             <AvatarImage src={item.imageSrc ?? "/avatar-placeholder.svg"} alt={item.name} className="rounded-xl object-cover" />
             <AvatarFallback className="rounded-xl text-xs">CH</AvatarFallback>
           </Avatar>
-          <div className="min-w-0 text-right text-sm">
+          <div className="min-w-0 text-end text-sm">
             <p className="truncate text-primary">{isAr ? `الاسم: ${item.name}` : `Name: ${item.name}`}</p>
             <p className="truncate text-primary/80">{isAr ? `الفصل: ${item.className}` : `Class: ${item.className}`}</p>
             <p className={cn("truncate font-semibold", item.statusClassName ?? "text-emerald-600")}>
@@ -118,7 +118,7 @@ function ReportCard({ item, locale }: { item: ReportItem; locale: string }) {
   const isAr = locale === "ar"
   return (
     <Card className="rounded-2xl border bg-card shadow-sm">
-      <CardContent className="space-y-3 p-4 text-right">
+      <CardContent className="space-y-3 p-4 text-end">
         <p className="font-bold text-primary">{item.title}</p>
         <p className="flex items-center justify-end gap-1 text-sm text-primary/80">
           <span>{item.childrenCountLabel}</span>
@@ -204,7 +204,7 @@ export function ResultsScreen({
           </div>
 
           <section className="space-y-3">
-            <h3 className="text-3xl font-bold text-foreground text-right">{isAr ? "احصائيات الفصل" : "Class stats"}</h3>
+            <h3 className="text-3xl font-bold text-foreground text-end">{isAr ? "احصائيات الفصل" : "Class stats"}</h3>
             <div className="grid gap-4 md:grid-cols-3">
               {data.classMetrics.map((m) => (
                 <MetricCard key={m.id} {...m} />
@@ -213,7 +213,7 @@ export function ResultsScreen({
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-3xl font-bold text-foreground text-right">{isAr ? "أعلى 3 ذكاءات" : "Top 3 intelligences"}</h3>
+            <h3 className="text-3xl font-bold text-foreground text-end">{isAr ? "أعلى 3 ذكاءات" : "Top 3 intelligences"}</h3>
             <div className="grid gap-4 md:grid-cols-3">
               {data.topIntelligences.map((m) => (
                 <MetricCard key={m.id} {...m} />
@@ -222,7 +222,7 @@ export function ResultsScreen({
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-3xl font-bold text-foreground text-right">{isAr ? "نتائج الأطفال" : "Children results"}</h3>
+            <h3 className="text-3xl font-bold text-foreground text-end">{isAr ? "نتائج الأطفال" : "Children results"}</h3>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
               {data.childResults.map((child) => (
                 <ChildResultCard key={child.id} child={child} locale={locale} />

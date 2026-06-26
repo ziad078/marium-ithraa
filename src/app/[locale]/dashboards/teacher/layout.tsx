@@ -17,7 +17,7 @@ const TeacherLayout = async ({
   const dir = locale === "ar" ? "rtl" : "ltr"
 
   return (
-    <RequireRoles allowed={[UserRole.TEACHER, UserRole.ADMIN]} redirectTo="/unauthorized">
+    <RequireRoles allowed={[UserRole.TEACHER, UserRole.ADMIN]} redirectTo="/unauthorized" locale={locale}>
       <SidebarProvider
         style={
           {

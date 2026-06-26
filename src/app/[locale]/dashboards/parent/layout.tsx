@@ -17,7 +17,7 @@ export default async function ParentLayout({
   const dir = locale === "ar" ? "rtl" : "ltr"
 
   return (
-    <RequireRoles allowed={[UserRole.PARENT]} redirectTo="/unauthorized">
+    <RequireRoles allowed={[UserRole.PARENT]} redirectTo="/unauthorized" locale={locale}>
       <SidebarProvider
         style={
           {

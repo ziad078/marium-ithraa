@@ -106,11 +106,11 @@ export default function AdminDealDetailPage() {
             </div>
             <div className="flex gap-2">
               <Button onClick={() => setApproveTarget(selectedProposal.id)} disabled={approve.isPending}>
-                <CheckCircle className="size-4 mr-1" />
+                <CheckCircle className="size-4 me-1" />
                 {t("approve")}
               </Button>
               <Button variant="outline" disabled>
-                <XCircle className="size-4 mr-1" />
+                <XCircle className="size-4 me-1" />
                 {t("reject")}
               </Button>
             </div>

@@ -48,7 +48,7 @@ export default async function RootLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} dir={dir}>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <body
         className={`${cairo.variable} antialiased`}
         suppressHydrationWarning

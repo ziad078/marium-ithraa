@@ -662,6 +662,9 @@
       },
       "actions": {
         "add": "إضافة"
+      },
+      "Actions": {
+        "Add": "إضافة"
       }
     },
     "Evaluations": {
@@ -993,6 +996,8 @@
       "childrenUnit": "طفل"
     },
     "Deals": {
+      "price": "السعر",
+      "dashboard":"لوحة التحكم",
       "deals": "الصفقات",
       "dealsSubtitle": "تصفح وإدارة الصفقات",
       "createDeal": "إنشاء صفقة",
@@ -1194,5 +1199,10 @@
       "jobTitle": { "label": "المسمى الوظيفي", "placeholder": "أدخل المسمى الوظيفي" },
       "toast": { "created": "تم إضافة المعلم بنجاح" }
     }
+  }, 
+  "Unauthorized": {
+    "title": "غير مصرح الوصول الي هنا",
+    "description": "انت غير مسموح لك التعامل مع هذه البيانات",
+    "goHome": "اذهب من هنا"
   }
 }

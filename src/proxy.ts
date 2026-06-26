@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { routing } from "./i18n/routing"
 import { Pages, Routes, UserRole } from "@/lib/types/enums"
 import type { Role } from "@/features/users"
-
 const intlMiddleware = createMiddleware(routing)
+
 
 function getLocale(pathname: string): string {
   const seg = pathname.split("/").filter(Boolean)[0] as
@@ -72,14 +72,13 @@ const ACCESS_MAP: Record<string, UserRole[]> = {
 }
 
 export default async function proxy(request: NextRequest) {
-  const intlResponse = intlMiddleware(request)
-
-  if (intlResponse.headers.get("location")) return intlResponse
-
   const { pathname } = request.nextUrl
+
+  // 1. احسب الـ locale والـ cleanPath الأول من الـ request مباشرة
   const locale = getLocale(pathname)
   const cleanPath = stripLocale(pathname, locale)
 
+  // 2. جيب التوكن
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
@@ -95,25 +94,26 @@ export default async function proxy(request: NextRequest) {
     cleanPath.startsWith(route),
   )
 
+  // 3. شروط التوجيه (Redirects) تفضل زي ما هي تماماً:
   if (cleanPath.startsWith(`/${Routes.EMAILVERIFICATION}`)) {
     if (!isAuthenticated) {
       return NextResponse.redirect(
         new URL(`/${locale}/${Routes.AUTH}/${Pages.LOGIN}`, request.url),
       )
     }
-
     if (isEmailVerified) {
       return NextResponse.redirect(
         new URL(roleHome(locale, token?.roles as Role[] | undefined), request.url),
       )
     }
-
-    return intlResponse
+    // بدال ما ترجع intlResponse جاهز، ناديه هنا مباشرة:
+    return intlMiddleware(request)
   }
 
   if (cleanPath.startsWith(`/${Routes.AUTH}`)) {
     if (!isAuthenticated) {
-      return intlResponse
+      // هنا الحل! ناديه لما تحتاجه فعلياً عشان يعمل الـ Rewrite صح في وقته
+      return intlMiddleware(request) 
     }
 
     if (!isEmailVerified) {
@@ -128,7 +128,7 @@ export default async function proxy(request: NextRequest) {
   }
 
   if (cleanPath.startsWith("/verify-email")) {
-    return intlResponse
+    return intlMiddleware(request)
   }
 
   const requiresAuth = AUTH_REQUIRED_ROUTES.some((route) =>
@@ -178,7 +178,8 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  return intlResponse
+  // 4. في النهاية لو مفيش أي شرط Redirect تحقق، شغل الـ intlMiddleware
+  return intlMiddleware(request)
 }
 
 export const config = {

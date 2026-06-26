@@ -337,7 +337,7 @@ function ParentPhoneInput({
           <FormLabel>Parent phone</FormLabel>
           <FormControl>
             <div className="relative">
-              {/* <Input {...field} type="tel" className="h-11 rounded-lg pr-10" placeholder="+20..." /> */}
+              {/* <Input {...field} type="tel" className="h-11 rounded-lg pe-10" placeholder="+20..." /> */}
               <PhoneInput
                 international
                 defaultCountry="SA"

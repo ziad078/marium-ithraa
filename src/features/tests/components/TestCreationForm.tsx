@@ -141,7 +141,7 @@ export function TestCreationForm({ onSuccess, className }: Props) {
               {tWizard("back")}
             </Button>
           )}
-          <Button type="submit" className="ml-auto" disabled={isSubmitting}>
+          <Button type="submit" className="ms-auto" disabled={isSubmitting}>
             {step === 1 ? tWizard("next") : tWizard("submit")}
           </Button>
         </div>

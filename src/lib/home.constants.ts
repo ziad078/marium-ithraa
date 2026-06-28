@@ -1,6 +1,6 @@
 export type HomeFeatureItem = {
-  key: "tests" | "reports" | "dashboards"
-  icon: "brain" | "barChart" | "sparkles"
+  key: "reports" | "dashboards" | "evaluations" | "activities" | "development" | "impact"
+  icon: "FileText" | "LayoutDashboard" | "ClipboardCheck" | "Award" | "Brain" | "TrendingUp"
 }
 
 export type HomeHowStep = {
@@ -15,9 +15,13 @@ export type HomeTestimonial = {
 }
 
 export const HOME_FEATURES: HomeFeatureItem[] = [
-  { key: "tests", icon: "brain" },
-  { key: "reports", icon: "barChart" },
-  { key: "dashboards", icon: "sparkles" },
+  { key: "reports", icon: "FileText" },
+  { key: "dashboards", icon: "LayoutDashboard" },
+  { key: "evaluations", icon: "ClipboardCheck" },
+  { key: "activities", icon: "Award" },
+  { key: "development", icon: "Brain" },
+  { key: "impact", icon: "TrendingUp" },
+
 ]
 
 export const HOME_HOW_STEPS: HomeHowStep[] = [

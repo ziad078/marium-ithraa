@@ -10,11 +10,11 @@ function parseBirthDate(value: string) {
 
 export const birthDateSchema = z
   .string()
-  .min(1, "Birth date is required")
+  .min(1, "errors.birthDate_required")
   .superRefine((value, ctx) => {
     const date = parseBirthDate(value)
     if (!date) {
-      ctx.addIssue({ code: "custom", message: "Birth date is invalid" })
+      ctx.addIssue({ code: "custom", message: "errors.birthDate_invalid" })
       return
     }
 
@@ -22,7 +22,7 @@ export const birthDateSchema = z
     today.setHours(23, 59, 59, 999)
 
     if (date > today) {
-      ctx.addIssue({ code: "custom", message: "Birth date cannot be in the future" })
+      ctx.addIssue({ code: "custom", message: "errors.birthDate_future" })
       return
     }
 
@@ -31,7 +31,7 @@ export const birthDateSchema = z
     if (date < minDate) {
       ctx.addIssue({
         code: "custom",
-        message: `Birth date cannot be more than ${MAX_CHILD_AGE_YEARS} years ago`,
+        message: `errors.birthDate_max`,
       })
     }
   })

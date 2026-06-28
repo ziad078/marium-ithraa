@@ -68,7 +68,8 @@ export function SwiperSlider<T>({
           onClick={() => swiperRef.current?.slidePrev()}
           aria-label="Previous"
         >
-          <ChevronLeft className="size-4" />
+          <ChevronRight className="size-4" />
+
         </Button>
         <Button
           type="button"
@@ -78,7 +79,8 @@ export function SwiperSlider<T>({
           onClick={() => swiperRef.current?.slideNext()}
           aria-label="Next"
         >
-          <ChevronRight className="size-4" />
+          <ChevronLeft className="size-4" />
+
         </Button>
       </div>
     </div>

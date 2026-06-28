@@ -15,9 +15,9 @@ import type {
 type RequestState = "idle" | "loading" | "success"
 
 export function useCreateChild(options?: {
-  onCreated?: (response: Extract<CreateChildResponse, { type: "CREATED" }>) => void
+  onCreated?: (response: Extract<CreateChildResponse, { status: "CREATED" }>) => void
   onTransferRequired?: (
-    response: Extract<CreateChildResponse, { type: "TRANSFER_REQUIRED" }>,
+    response: Extract<CreateChildResponse, { status: "TRANSFER_REQUIRED" }>,
   ) => void
   onConflict?: (message: string) => void
 }) {
@@ -31,14 +31,14 @@ export function useCreateChild(options?: {
       try {
         const response = await createChildFlow(payload)
 
-        if (response.type === "CREATED") {
+        if (response.status === "CREATED") {
           setRequestState("success")
           showSuccessToast({ raw: response.message })
           options?.onCreated?.(response)
           return
         }
 
-        if (response.type === "TRANSFER_REQUIRED") {
+        if (response.status === "TRANSFER_REQUIRED") {
           setRequestState("success")
           options?.onTransferRequired?.(response)
           return
@@ -74,3 +74,47 @@ export function useCreateChild(options?: {
     isLoading: requestState === "loading" || isPending,
   }
 }
+// export function useCreateChild(options?:{
+//     onCreated?: (response: Extract<CreateChildResponse, { type: "CREATED" }>) => void
+//     onTransferRequired?: (
+//       response: Extract<CreateChildResponse, { type: "TRANSFER_REQUIRED" }>,
+//     ) => void
+//     onConflict?: (message: string) => void
+//   }) {
+//   const [requestState, setRequestState] = useState<RequestState>("idle")
+//   const [isPending, startTransition] = useTransition()
+
+//   function createChild(payload: CreateChildFlowPayload) {
+//     setRequestState("loading")
+
+//     startTransition(async () => {
+//       try {
+//         const response = await createChildFlow(payload)
+
+//         // تذكر: الـ Backend يرسل "status" وليس "type"
+//         if (response.status === "CREATED") {
+//           setRequestState("success")
+//           showSuccessToast({ raw: response.message })
+//           options?.onCreated?.(response)
+//           return
+//         }
+
+//         if (response.status === "TRANSFER_REQUIRED") {
+//           setRequestState("success")
+//           options?.onTransferRequired?.(response)
+//           return
+//         }
+
+//         setRequestState("idle")
+//       } catch (err) {
+//         // ... باقي كود الـ catch كما هو بدون تغيير
+//       }
+//     })
+//   }
+
+//   return {
+//     createChild,
+//     requestState,
+//     isLoading: requestState === "loading" || isPending,
+//   }
+// }

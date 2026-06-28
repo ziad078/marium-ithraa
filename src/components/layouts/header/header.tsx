@@ -22,27 +22,27 @@ const Header = ({ locale }: { locale: string }) => {
         },
         {
             label: t("Menu.About"),
-            target: "/f"
+            target: "/about"
         },
-        {
-            label: t("Menu.Services"),
-            target: "/d"
-        },
-        {
-            label: t("Menu.Blog"),
-            target: "/c"
-        },
-        {
-            label: t("Menu.Contact"),
-            target: "/cv"
-        },
+        // {
+        //     label: t("Menu.Services"),
+        //     target: "/d"
+        // },
+        // {
+        //     label: t("Menu.Blog"),
+        //     target: "/c"
+        // },
+        // {
+        //     label: t("Menu.Contact"),
+        //     target: "/cv"
+        // },
     ]
 
     const [mobileOpen, setMobileOpen] = useState(false)
 
 
     return (
-        <header className="fixed top-6 start-0 w-full z-50">
+        <header className="fixed top-6 inset-s-0 w-full z-50">
             <div className="app-container">
                 <div
                     className={[

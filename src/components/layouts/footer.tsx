@@ -45,7 +45,7 @@ const Footer = ({ locale }: { locale?: string }) => {
   return (
     <footer className="relative overflow-hidden bg-white">
       <div
-        className="pointer-events-none absolute inset-y-0 start-0 w-[45%] opacity-60 blur-[0.5px]"
+        className="pointer-events-none absolute inset-y-0 inset-s-0 w-[45%] opacity-60 blur-[0.5px]"
         style={{
           background:
             "radial-gradient(closest-side, rgba(168, 85, 247, 0.18), transparent 70%)",
@@ -113,12 +113,21 @@ const Footer = ({ locale }: { locale?: string }) => {
             </div>
 
             <div className="mt-6 space-y-2 text-sm text-muted-foreground text-start">
+              <a className="block w-fit hover:text-foreground" href={`#`}>
+                {t("Contact.Website")}
+              </a>
+              <p className="block w-fit hover:text-foreground">
+                {t("Contact.CR")}
+              </p>
               <a className="block w-fit hover:text-foreground" href={`mailto:${t("Contact.Email")}`}>
                 {t("Contact.Email")}
               </a>
               <a className="block w-fit hover:text-foreground" href={`tel:${t("Contact.PhoneTel")}`}>
                 {t("Contact.Phone")}
               </a>
+              <p className="block w-fit hover:text-foreground">
+                {t("Contact.Address")}
+              </p>
             </div>
           </div>
 
@@ -161,9 +170,9 @@ const Footer = ({ locale }: { locale?: string }) => {
             <Link className="hover:text-foreground" href="/privacy">
               {t("Legal.Privacy")}
             </Link>
-            <Link className="hover:text-foreground" href="/terms">
+            {/* <Link className="hover:text-foreground" href="/terms">
               {t("Legal.Terms")}
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

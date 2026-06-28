@@ -19,7 +19,7 @@ const Hero = () => {
     {
       key: "Beneficiary",
       href: `${baseAuth}/${Pages.BENEFICIARYSIGNUP}`,
-      tone: "bg-chart-2/15 hover:bg-chart-2/20",
+      tone: "bg-secondary hover:bg-secondary/60",
     },
   ] as const
 
@@ -36,16 +36,6 @@ const Hero = () => {
       <div className="app-container relative pt-40 pb-14 lg:pt-40 lg:pb-20">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="order-2 text-start lg:order-1">
-            <div className="mb-5 inline-flex items-center gap-3">
-              <Image
-                src="/logo.svg"
-                alt={t("brandAlt")}
-                width={150}
-                height={45}
-                className="h-10 w-auto"
-                priority={false}
-              />
-            </div>
 
             <h1 className="text-3xl font-extrabold leading-tight text-primary sm:text-4xl lg:text-5xl">
               {t("title")}
@@ -64,7 +54,6 @@ const Hero = () => {
                   <Button
                     key={c.key}
                     asChild
-                    variant="secondary"
                     className={cn(
                       "h-auto w-full justify-between rounded-2xl border border-border/50 bg-secondary/40 px-5 py-4 shadow-sm transition-colors",
                       c.tone

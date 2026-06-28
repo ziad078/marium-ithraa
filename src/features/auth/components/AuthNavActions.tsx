@@ -60,7 +60,7 @@ export function AuthNavActions({
     return (
       <div className="flex items-center gap-2">
         {showNotifications ? <NotificationBell /> : null}
-        {showLanguage ? <LanguageSwitcher locale={locale} /> : null}
+        {/* {showLanguage ? <LanguageSwitcher locale={locale} /> : null} */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -108,7 +108,7 @@ export function AuthNavActions({
 
   return (
     <div className="flex items-center gap-2">
-      {showLanguage ? <LanguageSwitcher locale={locale} /> : null}
+      {/* {showLanguage ? <LanguageSwitcher locale={locale} /> : null} */}
       {signupHref ? (
         <Button
           asChild

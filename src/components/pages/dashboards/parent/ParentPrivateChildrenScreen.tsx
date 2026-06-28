@@ -10,7 +10,6 @@ import { ManagementPageHeader } from "@/components/shared/management/ManagementP
 import { EmptyState } from "@/components/shared/management/EmptyState"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import { type Child } from "@/features/children"
 import {
   formatChildBirthDate,
@@ -52,7 +51,7 @@ export function ParentPrivateChildrenScreen({ privateChildren }: Props) {
         </p>
       )}
 
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="gradient"
@@ -71,6 +70,27 @@ export function ParentPrivateChildrenScreen({ privateChildren }: Props) {
             onSuccess={() => {}}
           />
         </Dialog>
+      </div> */}
+      {/* تم إزالة <Dialog> الخارجي و <DialogTrigger> */}
+      <div className="flex justify-end">
+        <Button
+          variant="gradient"
+          type="button"
+          className="rounded-xl gap-2"
+          disabled={atLimit}
+          onClick={() => setOpen(true)}
+        >
+          <Plus className="size-4" />
+          {t("addChild")}
+        </Button>
+
+        {/* الـ Dialog يتم استدعاؤه كـ Component منفصل هنا */}
+        <ParentPrivateChildDialog
+          open={open}
+          onOpenChange={setOpen}
+          currentCount={privateChildren.length}
+          onSuccess={() => { }}
+        />
       </div>
 
       {privateChildren.length === 0 ? (

@@ -37,7 +37,7 @@ export function GradesScreen({ grades }: { grades: Grade[] }) {
 
   useEffect(() => {
     if (deleteState.success) {
-      notifyDelete(deleteState, "Actions.grades.deleted")
+      notifyDelete(deleteState, "grades.deleted")
     } else if (deleteState.message) {
       notifyDelete(deleteState)
     }

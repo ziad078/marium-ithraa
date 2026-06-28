@@ -1,7 +1,6 @@
 "use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useActionState, useEffect, useTransition } from "react"
+import { useActionState, useEffect, useTransition, useRef } from "react"
 import {
   useForm,
   type DefaultValues,
@@ -64,9 +63,20 @@ export function useServerActionForm<T extends FieldValues>({
     }
   }, [state.formData, state.fieldErrors, state.error, defaultValues, form])
 
+
+
+  // 2. احفظ الدالة داخل Ref لضمان الحصول على أحدث نسخة بدون تفعيل الـ useEffect
+  const onStatusChangeRef = useRef(onStatusChange)
   useEffect(() => {
-    if (state?.status) onStatusChange?.(state)
-  }, [state, onStatusChange])
+    onStatusChangeRef.current = onStatusChange
+  }, [onStatusChange])
+
+  // 3. الـ useEffect الآمن الآن يعتمد فقط على الـ state.status
+  useEffect(() => {
+    if (state?.status && onStatusChangeRef.current) {
+      onStatusChangeRef.current(state)
+    }
+  }, [state]) // <--- تم إزالة onStatusChange من هنا تماماً!
 
   const submit = (values: T, extra?: Record<string, string>) => {
     const fd = new FormData()

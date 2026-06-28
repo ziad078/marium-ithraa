@@ -1,6 +1,6 @@
 "use client"
-
 import * as React from "react"
+import { useTranslations } from "next-intl" // 1. استورد دالة الترجمة
 import type { Label as LabelPrimitive } from "radix-ui"
 import { Slot } from "radix-ui"
 import {
@@ -135,9 +135,19 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
   )
 }
 
+
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
   const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message ?? "") : props.children
+  const t = useTranslations() // 2. شغل الـ hook هنا
+
+  // 3. بنجيب الرسالة (الـ Key) اللي جاية من Zod
+  const rawMessage = error ? String(error?.message ?? "") : props.children
+
+  // 4. لو الـ message عبارة عن Key بتاع ترجمة (بيبدأ بـ errors مثلاً)، بنترجمه
+  // وإلا بنعرض النص كالعادي (عشان لو فيه رسايل تانية مش محتاجة ترجمة)
+  const body = typeof rawMessage === "string" && rawMessage.startsWith("errors.")
+    ? t(rawMessage as string)
+    : rawMessage
 
   if (!body) {
     return null
@@ -147,7 +157,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn("text-sm text-destructive", className)}
+      className={cn("text-sm text-red-500 font-medium", className)} // shadcn text-destructive
       {...props}
     >
       {body}

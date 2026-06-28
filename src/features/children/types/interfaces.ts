@@ -78,12 +78,12 @@ export interface CreateChildFlowPayload {
 
 export type CreateChildResponse =
   | {
-      type: "CREATED"
+      status: "CREATED"
       message: string
       childId: string
     }
   | {
-      type: "TRANSFER_REQUIRED"
+      status: "TRANSFER_REQUIRED"
       message: string
       transferRequestId: string
     }

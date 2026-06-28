@@ -3,6 +3,7 @@ import Hero from "@/components/pages/home/hero";
 import HomeFeatures from "@/components/pages/home/features";
 import HomeHowItWorks from "@/components/pages/home/how-it-works";
 import HomeTestimonials from "@/components/pages/home/testimonials";
+import HomeBeneficiaries from '@/components/pages/home/beneficiaries';
  
 export async function generateMetadata({params}:{params: Promise<{locale: string}>}) {
   const {locale} = await params;
@@ -17,6 +18,7 @@ export default function Home() {
     <main>
       <Hero/>
       <HomeFeatures />
+      <HomeBeneficiaries/>
       <HomeHowItWorks />
       <HomeTestimonials />
     </main>

@@ -44,7 +44,7 @@ export function ClassesScreenClient({ classes, grades }: Props) {
 
   useEffect(() => {
     if (deleteState.success) {
-      notifyDelete(deleteState, "Actions.classes.deleted")
+      notifyDelete(deleteState, "classes.deleted")
     } else if (deleteState.message) {
       notifyDelete(deleteState)
     }

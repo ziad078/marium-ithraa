@@ -40,10 +40,24 @@ export default function NewDealPage() {
 
   const handleSubmit = async () => {
     const count = parseInt(studentsCount, 10)
+    
+    // 1. التحقق من الحقول الأساسية
     if (!activityId || isNaN(count) || count <= 0) {
       showErrorToast(t, "validationError")
       return
     }
+    
+    // 2. التحقق من أن تاريخ الموعد النهائي في المستقبل وليس في الماضي
+    if (deadline) {
+      const selectedDate = new Date(deadline)
+      const now = new Date()
+
+      if (selectedDate <= now) {
+        showErrorToast(t, "pastDeadlineError") // تأكد من إضافة هذا المفتاح في ملف الـ JSON للترجمة
+        return
+      }
+    }
+
     try {
       await create.mutateAsync({
         activityId,
@@ -55,6 +69,12 @@ export default function NewDealPage() {
     }
   }
 
+  const getMinDateTime = () => {
+    const now = new Date()
+    // لتعديل التوقيت ليناسب الـ ISO بدون فرق التوقيت الزمني للـ Input
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
+    return now.toISOString().slice(0, 16)
+  }
   if (loadingActivities) {
     return (
       <div className="space-y-4 p-4 lg:p-6">
@@ -105,6 +125,7 @@ export default function NewDealPage() {
             <Input
               type="datetime-local"
               value={deadline}
+              min={`${getMinDateTime()}`}
               onChange={(e) => setDeadline(e.target.value)}
             />
           </div>

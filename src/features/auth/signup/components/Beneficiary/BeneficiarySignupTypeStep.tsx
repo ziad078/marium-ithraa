@@ -40,7 +40,7 @@ export default function BeneficiarySignupTypeStep({ control }: Props) {
             onValueChange={field.onChange}
             className="grid gap-3 sm:grid-cols-3"
           >
-            {["organization", "parent", "teacher", "enricher"].map((value) => (
+            {["organization", "parent", "enricher"].map((value) => (
               <FieldLabel key={value} htmlFor={value}>
                 <Field orientation="vertical" className="rounded-2xl border border-border/60 bg-secondary/40 px-3 py-3 shadow-sm hover:border-primary/50">
                   <FieldContent>

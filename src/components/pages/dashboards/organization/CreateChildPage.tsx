@@ -107,7 +107,9 @@ export function CreateChildPage({
   const gradeId = useWatch({ control: form.control, name: "gradeId" })
   const { parent, parentState, isSearching, error: parentSearchError, notParentUser } = useParentSearch(parentPhone)
   const { createChild, isLoading } = useCreateChild({
-    onCreated: () => router.push("/dashboards/organization/children"),
+    onCreated: () => {
+      router.push("/dashboards/organization/children")
+    },
     onTransferRequired: (response) => setTransferResponse(response),
     onConflict: (message) => setDuplicateMessage(message),
   })

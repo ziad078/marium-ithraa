@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "Welcome to my site",
-    "description": "Best app ever"
+    "title": "Ithraa Intelligence",
+    "description": "A smart platform that helps families discover enriching activities suitable for their children and enables schools and activity providers to reach their target audience"
   },
   "Header": {
     "Menu": {
@@ -41,14 +41,17 @@
       "Facebook": "Facebook"
     },
     "Contact": {
-      "Email": "info@ithra.com",
-      "Phone": "+654832177422",
-      "PhoneTel": "+654832177422"
+      "Email": "support@ithraa.com",
+      "Phone": "0503977564",
+      "Website": "ithrathaka.com",
+      "CR": "CR: 7053545971",
+      "PhoneTel": "0503977564",
+      "Address": "Riyadh,Al-Sawdi, Sayda Street"
     },
     "Legal": {
       "Privacy": "Privacy policy",
       "Terms": "Terms & Conditions",
-      "Copyright": "Ithraa © {year}. All rights reserved."
+      "Copyright": "All rights reserved to Tatweer and Ithraa Althaka Technology © {year}"
     }
   },
   "Dashboard": {
@@ -72,7 +75,7 @@
       "dataLibrary": "Data Library",
       "reports": "Reports",
       "wordAssistant": "Word Assistant",
-      "tests": "tests lib",
+      "tests": "Tests Library",
       "evaluations": "Evaluations",
       "attempts": "Attempts",
       "deals": "Deals",
@@ -82,7 +85,7 @@
       "employeesCount": "Employees Count",
       "childrenCount": "Children Count",
       "trendingUp": "Trending up this month",
-      "last6Months": "Visitors for the last 6 months"
+      "last6Months": "Last 6 months"
     },
     "tables": {
       "childrenTitle": "Children Table"
@@ -298,12 +301,12 @@
   },
   "HomePage": {
     "MetaData": {
-      "title": "Hello World"
+      "title": "Welcome to Ithraa"
     },
     "Hero": {
       "brandAlt": "Ithraa",
-      "title": "Discover your child’s intelligence and guide it right",
-      "subtitle": "A comprehensive learning platform connecting family, schools, and institutions to assess children’s skills, analyze strengths, and provide personalized learning paths in a safe, organized environment.",
+      "title": "Discover your child's intelligence and guide it right",
+      "subtitle": "A comprehensive learning platform connecting family, schools, and institutions to assess children's skills, analyze strengths, and provide personalized learning paths in a safe, organized environment.",
       "cardsTitle": "Choose your account type to get started",
       "heroImageAlt": "Ithraa hero illustration",
       "cards": {
@@ -317,26 +320,55 @@
         }
       }
     },
+    "Beneficiaries": {
+      "title": "Who benefits from Ithraa Intelligence?",
+      "items": {
+        "family": {
+          "title": "Family",
+          "description": "We empower families to discover their children's intelligence and choose activities that perfectly match their abilities, ensuring a deep and impactful enrichment experience."
+        },
+        "institutions": {
+          "title": "Schools & Institutions",
+          "description": "We provide schools with the opportunity to establish strategic partnerships with qualified specialists to support their enrichment options beyond academic curricula."
+        },
+        "providers": {
+          "title": "Activity Providers",
+          "description": "We support activity providers with opportunities for qualification, keeping up with quality standards and market requirements to achieve a positive and tangible impact on children's lives."
+        }
+      }
+    },
     "Features": {
       "title": "Why Ithraa?",
       "items": {
-        "tests": {
-          "title": "Accredited assessments",
-          "description": "A curated set of accurate, easy assessments to evaluate each child’s abilities."
+        "evaluations": {
+          "title": "Reliable scientific assessments",
+          "description": "A set of accurate, easy assessments to help you evaluate each child's abilities."
+        },
+        "activities": {
+          "title": "Individual enrichment activity paths",
+          "description": "A set of accurate, easy assessments to help you evaluate each child's abilities."
+        },
+        "development": {
+          "title": "Track intelligence and skill development",
+          "description": "A set of accurate, easy assessments to help you evaluate each child's abilities."
+        },
+        "impact": {
+          "title": "Impact assessment of activities",
+          "description": "A set of accurate, easy assessments to help you evaluate each child's abilities."
         },
         "reports": {
-          "title": "Clear reports",
+          "title": "Instant reports",
           "description": "Rich results and actionable insights that give you a complete picture."
         },
         "dashboards": {
-          "title": "Multiple dashboards",
-          "description": "Role-based dashboards that make management and follow-up simple."
+          "title": "Multiple easy dashboards",
+          "description": "Each role has a suitable dashboard that makes management and follow-up simple."
         }
       }
     },
     "HowItWorks": {
       "title": "How does Ithraa work?",
-      "subtitle": "A simple journey that helps you discover and nurture a child’s strengths.",
+      "subtitle": "A simple journey that helps you discover and nurture a child's strengths.",
       "steps": {
         "evaluate": {
           "title": "Run intelligence assessments",
@@ -344,11 +376,11 @@
         },
         "map": {
           "title": "Get a full intelligence map",
-          "description": "Understand the child’s abilities clearly and build the right learning plan."
+          "description": "Understand the child's abilities clearly and build the right learning plan."
         },
         "recommend": {
           "title": "Smart activities & paths",
-          "description": "Recommendations that match the child’s level and support steady growth."
+          "description": "Recommendations that match the child's level and support steady growth."
         },
         "track": {
           "title": "Track progress and development",
@@ -389,9 +421,26 @@
     },
     "title": "Welcome to Ithraa"
   },
+  "errors": {
+    "name_required": "Name is required",
+    "phone_required": "Phone number is required",
+    "birthDate_required": "Birth date is required",
+    "invalid_email": "Invalid email, please enter a valid email",
+    "password_min": "Password is required, 8 characters minimum",
+    "birthDate_invalid": "Invalid birth date",
+    "birthDate_max": "This is not a child's age",
+    "birthDate_future": "Birth date cannot be in the future"
+  },
   "error": {
     "title": "Something went wrong",
-    "description": "An unexpected error occurred. Please try again."
+    "description": "An unexpected error occurred. Please try again.",
+    "name_required": "Name is required",
+    "birthDate_required": "Birth date is required",
+    "invalid_email": "Invalid email, please enter a valid email",
+    "password_minphone_required": "Password is required",
+    "birthDate_invalid": "Invalid birth date",
+    "birthDate_max": "This is not a child's age",
+    "birthDate_future": "Birth date cannot be in the future"
   },
   "notFound": {
     "title": "Page not found",
@@ -444,7 +493,7 @@
           },
           "parent": {
             "title": "Parent / Guardian",
-            "description": "Register as a parent to follow your child’s progress and results."
+            "description": "Register as a parent to follow your child's progress and results."
           },
           "teacher": {
             "title": "Teacher",
@@ -573,7 +622,7 @@
       "submitting": "Signing in...",
       "rememberMe": "Remember me",
       "forgotPassword": "Forgot your password?",
-      "noAccount": "Don’t have an account?",
+      "noAccount": "Don't have an account?",
       "createAccount": "Create account",
       "side": {
         "title": "Sign in to access your dashboard and manage your account easily.",
@@ -996,6 +1045,7 @@
       "childrenUnit": "children"
     },
     "Deals": {
+      "pastDeadlineError": "Deadline must be in the future",
       "price": "Price",
       "dashboard": "Dashboard",
       "deals": "Deals",
@@ -1132,6 +1182,11 @@
       "jobTitle": { "label": "Job title", "placeholder": "Enter job title" }
     },
     "Grade": {
+      "Actions": {
+        "grades": {
+          "created": "Grade added successfully"
+        }
+      },
       "addTitle": "Add grade",
       "editTitle": "Edit grade",
       "breadcrumb": { "home": "Home", "grades": "Grades" },
@@ -1150,9 +1205,9 @@
         "none": "None"
       },
       "toast": { "saved": "Class saved successfully" },
-      "actions": {
+      "Actions": {
         "classes": {
-          "created": "تم انئاء الفصل بنجاح"
+          "created": "Class created successfully"
         }
       }
     },
@@ -1204,7 +1259,13 @@
       "email": { "label": "Email", "placeholder": "Enter email address" },
       "password": { "label": "Password", "placeholder": "Enter password" },
       "jobTitle": { "label": "Job title", "placeholder": "Enter job title" },
-      "toast": { "created": "Teacher added successfully" }
+      "toast": { "created": "Teacher added successfully" },
+      "Actions": {
+        "common": {
+          "conflict": "This account already exists",
+          "validationFailed": "Please check the form fields."
+        }
+      }
     }
   },
   "Unauthorized": {

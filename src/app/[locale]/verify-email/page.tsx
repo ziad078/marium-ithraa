@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { getTranslations } from "next-intl/server"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,6 +15,7 @@ type Props = {
 export default async function VerifyEmailPage({ params, searchParams }: Props) {
   const { locale } = await params
   const { token } = await searchParams
+  const t = await getTranslations({ locale, namespace: "VerifyEmail" })
 
   const result = token ? await verifyEmail(token) : null
 
@@ -34,13 +36,13 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
                 />
               </div>
               <CardTitle className="text-center text-2xl font-bold text-blue-500">
-                Email verification
+                {t("title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
               {!token ? (
                 <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-                  Missing verification token.
+                  {t("missingToken")}
                 </div>
               ) : result?.ok ? (
                 <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm text-emerald-700">
@@ -48,7 +50,7 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
                 </div>
               ) : (
                 <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-                  {result?.message ?? "Verifying your email failed."}
+                  {result?.message ?? t("failed")}
                 </div>
               )}
 
@@ -56,7 +58,7 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
                 asChild
                 className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
               >
-                <Link href={`/auth/login`}>Go to login</Link>
+                <Link href={`/auth/login`}>{t("goToLogin")}</Link>
               </Button>
             </CardContent>
           </Card>
@@ -74,10 +76,10 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
                   priority
                 />
                 <p className="mt-6 text-lg font-semibold text-foreground">
-                  You’re almost done
+                  {t("almostDone")}
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Once verified, you can sign in and continue to your dashboard.
+                  {t("onceVerified")}
                 </p>
               </div>
             </div>

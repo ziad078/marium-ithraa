@@ -1,5 +1,6 @@
-"use client"
+﻿"use client"
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,6 +13,7 @@ import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { sendVerificationEmail } from "@/features/mailer"
 
 export default function EmailVerificationPage() {
+    const t = useTranslations("EmailVerification")
     const { data: session, status } = useSession()
 
     const email = session?.user?.email
@@ -33,7 +35,7 @@ export default function EmailVerificationPage() {
       if (process.env.NODE_ENV === "development") {
         console.error(error)
       }
-      showErrorToast({ raw: "Failed to send email" })
+      showErrorToast({ raw: t("sendFailed") })
     } finally {
       setSending(false)
     }
@@ -49,7 +51,7 @@ export default function EmailVerificationPage() {
     // toast مرة واحدة
     useEffect(() => {
         if (sended) {
-            showSuccessToast({ raw: "Email sent successfully" })
+            showSuccessToast({ raw: t("sendSuccess") })
         }
     }, [sended])
 
@@ -81,20 +83,20 @@ export default function EmailVerificationPage() {
                                 />
                             </div>
                             <CardTitle className="text-center text-2xl font-bold text-blue-500">
-                                Check your email
+                                {t("title")}
                             </CardTitle>
                         </CardHeader>
 
                         <CardContent className="space-y-5">
                             <div className="space-y-2 text-sm text-muted-foreground">
                                 <p>
-                                    We sent a verification link to{" "}
+                                    {t("sentLink")}{" "}
                                     <span className="font-medium text-foreground">
-                                        {email || "your email"}
+                                        {email || t("fallbackEmail")}
                                     </span>
                                 </p>
                                 <p>
-                                    Open the email and click the link to verify your account.
+                                    {t("instruction")}
                                 </p>
                             </div>
 
@@ -102,14 +104,14 @@ export default function EmailVerificationPage() {
                                 <Button asChild variant="secondary" className="h-11 rounded-xl">
                                     <a href="https://mail.google.com/" target="_blank">
                                         <Mail />
-                                        Open Gmail
+                                        {t("openGmail")}
                                     </a>
                                 </Button>
 
                                 <Button asChild variant="secondary" className="h-11 rounded-xl">
                                     <a href="https://outlook.live.com/mail/" target="_blank">
                                         <Gift />
-                                        Open Outlook
+                                        {t("openOutlook")}
                                     </a>
                                 </Button>
                             </div>
@@ -118,7 +120,7 @@ export default function EmailVerificationPage() {
                                 asChild
                                 className="h-11 w-full rounded-xl bg-linear-to-r from-fuchsia-600 to-violet-600 text-white hover:opacity-95"
                             >
-                                <Link href={`/auth/login`}>Back to login</Link>
+                                <Link href={`/auth/login`}>{t("backToLogin")}</Link>
                             </Button>
 
                             <Button
@@ -129,12 +131,12 @@ export default function EmailVerificationPage() {
                                 {sending ? (
                                     <>
                                         <Loader2 className="animate-spin" />
-                                        Sending...
+                                        {t("sending")}
                                     </>
                                 ) : cooldown > 0 ? (
-                                    `Resend in ${cooldown}s`
+                                    t("resendIn", { cooldown })
                                 ) : (
-                                    "Resend Email"
+                                    t("resend")
                                 )}
                             </Button>
                         </CardContent>
@@ -153,10 +155,10 @@ export default function EmailVerificationPage() {
                                     priority
                                 />
                                 <p className="mt-6 text-lg font-semibold text-foreground">
-                                    You’re almost done
+                                    {t("almostDone")}
                                 </p>
                                 <p className="mt-2 text-sm text-muted-foreground">
-                                    Click the verification link from your inbox to activate your account.
+                                    {t("clickLink")}
                                 </p>
                             </div>
                         </div>

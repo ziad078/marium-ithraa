@@ -95,7 +95,7 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/10 via-transparent to-purple-500/10 rounded-full blur-3xl -z-10" />
             <div className="relative mx-auto w-full max-w-md lg:max-w-none">
               <Image
-                src="/hero.svg"
+                src="/hero.png"
                 alt={t("heroImageAlt", { defaultValue: "إثراء الذكاء" })}
                 width={760}
                 height={620}

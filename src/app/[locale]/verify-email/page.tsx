@@ -66,7 +66,7 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
               <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/20" />
               <div className="relative p-10">
                 <Image
-                  src="/hero.svg"
+                  src="/hero.png"
                   alt="hero"
                   width={520}
                   height={520}

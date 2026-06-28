@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { SiteHeader } from "@/components/site-header"
 import DashboardCards from "@/components/shared/cards/DashboardCards"
@@ -6,7 +7,9 @@ import { DataTable } from "@/components/shared/data-table/DataTable"
 import { getAllUsers } from "@/features/users/api"
 import { columns } from "@/features/users"
 
-export default async function AdminDashboardPage() {
+export default async function AdminDashboardPage(props: { params: Promise<{ locale: string }> }) {
+    const { locale } = await props.params
+    const t = await getTranslations({ locale, namespace: "AdminUsers" })
 
     const users = await getAllUsers()
     const cards: CardInfo[] = [
@@ -17,7 +20,7 @@ export default async function AdminDashboardPage() {
             footer: {
                 exist: false
             },
-            description: "users count",
+            description: t("usersCount"),
             title: users.users.length || 0
         }
 
@@ -33,7 +36,7 @@ export default async function AdminDashboardPage() {
                             <ChartAreaInteractive />
                         </div>
                         <div className="px-4 lg:px-6 between-center">
-                            <h2 className="text-xl">users table</h2>
+                            <h2 className="text-xl">{t("usersTable")}</h2>
                         </div>
                         <DataTable data={users.users} columns={columns} />
 

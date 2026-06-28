@@ -683,6 +683,16 @@
     }
   },
   "Features": {
+    "users": {
+      "name": "Name"
+    },
+    "Users": {
+      "Email": "Email",
+      "IsEmailVerfied": "Email Verified",
+      "Phone": "Phone",
+      "IsPhoneVerfied": "Phone Verified",
+      "Role": "Role"
+    },
     "Activities": {
       "title": "Activities",
       "create": "Add activity",
@@ -1141,6 +1151,10 @@
     "title": "This tests flow is no longer available. Please use evaluations.",
     "description": "The legacy tests interface has been retired. Child assessments now live in evaluations.",
     "openEvaluations": "Open evaluations"
+  },
+  "AdminUsers": {
+    "usersCount": "Users count",
+    "usersTable": "Users table"
   },
   "ChoseRole": {
     "title": "Choose a Role",

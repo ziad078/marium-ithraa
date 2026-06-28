@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useTranslations } from "next-intl"
 
 import { Users, School, UserRound, Percent, UserPlus, UserRoundPlus, LayoutGrid, BarChart3 } from "lucide-react"
 
@@ -16,20 +17,21 @@ export type OrganizationDashboardScreenProps = {
 
 export function OrganizationDashboardScreen({ locale, organizationName, stats, activities }: OrganizationDashboardScreenProps) {
   const isAr = locale === "ar"
+  const t = useTranslations("OrgDashboard")
 
   return (
     <main className="app-container py-8 space-y-10" dir={isAr ? "rtl" : "ltr"}>
       <WelcomeHero
-        title={isAr ? `مرحباً بك في ${organizationName}` : `Welcome to ${organizationName}`}
-        subtitle={isAr ? "أدر مؤسستك بكل سهولة من مكان واحد" : "Manage your organization from one place"}
+        title={t("welcome.title", { organizationName })}
+        subtitle={t("welcome.subtitle")}
       />
 
       <section className="space-y-4">
-        <h2 className="text-xl font-bold text-foreground text-start">{isAr ? "إحصائيات المنصة" : "Platform stats"}</h2>
+        <h2 className="text-xl font-bold text-foreground text-start">{t("platformStats")}</h2>
         <StatsGrid items={stats} />
       </section>
 
-      <ActivityFeed title={isAr ? "آخر النشاطات" : "Recent activity"} items={activities} />
+      <ActivityFeed title={t("recentActivity")} items={activities} />
     </main>
   )
 }

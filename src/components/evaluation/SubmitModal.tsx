@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
@@ -14,19 +15,21 @@ export default function SubmitModal({
   onConfirm: () => void
   isSubmitting?: boolean
 }) {
+  const t = useTranslations("SubmitModal")
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Submit attempt?</DialogTitle>
-          <DialogDescription>You cannot edit answers after submission.</DialogDescription>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
-            Cancel
+            {t("cancel")}
           </Button>
           <Button onClick={onConfirm} disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit final"}
+            {isSubmitting ? t("submitting") : t("submitFinal")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useTranslations } from "next-intl"
 
 import { CalendarDays, Download, FileText } from "lucide-react"
 
@@ -68,7 +69,7 @@ function MetricCard({ title, value, variant = "purple" }: ClassMetric) {
 }
 
 function ChildResultCard({ child, locale }: { child: ChildResultItem; locale: string }) {
-  const isAr = locale === "ar"
+  const t = useTranslations("OrgResults")
   return (
     <Card className="rounded-2xl border bg-card shadow-sm">
       <CardContent className="p-3">
@@ -78,9 +79,9 @@ function ChildResultCard({ child, locale }: { child: ChildResultItem; locale: st
             <AvatarFallback className="rounded-xl text-xs">CH</AvatarFallback>
           </Avatar>
           <div className="min-w-0 text-end text-xs">
-            <p className="truncate text-primary">{isAr ? `الاسم: ${child.name}` : `Name: ${child.name}`}</p>
-            <p className="truncate text-primary/80">{isAr ? `الفصل: ${child.className}` : `Class: ${child.className}`}</p>
-            <p className="truncate text-primary/80">{isAr ? `النتيجة: ${child.value}` : `Result: ${child.value}`}</p>
+            <p className="truncate text-primary">{t("childResult.name", { name: child.name })}</p>
+            <p className="truncate text-primary/80">{t("childResult.class", { className: child.className })}</p>
+            <p className="truncate text-primary/80">{t("childResult.result", { value: child.value })}</p>
           </div>
         </div>
       </CardContent>
@@ -89,7 +90,7 @@ function ChildResultCard({ child, locale }: { child: ChildResultItem; locale: st
 }
 
 function EvaluationStatusCard({ item, locale }: { item: EvaluationStatusItem; locale: string }) {
-  const isAr = locale === "ar"
+  const t = useTranslations("OrgResults")
   return (
     <Card className="rounded-2xl border bg-card shadow-sm">
       <CardContent className="space-y-3 p-3">
@@ -99,15 +100,15 @@ function EvaluationStatusCard({ item, locale }: { item: EvaluationStatusItem; lo
             <AvatarFallback className="rounded-xl text-xs">CH</AvatarFallback>
           </Avatar>
           <div className="min-w-0 text-end text-sm">
-            <p className="truncate text-primary">{isAr ? `الاسم: ${item.name}` : `Name: ${item.name}`}</p>
-            <p className="truncate text-primary/80">{isAr ? `الفصل: ${item.className}` : `Class: ${item.className}`}</p>
+            <p className="truncate text-primary">{t("evaluationStatus.name", { name: item.name })}</p>
+            <p className="truncate text-primary/80">{t("evaluationStatus.class", { className: item.className })}</p>
             <p className={cn("truncate font-semibold", item.statusClassName ?? "text-emerald-600")}>
-              {isAr ? `التقييم: ${item.status}` : `Status: ${item.status}`}
+              {t("evaluationStatus.status", { status: item.status })}
             </p>
           </div>
         </div>
         <Button variant="gradient" className="h-9 w-full rounded-lg" disabled={item.reminderDisabled}>
-          {isAr ? "إرسال تذكير" : "Send reminder"}
+          {t("sendReminder")}
         </Button>
       </CardContent>
     </Card>
@@ -115,7 +116,7 @@ function EvaluationStatusCard({ item, locale }: { item: EvaluationStatusItem; lo
 }
 
 function ReportCard({ item, locale }: { item: ReportItem; locale: string }) {
-  const isAr = locale === "ar"
+  const t = useTranslations("OrgResults")
   return (
     <Card className="rounded-2xl border bg-card shadow-sm">
       <CardContent className="space-y-3 p-4 text-end">
@@ -130,11 +131,11 @@ function ReportCard({ item, locale }: { item: ReportItem; locale: string }) {
         </p>
         <div className="grid grid-cols-2 gap-2">
           <Button variant="outline" className="rounded-lg border-fuchsia-500/60 text-fuchsia-600">
-            {isAr ? "تنزيل Excel" : "Excel"}
+            {t("downloadExcel")}
           </Button>
           <Button variant="gradient" className="rounded-lg">
             <Download className="size-4" />
-            {isAr ? "تنزيل PDF" : "PDF"}
+            {t("downloadPdf")}
           </Button>
         </div>
       </CardContent>
@@ -152,28 +153,29 @@ export function ResultsScreen({
   defaultTab?: "evaluation" | "results" | "reports"
 }) {
   const isAr = locale === "ar"
+  const t = useTranslations("OrgResults")
 
   return (
     <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: isAr ? "الرئيسية" : "Home" },
-          { label: isAr ? "النتائج" : "Results" },
+          { href: "/dashboards/organization", label: t("breadcrumb.home") },
+          { label: t("title") },
         ]}
-        title={isAr ? "النتائج" : "Results"}
-        subtitle={isAr ? "تابع نتائج تقييمات أطفال مؤسستك" : "Track children assessment results"}
+        title={t("title")}
+        subtitle={t("subtitle")}
       />
 
       <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="grid h-auto w-full grid-cols-3 gap-3 bg-transparent p-0">
           <TabsTrigger value="evaluation" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-surface-accent">
-            {isAr ? "حالة التقييم" : "Evaluation status"}
+            {t("tabs.evaluation")}
           </TabsTrigger>
           <TabsTrigger value="results" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-surface-accent">
-            {isAr ? "النتائج" : "Results"}
+            {t("tabs.results")}
           </TabsTrigger>
           <TabsTrigger value="reports" className="h-11 rounded-xl bg-muted text-base data-[state=active]:bg-surface-accent">
-            {isAr ? "التقارير" : "Reports"}
+            {t("tabs.reports")}
           </TabsTrigger>
         </TabsList>
 
@@ -204,7 +206,7 @@ export function ResultsScreen({
           </div>
 
           <section className="space-y-3">
-            <h3 className="text-3xl font-bold text-foreground text-end">{isAr ? "احصائيات الفصل" : "Class stats"}</h3>
+            <h3 className="text-3xl font-bold text-foreground text-end">{t("classStats")}</h3>
             <div className="grid gap-4 md:grid-cols-3">
               {data.classMetrics.map((m) => (
                 <MetricCard key={m.id} {...m} />
@@ -213,7 +215,7 @@ export function ResultsScreen({
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-3xl font-bold text-foreground text-end">{isAr ? "أعلى 3 ذكاءات" : "Top 3 intelligences"}</h3>
+            <h3 className="text-3xl font-bold text-foreground text-end">{t("topIntelligences")}</h3>
             <div className="grid gap-4 md:grid-cols-3">
               {data.topIntelligences.map((m) => (
                 <MetricCard key={m.id} {...m} />
@@ -222,7 +224,7 @@ export function ResultsScreen({
           </section>
 
           <section className="space-y-3">
-            <h3 className="text-3xl font-bold text-foreground text-end">{isAr ? "نتائج الأطفال" : "Children results"}</h3>
+            <h3 className="text-3xl font-bold text-foreground text-end">{t("childrenResults")}</h3>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
               {data.childResults.map((child) => (
                 <ChildResultCard key={child.id} child={child} locale={locale} />

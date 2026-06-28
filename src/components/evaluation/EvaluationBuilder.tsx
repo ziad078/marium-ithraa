@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { showErrorToast } from "@/lib/toast/app-toast"
 import { useRouter } from "@/i18n/navigation"
 
@@ -11,6 +12,7 @@ import { useStartEvaluation } from "@/features/evaluations/hooks"
 import { startAttemptSchema } from "@/features/evaluations/types"
 
 export default function EvaluationBuilder({ evaluationId }: { evaluationId: string }) {
+  const t = useTranslations("EvaluationBuilder")
   const router = useRouter()
   const start = useStartEvaluation(evaluationId)
   const [childId, setChildId] = useState("")
@@ -19,44 +21,44 @@ export default function EvaluationBuilder({ evaluationId }: { evaluationId: stri
   return (
     <Card className="max-w-xl">
       <CardHeader>
-        <CardTitle className="text-base">Evaluation</CardTitle>
+        <CardTitle className="text-base">{t("title")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="space-y-1">
-          <label className="text-sm">Child ID</label>
-          <Input value={childId} onChange={(e) => setChildId(e.target.value)} placeholder="uuid" />
+          <label className="text-sm">{t("childId")}</label>
+          <Input value={childId} onChange={(e) => setChildId(e.target.value)} placeholder={t("childIdPlaceholder")} />
         </div>
         <div className="space-y-1">
-          <label className="text-sm">Child Type</label>
+          <label className="text-sm">{t("childType")}</label>
           <select
             value={childType}
             onChange={(e) => setChildType(e.target.value as "organization" | "private")}
             className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
           >
-            <option value="private">Private</option>
-            <option value="organization">Organization</option>
+            <option value="private">{t("privateOption")}</option>
+            <option value="organization">{t("organizationOption")}</option>
           </select>
         </div>
         <Button
           onClick={async () => {
             const parsed = startAttemptSchema.safeParse({ childId, childType })
             if (!parsed.success) {
-              showErrorToast({ raw: "Please provide a valid childId and childType." })
+              showErrorToast({ raw: t("errorMessage") })
               return
             }
             try {
               const attempt = await start.mutateAsync(parsed.data)
               router.push(`/dashboards/parent/attempts/${attempt.id}`)
             } catch (e: unknown) {
-              showErrorToast({ raw: e instanceof Error ? e.message : "Failed to start evaluation." })
+              showErrorToast({ raw: e instanceof Error ? e.message : t("errorFailed") })
             }
           }}
           disabled={start.isPending}
         >
-          {start.isPending ? "Starting..." : "Start attempt"}
+          {start.isPending ? t("starting") : t("startAttempt")}
         </Button>
         <p className="text-xs text-muted-foreground">
-          You can take a maximum of 2 attempts per child. Retake is blocked after approval.
+          {t("info")}
         </p>
       </CardContent>
     </Card>

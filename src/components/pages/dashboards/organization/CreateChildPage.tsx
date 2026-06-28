@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react"
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AlertTriangle, CheckCircle2, Loader2, Plus, UserRound } from "lucide-react"
 import { useForm, useWatch, type UseFormReturn } from "react-hook-form"
@@ -82,12 +83,13 @@ export function CreateChildPage({
 }: Props) {
   const router = useRouter()
   const isAr = locale === "ar"
+  const t = useTranslations("CreateChild")
   const [childState, setChildState] = useState<ChildState>("selecting")
   const [selectedChild, setSelectedChild] = useState<Child | null>(null)
   const [selectionStatus, setSelectionStatus] = useState<"idle" | "loading" | "same" | "transfer" | "sent">("idle")
   const [duplicateMessage, setDuplicateMessage] = useState<string | null>(null)
   const [transferResponse, setTransferResponse] =
-    useState<Extract<CreateChildResponse, { type: "TRANSFER_REQUIRED" }> | null>(null)
+    useState<Extract<CreateChildResponse, { status: "TRANSFER_REQUIRED" }> | null>(null)
 
   const form = useForm<CreateChildFlowValues>({
     resolver: zodResolver(createChildFlowSchema),
@@ -131,14 +133,14 @@ export function CreateChildPage({
 
       if (child.organizationId === organizationId) {
         setSelectionStatus("same")
-        setDuplicateMessage("Child already exists in your school")
+        setDuplicateMessage(t("childAlreadyExists"))
         return
       }
 
       setSelectionStatus("transfer")
     } catch (err) {
       setSelectionStatus("idle")
-      toast.error(err instanceof Error ? err.message : "Unable to load child")
+      toast.error(err instanceof Error ? err.message : t("unableToLoadChild"))
     }
   }
 
@@ -149,10 +151,10 @@ export function CreateChildPage({
     try {
       await requestChildTransfer(selectedChild.id, "organization", organizationId)
       setSelectionStatus("sent")
-      toast.success("Transfer request sent")
+      toast.success(t("transferRequestSent"))
     } catch (err) {
       setSelectionStatus("transfer")
-      toast.error(err instanceof Error ? err.message : "Unable to request transfer")
+      toast.error(err instanceof Error ? err.message : t("unableToRequestTransfer"))
     }
   }
 
@@ -162,7 +164,7 @@ export function CreateChildPage({
     if (parentState === "creating") {
       let hasParentError = false
       if (!values.parentName?.trim()) {
-        form.setError("parentName", { message: "Parent name is required" })
+        form.setError("parentName", { message: t("validation.parentNameRequired") })
         hasParentError = true
       }
       
@@ -171,7 +173,7 @@ export function CreateChildPage({
 
     if (parentState === "not_parent") {
       if (!values.parentName?.trim()) {
-        form.setError("parentName", { message: "Parent name is required" })
+        form.setError("parentName", { message: t("validation.parentNameRequired") })
         return
       }
     }
@@ -199,19 +201,19 @@ export function CreateChildPage({
     <main className="app-container py-8 space-y-8" dir={isAr ? "rtl" : "ltr"}>
       <ManagementPageHeader
         breadcrumbs={[
-          { href: "/dashboards/organization", label: "Dashboard" },
-          { href: "/dashboards/organization/children", label: "Children" },
-          { label: "Create child" },
+          { href: "/dashboards/organization", label: t("breadcrumb.dashboard") },
+          { href: "/dashboards/organization/children", label: t("breadcrumb.children") },
+          { label: t("title") },
         ]}
-        title="Create child"
-        subtitle="Find the parent first, then select an existing child or create a new profile."
+        title={t("title")}
+        subtitle={t("subtitle")}
       />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleCreateSubmit)} className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <Card className="rounded-xl">
             <CardHeader>
-              <CardTitle className="text-base">Parent identification</CardTitle>
+              <CardTitle className="text-base">{t("parentIdentification")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
               <ParentPhoneInput form={form} isSearching={isSearching} />
@@ -243,7 +245,7 @@ export function CreateChildPage({
                     }}
                   >
                     <Plus className="size-4" />
-                    Add New Child
+                    {t("addNewChild")}
                   </Button>
                 </ParentCard>
               )}
@@ -274,7 +276,7 @@ export function CreateChildPage({
 
             {selectionStatus === "sent" && (
               <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
-                Transfer request sent
+                {t("transferRequestSent")}
               </p>
             )}
 
@@ -297,7 +299,7 @@ export function CreateChildPage({
                 disabled={!canSubmit || isLoading}
               >
                 {isLoading && <Loader2 className="size-4 animate-spin" />}
-                Create Child
+                {t("createChild")}
               </Button>
               <Button
                 type="button"
@@ -305,7 +307,7 @@ export function CreateChildPage({
                 className="h-11 rounded-lg"
                 onClick={() => router.push("/dashboards/organization/children")}
               >
-                Cancel
+                {t("cancel")}
               </Button>
             </div>
           </div>
@@ -330,13 +332,14 @@ function ParentPhoneInput({
   form: UseFormReturn<CreateChildFlowValues>
   isSearching: boolean
 }) {
+  const t = useTranslations("CreateChild")
   return (
     <FormField
       control={form.control}
       name="parentPhone"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Parent phone</FormLabel>
+          <FormLabel>{t("labels.parentPhone")}</FormLabel>
           <FormControl>
             <div className="relative">
               {/* <Input {...field} type="tel" className="h-11 rounded-lg pe-10" placeholder="+20..." /> */}
@@ -371,6 +374,7 @@ function ParentCard({
   parent: ParentInfo
   children: ReactNode
 }) {
+  const t = useTranslations("CreateChild")
   return (
     <div className="space-y-4 rounded-xl border bg-card p-4">
       <div className="flex items-start gap-3">
@@ -379,10 +383,10 @@ function ParentCard({
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="font-semibold">{parent.name || "Unnamed parent"}</p>
+            <p className="font-semibold">{parent.name || t("unnamedParent")}</p>
             <Badge className="bg-emerald-100 text-emerald-700" variant="secondary">
               <CheckCircle2 className="size-3" />
-              Parent found
+              {t("parentFound")}
             </Badge>
           </div>
           <p className="text-sm text-muted-foreground">{parent.phone}</p>
@@ -402,18 +406,19 @@ function ChildrenList({
   disabled: boolean
   onSelect: (childId: string) => void
 }) {
+  const t = useTranslations("CreateChild")
   if (!items.length) {
-    return <p className="text-sm text-muted-foreground">No children found for this parent.</p>
+    return <p className="text-sm text-muted-foreground">{t("noChildrenFound")}</p>
   }
 
   return (
     <div className="space-y-2">
-      <p className="text-sm font-medium">Children</p>
+      <p className="text-sm font-medium">{t("children")}</p>
       {items.map((child) => (
         <div key={child.id} className="flex items-center justify-between gap-3 rounded-lg border p-3">
           <div className="min-w-0">
             <p className="truncate text-sm font-medium">{child.name}</p>
-            <p className="text-xs text-muted-foreground">{child.birthDate || "Birth date unavailable"}</p>
+            <p className="text-xs text-muted-foreground">{child.birthDate || t("birthDateUnavailable")}</p>
           </div>
           <Button
             type="button"
@@ -423,7 +428,7 @@ function ChildrenList({
             disabled={disabled}
             onClick={() => onSelect(child.id)}
           >
-            Select Child
+            {t("selectChild")}
           </Button>
         </div>
       ))}
@@ -432,15 +437,16 @@ function ChildrenList({
 }
 
 function CreateParentFields({ form }: { form: UseFormReturn<CreateChildFlowValues> }) {
+  const t = useTranslations("CreateChild")
   return (
     <div className="space-y-4 rounded-xl border border-amber-200 bg-amber-50/50 p-4">
-      <p className="text-sm font-medium text-amber-800">Parent not found</p>
+      <p className="text-sm font-medium text-amber-800">{t("parentNotFound")}</p>
       <FormField
         control={form.control}
         name="parentName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Parent name</FormLabel>
+            <FormLabel>{t("labels.parentName")}</FormLabel>
             <FormControl>
               <Input {...field} className="h-11 rounded-lg bg-background" />
             </FormControl>
@@ -453,7 +459,7 @@ function CreateParentFields({ form }: { form: UseFormReturn<CreateChildFlowValue
         name="parentEmail"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Parent email</FormLabel>
+            <FormLabel>{t("labels.parentEmail")}</FormLabel>
             <FormControl>
               <Input {...field} type="email" className="h-11 rounded-lg bg-background" />
             </FormControl>
@@ -477,12 +483,13 @@ function ChildForm({
   classesForGrade: ClassItem[]
   onGradeChange: (gradeId: string) => void
 }) {
+  const t = useTranslations("CreateChild")
   const gradeId = useWatch({ control: form.control, name: "gradeId" })
 
   return (
     <Card className="rounded-xl">
       <CardHeader>
-        <CardTitle className="text-base">New child</CardTitle>
+        <CardTitle className="text-base">{t("newChild")}</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-2">
         <FormField
@@ -490,7 +497,7 @@ function ChildForm({
           name="name"
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
-              <FormLabel>Name</FormLabel>
+              <FormLabel>{t("labels.childName")}</FormLabel>
               <FormControl>
                 <Input {...field} className="h-11 rounded-lg" />
               </FormControl>
@@ -503,7 +510,7 @@ function ChildForm({
           name="birthDate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Birth date</FormLabel>
+              <FormLabel>{t("labels.birthDate")}</FormLabel>
               <FormControl>
                 <Input {...field} type="date" className="h-11 rounded-lg" />
               </FormControl>
@@ -516,16 +523,16 @@ function ChildForm({
           name="gender"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Gender</FormLabel>
+              <FormLabel>{t("labels.gender")}</FormLabel>
               <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger className="h-11 w-full rounded-lg">
-                    <SelectValue placeholder="Select gender" />
+                    <SelectValue placeholder={t("selectGender")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value={Gender.MALE}>Male</SelectItem>
-                  <SelectItem value={Gender.FEMALE}>Female</SelectItem>
+                  <SelectItem value={Gender.MALE}>{t("male")}</SelectItem>
+                  <SelectItem value={Gender.FEMALE}>{t("female")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -537,11 +544,11 @@ function ChildForm({
           name="gradeId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Grade</FormLabel>
+              <FormLabel>{t("labels.grade")}</FormLabel>
               <Select value={field.value} onValueChange={onGradeChange}>
                 <FormControl>
                   <SelectTrigger className="h-11 w-full rounded-lg">
-                    <SelectValue placeholder="Select grade" />
+                    <SelectValue placeholder={t("selectGrade")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -561,11 +568,11 @@ function ChildForm({
           name="classId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Class</FormLabel>
+              <FormLabel>{t("labels.class")}</FormLabel>
               <Select value={field.value} onValueChange={field.onChange} disabled={!gradeId}>
                 <FormControl>
                   <SelectTrigger className="h-11 w-full rounded-lg">
-                    <SelectValue placeholder="Select class" />
+                    <SelectValue placeholder={t("selectClass")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -592,17 +599,18 @@ function TransferAlert({
   child: Child
   onRequestTransfer: () => void
 }) {
+  const t = useTranslations("CreateChild")
   return (
     <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
       <div className="flex gap-3">
         <AlertTriangle className="mt-0.5 size-5 shrink-0" />
         <div className="space-y-3">
           <div>
-            <p className="font-semibold">This child belongs to another school or private to parent</p>
+            <p className="font-semibold">{t("transferAlert")}</p>
             <p className="text-sm">{child.name}</p>
           </div>
           <Button type="button" className="rounded-lg" onClick={onRequestTransfer}>
-            Request Transfer
+            {t("requestTransfer")}
           </Button>
         </div>
       </div>
@@ -616,26 +624,27 @@ function TransferModal({
   onOpenChange,
 }: {
   open: boolean
-  response: Extract<CreateChildResponse, { type: "TRANSFER_REQUIRED" }> | null
+  response: Extract<CreateChildResponse, { status: "TRANSFER_REQUIRED" }> | null
   onOpenChange: (open: boolean) => void
 }) {
+  const t = useTranslations("CreateChild")
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Child exists in another school</DialogTitle>
+          <DialogTitle>{t("childExistsDialog")}</DialogTitle>
           <DialogDescription>
-            {response?.message || "Transfer request created"}
+            {response?.message || t("transferCreated")}
           </DialogDescription>
         </DialogHeader>
         {response?.transferRequestId && (
           <p className="rounded-md bg-muted px-3 py-2 text-sm text-muted-foreground">
-            Request ID: {response.transferRequestId}
+            {t("requestId", { id: response.transferRequestId })}
           </p>
         )}
         <DialogFooter>
           <Button type="button" onClick={() => onOpenChange(false)}>
-            Done
+            {t("done")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -650,19 +659,19 @@ function NotParentFields({
   form: UseFormReturn<CreateChildFlowValues>
   user: { id: string; name?: string; phone: string; email?: string }
 }) {
+  const t = useTranslations("CreateChild")
   return (
     <div className="space-y-4 rounded-xl border border-amber-200 bg-amber-50/50 p-4">
-      <p className="text-sm font-medium text-amber-800">User exists — assign parent role</p>
+      <p className="text-sm font-medium text-amber-800">{t("assignParentRole")}</p>
       <p className="text-sm text-muted-foreground">
-        A user with phone {user.phone} already exists but is not a parent. Fill in the name to create
-        a parent profile for them.
+        {t("assignParentDescription", { phone: user.phone })}
       </p>
       <FormField
         control={form.control}
         name="parentName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Parent name</FormLabel>
+            <FormLabel>{t("labels.parentName")}</FormLabel>
             <FormControl>
               <Input {...field} defaultValue={user.name} className="h-11 rounded-lg bg-background" />
             </FormControl>
@@ -675,7 +684,7 @@ function NotParentFields({
         name="parentEmail"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Parent email</FormLabel>
+            <FormLabel>{t("labels.parentEmail")}</FormLabel>
             <FormControl>
               <Input {...field} type="email" defaultValue={user.email} className="h-11 rounded-lg bg-background" />
             </FormControl>

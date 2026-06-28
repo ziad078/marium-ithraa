@@ -1424,6 +1424,123 @@
       }
     }
   },
+  "OrgDashboard": {
+    "welcome": {
+      "title": "Welcome to {organizationName}",
+      "subtitle": "Manage your organization from one place"
+    },
+    "platformStats": "Platform stats",
+    "recentActivity": "Recent activity"
+  },
+  "OrgResults": {
+    "breadcrumb": { "home": "Home" },
+    "title": "Results",
+    "subtitle": "Track children assessment results",
+    "tabs": {
+      "evaluation": "Evaluation status",
+      "results": "Results",
+      "reports": "Reports"
+    },
+    "childResult": {
+      "name": "Name: {name}",
+      "class": "Class: {className}",
+      "result": "Result: {value}"
+    },
+    "evaluationStatus": {
+      "name": "Name: {name}",
+      "class": "Class: {className}",
+      "status": "Status: {status}"
+    },
+    "sendReminder": "Send reminder",
+    "downloadExcel": "Excel",
+    "downloadPdf": "PDF",
+    "classStats": "Class stats",
+    "topIntelligences": "Top 3 intelligences",
+    "childrenResults": "Children results"
+  },
+  "EvaluationBuilder": {
+    "title": "Evaluation",
+    "childId": "Child ID",
+    "childIdPlaceholder": "uuid",
+    "childType": "Child Type",
+    "privateOption": "Private",
+    "organizationOption": "Organization",
+    "startAttempt": "Start attempt",
+    "starting": "Starting...",
+    "errorMessage": "Please provide a valid childId and childType.",
+    "errorFailed": "Failed to start evaluation.",
+    "info": "You can take a maximum of 2 attempts per child. Retake is blocked after approval."
+  },
+  "SubmitModal": {
+    "title": "Submit attempt?",
+    "description": "You cannot edit answers after submission.",
+    "cancel": "Cancel",
+    "submitting": "Submitting...",
+    "submitFinal": "Submit final"
+  },
+  "UsersRolesChart": {
+    "title": "Users-Roles",
+    "description": "shows uses divdied into roles",
+    "users": "users",
+    "organizationOwners": "organization owners",
+    "teachers": "teachers",
+    "parents": "parents",
+    "trending": "Trending up by 5.2% this month",
+    "footer": "Showing total visitors for the last 6 months"
+  },
+  "CreateChild": {
+    "breadcrumb": { "dashboard": "Dashboard", "children": "Children" },
+    "title": "Create child",
+    "subtitle": "Find the parent first, then select an existing child or create a new profile.",
+    "parentIdentification": "Parent identification",
+    "labels": {
+      "parentPhone": "Parent phone",
+      "parentName": "Parent name",
+      "parentEmail": "Parent email",
+      "childName": "Name",
+      "birthDate": "Birth date",
+      "gender": "Gender",
+      "grade": "Grade",
+      "class": "Class"
+    },
+    "validation": {
+      "parentPhoneRequired": "Parent phone is required",
+      "validEmail": "Enter a valid email",
+      "childNameRequired": "Child name is required",
+      "birthDateRequired": "Birth date is required",
+      "gradeRequired": "Grade is required",
+      "classRequired": "Class is required",
+      "parentNameRequired": "Parent name is required"
+    },
+    "childAlreadyExists": "Child already exists in your school",
+    "unableToLoadChild": "Unable to load child",
+    "transferRequestSent": "Transfer request sent",
+    "unableToRequestTransfer": "Unable to request transfer",
+    "addNewChild": "Add New Child",
+    "createChild": "Create Child",
+    "cancel": "Cancel",
+    "parentNotFound": "Parent not found",
+    "noChildrenFound": "No children found for this parent.",
+    "children": "Children",
+    "unnamedParent": "Unnamed parent",
+    "parentFound": "Parent found",
+    "birthDateUnavailable": "Birth date unavailable",
+    "selectChild": "Select Child",
+    "newChild": "New child",
+    "selectGender": "Select gender",
+    "male": "Male",
+    "female": "Female",
+    "selectGrade": "Select grade",
+    "selectClass": "Select class",
+    "transferAlert": "This child belongs to another school or private to parent",
+    "requestTransfer": "Request Transfer",
+    "childExistsDialog": "Child exists in another school",
+    "transferCreated": "Transfer request created",
+    "requestId": "Request ID: {id}",
+    "done": "Done",
+    "assignParentRole": "User exists — assign parent role",
+    "assignParentDescription": "A user with phone {phone} already exists but is not a parent. Fill in the name to create a parent profile for them."
+  },
   "Unauthorized": {
     "title": "What are u doing here man!!",
     "description": "You aren't allowed to be here",

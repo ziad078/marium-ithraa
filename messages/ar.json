@@ -1417,6 +1417,123 @@
       }
     }
   }, 
+  "OrgDashboard": {
+    "welcome": {
+      "title": "مرحباً بك في {organizationName}",
+      "subtitle": "أدر مؤسستك بكل سهولة من مكان واحد"
+    },
+    "platformStats": "إحصائيات المنصة",
+    "recentActivity": "آخر النشاطات"
+  },
+  "OrgResults": {
+    "breadcrumb": { "home": "الرئيسية" },
+    "title": "النتائج",
+    "subtitle": "تابع نتائج تقييمات أطفال مؤسستك",
+    "tabs": {
+      "evaluation": "حالة التقييم",
+      "results": "النتائج",
+      "reports": "التقارير"
+    },
+    "childResult": {
+      "name": "الاسم: {name}",
+      "class": "الفصل: {className}",
+      "result": "النتيجة: {value}"
+    },
+    "evaluationStatus": {
+      "name": "الاسم: {name}",
+      "class": "الفصل: {className}",
+      "status": "التقييم: {status}"
+    },
+    "sendReminder": "إرسال تذكير",
+    "downloadExcel": "تنزيل Excel",
+    "downloadPdf": "تنزيل PDF",
+    "classStats": "احصائيات الفصل",
+    "topIntelligences": "أعلى 3 ذكاءات",
+    "childrenResults": "نتائج الأطفال"
+  },
+  "EvaluationBuilder": {
+    "title": "تقييم",
+    "childId": "معرف الطفل",
+    "childIdPlaceholder": "uuid",
+    "childType": "نوع الطفل",
+    "privateOption": "خاص",
+    "organizationOption": "مؤسسة",
+    "startAttempt": "بدء المحاولة",
+    "starting": "جارٍ البدء...",
+    "errorMessage": "يرجى تقديم معرف الطفل ونوعه بشكل صحيح.",
+    "errorFailed": "فشل بدء التقييم.",
+    "info": "يمكنك إجراء محاولتين كحد أقصى لكل طفل. يتم حظر إعادة المحاولة بعد الموافقة."
+  },
+  "SubmitModal": {
+    "title": "تقديم المحاولة؟",
+    "description": "لا يمكنك تعديل الإجابات بعد التقديم.",
+    "cancel": "إلغاء",
+    "submitting": "جارٍ التقديم...",
+    "submitFinal": "تقديم نهائي"
+  },
+  "UsersRolesChart": {
+    "title": "المستخدمين حسب الأدوار",
+    "description": "يظهر المستخدمين موزعين حسب الأدوار",
+    "users": "مستخدمين",
+    "organizationOwners": "أصحاب مؤسسات",
+    "teachers": "معلمين",
+    "parents": "أولياء أمور",
+    "trending": "ارتفاع بنسبة 5.2% هذا الشهر",
+    "footer": "إجمالي الزوار لآخر 6 أشهر"
+  },
+  "CreateChild": {
+    "breadcrumb": { "dashboard": "الرئيسية", "children": "الأطفال" },
+    "title": "إنشاء طفل",
+    "subtitle": "ابحث عن ولي الأمر أولاً، ثم اختر طفلاً موجوداً أو أنشئ ملفاً جديداً.",
+    "parentIdentification": "بيانات ولي الأمر",
+    "labels": {
+      "parentPhone": "هاتف ولي الأمر",
+      "parentName": "اسم ولي الأمر",
+      "parentEmail": "بريد ولي الأمر",
+      "childName": "الاسم",
+      "birthDate": "تاريخ الميلاد",
+      "gender": "النوع",
+      "grade": "المرحلة",
+      "class": "الفصل"
+    },
+    "validation": {
+      "parentPhoneRequired": "رقم هاتف ولي الأمر مطلوب",
+      "validEmail": "أدخل بريداً إلكترونياً صالحاً",
+      "childNameRequired": "اسم الطفل مطلوب",
+      "birthDateRequired": "تاريخ الميلاد مطلوب",
+      "gradeRequired": "المرحلة مطلوبة",
+      "classRequired": "الفصل مطلوب",
+      "parentNameRequired": "اسم ولي الأمر مطلوب"
+    },
+    "childAlreadyExists": "الطفل موجود بالفعل في مدرستك",
+    "unableToLoadChild": "تعذر تحميل بيانات الطفل",
+    "transferRequestSent": "تم إرسال طلب النقل",
+    "unableToRequestTransfer": "تعذر إرسال طلب النقل",
+    "addNewChild": "إضافة طفل جديد",
+    "createChild": "إنشاء طفل",
+    "cancel": "إلغاء",
+    "parentNotFound": "لم يتم العثور على ولي الأمر",
+    "noChildrenFound": "لا يوجد أطفال لهذا ولي الأمر.",
+    "children": "الأطفال",
+    "unnamedParent": "ولي أمر بدون اسم",
+    "parentFound": "تم العثور على ولي الأمر",
+    "birthDateUnavailable": "تاريخ الميلاد غير متوفر",
+    "selectChild": "اختيار الطفل",
+    "newChild": "طفل جديد",
+    "selectGender": "اختر النوع",
+    "male": "ذكر",
+    "female": "أنثى",
+    "selectGrade": "اختر المرحلة",
+    "selectClass": "اختر الفصل",
+    "transferAlert": "هذا الطفل ينتمي إلى مدرسة أخرى أو تابع لولي أمر",
+    "requestTransfer": "طلب نقل",
+    "childExistsDialog": "الطفل موجود في مدرسة أخرى",
+    "transferCreated": "تم إنشاء طلب النقل",
+    "requestId": "رقم الطلب: {id}",
+    "done": "تم",
+    "assignParentRole": "المستخدم موجود - تعيين دور ولي الأمر",
+    "assignParentDescription": "المستخدم {phone} موجود بالفعل لكنه ليس ولي أمر. أدخل الاسم لإنشاء ملف ولي أمر له."
+  },
   "Unauthorized": {
     "title": "غير مصرح الوصول الي هنا",
     "description": "انت غير مسموح لك التعامل مع هذه البيانات",

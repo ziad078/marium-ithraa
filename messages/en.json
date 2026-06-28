@@ -1142,6 +1142,12 @@
     "description": "The legacy tests interface has been retired. Child assessments now live in evaluations.",
     "openEvaluations": "Open evaluations"
   },
+  "ChoseRole": {
+    "title": "Choose a Role",
+    "subtitle": "Please select which role you want to use for this session:",
+    "noRoles": "No roles found for your account.",
+    "redirecting": "Redirecting..."
+  },
   "Common": {
     "search": "Search..."
   },

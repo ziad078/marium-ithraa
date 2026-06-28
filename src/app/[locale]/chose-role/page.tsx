@@ -2,6 +2,7 @@
 
 import { Loader2, UserCheck } from "lucide-react"
 import { useEffect, useState } from "react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -18,6 +19,7 @@ const dashboardMap: Record<string, string> = {
 
 export default function ChooseRolePage() {
   const router = useRouter()
+  const t = useTranslations("ChoseRole")
   const { user, isAuthenticated, isLoading, loginPath, sessionExpired } =
     useAuth()
   const [loadingRoleId, setLoadingRoleId] = useState<string | null>(null)
@@ -52,17 +54,17 @@ export default function ChooseRolePage() {
           <CardHeader>
             <CardTitle className="mb-2 text-center text-2xl font-bold text-indigo-700 flex flex-col items-center">
               <UserCheck className="mb-2 text-fuchsia-600" size={36} />
-              Choose a Role
+              {t("title")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-7">
             <div className="mb-2 text-center text-muted-foreground text-sm">
-              Please select which role you want to use for this session:
+              {t("subtitle")}
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               {roles.length === 0 && (
                 <p className="col-span-2 text-center text-gray-400">
-                  No roles found for your account.
+                  {t("noRoles")}
                 </p>
               )}
               {roles.map((role) => (
@@ -80,7 +82,7 @@ export default function ChooseRolePage() {
                   {loadingRoleId === role.id ? (
                     <>
                       <Loader2 className="me-2 animate-spin" />
-                      Redirecting...
+                      {t("redirecting")}
                     </>
                   ) : (
                     role.name

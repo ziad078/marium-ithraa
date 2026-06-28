@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
@@ -37,13 +38,15 @@ function getTechnicalDetails(error: ApiError | Error | undefined): string | unde
 
 const ErrorCard = ({
   error,
-  title = "Something went wrong",
+  title,
   message,
   icon,
   retry,
   technicalDetails,
   className,
 }: ErrorCardProps) => {
+  const t = useTranslations("ErrorCard")
+  const resolvedTitle = title ?? t("defaultTitle")
   const errorMessage = message || getErrorMessage(error)
   const techDetails = technicalDetails || getTechnicalDetails(error)
   const IconComponent = icon || <AlertTriangle className="size-5 shrink-0" />
@@ -71,7 +74,7 @@ const ErrorCard = ({
             ) : (
               <span className="inline-flex items-center">{IconComponent}</span>
             )}
-            {title}
+            {resolvedTitle}
           </CardTitle>
           {errorMessage && (
             <CardDescription className="mt-1 text-destructive/80">
@@ -89,7 +92,7 @@ const ErrorCard = ({
             className="border-destructive/30 text-destructive hover:bg-destructive/10"
           >
             <RefreshCw className="size-3.5" />
-            {retry.label ?? "Retry"}
+            {retry.label ?? t("retry")}
           </Button>
         </CardContent>
       )}

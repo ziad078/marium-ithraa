@@ -1,6 +1,7 @@
 "use client"
 
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { useTranslations } from "next-intl"
 
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import { getFriendlyApiErrorMessage } from "@/lib/helpers/apiErrorMessages"
@@ -29,11 +30,12 @@ export function useTransferRequests(
 }
 
 export function useCreateTransferRequest(onSuccess?: () => void) {
+  const t = useTranslations("Transfers")
   return useMutation({
     mutationFn: createTransferRequest,
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Transfer request created" })
+      showSuccessToast({ raw: t("requestCreated") })
       onSuccess?.()
     },
     onError: (error: unknown) => {
@@ -43,12 +45,13 @@ export function useCreateTransferRequest(onSuccess?: () => void) {
 }
 
 export function useApproveTransferRequest(onSuccess?: () => void) {
+  const t = useTranslations("Transfers")
   return useMutation({
     mutationFn: ({ requestId, classId }: { requestId: string; classId: string }) =>
       approveTransferRequest(requestId, classId),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Transfer approved" })
+      showSuccessToast({ raw: t("approved") })
       onSuccess?.()
     },
     onError: (error: unknown) => {
@@ -58,11 +61,12 @@ export function useApproveTransferRequest(onSuccess?: () => void) {
 }
 
 export function useRejectTransferRequest(onSuccess?: () => void) {
+  const t = useTranslations("Transfers")
   return useMutation({
     mutationFn: rejectTransferRequest,
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Transfer rejected" })
+      showSuccessToast({ raw: t("rejected") })
       onSuccess?.()
     },
     onError: (error: unknown) => {

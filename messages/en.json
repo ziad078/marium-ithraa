@@ -1539,7 +1539,114 @@
     "requestId": "Request ID: {id}",
     "done": "Done",
     "assignParentRole": "User exists — assign parent role",
-    "assignParentDescription": "A user with phone {phone} already exists but is not a parent. Fill in the name to create a parent profile for them."
+    "assignParentDescription": "A user with phone {phone} already exists but is not a parent. Fill in the name to create a parent profile for them.",
+    "toast": {
+      "unableToCreateChild": "Unable to create child",
+      "unableToSearchParent": "Unable to search parent"
+    }
+  },
+  "Deals": {
+    "created": "Deal created successfully",
+    "failedCreate": "Failed to create deal",
+    "proposalUpdated": "Proposal updated",
+    "failedUpdateProposal": "Failed to update proposal",
+    "proposalSubmitted": "Proposal submitted",
+    "failedSubmitProposal": "Failed to submit proposal",
+    "proposalSelected": "Proposal selected",
+    "failedSelectProposal": "Failed to select proposal",
+    "proposalApproved": "Proposal approved",
+    "failedApproveProposal": "Failed to approve proposal",
+    "activityCreated": "Activity created",
+    "failedCreateActivity": "Failed to create activity",
+    "activityUpdated": "Activity updated",
+    "failedUpdateActivity": "Failed to update activity",
+    "activityDeleted": "Activity deleted",
+    "failedDeleteActivity": "Failed to delete activity"
+  },
+  "Payments": {
+    "created": "Payment created successfully",
+    "initiationSucceeded": "Payment initiation succeeded",
+    "retrySucceeded": "Payment retry succeeded"
+  },
+  "Transfers": {
+    "requestCreated": "Transfer request created",
+    "approved": "Transfer approved",
+    "rejected": "Transfer rejected"
+  },
+  "EvaluationSession": {
+    "timeExpired": "Time expired. Attempt submitted.",
+    "failedAutoSubmit": "Failed to auto-submit.",
+    "progressSaved": "Progress saved.",
+    "failedSaveProgress": "Failed to save progress.",
+    "attemptSubmitted": "Attempt submitted.",
+    "failedSubmitAttempt": "Failed to submit attempt."
+  },
+  "CapacityRequests": {
+    "filterAll": "All",
+    "filterPending": "Pending",
+    "filterApproved": "Approved",
+    "filterRejected": "Rejected",
+    "noResults": "No capacity requests found.",
+    "columnChildName": "Child Name",
+    "columnParent": "Parent",
+    "columnPhone": "Phone",
+    "columnGrade": "Grade",
+    "columnStatus": "Status",
+    "columnDate": "Date",
+    "approve": "Approve",
+    "reject": "Reject",
+    "rejectTitle": "Reject Request",
+    "rejectReason": "Reason for rejection (optional)",
+    "confirmReject": "Confirm Reject",
+    "approvedToast": "Capacity request approved",
+    "failedApproveToast": "Failed to approve",
+    "rejectedToast": "Capacity request rejected",
+    "failedRejectToast": "Failed to reject"
+  },
+  "ApiErrors": {
+    "orgApproval": "Organization must be approved before performing this operation",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "orgMustBeApproved": "Your organization must be approved before you can perform this action.",
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "noPermission": "You do not have permission to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "statusChanged": "This organization status has already changed. Please refresh.",
+    "flowNotAvailable": "This flow is no longer available. Please use evaluations instead."
+  },
+  "GlobalError": {
+    "title": "Oops, something went wrong!",
+    "description": "A critical error occurred. Please try again.",
+    "errorDetails": "Error details:",
+    "tryAgain": "Try again"
+  },
+  "AuthError": {
+    "title": "Authentication Error",
+    "description": "Something went wrong during authentication.",
+    "tryAgain": "Try again"
+  },
+  "DashboardError": {
+    "title": "Dashboard Error",
+    "description": "Something went wrong loading this page.",
+    "tryAgain": "Try again"
+  },
+  "ErrorCard": {
+    "defaultTitle": "Something went wrong",
+    "retry": "Retry"
+  },
+  "StartEvaluation": {
+    "title": "Start evaluation",
+    "childId": "Child ID",
+    "childIdPlaceholder": "uuid",
+    "childType": "Child Type",
+    "privateOption": "Private",
+    "organizationOption": "Organization",
+    "expiresInSeconds": "Expires in seconds (optional)",
+    "expiresPlaceholder": "e.g. 900",
+    "start": "Start",
+    "starting": "Starting...",
+    "errorMessage": "Please provide a valid childId and childType.",
+    "errorFailed": "Failed to start evaluation.",
+    "helperText": "If you see \"Maximum attempts reached\" or \"Retake not allowed\", the backend rules were triggered."
   },
   "Unauthorized": {
     "title": "What are u doing here man!!",

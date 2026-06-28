@@ -1,6 +1,7 @@
 "use client"
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useTranslations } from "next-intl"
 
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import {
@@ -43,17 +44,18 @@ export function useDealDetail(dealId: string) {
 }
 
 export function useCreateDeal(onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: CreateDealPayload) => createDeal(data),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Deal created successfully" })
+      showSuccessToast({ raw: t("created") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.all })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to create deal" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedCreate") })
     },
   })
 }
@@ -67,68 +69,72 @@ export function useDealProposals(dealId: string) {
 }
 
 export function useUpdateProposal(onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ proposalId, price }: { proposalId: string; price: number }) =>
       updateProposal(proposalId, { price }),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Proposal updated" })
+      showSuccessToast({ raw: t("proposalUpdated") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.all })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to update proposal" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedUpdateProposal") })
     },
   })
 }
 
 export function useSubmitProposal(dealId: string, onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: SubmitProposalPayload) => submitProposal(dealId, data),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Proposal submitted" })
+      showSuccessToast({ raw: t("proposalSubmitted") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.detail(dealId) })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to submit proposal" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedSubmitProposal") })
     },
   })
 }
 
 export function useSelectProposal(dealId: string, onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (proposalId: string) => selectProposal(dealId, proposalId),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Proposal selected" })
+      showSuccessToast({ raw: t("proposalSelected") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.all })
       void queryClient.invalidateQueries({ queryKey: dealKeys.detail(dealId) })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to select proposal" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedSelectProposal") })
     },
   })
 }
 
 export function useApproveProposal(dealId: string, onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (proposalId: string) => approveProposal(dealId, proposalId),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Proposal approved" })
+      showSuccessToast({ raw: t("proposalApproved") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.all })
       void queryClient.invalidateQueries({ queryKey: dealKeys.detail(dealId) })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to approve proposal" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedApproveProposal") })
     },
   })
 }
@@ -148,49 +154,52 @@ export function useActivitiesWithDeals() {
 }
 
 export function useCreateActivity(onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (name: string) => createActivity(name),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Activity created" })
+      showSuccessToast({ raw: t("activityCreated") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.activities })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to create activity" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedCreateActivity") })
     },
   })
 }
 
 export function useUpdateActivity(onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ id, name }: { id: string; name: string }) => updateActivity(id, name),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Activity updated" })
+      showSuccessToast({ raw: t("activityUpdated") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.activities })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to update activity" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedUpdateActivity") })
     },
   })
 }
 
 export function useDeleteActivity(onSuccess?: () => void) {
+  const t = useTranslations("Deals")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (id: string) => deleteActivity(id),
     meta: { skipGlobalError: true },
     onSuccess: () => {
-      showSuccessToast({ raw: "Activity deleted" })
+      showSuccessToast({ raw: t("activityDeleted") })
       void queryClient.invalidateQueries({ queryKey: dealKeys.activities })
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : "Failed to delete activity" })
+      showErrorToast({ raw: error instanceof Error ? error.message : t("failedDeleteActivity") })
     },
   })
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { useTranslations } from "next-intl"
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { getFriendlyApiErrorMessage } from "@/lib/helpers/apiErrorMessages"
@@ -21,6 +22,7 @@ export function useCreateChild(options?: {
   ) => void
   onConflict?: (message: string) => void
 }) {
+  const t = useTranslations("CreateChild")
   const [requestState, setRequestState] = useState<RequestState>("idle")
   const [isPending, startTransition] = useTransition()
 
@@ -50,7 +52,7 @@ export function useCreateChild(options?: {
         const status = typeof err === "object" && err !== null && "status" in err
           ? Number((err as { status: unknown }).status)
           : undefined
-        const message = err instanceof Error ? err.message : "Unable to create child"
+        const message = err instanceof Error ? err.message : t("toast.unableToCreateChild")
 
         if (status === 409) {
           showErrorToast({ raw: message || "Child already exists in your school" })

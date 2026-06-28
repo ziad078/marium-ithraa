@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { Badge } from "@/components/ui/badge"
@@ -43,6 +44,7 @@ const statusBadgeVariant: Record<string, "default" | "secondary" | "destructive"
 }
 
 export default function AdminCapacityRequestsPage() {
+  const t = useTranslations("CapacityRequests")
   const [statusFilter, setStatusFilter] = useState<string>("pending")
   const { data, isLoading } = useCapacityRequests(statusFilter || undefined)
 
@@ -58,10 +60,10 @@ export default function AdminCapacityRequestsPage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
+              <SelectItem value="all">{t("filterAll")}</SelectItem>
+              <SelectItem value="pending">{t("filterPending")}</SelectItem>
+              <SelectItem value="approved">{t("filterApproved")}</SelectItem>
+              <SelectItem value="rejected">{t("filterRejected")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -73,17 +75,17 @@ export default function AdminCapacityRequestsPage() {
             ))}
           </div>
         ) : capacityRequests.length === 0 ? (
-          <p className="text-muted-foreground">No capacity requests found.</p>
+          <p className="text-muted-foreground">{t("noResults")}</p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Child Name</TableHead>
-                <TableHead>Parent</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Grade</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>{t("columnChildName")}</TableHead>
+                <TableHead>{t("columnParent")}</TableHead>
+                <TableHead>{t("columnPhone")}</TableHead>
+                <TableHead>{t("columnGrade")}</TableHead>
+                <TableHead>{t("columnStatus")}</TableHead>
+                <TableHead>{t("columnDate")}</TableHead>
                 <TableHead />
               </TableRow>
             </TableHeader>
@@ -118,6 +120,7 @@ export default function AdminCapacityRequestsPage() {
 }
 
 function CapacityRequestActions({ request }: { request: CapacityRequest }) {
+  const t = useTranslations("CapacityRequests")
   const approveMutation = useApproveCapacityRequest()
   const rejectMutation = useRejectCapacityRequest()
   const [rejectOpen, setRejectOpen] = useState(false)
@@ -126,9 +129,9 @@ function CapacityRequestActions({ request }: { request: CapacityRequest }) {
   const handleApprove = async () => {
     try {
       await approveMutation.mutateAsync({ id: request.id })
-      showSuccessToast({ raw: "Capacity request approved" })
+      showSuccessToast({ raw: t("approvedToast") })
     } catch {
-      showErrorToast({ raw: "Failed to approve" })
+      showErrorToast({ raw: t("failedApproveToast") })
     }
   }
 
@@ -137,30 +140,30 @@ function CapacityRequestActions({ request }: { request: CapacityRequest }) {
       await rejectMutation.mutateAsync({ id: request.id, reason: rejectReason || undefined })
       setRejectOpen(false)
       setRejectReason("")
-      showSuccessToast({ raw: "Capacity request rejected" })
+      showSuccessToast({ raw: t("rejectedToast") })
     } catch {
-      showErrorToast({ raw: "Failed to reject" })
+      showErrorToast({ raw: t("failedRejectToast") })
     }
   }
 
   return (
     <div className="flex items-center gap-2">
       <Button size="sm" onClick={handleApprove} disabled={approveMutation.isPending}>
-        Approve
+        {t("approve")}
       </Button>
       <Dialog open={rejectOpen} onOpenChange={setRejectOpen}>
         <DialogTrigger asChild>
           <Button size="sm" variant="destructive">
-            Reject
+            {t("reject")}
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Reject Request</DialogTitle>
+            <DialogTitle>{t("rejectTitle")}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <Textarea
-              placeholder="Reason for rejection (optional)"
+              placeholder={t("rejectReason")}
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
             />
@@ -169,7 +172,7 @@ function CapacityRequestActions({ request }: { request: CapacityRequest }) {
               variant="destructive"
               disabled={rejectMutation.isPending}
             >
-              Confirm Reject
+              {t("confirmReject")}
             </Button>
           </div>
         </DialogContent>

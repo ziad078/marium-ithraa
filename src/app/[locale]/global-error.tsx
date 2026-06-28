@@ -1,6 +1,7 @@
 
 "use client"
 
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useEffect } from "react"
@@ -12,6 +13,7 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const t = useTranslations("GlobalError")
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
       console.error(error)
@@ -24,15 +26,15 @@ export default function GlobalError({
         <div className="flex min-h-screen flex-col items-center justify-center p-4">
           <Card className="w-full max-w-md border-amber-50 shadow-md">
             <CardHeader>
-              <CardTitle className="text-center text-2xl font-bold">Oops, something went wrong!</CardTitle>
+              <CardTitle className="text-center text-2xl font-bold">{t("title")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-center">
               <p className="text-muted-foreground">
-                A critical error occurred. Please try again.
+                {t("description")}
               </p>
               {process.env.NODE_ENV === "development" && (
                 <div className="rounded-md bg-destructive/10 p-3 text-start text-sm text-destructive">
-                  <p className="font-semibold">Error details:</p>
+                  <p className="font-semibold">{t("errorDetails")}</p>
                   <p>{error.message}</p>
                   {error.stack && (
                     <pre className="mt-2 max-h-32 overflow-auto text-xs">
@@ -42,7 +44,7 @@ export default function GlobalError({
                 </div>
               )}
               <Button onClick={() => reset()} className="w-full">
-                Try again
+                {t("tryAgain")}
               </Button>
             </CardContent>
           </Card>

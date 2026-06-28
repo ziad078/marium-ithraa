@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useTranslations } from "next-intl"
 import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import type { EvaluationAttempt, SubmitAttemptDto } from "../types"
@@ -34,6 +35,7 @@ export function useEvaluationSession(
   attemptId: string,
   options?: { autosaveMs?: number },
 ) {
+  const t = useTranslations("EvaluationSession")
   const autosaveMs = options?.autosaveMs ?? 1200
   const { data: attempt, isLoading, isError, error, refetch } =
     useAttempt(attemptId)
@@ -121,11 +123,11 @@ export function useEvaluationSession(
 
     submitMutationRef.current.mutate(payload, {
       onSuccess: () => {
-        showInfoToast({ raw: "Time expired. Attempt submitted." })
+        showInfoToast({ raw: t("timeExpired") })
         void refetchRef.current()
       },
       onError: (e: unknown) => {
-        showErrorToast({ raw: e instanceof Error ? e.message : "Failed to auto-submit." })
+        showErrorToast({ raw: e instanceof Error ? e.message : t("failedAutoSubmit") })
         void refetchRef.current()
       },
     })
@@ -169,9 +171,9 @@ export function useEvaluationSession(
       await saveMutation.mutateAsync(payload)
       lastSavedRef.current = snapshot
       setDirty(false)
-      showSuccessToast({ raw: "Progress saved." })
+      showSuccessToast({ raw: t("progressSaved") })
     } catch (e: unknown) {
-      showErrorToast({ raw: e instanceof Error ? e.message : "Failed to save progress." })
+      showErrorToast({ raw: e instanceof Error ? e.message : t("failedSaveProgress") })
     }
   }, [answers, buildSavePayload, locked, saveMutation])
 
@@ -193,12 +195,12 @@ export function useEvaluationSession(
     assertParentAttemptPayload(payload)
     try {
       await submitMutation.mutateAsync(payload)
-      showSuccessToast({ raw: "Attempt submitted." })
+      showSuccessToast({ raw: t("attemptSubmitted") })
       lastSavedRef.current = JSON.stringify(answers)
       setDirty(false)
       await refetch()
     } catch (e: unknown) {
-      showErrorToast({ raw: e instanceof Error ? e.message : "Failed to submit attempt." })
+      showErrorToast({ raw: e instanceof Error ? e.message : t("failedSubmitAttempt") })
       throw e
     }
   }, [answers, locked, refetch, submitMutation])

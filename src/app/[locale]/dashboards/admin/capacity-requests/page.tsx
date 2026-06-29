@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useTranslations } from "next-intl"
+import { useTranslateBackend } from "@/lib/i18n/backend-messages"
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import { Badge } from "@/components/ui/badge"
@@ -121,6 +122,7 @@ export default function AdminCapacityRequestsPage() {
 
 function CapacityRequestActions({ request }: { request: CapacityRequest }) {
   const t = useTranslations("CapacityRequests")
+  const tb = useTranslateBackend()
   const approveMutation = useApproveCapacityRequest()
   const rejectMutation = useRejectCapacityRequest()
   const [rejectOpen, setRejectOpen] = useState(false)

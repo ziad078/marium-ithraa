@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useTranslations } from "next-intl"
+import { useTranslateBackend } from "@/lib/i18n/backend-messages"
 import { showErrorToast, showInfoToast, showSuccessToast } from "@/lib/toast/app-toast"
 
 import type { EvaluationAttempt, SubmitAttemptDto } from "../types"
@@ -36,6 +37,7 @@ export function useEvaluationSession(
   options?: { autosaveMs?: number },
 ) {
   const t = useTranslations("EvaluationSession")
+  const tb = useTranslateBackend()
   const autosaveMs = options?.autosaveMs ?? 1200
   const { data: attempt, isLoading, isError, error, refetch } =
     useAttempt(attemptId)
@@ -127,7 +129,7 @@ export function useEvaluationSession(
         void refetchRef.current()
       },
       onError: (e: unknown) => {
-        showErrorToast({ raw: e instanceof Error ? e.message : t("failedAutoSubmit") })
+        showErrorToast({ raw: e instanceof Error ? tb(e.message) : t("failedAutoSubmit") })
         void refetchRef.current()
       },
     })
@@ -173,7 +175,7 @@ export function useEvaluationSession(
       setDirty(false)
       showSuccessToast({ raw: t("progressSaved") })
     } catch (e: unknown) {
-      showErrorToast({ raw: e instanceof Error ? e.message : t("failedSaveProgress") })
+      showErrorToast({ raw: e instanceof Error ? tb(e.message) : t("failedSaveProgress") })
     }
   }, [answers, buildSavePayload, locked, saveMutation])
 
@@ -200,7 +202,7 @@ export function useEvaluationSession(
       setDirty(false)
       await refetch()
     } catch (e: unknown) {
-      showErrorToast({ raw: e instanceof Error ? e.message : t("failedSubmitAttempt") })
+      showErrorToast({ raw: e instanceof Error ? tb(e.message) : t("failedSubmitAttempt") })
       throw e
     }
   }, [answers, locked, refetch, submitMutation])

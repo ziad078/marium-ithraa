@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import type { ReactNode } from "react"
 import { useTranslations } from "next-intl"
+import { useTranslateBackend } from "@/lib/i18n/backend-messages"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AlertTriangle, CheckCircle2, Loader2, Plus, UserRound } from "lucide-react"
 import { useForm, useWatch, type UseFormReturn } from "react-hook-form"
@@ -84,6 +85,7 @@ export function CreateChildPage({
   const router = useRouter()
   const isAr = locale === "ar"
   const t = useTranslations("CreateChild")
+  const tb = useTranslateBackend()
   const [childState, setChildState] = useState<ChildState>("selecting")
   const [selectedChild, setSelectedChild] = useState<Child | null>(null)
   const [selectionStatus, setSelectionStatus] = useState<"idle" | "loading" | "same" | "transfer" | "sent">("idle")
@@ -220,7 +222,7 @@ export function CreateChildPage({
 
               {parentSearchError && (
                 <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-                  {parentSearchError}
+                  {tb(parentSearchError)}
                 </p>
               )}
 
@@ -263,7 +265,7 @@ export function CreateChildPage({
           <div className="space-y-6">
             {duplicateMessage && (
               <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm font-medium text-destructive">
-                {duplicateMessage}
+                {tb(duplicateMessage)}
               </p>
             )}
 
@@ -628,13 +630,14 @@ function TransferModal({
   onOpenChange: (open: boolean) => void
 }) {
   const t = useTranslations("CreateChild")
+  const tb = useTranslateBackend()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("childExistsDialog")}</DialogTitle>
           <DialogDescription>
-            {response?.message || t("transferCreated")}
+            {response?.message ? tb(response.message) : t("transferCreated")}
           </DialogDescription>
         </DialogHeader>
         {response?.transferRequestId && (

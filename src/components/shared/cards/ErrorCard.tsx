@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { ApiError } from "@/lib/errors/ApiError"
+import { useTranslateBackend } from "@/lib/i18n/backend-messages"
 import { AlertTriangle, RefreshCw } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -46,8 +47,9 @@ const ErrorCard = ({
   className,
 }: ErrorCardProps) => {
   const t = useTranslations("ErrorCard")
+  const tb = useTranslateBackend()
   const resolvedTitle = title ?? t("defaultTitle")
-  const errorMessage = message || getErrorMessage(error)
+  const errorMessage = message || tb(getErrorMessage(error))
   const techDetails = technicalDetails || getTechnicalDetails(error)
   const IconComponent = icon || <AlertTriangle className="size-5 shrink-0" />
 

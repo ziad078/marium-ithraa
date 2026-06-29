@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useTranslations } from "next-intl"
+import { useTranslateBackend } from "@/lib/i18n/backend-messages"
 
 import { showErrorToast, showSuccessToast } from "@/lib/toast/app-toast"
 import {
@@ -45,6 +46,7 @@ export function useDealDetail(dealId: string) {
 
 export function useCreateDeal(onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: CreateDealPayload) => createDeal(data),
@@ -55,7 +57,7 @@ export function useCreateDeal(onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedCreate") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedCreate") })
     },
   })
 }
@@ -70,6 +72,7 @@ export function useDealProposals(dealId: string) {
 
 export function useUpdateProposal(onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ proposalId, price }: { proposalId: string; price: number }) =>
@@ -81,13 +84,14 @@ export function useUpdateProposal(onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedUpdateProposal") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedUpdateProposal") })
     },
   })
 }
 
 export function useSubmitProposal(dealId: string, onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: SubmitProposalPayload) => submitProposal(dealId, data),
@@ -98,13 +102,14 @@ export function useSubmitProposal(dealId: string, onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedSubmitProposal") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedSubmitProposal") })
     },
   })
 }
 
 export function useSelectProposal(dealId: string, onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (proposalId: string) => selectProposal(dealId, proposalId),
@@ -116,13 +121,14 @@ export function useSelectProposal(dealId: string, onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedSelectProposal") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedSelectProposal") })
     },
   })
 }
 
 export function useApproveProposal(dealId: string, onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (proposalId: string) => approveProposal(dealId, proposalId),
@@ -134,7 +140,7 @@ export function useApproveProposal(dealId: string, onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedApproveProposal") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedApproveProposal") })
     },
   })
 }
@@ -155,6 +161,7 @@ export function useActivitiesWithDeals() {
 
 export function useCreateActivity(onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (name: string) => createActivity(name),
@@ -165,13 +172,14 @@ export function useCreateActivity(onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedCreateActivity") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedCreateActivity") })
     },
   })
 }
 
 export function useUpdateActivity(onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ id, name }: { id: string; name: string }) => updateActivity(id, name),
@@ -182,13 +190,14 @@ export function useUpdateActivity(onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedUpdateActivity") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedUpdateActivity") })
     },
   })
 }
 
 export function useDeleteActivity(onSuccess?: () => void) {
   const t = useTranslations("Deals")
+  const tb = useTranslateBackend()
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (id: string) => deleteActivity(id),
@@ -199,7 +208,7 @@ export function useDeleteActivity(onSuccess?: () => void) {
       onSuccess?.()
     },
     onError: (error: unknown) => {
-      showErrorToast({ raw: error instanceof Error ? error.message : t("failedDeleteActivity") })
+      showErrorToast({ raw: error instanceof Error ? tb(error.message) : t("failedDeleteActivity") })
     },
   })
 }

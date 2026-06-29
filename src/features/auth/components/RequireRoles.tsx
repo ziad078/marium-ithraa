@@ -19,10 +19,10 @@ export default async function RequireRoles({
   locale: string
 }) {
   const session = await getServerSession(nextAuthOptions)
-  if (!session?.user) redirect({href: redirectTo ?? `/${Routes.AUTH}/login`, locale})
+  if (!session?.user) { return redirect({ href: redirectTo ?? `/${Routes.AUTH}/login`, locale });  }
 
   const ok = hasAnyRole(session.user.roles, allowed)
-  if (!ok) redirect({href: redirectTo ?? `/${Routes.UNAUTHORIZED}`, locale})
+  if (!ok) redirect({ href: redirectTo ?? `/${Routes.UNAUTHORIZED}`, locale })
 
   return children
 }

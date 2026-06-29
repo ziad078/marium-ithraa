@@ -1191,9 +1191,18 @@
     "title": "خياركم الأول لاكتشاف وتنمية إمكانات كل طفل",
     "description": "منصتنا الذكية تربط الأهالي والمدارس بمقدمي الأنشطة والخدمات التعليمية، لتقديم مسارات مخصصة للأنشطة اللاصفية والترفيهية، مصممة بناءً على ذكاءات الأطفال وميولهم. نضمن ربطاً بمعايير جودة عالية، لدعم نمو الأطفال وتطوير مهاراتهم، وبناء مستقبلهم بثقة وتميز.",
     "stats": {
-      "children": { "value": "+1,500", "label": "طفل مكتشف لشغفه" },
-      "families": { "value": "+500", "label": "أسرة مستفيدة" },
-      "partners": { "value": "+80", "label": "مدرسة ومؤسسة شريكة" }
+      "children": {
+        "value": "+1,500",
+        "label": "طفل مكتشف لشغفه"
+      },
+      "families": {
+        "value": "+500",
+        "label": "أسرة مستفيدة"
+      },
+      "partners": {
+        "value": "+80",
+        "label": "مدرسة ومؤسسة شريكة"
+      }
     },
     "vision": {
       "badge": "رؤيتنا ورسالتنا",
@@ -1205,20 +1214,20 @@
     "system": {
       "title": "منظومة الربط عالي الجودة",
       "description": "نوفر نظام ربط ذو معايير جودة عالية، يضمن تقديم أفضل التجارب التي تسهم في تنمية مواهب الأطفال وتوجيههم نحو شغفهم الحقيقي من خلال ثلاثة ركائز:",
-      "pillars": [
-        {
+      "pillars": {
+        "0": {
           "title": "تمكين الأسر",
           "desc": "اتخاذ قرارات مستنيرة مبنية على تقييمات حقيقية واكتشاف ذكاءات الأطفال وميولهم الفردية."
         },
-        {
+        "1": {
           "title": "شراكات استراتيجية للمدارس",
           "desc": "دعم المؤسسات التعليمية بخيارات إثرائية متميزة خارج المناهج الأكاديمية التقليدية."
         },
-        {
+        "2": {
           "title": "تأهيل مقدمي الخدمات",
           "desc": "مساعدة مزودي الأنشطة على مواكبة معايير الجودة ومتطلبات السوق لتحقيق أثر ملموس."
         }
-      ]
+      }
     },
     "footer": "إثراء الذكاء ليست مجرد منصة رقمية، بل هي مجتمع متكامل يجمع بين التعليم والتطوير، ويسهم في بناء جيل واثق ومبدع وقادر على تحقيق أقصى إمكاناته."
   },
@@ -1261,8 +1270,14 @@
       "about": {
         "title": "2. من نحن",
         "description": "نحن إثراء الذكاء، شركةٌ مسجّلةٌ في المملكة العربية السعودية، تُشغّل منصةً تعليميةً ذكيةً تُساعد الأسر على اكتشاف البرامج الملائمة لأطفالها. عند استخدامكم للمنصة، نكون المتحكّمَ المسؤول عن بياناتكم الشخصية.",
-        "legalName": { "label": "الاسم القانوني للمؤسسة", "value": "تنمية وإثراء الذكاء" },
-        "email": { "label": "البريد الإلكتروني المخصص للخصوصية", "value": "privacy@ithrathaka.com" }
+        "legalName": {
+          "label": "الاسم القانوني للمؤسسة",
+          "value": "تنمية وإثراء الذكاء"
+        },
+        "email": {
+          "label": "البريد الإلكتروني المخصص للخصوصية",
+          "value": "privacy@ithrathaka.com"
+        }
       },
       "audience": {
         "title": "3. من تشمله هذه السياسة",
@@ -1309,7 +1324,10 @@
         "title": "5 & 6. طرق وأغراض المعالجة",
         "howTitle": "كيف نجمع بياناتكم؟",
         "howItems": [
-          { "strong": "مباشرة منكم:", "text": "عند كتابة البيانات وتأسيس الحساب." },
+          {
+            "strong": "مباشرة منكم:",
+            "text": "عند كتابة البيانات وتأسيس الحساب."
+          },
           {
             "strong": "تلقائياً وبأدوات تحليل:",
             "text": "الكوكيز والملفات التقنية لتأمين الجلسة فقط."
@@ -1363,7 +1381,8 @@
     ]
   },
   "Common": {
-    "search": "بحث..."
+    "search": "بحث...",
+    "close": "إغلاق"
   },
   "Layout": {
     "OrganizationNav": {
@@ -1395,11 +1414,26 @@
       "editDescription": "تحديث بيانات الموظف.",
       "deleteTitle": "حذف موظف",
       "deleteDescription": "هل أنت متأكد من حذف هذا الموظف؟",
-      "name": { "label": "الاسم الكامل", "placeholder": "أدخل اسم الموظف" },
-      "phone": { "label": "رقم الهاتف", "placeholder": "أدخل رقم الهاتف" },
-      "email": { "label": "البريد الإلكتروني", "placeholder": "أدخل البريد الإلكتروني" },
-      "password": { "label": "كلمة المرور", "placeholder": "أدخل كلمة المرور" },
-      "jobTitle": { "label": "المسمى الوظيفي", "placeholder": "أدخل المسمى الوظيفي" }
+      "name": {
+        "label": "الاسم الكامل",
+        "placeholder": "أدخل اسم الموظف"
+      },
+      "phone": {
+        "label": "رقم الهاتف",
+        "placeholder": "أدخل رقم الهاتف"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "أدخل البريد الإلكتروني"
+      },
+      "password": {
+        "label": "كلمة المرور",
+        "placeholder": "أدخل كلمة المرور"
+      },
+      "jobTitle": {
+        "label": "المسمى الوظيفي",
+        "placeholder": "أدخل المسمى الوظيفي"
+      }
     },
     "Grade": {
       "Actions": {
@@ -1409,18 +1443,41 @@
       },
       "addTitle": "إضافة مرحلة",
       "editTitle": "تعديل مرحلة",
-      "breadcrumb": { "home": "الرئيسية", "grades": "المراحل" },
-      "name": { "label": "اسم المرحلة", "placeholder": "أدخل اسم المرحلة" },
-      "toast": { "saved": "تم حفظ المرحلة بنجاح" }
+      "breadcrumb": {
+        "home": "الرئيسية",
+        "grades": "المراحل"
+      },
+      "name": {
+        "label": "اسم المرحلة",
+        "placeholder": "أدخل اسم المرحلة"
+      },
+      "toast": {
+        "saved": "تم حفظ المرحلة بنجاح"
+      }
     },
     "Class": {
       "addTitle": "إضافة فصل",
       "editTitle": "تعديل فصل",
-      "breadcrumb": { "home": "الرئيسية", "classes": "الفصول" },
-      "name": { "label": "اسم الفصل", "placeholder": "أدخل اسم الفصل" },
-      "grade": { "label": "المرحلة", "placeholder": "اختر المرحلة" },
-      "teacher": { "label": "المعلم (اختياري)", "placeholder": "اختر المعلم", "none": "بدون" },
-      "toast": { "saved": "تم حفظ الفصل بنجاح" },
+      "breadcrumb": {
+        "home": "الرئيسية",
+        "classes": "الفصول"
+      },
+      "name": {
+        "label": "اسم الفصل",
+        "placeholder": "أدخل اسم الفصل"
+      },
+      "grade": {
+        "label": "المرحلة",
+        "placeholder": "اختر المرحلة"
+      },
+      "teacher": {
+        "label": "المعلم (اختياري)",
+        "placeholder": "اختر المعلم",
+        "none": "بدون"
+      },
+      "toast": {
+        "saved": "تم حفظ الفصل بنجاح"
+      },
       "Actions": {
         "classes": {
           "created": "تم انئاء الفصل بنجاح"
@@ -1432,27 +1489,59 @@
       "editTitle": "تعديل طفل",
       "subtitle": "أدخل بيانات الطفل وولي الأمر",
       "parentSection": "بيانات ولي الأمر",
-      "breadcrumb": { "home": "الرئيسية", "children": "الأطفال" },
-      "name": { "label": "اسم الطفل", "placeholder": "أدخل اسم الطفل" },
-      "birthDate": { "label": "تاريخ الميلاد" },
-      "parentName": { "label": "اسم ولي الأمر" },
-      "parentEmail": { "label": "بريد ولي الأمر" },
-      "parentPhone": { "label": "هاتف ولي الأمر" },
-      "parentPassword": { "label": "كلمة مرور ولي الأمر" },
-      "grade": { "label": "المرحلة", "placeholder": "اختر المرحلة" },
-      "class": { "label": "الفصل", "placeholder": "اختر الفصل" },
+      "breadcrumb": {
+        "home": "الرئيسية",
+        "children": "الأطفال"
+      },
+      "name": {
+        "label": "اسم الطفل",
+        "placeholder": "أدخل اسم الطفل"
+      },
+      "birthDate": {
+        "label": "تاريخ الميلاد"
+      },
+      "parentName": {
+        "label": "اسم ولي الأمر"
+      },
+      "parentEmail": {
+        "label": "بريد ولي الأمر"
+      },
+      "parentPhone": {
+        "label": "هاتف ولي الأمر"
+      },
+      "parentPassword": {
+        "label": "كلمة مرور ولي الأمر"
+      },
+      "grade": {
+        "label": "المرحلة",
+        "placeholder": "اختر المرحلة"
+      },
+      "class": {
+        "label": "الفصل",
+        "placeholder": "اختر الفصل"
+      },
       "gender": {
         "label": "النوع",
         "placeholder": "اختر النوع",
         "male": "ذكر",
         "female": "أنثى"
       },
-      "toast": { "saved": "تم حفظ بيانات الطفل بنجاح" }
+      "toast": {
+        "saved": "تم حفظ بيانات الطفل بنجاح"
+      }
     },
     "Test": {
-      "title": { "label": "عنوان الاختبار", "placeholder": "أدخل عنوان الاختبار" },
-      "description": { "label": "الوصف", "placeholder": "أدخل الوصف" },
-      "toast": { "created": "تم إنشاء الاختبار بنجاح" },
+      "title": {
+        "label": "عنوان الاختبار",
+        "placeholder": "أدخل عنوان الاختبار"
+      },
+      "description": {
+        "label": "الوصف",
+        "placeholder": "أدخل الوصف"
+      },
+      "toast": {
+        "created": "تم إنشاء الاختبار بنجاح"
+      },
       "wizard": {
         "back": "رجوع",
         "next": "التالي",
@@ -1467,12 +1556,29 @@
     "Teacher": {
       "pageTitle": "إضافة معلم",
       "pageSubtitle": "أدخل بيانات المعلم لإضافته إلى المؤسسة.",
-      "name": { "label": "الاسم الكامل", "placeholder": "أدخل اسم المعلم" },
-      "phone": { "label": "رقم الهاتف", "placeholder": "أدخل رقم الهاتف" },
-      "email": { "label": "البريد الإلكتروني", "placeholder": "أدخل البريد الإلكتروني" },
-      "password": { "label": "كلمة المرور", "placeholder": "أدخل كلمة المرور" },
-      "jobTitle": { "label": "المسمى الوظيفي", "placeholder": "أدخل المسمى الوظيفي" },
-      "toast": { "created": "تم إضافة المعلم بنجاح" },
+      "name": {
+        "label": "الاسم الكامل",
+        "placeholder": "أدخل اسم المعلم"
+      },
+      "phone": {
+        "label": "رقم الهاتف",
+        "placeholder": "أدخل رقم الهاتف"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "أدخل البريد الإلكتروني"
+      },
+      "password": {
+        "label": "كلمة المرور",
+        "placeholder": "أدخل كلمة المرور"
+      },
+      "jobTitle": {
+        "label": "المسمى الوظيفي",
+        "placeholder": "أدخل المسمى الوظيفي"
+      },
+      "toast": {
+        "created": "تم إضافة المعلم بنجاح"
+      },
       "Actions": {
         "common": {
           "conflict": "هذا الحساب موجود بالفعل",
@@ -1490,7 +1596,9 @@
     "recentActivity": "آخر النشاطات"
   },
   "OrgResults": {
-    "breadcrumb": { "home": "الرئيسية" },
+    "breadcrumb": {
+      "home": "الرئيسية"
+    },
     "title": "النتائج",
     "subtitle": "تابع نتائج تقييمات أطفال مؤسستك",
     "tabs": {
@@ -1546,7 +1654,10 @@
     "footer": "إجمالي الزوار لآخر 6 أشهر"
   },
   "CreateChild": {
-    "breadcrumb": { "dashboard": "الرئيسية", "children": "الأطفال" },
+    "breadcrumb": {
+      "dashboard": "الرئيسية",
+      "children": "الأطفال"
+    },
     "title": "إنشاء طفل",
     "subtitle": "ابحث عن ولي الأمر أولاً، ثم اختر طفلاً موجوداً أو أنشئ ملفاً جديداً.",
     "parentIdentification": "بيانات ولي الأمر",
@@ -1706,76 +1817,74 @@
     "helperText": "إذا رأيت \"تم الوصول إلى الحد الأقصى للمحاولات\" أو \"غير مسموح بإعادة المحاولة\"، فقد تم تفعيل قواعد النظام."
   },
   "Backend": {
-    "Backend": {
-      "childCreated": "تم إنشاء الطفل بنجاح",
-      "transferRequested": "الطفل موجود بالفعل في مدرسة أخرى. تم طلب النقل.",
-      "deleted": "تم الحذف بنجاح",
-      "loggedOut": "تم تسجيل الخروج",
-      "emailVerified": "تم التحقق من البريد الإلكتروني بنجاح",
-      "fileUploaded": "تم رفع الملف بنجاح",
-      "reminderSent": "تم إرسال التذكير بنجاح",
-      "verificationEmailQueued": "تم وضع بريد التحقق في قائمة الانتظار بنجاح",
-      "childAssigned": "تم تعيين الطفل بنجاح",
-      "childExists": "الطفل موجود بالفعل في مدرستك",
-      "childLimitReached": "تم الوصول إلى الحد الأقصى للأطفال",
-      "parentChildLimitReached": "وصل ولي الأمر إلى الحد الأقصى للأطفال",
-      "parentChildLimitReachedWithMax": "وصل ولي الأمر إلى الحد الأقصى للأطفال ({max})",
-      "cannotTransferPrivate": "لا يمكن نقل طفل خاص - فقط أطفال المؤسسات يمكن نقلهم",
-      "cannotApprovePrivateTransfer": "لا يمكن الموافقة على نقل طفل خاص",
-      "transferAlreadyResolved": "طلب النقل تم البت فيه بالفعل",
-      "userAlreadyExists": "المستخدم موجود بالفعل",
-      "emailInUse": "البريد الإلكتروني مستخدم بالفعل",
-      "phoneInUse": "رقم الهاتف مستخدم بالفعل",
-      "teacherAlreadyExists": "المعلم موجود بالفعل",
-      "maxAttemptsReached": "تم الوصول إلى الحد الأقصى للمحاولات",
-      "attemptAlreadyApproved": "المحاولة معتمدة بالفعل",
-      "onlySubmittedCanBeApproved": "يمكن الموافقة على المحاولات المقدمة فقط",
-      "attemptLocked": "المحاولة مقفلة",
-      "finishCurrentAttempt": "أنهِ أو قدم المحاولة الحالية قبل بدء أخرى",
-      "retakeNotAllowed": "إعادة المحاولة غير مسموح بها بعد الموافقة",
-      "noSlotAvailable": "لا يتوفر موعد تقييم",
-      "mainAttemptStarted": "المحاولة الرئيسية قد بدأت أو اكتملت لهذا الطفل",
-      "completeMainAttempt": "أكمل المحاولة الرئيسية قبل إعادة المحاولة",
-      "retakeAlreadyUsed": "تم استخدام إعادة المحاولة بالفعل",
-      "freeAttemptsRequired": "يجب إكمال المحاولتين المجانيتين قبل ذلك",
-      "extraAttemptInProgress": "محاولة إضافية قيد التنفيذ أو بانتظار الدفع",
-      "extraAttemptAwaitingApproval": "المحاولة الإضافية بانتظار الموافقة بالفعل",
-      "extraAttemptNoApproval": "المحاولة الإضافية لا تتطلب موافقة",
-      "paymentNotRequired": "الدفع غير مطلوب لهذه المحاولة",
-      "noPaymentRecord": "لا يوجد سجل دفع مرتبط بهذه المحاولة",
-      "dealClosed": "هذه الصفقة مغلقة",
-      "dealDeadlinePassed": "لقد انتهى موعد الصفقة",
-      "onlySelectedProposals": "يمكن الموافقة على العروض المختارة فقط",
-      "orgAlreadyApproved": "المؤسسة معتمدة بالفعل",
-      "orgAlreadyRejected": "المؤسسة مرفوضة بالفعل",
-      "orgMustBeApproved": "يجب الموافقة على المؤسسة قبل تنفيذ هذه العملية",
-      "duplicateDimensionCodes": "رموز الأبعاد مكررة",
-      "duplicateDimensionCodesWithValue": "رموز الأبعاد مكررة: {codes}",
-      "dimensionCodeNotFound": "رمز البعد غير موجود",
-      "dimensionCodeNotFoundWithValue": "رمز البعد \"{code}\" غير موجود",
-      "onlySARSupported": "عملة الريال السعودي فقط مدعومة",
-      "onlyFailedCanRetry": "يمكن إعادة محاولة المدفوعات الفاشلة أو منتهية الصلاحية فقط",
-      "maxRetriesExceeded": "تم تجاوز الحد الأقصى لإعادة المحاولة",
-      "activityHasStartTime": "النشاط لديه وقت بدء بالفعل",
-      "insufficientRole": "صلاحية غير كافية",
-      "noAccessToData": "لا يُسمح لك بالوصول إلى هذه البيانات",
-      "refreshTokenMissing": "رمز التحديث مفقود",
-      "sessionCompromised": "الجلسة مخترقة",
-      "cannotLogoutSession": "لا يمكن تسجيل الخروج من هذه الجلسة",
-      "invalidTokenType": "نوع الرمز غير صالح",
-      "paymentNotOwned": "الدفع لا ينتمي لهذا المستخدم",
-      "somethingWentWrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
-      "orgApprovalRequired": "يجب الموافقة على مؤسستك قبل أن تتمكن من تنفيذ هذا الإجراء.",
-      "sessionExpired": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
-      "noPermission": "ليس لديك صلاحية تنفيذ هذا الإجراء.",
-      "notFound": "المورد المطلوب غير موجود.",
-      "orgStatusChanged": "لقد تغيرت حالة هذه المؤسسة بالفعل. يرجى التحديث.",
-      "flowNotAvailable": "لم يعد هذا المسار متاحاً. يرجى استخدام التقييمات بدلاً من ذلك.",
-      "unableToCreateChild": "تعذر إنشاء الطفل",
-      "unableToSearchParent": "تعذر البحث عن ولي الأمر",
-      "unableToLoadChild": "تعذر تحميل بيانات الطفل",
-      "unableToRequestTransfer": "تعذر إرسال طلب النقل"
-    }
+    "childCreated": "تم إنشاء الطفل بنجاح",
+    "transferRequested": "الطفل موجود بالفعل في مدرسة أخرى. تم طلب النقل.",
+    "deleted": "تم الحذف بنجاح",
+    "loggedOut": "تم تسجيل الخروج",
+    "emailVerified": "تم التحقق من البريد الإلكتروني بنجاح",
+    "fileUploaded": "تم رفع الملف بنجاح",
+    "reminderSent": "تم إرسال التذكير بنجاح",
+    "verificationEmailQueued": "تم وضع بريد التحقق في قائمة الانتظار بنجاح",
+    "childAssigned": "تم تعيين الطفل بنجاح",
+    "childExists": "الطفل موجود بالفعل في مدرستك",
+    "childLimitReached": "تم الوصول إلى الحد الأقصى للأطفال",
+    "parentChildLimitReached": "وصل ولي الأمر إلى الحد الأقصى للأطفال",
+    "parentChildLimitReachedWithMax": "وصل ولي الأمر إلى الحد الأقصى للأطفال ({max})",
+    "cannotTransferPrivate": "لا يمكن نقل طفل خاص - فقط أطفال المؤسسات يمكن نقلهم",
+    "cannotApprovePrivateTransfer": "لا يمكن الموافقة على نقل طفل خاص",
+    "transferAlreadyResolved": "طلب النقل تم البت فيه بالفعل",
+    "userAlreadyExists": "المستخدم موجود بالفعل",
+    "emailInUse": "البريد الإلكتروني مستخدم بالفعل",
+    "phoneInUse": "رقم الهاتف مستخدم بالفعل",
+    "teacherAlreadyExists": "المعلم موجود بالفعل",
+    "maxAttemptsReached": "تم الوصول إلى الحد الأقصى للمحاولات",
+    "attemptAlreadyApproved": "المحاولة معتمدة بالفعل",
+    "onlySubmittedCanBeApproved": "يمكن الموافقة على المحاولات المقدمة فقط",
+    "attemptLocked": "المحاولة مقفلة",
+    "finishCurrentAttempt": "أنهِ أو قدم المحاولة الحالية قبل بدء أخرى",
+    "retakeNotAllowed": "إعادة المحاولة غير مسموح بها بعد الموافقة",
+    "noSlotAvailable": "لا يتوفر موعد تقييم",
+    "mainAttemptStarted": "المحاولة الرئيسية قد بدأت أو اكتملت لهذا الطفل",
+    "completeMainAttempt": "أكمل المحاولة الرئيسية قبل إعادة المحاولة",
+    "retakeAlreadyUsed": "تم استخدام إعادة المحاولة بالفعل",
+    "freeAttemptsRequired": "يجب إكمال المحاولتين المجانيتين قبل ذلك",
+    "extraAttemptInProgress": "محاولة إضافية قيد التنفيذ أو بانتظار الدفع",
+    "extraAttemptAwaitingApproval": "المحاولة الإضافية بانتظار الموافقة بالفعل",
+    "extraAttemptNoApproval": "المحاولة الإضافية لا تتطلب موافقة",
+    "paymentNotRequired": "الدفع غير مطلوب لهذه المحاولة",
+    "noPaymentRecord": "لا يوجد سجل دفع مرتبط بهذه المحاولة",
+    "dealClosed": "هذه الصفقة مغلقة",
+    "dealDeadlinePassed": "لقد انتهى موعد الصفقة",
+    "onlySelectedProposals": "يمكن الموافقة على العروض المختارة فقط",
+    "orgAlreadyApproved": "المؤسسة معتمدة بالفعل",
+    "orgAlreadyRejected": "المؤسسة مرفوضة بالفعل",
+    "orgMustBeApproved": "يجب الموافقة على المؤسسة قبل تنفيذ هذه العملية",
+    "duplicateDimensionCodes": "رموز الأبعاد مكررة",
+    "duplicateDimensionCodesWithValue": "رموز الأبعاد مكررة: {codes}",
+    "dimensionCodeNotFound": "رمز البعد غير موجود",
+    "dimensionCodeNotFoundWithValue": "رمز البعد \"{code}\" غير موجود",
+    "onlySARSupported": "عملة الريال السعودي فقط مدعومة",
+    "onlyFailedCanRetry": "يمكن إعادة محاولة المدفوعات الفاشلة أو منتهية الصلاحية فقط",
+    "maxRetriesExceeded": "تم تجاوز الحد الأقصى لإعادة المحاولة",
+    "activityHasStartTime": "النشاط لديه وقت بدء بالفعل",
+    "insufficientRole": "صلاحية غير كافية",
+    "noAccessToData": "لا يُسمح لك بالوصول إلى هذه البيانات",
+    "refreshTokenMissing": "رمز التحديث مفقود",
+    "sessionCompromised": "الجلسة مخترقة",
+    "cannotLogoutSession": "لا يمكن تسجيل الخروج من هذه الجلسة",
+    "invalidTokenType": "نوع الرمز غير صالح",
+    "paymentNotOwned": "الدفع لا ينتمي لهذا المستخدم",
+    "somethingWentWrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "orgApprovalRequired": "يجب الموافقة على مؤسستك قبل أن تتمكن من تنفيذ هذا الإجراء.",
+    "sessionExpired": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+    "noPermission": "ليس لديك صلاحية تنفيذ هذا الإجراء.",
+    "notFound": "المورد المطلوب غير موجود.",
+    "orgStatusChanged": "لقد تغيرت حالة هذه المؤسسة بالفعل. يرجى التحديث.",
+    "flowNotAvailable": "لم يعد هذا المسار متاحاً. يرجى استخدام التقييمات بدلاً من ذلك.",
+    "unableToCreateChild": "تعذر إنشاء الطفل",
+    "unableToSearchParent": "تعذر البحث عن ولي الأمر",
+    "unableToLoadChild": "تعذر تحميل بيانات الطفل",
+    "unableToRequestTransfer": "تعذر إرسال طلب النقل"
   },
   "Unauthorized": {
     "title": "غير مصرح الوصول الي هنا",

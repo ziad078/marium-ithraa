@@ -240,45 +240,45 @@
         "gender": "Gender"
       }
     },
-        "ChildTransferRequests": {
-          "title": "Child transfer requests",
-          "subtitle": "Review incoming child transfer requests for your organization.",
-          "noPending": "No pending transfer requests",
-          "incoming": "Incoming transfer request",
-          "pendingBadge": "Pending",
-          "fromOrganization": "From organization",
-          "birthDate": "Birth date",
-          "currentClass": "Current class",
-          "requestedBy": "Requested by",
-          "approveTransfer": "Approve transfer",
-          "reject": "Reject",
-          "rejectTitle": "Reject transfer request?",
-          "rejectDescription": "This rejection will be sent to the backend and the request will be removed from the list.",
-          "cancel": "Cancel",
-          "unknownChild": "Unknown child",
-          "anotherOrganization": "Another organization",
-          "transferRequestRejected": "Transfer request rejected",
-          "unableToUpdate": "Unable to update transfer request",
-          "dashboardBreadcrumb": "Dashboard",
-          "transferRequestsBreadcrumb": "Transfer requests"
-        },
-        "ApproveChildTransfer": {
-          "title": "Approve child transfer",
-          "description": "Choose the class {childName} will join in {organizationName}.",
-          "classLabel": "Class",
-          "loadingClasses": "Loading classes...",
-          "selectClass": "Select a class",
-          "noClasses": "No classes are available for this organization.",
-          "cancel": "Cancel",
-          "approveTransfer": "Approve transfer",
-          "targetOrganization": "target organization",
-          "unableToIdentify": "Unable to identify the target organization.",
-          "unableToLoadClasses": "Unable to load classes.",
-          "approvedToast": "Transfer request approved.",
-          "unableToApprove": "Unable to approve transfer request.",
-          "theChild": "the child"
-        },
-        "Employees": {
+    "ChildTransferRequests": {
+      "title": "Child transfer requests",
+      "subtitle": "Review incoming child transfer requests for your organization.",
+      "noPending": "No pending transfer requests",
+      "incoming": "Incoming transfer request",
+      "pendingBadge": "Pending",
+      "fromOrganization": "From organization",
+      "birthDate": "Birth date",
+      "currentClass": "Current class",
+      "requestedBy": "Requested by",
+      "approveTransfer": "Approve transfer",
+      "reject": "Reject",
+      "rejectTitle": "Reject transfer request?",
+      "rejectDescription": "This rejection will be sent to the backend and the request will be removed from the list.",
+      "cancel": "Cancel",
+      "unknownChild": "Unknown child",
+      "anotherOrganization": "Another organization",
+      "transferRequestRejected": "Transfer request rejected",
+      "unableToUpdate": "Unable to update transfer request",
+      "dashboardBreadcrumb": "Dashboard",
+      "transferRequestsBreadcrumb": "Transfer requests"
+    },
+    "ApproveChildTransfer": {
+      "title": "Approve child transfer",
+      "description": "Choose the class {childName} will join in {organizationName}.",
+      "classLabel": "Class",
+      "loadingClasses": "Loading classes...",
+      "selectClass": "Select a class",
+      "noClasses": "No classes are available for this organization.",
+      "cancel": "Cancel",
+      "approveTransfer": "Approve transfer",
+      "targetOrganization": "target organization",
+      "unableToIdentify": "Unable to identify the target organization.",
+      "unableToLoadClasses": "Unable to load classes.",
+      "approvedToast": "Transfer request approved.",
+      "unableToApprove": "Unable to approve transfer request.",
+      "theChild": "the child"
+    },
+    "Employees": {
       "titles": {
         "details": "Employee Details"
       },
@@ -1143,8 +1143,8 @@
     }
   },
   "Flow6": {
-    "title": "Discover your child\u2019s intelligence",
-    "description": "Start the smart journey today\u2014discover their strengths and help them grow with easy steps and instant results.",
+    "title": "Discover your child’s intelligence",
+    "description": "Start the smart journey today—discover their strengths and help them grow with easy steps and instant results.",
     "ctaLabel": "Discover"
   },
   "TestsPage": {
@@ -1191,9 +1191,18 @@
     "title": "Your first choice for discovering and developing every child's potential",
     "description": "Our smart platform connects parents and schools with activity and educational service providers, offering customized extracurricular and recreational paths designed based on children's multiple intelligences and interests. We ensure high-quality connections to support children's growth and skill development, building their future with confidence and excellence.",
     "stats": {
-      "children": { "value": "+1,500", "label": "Children discovered their passion" },
-      "families": { "value": "+500", "label": "Benefiting families" },
-      "partners": { "value": "+80", "label": "Partner schools & institutions" }
+      "children": {
+        "value": "+1,500",
+        "label": "Children discovered their passion"
+      },
+      "families": {
+        "value": "+500",
+        "label": "Benefiting families"
+      },
+      "partners": {
+        "value": "+80",
+        "label": "Partner schools & institutions"
+      }
     },
     "vision": {
       "badge": "Our Vision & Mission",
@@ -1205,11 +1214,20 @@
     "system": {
       "title": "High-Quality Connection Ecosystem",
       "description": "We provide a high-quality connection system that ensures the best experiences to develop children's talents and guide them toward their true passion through three pillars:",
-      "pillars": [
-        { "title": "Empowering Families", "desc": "Make informed decisions based on real assessments and discover children's intelligences and individual tendencies." },
-        { "title": "Strategic School Partnerships", "desc": "Support educational institutions with distinguished enrichment options beyond traditional academic curricula." },
-        { "title": "Service Provider Qualification", "desc": "Help activity providers meet quality standards and market requirements to achieve tangible impact." }
-      ]
+      "pillars": {
+        "0": {
+          "title": "Empowering Families",
+          "desc": "Make informed decisions based on real assessments and discover children's intelligences and individual tendencies."
+        },
+        "1": {
+          "title": "Strategic School Partnerships",
+          "desc": "Support educational institutions with distinguished enrichment options beyond traditional academic curricula."
+        },
+        "2": {
+          "title": "Service Provider Qualification",
+          "desc": "Help activity providers meet quality standards and market requirements to achieve tangible impact."
+        }
+      }
     },
     "footer": "Ithraa Intelligence is not just a digital platform; it's an integrated community that combines education and development, contributing to building a confident, creative generation capable of reaching its full potential."
   },
@@ -1222,27 +1240,60 @@
       "definitions": {
         "title": "1. Definitions and Terminology",
         "items": [
-          { "label": "Platform", "desc": "Ithraa Intelligence website and application in all its electronic forms providing educational enrichment services and recommendations." },
-          { "label": "User", "desc": "Any person accessing the platform, including parents, schools, and activity providers." },
-          { "label": "Parent/Guardian", "desc": "The adult who registers on the platform on behalf of their child to discover enrichment activities." },
-          { "label": "Provider", "desc": "The school, educational institution, or activity provider who lists their programs on the platform." },
-          { "label": "Child", "desc": "Any individual under eighteen years of age whose data is shared by their parent or guardian." },
-          { "label": "Personal Data", "desc": "Any information that identifies you directly or indirectly, such as name, email, and device identifier." }
+          {
+            "label": "Platform",
+            "desc": "Ithraa Intelligence website and application in all its electronic forms providing educational enrichment services and recommendations."
+          },
+          {
+            "label": "User",
+            "desc": "Any person accessing the platform, including parents, schools, and activity providers."
+          },
+          {
+            "label": "Parent/Guardian",
+            "desc": "The adult who registers on the platform on behalf of their child to discover enrichment activities."
+          },
+          {
+            "label": "Provider",
+            "desc": "The school, educational institution, or activity provider who lists their programs on the platform."
+          },
+          {
+            "label": "Child",
+            "desc": "Any individual under eighteen years of age whose data is shared by their parent or guardian."
+          },
+          {
+            "label": "Personal Data",
+            "desc": "Any information that identifies you directly or indirectly, such as name, email, and device identifier."
+          }
         ],
         "lawNote": "Applicable Law: The Personal Data Protection Law in the Kingdom of Saudi Arabia (Royal Decree M/19) issued under the supervision of the Saudi Authority for Data and Artificial Intelligence (SDAIA)."
       },
       "about": {
         "title": "2. Who We Are",
         "description": "We are Ithraa Intelligence, a company registered in the Kingdom of Saudi Arabia, operating an intelligent educational platform that helps families discover suitable programs for their children. When you use the platform, we are the data controller responsible for your personal data.",
-        "legalName": { "label": "Legal Entity Name", "value": "Tatweer and Ithraa Althaka Technology" },
-        "email": { "label": "Privacy-Specific Email", "value": "privacy@ithrathaka.com" }
+        "legalName": {
+          "label": "Legal Entity Name",
+          "value": "Tatweer and Ithraa Althaka Technology"
+        },
+        "email": {
+          "label": "Privacy-Specific Email",
+          "value": "privacy@ithrathaka.com"
+        }
       },
       "audience": {
         "title": "3. Who This Policy Covers",
         "items": [
-          { "title": "Parents and Families", "desc": "Adults seeking to discover activities. Child data is only provided with the parent's explicit consent." },
-          { "title": "Schools and Institutions", "desc": "Schools that register to list their programs and manage recommendations and reports for enrolled students." },
-          { "title": "Activity Providers", "desc": "Institutions and individuals developing enrichment programs who wish to reach their target audience." }
+          {
+            "title": "Parents and Families",
+            "desc": "Adults seeking to discover activities. Child data is only provided with the parent's explicit consent."
+          },
+          {
+            "title": "Schools and Institutions",
+            "desc": "Schools that register to list their programs and manage recommendations and reports for enrolled students."
+          },
+          {
+            "title": "Activity Providers",
+            "desc": "Institutions and individuals developing enrichment programs who wish to reach their target audience."
+          }
         ]
       },
       "dataCollected": {
@@ -1273,8 +1324,14 @@
         "title": "5 & 6. Processing Methods and Purposes",
         "howTitle": "How We Collect Your Data:",
         "howItems": [
-          { "strong": "Directly from you:", "text": "When you enter data and create an account." },
-          { "strong": "Automatically via analytics tools:", "text": "Cookies and technical files for session security only." }
+          {
+            "strong": "Directly from you:",
+            "text": "When you enter data and create an account."
+          },
+          {
+            "strong": "Automatically via analytics tools:",
+            "text": "Cookies and technical files for session security only."
+          }
         ],
         "purposeTitle": "Key Usage Purposes:"
       },
@@ -1282,24 +1339,50 @@
         "title": "10. Your Rights Under the Personal Data Protection Law",
         "description": "Saudi law (Article 4) guarantees you absolute and direct fundamental rights to control your data, including:",
         "items": [
-          { "title": "Right to be Informed", "desc": "Know what data we hold and how it is used (as outlined in this policy)." },
-          { "title": "Right to Access", "desc": "Request a complete copy of the digital data we hold about you or your child." },
-          { "title": "Right to Rectification", "desc": "Correct or update any incorrect, outdated, or incomplete data within the platform immediately." },
-          { "title": "Right to Erasure (Deletion)", "desc": "Request deletion of your data when the legal or contractual purpose ends." }
+          {
+            "title": "Right to be Informed",
+            "desc": "Know what data we hold and how it is used (as outlined in this policy)."
+          },
+          {
+            "title": "Right to Access",
+            "desc": "Request a complete copy of the digital data we hold about you or your child."
+          },
+          {
+            "title": "Right to Rectification",
+            "desc": "Correct or update any incorrect, outdated, or incomplete data within the platform immediately."
+          },
+          {
+            "title": "Right to Erasure (Deletion)",
+            "desc": "Request deletion of your data when the legal or contractual purpose ends."
+          }
         ],
         "contact": "To exercise your rights or submit a request, contact our compliance team at: {email}"
       },
       "complaints": {
         "title": "13. Complaints, Grievances, and Contact",
         "description": "If you have any concerns or inquiries regarding your privacy, please contact us directly to resolve them as quickly as possible with full transparency.",
-        "complaintsEmail": { "label": "Complaints Email", "value": "privacy@ithrathaka.com", "responseTime": "Expected response time: within 10 working days" },
-        "generalEmail": { "label": "General Inquiries", "value": "hello@ithrathaka.com", "website": "Official website: ithrathaka.com" }
+        "complaintsEmail": {
+          "label": "Complaints Email",
+          "value": "privacy@ithrathaka.com",
+          "responseTime": "Expected response time: within 10 working days"
+        },
+        "generalEmail": {
+          "label": "General Inquiries",
+          "value": "hello@ithrathaka.com",
+          "website": "Official website: ithrathaka.com"
+        }
       }
     },
-    "purposes": ["Provide personalized recommendations", "Account management and smart linking", "Platform security and safety", "Regulatory and legislative compliance"]
+    "purposes": [
+      "Provide personalized recommendations",
+      "Account management and smart linking",
+      "Platform security and safety",
+      "Regulatory and legislative compliance"
+    ]
   },
   "Common": {
-    "search": "Search..."
+    "search": "Search...",
+    "close": "Close"
   },
   "Layout": {
     "OrganizationNav": {
@@ -1331,11 +1414,26 @@
       "editDescription": "Update employee information.",
       "deleteTitle": "Delete employee",
       "deleteDescription": "Are you sure you want to delete this employee?",
-      "name": { "label": "Full name", "placeholder": "Enter employee name" },
-      "phone": { "label": "Phone", "placeholder": "Enter phone number" },
-      "email": { "label": "Email", "placeholder": "Enter email address" },
-      "password": { "label": "Password", "placeholder": "Enter password" },
-      "jobTitle": { "label": "Job title", "placeholder": "Enter job title" }
+      "name": {
+        "label": "Full name",
+        "placeholder": "Enter employee name"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Enter phone number"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter email address"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter password"
+      },
+      "jobTitle": {
+        "label": "Job title",
+        "placeholder": "Enter job title"
+      }
     },
     "Grade": {
       "Actions": {
@@ -1345,22 +1443,41 @@
       },
       "addTitle": "Add grade",
       "editTitle": "Edit grade",
-      "breadcrumb": { "home": "Home", "grades": "Grades" },
-      "name": { "label": "Grade name", "placeholder": "Enter grade name" },
-      "toast": { "saved": "Grade saved successfully" }
+      "breadcrumb": {
+        "home": "Home",
+        "grades": "Grades"
+      },
+      "name": {
+        "label": "Grade name",
+        "placeholder": "Enter grade name"
+      },
+      "toast": {
+        "saved": "Grade saved successfully"
+      }
     },
     "Class": {
       "addTitle": "Add class",
       "editTitle": "Edit class",
-      "breadcrumb": { "home": "Home", "classes": "Classes" },
-      "name": { "label": "Class name", "placeholder": "Enter class name" },
-      "grade": { "label": "Grade", "placeholder": "Select grade" },
+      "breadcrumb": {
+        "home": "Home",
+        "classes": "Classes"
+      },
+      "name": {
+        "label": "Class name",
+        "placeholder": "Enter class name"
+      },
+      "grade": {
+        "label": "Grade",
+        "placeholder": "Select grade"
+      },
       "teacher": {
         "label": "Teacher (optional)",
         "placeholder": "Select teacher",
         "none": "None"
       },
-      "toast": { "saved": "Class saved successfully" },
+      "toast": {
+        "saved": "Class saved successfully"
+      },
       "Actions": {
         "classes": {
           "created": "Class created successfully"
@@ -1372,30 +1489,59 @@
       "editTitle": "Edit child",
       "subtitle": "Enter child and parent details",
       "parentSection": "Parent account",
-      "breadcrumb": { "home": "Home", "children": "Children" },
-      "name": { "label": "Child name", "placeholder": "Enter child name" },
-      "birthDate": { "label": "Birth date" },
-      "parentName": { "label": "Parent name" },
-      "parentEmail": { "label": "Parent email" },
-      "parentPhone": { "label": "Parent phone" },
-      "parentPassword": { "label": "Parent password" },
-      "grade": { "label": "Grade", "placeholder": "Select grade" },
-      "class": { "label": "Class", "placeholder": "Select class" },
+      "breadcrumb": {
+        "home": "Home",
+        "children": "Children"
+      },
+      "name": {
+        "label": "Child name",
+        "placeholder": "Enter child name"
+      },
+      "birthDate": {
+        "label": "Birth date"
+      },
+      "parentName": {
+        "label": "Parent name"
+      },
+      "parentEmail": {
+        "label": "Parent email"
+      },
+      "parentPhone": {
+        "label": "Parent phone"
+      },
+      "parentPassword": {
+        "label": "Parent password"
+      },
+      "grade": {
+        "label": "Grade",
+        "placeholder": "Select grade"
+      },
+      "class": {
+        "label": "Class",
+        "placeholder": "Select class"
+      },
       "gender": {
         "label": "Gender",
         "placeholder": "Select gender",
         "male": "Male",
         "female": "Female"
       },
-      "toast": { "saved": "Child saved successfully" }
+      "toast": {
+        "saved": "Child saved successfully"
+      }
     },
     "Test": {
-      "title": { "label": "Test title", "placeholder": "Enter test title" },
+      "title": {
+        "label": "Test title",
+        "placeholder": "Enter test title"
+      },
       "description": {
         "label": "Description",
         "placeholder": "Enter description"
       },
-      "toast": { "created": "Test created successfully" },
+      "toast": {
+        "created": "Test created successfully"
+      },
       "wizard": {
         "back": "Back",
         "next": "Next",
@@ -1410,12 +1556,29 @@
     "Teacher": {
       "pageTitle": "Add teacher",
       "pageSubtitle": "Enter teacher details to add them to the organization.",
-      "name": { "label": "Full name", "placeholder": "Enter teacher name" },
-      "phone": { "label": "Phone", "placeholder": "Enter phone number" },
-      "email": { "label": "Email", "placeholder": "Enter email address" },
-      "password": { "label": "Password", "placeholder": "Enter password" },
-      "jobTitle": { "label": "Job title", "placeholder": "Enter job title" },
-      "toast": { "created": "Teacher added successfully" },
+      "name": {
+        "label": "Full name",
+        "placeholder": "Enter teacher name"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Enter phone number"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter email address"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter password"
+      },
+      "jobTitle": {
+        "label": "Job title",
+        "placeholder": "Enter job title"
+      },
+      "toast": {
+        "created": "Teacher added successfully"
+      },
       "Actions": {
         "common": {
           "conflict": "This account already exists",
@@ -1433,7 +1596,9 @@
     "recentActivity": "Recent activity"
   },
   "OrgResults": {
-    "breadcrumb": { "home": "Home" },
+    "breadcrumb": {
+      "home": "Home"
+    },
     "title": "Results",
     "subtitle": "Track children assessment results",
     "tabs": {
@@ -1489,7 +1654,10 @@
     "footer": "Showing total visitors for the last 6 months"
   },
   "CreateChild": {
-    "breadcrumb": { "dashboard": "Dashboard", "children": "Children" },
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "children": "Children"
+    },
     "title": "Create child",
     "subtitle": "Find the parent first, then select an existing child or create a new profile.",
     "parentIdentification": "Parent identification",

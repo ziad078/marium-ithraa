@@ -4,6 +4,13 @@ import { NextRequest, NextResponse } from "next/server"
 export async function GET(request: NextRequest) {
   const locale = request.nextUrl.searchParams.get("locale") ?? "ar"
 
+  const host =
+    request.headers.get("x-forwarded-host") ??
+    request.headers.get("host") ??
+    request.nextUrl.host
+  const protocol = request.headers.get("x-forwarded-proto") ?? "https"
+  const baseUrl = `${protocol}://${host}`
+
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
@@ -23,7 +30,7 @@ export async function GET(request: NextRequest) {
     })
 
     const response = NextResponse.redirect(
-      new URL(`/${locale}/auth/login`, request.url),
+      new URL(`/${locale}/auth/login`, baseUrl),
     )
 
     response.cookies.set(cookieName, encoded, {
@@ -36,5 +43,5 @@ export async function GET(request: NextRequest) {
     return response
   }
 
-  return NextResponse.redirect(new URL(`/${locale}/auth/login`, request.url))
+  return NextResponse.redirect(new URL(`/${locale}/auth/login`, baseUrl))
 }

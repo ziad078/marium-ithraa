@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { redirect } from "next/navigation"
 import { getTranslations } from "next-intl/server"
 
 import { Button } from "@/components/ui/button"
@@ -18,6 +19,10 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
   const t = await getTranslations({ locale, namespace: "VerifyEmail" })
 
   const result = token ? await verifyEmail(token) : null
+
+  if (result?.ok) {
+    redirect(`/api/auth/verify-email/confirm?locale=${locale}`)
+  }
 
   return (
     <main className="min-h-dvh pt-36 pb-16">

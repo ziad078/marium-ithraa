@@ -1,28 +1,50 @@
+"use client"
+
+import { Suspense, useEffect, useState } from "react"
 import Image from "next/image"
-import { redirect } from "next/navigation"
-import { getTranslations } from "next-intl/server"
+import { useRouter, useParams, useSearchParams } from "next/navigation"
+import { useSession } from "next-auth/react"
+import { useTranslations } from "next-intl"
+import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { verifyEmail } from "@/features/auth"
 import { Link } from "@/i18n/navigation"
-
-type Props = {
-  params: Promise<{ locale: string }>
-  searchParams: Promise<{ token?: string }>
-}
+import { verifyEmailClient } from "@/features/auth"
 
 
-export default async function VerifyEmailPage({ params, searchParams }: Props) {
-  const { locale } = await params
-  const { token } = await searchParams
-  const t = await getTranslations({ locale, namespace: "VerifyEmail" })
+function VerifyEmailContent() {
+  const t = useTranslations("VerifyEmail")
+  const router = useRouter()
+  const params = useParams()
+  const locale = params.locale as string
+  const { update } = useSession()
+  const searchParams = useSearchParams()
+  const token = searchParams.get("token")
 
-  const result = token ? await verifyEmail(token) : null
+  const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null)
 
-  if (result?.ok) {
-    redirect(`/api/auth/verify-email/confirm?locale=${locale}`)
-  }
+  useEffect(() => {
+    if (!token) return
+
+    verifyEmailClient(token)
+      .then(async (res) => {
+        setResult(res)
+        if (res.ok) {
+          try {
+            await update({ isEmailVerified: true })
+          } catch {
+            // user might not be authenticated — redirect to login anyway
+          }
+          router.push(`/${locale}/auth/login`)
+        }
+      })
+      .catch(() => {
+        setResult({ ok: false, message: t("failed") })
+      })
+  }, [token, update, router, locale, t])
+
+  const verifying = token !== null && result === null
 
   return (
     <main className="min-h-dvh pt-36 pb-16">
@@ -45,7 +67,11 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
-              {!token ? (
+              {verifying ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="size-8 animate-spin text-muted-foreground" />
+                </div>
+              ) : !token ? (
                 <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
                   {t("missingToken")}
                 </div>
@@ -92,5 +118,13 @@ export default async function VerifyEmailPage({ params, searchParams }: Props) {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={null}>
+      <VerifyEmailContent />
+    </Suspense>
   )
 }

@@ -80,7 +80,7 @@ const nextAuthOptions: AuthOptions = {
           
             return session
           },
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
             // أول login
             if (user) {
               const ttlSeconds = resolveAccessTokenTtlSeconds(user)
@@ -98,6 +98,11 @@ const nextAuthOptions: AuthOptions = {
                 isPhoneVerified: user.isPhoneVerified,
                 error: undefined,
               }
+            }
+
+            if (trigger === "update" && session?.isEmailVerified === true) {
+              token.isEmailVerified = true
+              return token
             }
 
             if (token.error === "RefreshAccessTokenError") {
